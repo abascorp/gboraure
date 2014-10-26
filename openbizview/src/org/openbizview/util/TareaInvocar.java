@@ -37,6 +37,12 @@ public class TareaInvocar extends Bd implements Job {
 
 	java.util.Date fechadia = new java.util.Date();
 
+ /**
+  * Método que se ejecuta según la tarea programada, según tres opciones:
+  * 1- Envío de reporte y corre
+  * 2- Envío de reporte a una ruta específica sin envío de corre
+  * 3- Envío de reporte a una lista de personas en partícular (Ejemplo: recibos de pago o notificaciones particulares)	
+  */
   //Metodo que se ejecutara cada cierto tiempo que lo programemos despues
   public void execute(JobExecutionContext jec) throws JobExecutionException {
     //Aca pueden poner la tarea o el job que desean automatizar
