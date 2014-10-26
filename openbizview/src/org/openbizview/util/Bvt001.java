@@ -533,7 +533,6 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        //PARA QUE EJECUTE CON SQLSERVER
         case "SQLServer":
 	           query += "SELECT * FROM (SELECT ";
 	           query += "			   ROW_NUMBER() OVER (ORDER BY A.CODREP ASC) AS ROW_NUM, ";
