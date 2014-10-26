@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los términos de la Licencia Pública General GNU publicada 
+    por la Fundación para el Software Libre, ya sea la versión 3 
+    de la Licencia, o (a su elección) cualquier versión posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
+    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una información más detallada. 
+
+    Debería haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<script src="../resources/js/asocat.js" type="text/javascript"></script>
+<ui:include src="common/cabeceras.xhtml" />
+<ui:include src="common/timeout.xhtml" />
+<h:body>
+
+		<f:view>
+			<div id="content">
+			
+					<p:layout fullPage="true" id="layout">
+				  
+			<!-- Top -->
+		<p:layoutUnit position="north" size="auto" resizable="false"
+			gutter="0" collapsible="true" header="BizView - #{msg.versionbiz}">
+			<ui:include src="common/top.xhtml" />
+		</p:layoutUnit>
+		
+		<!-- Menú vertical -->
+		<p:layoutUnit position="west" size="202" header="#{msg.menu}"
+			gutter="0" resizable="true" collapsible="true" style="border:0px;"
+			styleClass="myLayoutStyleClass">
+			<ui:include src="common/menu.xhtml" />
+		</p:layoutUnit>
+		
+		<!-- Contenido -->
+		<p:layoutUnit position="center" style="border:0px;"
+			styleClass="myLayoutStyleClass">
+			
+				<h:form id="formasocat"  >
+			
+			    <!-- Div para mensajes -->
+				<p:growl globalOnly="true" id="growl" life="30000"/>
+			    <div id="loader"><ui:include src="common/loader.xhtml"/></div> 
+				
+				<div id="botonera">              
+                <p:toolbar>  
+                <f:facet name="left">   
+                 <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{asocat.insert}" 
+                 rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
+                 <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{asocat.delete}" 
+                 rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
+                 <p:separator/>  
+                 <p:commandButton update="panel, growl" icon="ui-icon-arrowrefresh-1-s"  process="@this"  
+                 title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" >
+                  <p:resetInput target="panel" /> 
+                 </p:commandButton>                            
+                </f:facet>
+               </p:toolbar>  
+                </div>
+	
+				<!-- Panel -->
+			<div id="etiqueta" >
+		         <p:panel id="panel"  header="#{msg.asocattit}">
+		         <h:panelGrid columns="3" cellspacing="3">	 
+		         <h:outputText value="#{msg.asocatUorg}"/>
+			     <p:autoComplete id="uorg" value="#{asocat.uorg}" emptyMessage="#{msg.html138}"  required="true" requiredMessage="#{bd.getMessage('asocatIngDpto')}"   completeMethod="#{autocomplete.completeUorg}"  dropdown="true" maxResults="30" scrollHeight="250">
+			     <p:ajax event="itemSelect" listener="#{bd.setUorg(asocat.uorg)}" />
+			     </p:autoComplete>
+                 <p:message for="uorg"/>
+			     <h:outputText value="#{msg.asocatCat4}"/>
+			     <p:autoComplete id="bcodcat4" value="#{asocat.bcodcat4}" emptyMessage="#{msg.html138}"  required="true" requiredMessage="#{bd.getMessage('asocatIngCat4')}"  completeMethod="#{autocomplete.completeCat4}"  dropdown="true" maxResults="30" scrollHeight="250"/>
+                 <p:message for="bcodcat4"/>
+			     <h:outputText value="#{msg.asocatProc}"/>
+			     <p:autoComplete id="codproc" value="#{asocat.codproc}" emptyMessage="#{msg.html138}"  required="true" requiredMessage="#{bd.getMessage('asocatIngProc')}"   completeMethod="#{autocomplete.completeAsocat}"  dropdown="true" maxResults="30" scrollHeight="250"/>
+                 <p:message for="codproc"/>
+			     <h:outputText value="#{msg.asocatfecha}" />
+			     <p:calendar pattern="dd/MM/yyyy" id="fecha"  locale="es" navigator="true" maxlength="10" value="#{asocat.feccam}" showOn="button" required="true" requiredMessage="#{bd.getMessage('asocatIngFec')}"/>
+		         <p:message for="fecha"/>
+		         </h:panelGrid>
+	             </p:panel>
+			</div>
+			
+
+			<!-- Tabla con el resultado -->
+			<div id="tablaresult">
+			<p:dataTable id="tbResult" emptyMessage="#{msg.result}" var="tb"  value="#{asocat.list}"  
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{asocat.rows}"  
+			filteredValue="#{asocat.filtro}"  widgetVar="global">
+			
+			<f:facet name="header"> 			
+            <p:outputPanel>  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
+            </p:outputPanel>         
+            </f:facet> 
+            
+            <p:column sortBy="#{tb.vcodcat}" filterBy="#{tb.vcodcat}" styleClass="wrap">  
+            <f:facet name="header">#{msg.asocatTbCod}</f:facet> 
+            <h:outputLabel value="#{tb.vcodcat}"  />  
+            </p:column>  
+            
+            <p:column sortBy="#{tb.vcodcatdescat}" filterBy="#{tb.vcodcatdescat}" styleClass="wrap">  
+            <f:facet name="header">#{msg.asocatTbDes}</f:facet>  
+            <h:outputLabel value="#{tb.vcodcatdescat}" />
+            </p:column> 
+            
+            <p:column sortBy="#{tb.vcodproc}" filterBy="#{tb.vcodproc}" styleClass="wrap">  
+            <f:facet name="header">#{msg.asocatTbCodProc}</f:facet>  
+            <h:outputLabel value="#{tb.vcodproc}"  />
+            </p:column> 
+            
+            <p:column sortBy="#{tb.feccam}" filterBy="#{tb.feccam}" styleClass="wrap">  
+            <f:facet name="header">#{msg.asocatTbFecha}</f:facet>  
+            <h:outputLabel value="#{tb.feccam}"  />
+            </p:column>
+            
+             
+            <p:column style="width:30px" >  
+           <f:facet  name="header">
+            <p:commandLink onclick="fm_check('toDelete',true)"><p:graphicImage alt="img" title="#{msg.borrar}" value="../resources/img/borrar.png" style="height:20px; margin-left:6px; border: 0" /></p:commandLink>
+            </f:facet> 
+            <input type="checkbox" name="toDelete" class="chk" value="#{tb.vuorg}#{tb.vcodcat}#{tb.vcodproc}"/>
+            </p:column>
+              
+
+         </p:dataTable>
+        </div>
+        </h:form>
+   </p:layoutUnit> 
+  </p:layout> 
+           </div>
+		</f:view>	
+</h:body>
+</html>
+

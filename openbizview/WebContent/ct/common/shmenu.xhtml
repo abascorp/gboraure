@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  KREAS TALENTO
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:body>
+            <div style="float: left; width: 10%; position: fixed; margin-left: 250px; z-index: 2; border: 0">
+            <p:commandLink onclick="HideMenu()" title="#{msg.html49}">
+			<h:graphicImage url="../resources/img/eye_closed_left.png"  id="eye_closed_left"
+			style="height:35px; border:0;" /></p:commandLink>
+			 
+			 <p:commandLink onclick="ShowMenu()" title="#{msg.html50}">
+			<h:graphicImage url="../resources/img/eye_closed_right.png"  id="eye_closed_right"
+			style="height:35px; border:0; display:none" /></p:commandLink>
+            </div>	
+</h:body>
+</html>

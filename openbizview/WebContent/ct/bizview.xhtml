@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- 
+     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los términos de la Licencia Pública General GNU publicada 
+    por la Fundación para el Software Libre, ya sea la versión 3 
+    de la Licencia, o (a su elección) cualquier versión posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
+    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una información más detallada. 
+
+    Debería haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<script src="../resources/js/bvt001.js" type="text/javascript"></script>
+<ui:include src="common/cabeceras.xhtml" />
+<ui:include src="common/timeout.xhtml" />
+<h:body>
+<f:view>
+
+<!-- Top-->
+<ui:include src="common/top.xhtml" />
+<div id="wrapper">
+        <!-- Sidebar -->
+        <ui:include src="common/menu.xhtml" />
+                <!-- Menu Toggle Script -->
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content --> 
+             
+     <div class="container-fluid" id="containerF">
+     <h:form id="formBvt001"  >
+     
+      <!-- Botonera --> 
+     <div id="botones">              
+       <p:toolbar>  
+       <f:facet name="left">
+       <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{bvt001.guardar}" 
+        rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
+       <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{bvt001.delete}" 
+        rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
+       <p:separator/> 
+       <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panel, growl" process="@this" actionListener="#{bvt001.reset()}"
+        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
+       <p:resetInput target="panel" />
+        <f:actionListener binding="#{bd.setCodgrup('')}"/> 
+       </p:commandButton>                     
+        </f:facet>   
+       </p:toolbar>  
+     </div><br />
+     
+     <!-- Mensaje e imagen --> 		
+     <div id="encabezados">   
+	  <p:growl globalOnly="true" id="growl" life="30000"/>
+	  <ui:include src="common/loader.xhtml"/>
+	  </div>
+	  	  
+	   <!-- Panel -->      
+     <div class="panel panel-info" style="margin-top: 30px">
+     <div class="panel-body">
+     <p:panel id="panel"  header="#{msg.bvt001tit}" toggleable="true" style="white-space: normal;">	  	         
+	   <h:panelGrid  columns="1" columnClasses="col1">	  
+	    <p:autoComplete id="grupo" value="#{bvt001.codgrup}" emptyMessage="#{msg.html138}"  completeMethod="#{autocomplete.completeGrupo}"  valueChangeListener="#{bd.setCodgrup(bvt001.codgrup)}" dropdown="true" scrollHeight="250">
+	    <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setCodgrup(bvt001.codgrup)}" />	     
+	    </p:autoComplete> 
+	    <p:watermark for="grupo" value="&#160;&#160;#{msg.bvt001Grp}" />
+	    <p:message for="grupo"/>        
+	    <p:inputText id="codrep" styleClass="form-control" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{bvt001.codrep}"/>
+	    <p:watermark for="codrep" value="#{msg.bvt001Cod}" />
+	    <p:message for="codrep"/>  
+	    <p:inputText id="desrep"  styleClass="form-control" maxlength="50" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{bvt001.desrep}" />
+	    <p:watermark for="desrep" value="#{msg.bvt001Desc}" />
+	    <p:message for="desrep"/> 
+	    <p:inputText id="comrep"  styleClass="form-control" maxlength="50" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{bvt001.comrep}" /> 	
+	    <p:watermark for="comrep" value="#{msg.bvt001Com}" />
+	    <p:message for="comrep"/>  
+	    </h:panelGrid>
+	    <h:inputHidden id="vop" value="#{bvt001.validarOperacion}"/>
+	   </p:panel> 
+     </div>
+     </div>
+     
+     <p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvt001.lazyModel}"  lazy="true" sortBy="#{tb.codrep}"
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvt001.rows}"  
+			widgetVar="global">
+			
+			<f:facet name="header"> 			
+            <p:outputPanel>  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
+                <p:commandButton id="toggler" type="button"  style="float:right" icon="ui-icon-calculator" />
+                <p:columnToggler datasource="tbResult" trigger="toggler" />
+            </p:outputPanel>         
+            </f:facet> 
+            
+         
+            
+            <p:column style="width:40px" >  
+            <f:facet  name="header">
+            <p:commandLink onclick="fm_check('toDelete',true)"><p:graphicImage alt="img" title="#{msg.borrar}" value="../resources/img/borrar.png" style="text-align: center; height:20px; border: 0" /></p:commandLink>
+            </f:facet>  
+            <input type="checkbox" name="toDelete" class="chk" value="#{tb.codrep}"/>
+            </p:column>  
+			
+			<p:column sortBy="#{tb.codrep}"  styleClass="wrap"  style="width:100px">  
+            <f:facet name="header">#{msg.bvt001TbCod}</f:facet> 
+            <h:outputLabel value="#{tb.codrep}"  />  
+            </p:column>  
+            
+            <p:column sortBy="#{tb.desrep}"  styleClass="wrap" >  
+            <f:facet name="header">#{msg.bvt001TbDes}</f:facet>  
+            <h:outputLabel value="#{tb.desrep}"  />  
+            </p:column> 
+            
+            <p:column>  
+            <f:facet name="header">#{msg.bvt001TbCom}</f:facet>  
+            <h:outputLabel value="#{tb.comrep}"  />  
+            </p:column>
+            
+            <p:column styleClass="wrap" style="width:100px" >  
+            <f:facet name="header">#{msg.bvt001tbGrp}</f:facet> 
+            <h:outputLabel value="#{tb.vgrupodesgrupo}"  />  
+            </p:column> 
+            
+            <p:column style="width:60px" >  
+            <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
+             <p:commandLink styleClass="edit" onclick="enviar('#{tb.codrep}','#{tb.desrep}','#{tb.comrep}','1', '#{tb.vgrupo} - #{tb.vgrupodesgrupo}')" 
+            title="Enviar"><i class="fa fa-pencil-square-o fa-2x"></i></p:commandLink>
+            </p:column> 
+            
+                        
+            <p:column style="width:60px" >  
+            <f:facet name="header">#{msg.bvt001TbPrint}</f:facet>  
+            <p:commandLink styleClass="edit"  
+            onclick="imprimir('#{tb.codrep}','#{bvt001.getLogin()}', '#{bvt001.getVlRol()}', '#{tb.desrep}');" 
+            immediate="true"
+            title="Enviar"><i class="fa fa-print fa-2x"></i></p:commandLink>
+			</p:column>
+			
+
+            </p:dataTable>   
+       </h:form>
+   </div>
+    
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	
+
+</f:view>	
+</h:body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  KREAS TALENTO
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:body>
+	<p:idleMonitor timeout="900000" onidle="PF('idleDialog').show()" />
+
+	<p:dialog header="#{msg.sessionCad}" resizable="false" closable="false"
+		widgetVar="idleDialog" modal="true" width="400">
+		<h:outputText value="#{msg.sessionMsj}" />
+		<br />
+		<br />
+		<h:form>
+			<center>
+				<p:commandButton value="OPEN-BIZVIEW - LOGIN" icon=""
+					action="#{loginBean.logout}" />
+			</center>
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>

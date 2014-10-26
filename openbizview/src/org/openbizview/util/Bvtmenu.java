@@ -1,0 +1,611 @@
+/*
+ *  Copyright (C) 2011  ANDRES DOMINGUEZ
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los terminos de la Licencia Pública General GNU publicada 
+    por la Fundacion para el Software Libre, ya sea la version 3 
+    de la Licencia, o (a su eleccion) cualquier version posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
+    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una informacion mas detallada. 
+
+    Deberia haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ */
+
+package org.openbizview.util;
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
+
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
+
+	/**
+	 *
+	 * @author Andres
+	 */
+	@ManagedBean
+	@ViewScoped
+	public class Bvtmenu extends Bd implements Serializable {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		
+		private LazyDataModel<Bvtmenu> lazyModel;  
+		
+		
+		/**
+		 * @return the lazyModel
+		 */
+		public LazyDataModel<Bvtmenu> getLazyModel() {
+			return lazyModel;
+		}	
+	
+	public Bvtmenu() throws ClassNotFoundException, SQLException, NamingException{
+		
+		lazyModel  = new LazyDataModel<Bvtmenu>(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7217573531435419432L;
+			
+            @Override
+			public List<Bvtmenu> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
+            	//Filtro
+            	if (filters != null) {
+               	 for(Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
+               		 String filterProperty = it.next(); // table column name = field name
+                     filterValue = filters.get(filterProperty);
+               	 }
+                }
+            	try { 
+            		//Consulta
+					select(first, pageSize,sortField, filterValue);
+					//Counter
+					counter(filterValue);
+					//Contador lazy
+					lazyModel.setRowCount(rows);  //Necesario para crear la paginación
+				} catch (SQLException | NamingException | ClassNotFoundException e) {	
+					e.printStackTrace();
+				}             
+				return list;  
+            } 
+            
+            
+            //Arregla bug de primefaces
+            @Override
+            /**
+			 * Arregla el Issue 1544 de primefaces lazy loading porge generaba un error
+			 * de divisor equal a cero, es solamente un override
+			 */
+            public void setRowIndex(int rowIndex) {
+                /*
+                 * The following is in ancestor (LazyDataModel):
+                 * this.rowIndex = rowIndex == -1 ? rowIndex : (rowIndex % pageSize);
+                 */
+                if (rowIndex == -1 || getPageSize() == 0) {
+                    super.setRowIndex(-1);
+                }
+                else
+                    super.setRowIndex(rowIndex % getPageSize());
+            }
+            
+		};
+	}
+	
+	
+	private String codopc = "";
+	private String desopc = "";
+	private String codvis = "";
+	private String b_codrol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("segrol");
+	private int rows;
+	private Object filterValue = "";
+	private List<Bvtmenu> list = new ArrayList<Bvtmenu>();
+	String exito = "exito";
+	
+
+	
+	/**
+	 * @return the codopc
+	 */
+	public String getCodopc() {
+		return codopc;
+	}
+	
+	/**
+	 * @param codopc the codopc to set
+	 */
+	public void setCodopc(String codopc) {
+		this.codopc = codopc;
+	}
+	
+	/**
+	 * @return the desopc
+	 */
+	public String getDesopc() {
+		return desopc;
+	}
+	
+	/**
+	 * @param desopc the desopc to set
+	 */
+	public void setDesopc(String desopc) {
+		this.desopc = desopc;
+	}
+	
+	/**
+	 * @return the codvis
+	 */
+	public String getCodvis() {
+		return codvis;
+	}
+	
+	/**
+	 * @param codvis the codvis to set
+	 */
+	public void setCodvis(String codvis) {
+		this.codvis = codvis;
+	}
+
+	
+    
+
+	/**
+	 * @return the b_codrol
+	 */
+	public String getB_codrol() {
+		return b_codrol;
+	}
+
+	/**
+	 * @param b_codrol the b_codrol to set
+	 */
+	public void setB_codrol(String b_codrol) {
+		this.b_codrol = b_codrol;
+	}
+
+	
+
+	/**
+	 * @return the list
+	 */
+	public List<Bvtmenu> getList() {
+		return list;
+	}
+
+	/**
+	 * @param list the list to set
+	 */
+	public void setList(List<Bvtmenu> list) {
+		this.list = list;
+	}
+
+	/**
+	 * @param rows the rows to set
+	 */
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Variables seran utilizadas para capturar mensajes de errores de Oracle y parametros de metodos
+	PntGenerica consulta = new PntGenerica();
+	boolean vGacc; //Validador de opciones del menú
+	private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario"); //Usuario logeado
+	FacesMessage msj =  null;
+	
+	
+	//Coneccion a base de datos
+	//Pool de conecciones JNDI
+	//Coneccion a base de datos
+	//Pool de conecciones JNDIFARM
+	Connection con;
+	PreparedStatement pstmt = null;
+	ResultSet r;
+
+	/**
+     * Inserta acceso menu.
+     * <p>
+     * <b>Parametros del Metodo:<b> String b_codrol, String codopc, String desopc, String codvis.<br>
+     * String pool, String login.<br><br>
+     **/
+    public void insertBvTMENU(String rol, String strValores, String pool, String login) throws  NamingException {
+       String[] vecValores = strValores.split("\\|", -1);
+       String[] veccodrol = rol.split("\\ - ", -1);
+        try {
+        	Context initContext = new InitialContext();     
+     		DataSource ds = (DataSource) initContext.lookup(JNDI);
+
+     		con = ds.getConnection();		
+     		
+            String query = "INSERT INTO Bvtmenu VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, veccodrol[0]);
+            pstmt.setString(2, vecValores[0].toUpperCase());
+            pstmt.setString(3, vecValores[1]);
+            pstmt.setString(4, vecValores[2].toUpperCase());
+            pstmt.setString(5, login);
+            pstmt.setString(6, login);
+            ////System.out.println(query);
+            try {
+                //Avisando
+                pstmt.executeUpdate();
+                      
+             } catch (SQLException e)  {
+            	 exito = "error";
+            	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+            	FacesContext.getCurrentInstance().addMessage(null, msj);
+            }
+            pstmt.close();
+            con.close();
+            
+        } catch (Exception e) {
+        }
+    	        
+    }
+    
+    /**
+    * Inserta acceso botones.
+    * <p>
+    * <b>Parametros del Metodo:<b> String b_codrol, String codopc, String desopc, String codvis.<br>
+    * String pool, String login.<br><br>
+     * @throws SQLException 
+     * @throws ClassNotFoundException 
+     * @throws IOException 
+    **/
+   public void insertBvTMENUOPC() throws  NamingException, ClassNotFoundException, SQLException {
+	   String[] veccodrol = b_codrol.split("\\ - ", -1);
+	   consulta.selectPntGenerica("select * from bvtmenu where b_codrol = '" + veccodrol[0].toUpperCase() + "'" , JNDI);
+	   int registros = consulta.getRows();
+	   ////System.out.println("Registros: " + registros);
+	   
+	   if (registros==42){
+		   msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("bvtmenumsj"), ""); 
+		   FacesContext.getCurrentInstance().addMessage(null, msj);
+		   exito="error";
+	   } else {
+	   insertBvTMENU(veccodrol[0], "M01|"+getMessage("bas").toUpperCase()+"|0", JNDI, login);
+	   insertBvTMENU(veccodrol[0], "M02|"+getMessage("bas1")+"|0", JNDI, login);
+	   insertBvTMENU(veccodrol[0], "M03|"+getMessage("bas2")+"|0", JNDI, login);
+	   insertBvTMENU(veccodrol[0], "M04|"+getMessage("bas3")+"|0", JNDI, login);
+	   insertBvTMENU(veccodrol[0], "M05|"+getMessage("bas4")+"|0", JNDI, login);
+	   insertBvTMENU(veccodrol[0], "M06|"+getMessage("bas5")+"|0", JNDI, login);
+	   insertBvTMENU(veccodrol[0], "M07|"+getMessage("bas6")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M08|"+getMessage("adm").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M09|"+getMessage("adm1")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M10|"+getMessage("adm2")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M11|"+getMessage("adm3")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M12|"+getMessage("adm4")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M13|"+getMessage("seg").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M14|"+getMessage("seg01")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M15|"+getMessage("seg02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M16|"+getMessage("seg03")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M17|"+getMessage("seg04")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M18|"+getMessage("seg05")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M19|"+getMessage("seg06")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M20|"+getMessage("seg07")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M21|"+getMessage("seg08")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M22|"+getMessage("seg09")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M23|"+getMessage("pres").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M24|"+getMessage("pres01")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M25|"+getMessage("pres02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M26|"+getMessage("pres08")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M27|"+getMessage("pres03")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M28|"+getMessage("pres04")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M29|"+getMessage("pres05")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M30|"+getMessage("pres13")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M31|"+getMessage("pres09")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M32|"+getMessage("pres_a").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M33|"+getMessage("pres06")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M34|"+getMessage("pres07")+"|0", JNDI, login);   
+       insertBvTMENU(veccodrol[0], "M35|"+getMessage("presventas")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M36|"+getMessage("pres10")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M37|"+getMessage("pres11")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M38|"+getMessage("pres12")+"|0", JNDI, login);
+       
+       insertBvTMENU(veccodrol[0], "M39|"+getMessage("presplan")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M40|"+getMessage("presplan01")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M41|"+getMessage("presplan02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M42|"+getMessage("presplan02A")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M43|"+getMessage("presplan02B")+"|0", JNDI, login);
+
+       
+       insertBvTMENU(veccodrol[0], "M44|"+getMessage("mail").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M45|"+getMessage("mail02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M46|"+getMessage("mail03")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M47|"+getMessage("mail04")+"|0", JNDI, login);
+              
+       insertBvTMENU(veccodrol[0], "M48|"+getMessage("rep").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M49|"+getMessage("salir").toUpperCase()+"|0", JNDI, login);
+	   }
+	   if(exito.equals("exito")){
+	   msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");  
+	   FacesContext.getCurrentInstance().addMessage(null, msj);
+	   }
+       limpiarValores();
+   }
+	   
+   
+   /**
+    * Borra Paises
+    * <p>
+    * Parametros del metodo: String codpai. Pool de conecciones
+    **/
+   public void delete() throws  NamingException {  
+	        try {
+   		Context initContext = new InitialContext();     
+    		DataSource ds = (DataSource) initContext.lookup(JNDI);
+
+    		con = ds.getConnection();
+    		
+    		String[] veccodrol = b_codrol.split("\\ - ", -1);
+    		
+    		String query = "DELETE from bvtmenu WHERE b_codrol ='" + veccodrol[0].toUpperCase() + "'";
+           pstmt = con.prepareStatement(query);
+           ////System.out.println(query);
+           //Antes de insertar verifica si el rol del usuario tiene permisos para insertar
+           
+           try {
+               pstmt.executeUpdate();
+               msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnDelete"), "");
+               limpiarValores();
+               	
+           } catch (SQLException e) {
+               e.printStackTrace();
+               msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+           }
+
+           pstmt.close();
+           con.close();
+
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+			
+			FacesContext.getCurrentInstance().addMessage(null, msj); 
+		}
+   
+
+   
+    /**
+     * Actualiza bvtmenu
+     * <p> Parámetros del método: String codvis, String p_codrol, String codopc
+     **/
+    public void updateBvtmenu(String param, String codvis) throws  NamingException {
+        String[] veccodrol = b_codrol.split("\\ - ", -1);
+        ////System.out.println(cadStr);
+        try {
+        	Context initContext = new InitialContext();     
+     		DataSource ds = (DataSource) initContext.lookup(JNDI);
+
+     		con = ds.getConnection();
+     		
+            String query = "UPDATE BVTMENU SET CODVIS = '" + codvis + "'"
+                    + " WHERE B_CODROL = ? AND CODOPC IN ('" + param + "')" ;
+            ////System.out.println(query);
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, veccodrol[0].toUpperCase());
+            try {
+                //Avisando
+                pstmt.executeUpdate();
+                
+            } catch (SQLException e) {
+            	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, e.getMessage(), "");
+            	FacesContext.getCurrentInstance().addMessage(null, msj);
+            }
+            pstmt.close();
+            con.close();
+        } catch (Exception e) {
+        }
+        
+    }
+    
+    public void update() throws  NamingException, ClassNotFoundException, SQLException { 
+    	String vista;
+    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    	String[] paramAcc = request.getParameterValues("toAcc");
+    	String[] paramDacc = request.getParameterValues("toDacc");
+    	if(paramAcc!=null && paramDacc!=null){
+    		msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("bvtmenuUp1"), "");
+    		FacesContext.getCurrentInstance().addMessage(null, msj);
+    		exito = "error";
+    	} else 	if(paramAcc!=null && paramDacc==null){
+    	for(int i=0;i<paramAcc.length;i++){
+    		vista = "0";
+    		updateBvtmenu(paramAcc[i], vista);
+    		  }
+    	} else if (paramAcc==null && paramDacc!=null){
+    	for(int i=0;i<paramDacc.length;i++){
+          vista = "1";
+        	updateBvtmenu(paramDacc[i], vista);
+          }	
+    	}
+		if (exito.equals("exito")) {
+			 msj = new FacesMessage(FacesMessage.SEVERITY_INFO,  getMessage("msnUpdate"), "");
+			 FacesContext.getCurrentInstance().addMessage(null, msj);
+		}
+		limpiarValores();
+    }
+    
+    
+    public void guardar() throws NamingException, SQLException, ClassNotFoundException{   	
+    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    	String[] paramAcc = request.getParameterValues("toAcc");
+    	String[] paramDacc = request.getParameterValues("toDacc");
+    	////System.out.println(paramAcc);
+    	////System.out.println(paramDacc);
+    	if(paramAcc==null && paramDacc==null){
+    		////System.out.println("Inserta");
+    		insertBvTMENUOPC();
+    	} else {
+    		////System.out.println("Update");
+    		update();
+    	}
+    }
+    
+    /**
+     * Leer Datos de paises
+     * @throws NamingException 
+     * @throws IOException 
+     **/ 	
+  	public void select(int first, int pageSize, String sortField, Object filterValue) throws SQLException, ClassNotFoundException, NamingException {
+  		
+  		Context initContext = new InitialContext();     
+ 		DataSource ds = (DataSource) initContext.lookup(JNDI);
+ 		con = ds.getConnection();
+ 		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+ 		DatabaseMetaData databaseMetaData = con.getMetaData();
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+ 		
+ 		
+ 		String query = "";
+ 		
+ 		if(b_codrol==null){
+ 			b_codrol = " - ";
+ 		}
+ 		
+ 		String[] veccodrol = b_codrol.split("\\ - ", -1);
+
+  		switch ( productName ) {
+        case "Oracle":
+        	   query += "  select * from ";
+        	   query += " ( select query.*, rownum as rn from";
+        	   query += " (SELECT  trim(codopc), trim(desopc), decode(codvis,'0','ACCESO','SIN ACCESO'), trim(b_codrol)";
+        	   query += " FROM BVTMENU";
+        	   query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and b_codrol like trim('" + veccodrol[0].toUpperCase() +  "%')";
+	  		   query += " order by " + sortField + ") query";
+	           query += " ) where rownum <= " + pageSize ;
+	           query += " and rn > (" + first + ")";
+             break;
+        case "PostgreSQL":
+        	   query += " SELECT  trim(codopc), trim(desopc), case when codvis = '0' then 'ACCESO' else 'SIN ACCESO' end, trim(b_codrol) ";
+        	   query += " FROM BVTMENU";
+        	   query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and b_codrol like trim('" + veccodrol[0].toUpperCase() +  "%')";
+	  		   query += " order by " + sortField ;
+	           query += " LIMIT " + pageSize;
+	           query += " OFFSET " + first;
+             break;
+        }
+ 		
+        
+        pstmt = con.prepareStatement(query);
+        ////System.out.println(query);
+  		
+        r =  pstmt.executeQuery();
+        
+        while (r.next()){
+        	Bvtmenu select = new Bvtmenu();
+     		select.setCodopc(r.getString(1));
+     		select.setDesopc(r.getString(2));
+     		select.setCodvis(r.getString(3));
+     		select.setB_codrol(r.getString(4));
+        	//Agrega la lista
+        	list.add(select);
+        }
+        //Cierra las conecciones
+        pstmt.close();
+        con.close();
+  	}
+  	
+  	
+  	/**
+     * Leer registros en la tabla
+     * @throws NamingException 
+     * @throws IOException 
+     **/ 	
+  	public void counter(Object filterValue ) throws SQLException, NamingException {
+     try {	
+    	Context initContext = new InitialContext();     
+   		DataSource ds = (DataSource) initContext.lookup(JNDI);
+   		con = ds.getConnection();
+   	   //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+ 		DatabaseMetaData databaseMetaData = con.getMetaData();
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+   	      		
+ 		String query = "";
+ 		
+ 		if(b_codrol==null){
+ 			b_codrol = " - ";
+ 		}
+ 		
+ 		String[] veccodrol = b_codrol.split("\\ - ", -1);
+  		
+  		switch ( productName ) {
+        case "Oracle":
+        	 query = "SELECT count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() + "') from dual";
+             break;
+        case "PostgreSQL":
+        	 query = "SELECT count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() +  "')";
+             break;
+        }
+
+        
+        pstmt = con.prepareStatement(query);
+        //System.out.println(query);
+
+         r =  pstmt.executeQuery();
+        
+        
+        while (r.next()){
+        	rows = r.getInt(1);
+        }
+     } catch (SQLException e){
+         e.printStackTrace();    
+     }
+        //Cierra las conecciones
+        pstmt.close();
+        con.close();
+        r.close();
+
+  	}
+
+     
+   /**
+	 * @return the rows
+	 */
+	public int getRows() {
+		return rows;
+	}
+	
+	public void limpiarValores(){
+		codopc = "";
+		desopc = "";
+		codvis = "";
+	}
+	
+	public void reset() {
+  		b_codrol = null;     
+    }
+
+
+
+}

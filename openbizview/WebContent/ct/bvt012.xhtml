@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los términos de la Licencia Pública General GNU publicada 
+    por la Fundación para el Software Libre, ya sea la versión 3 
+    de la Licencia, o (a su elección) cualquier versión posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
+    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una información más detallada. 
+
+    Debería haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+	<h:form id="formBvt012"  >
+		<f:view>
+			<div id="content">  
+			    <!-- Div para mensajes -->
+				<p:growl globalOnly="true" id="growl" life="30000"/>
+				<div id="loader"><ui:include src="common/loader.xhtml"/></div>
+				
+				<!-- Div para colocar botones -->
+				<div id="botonera">              
+                <p:toolbar>  
+                <f:facet name="left"> 
+                 <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{bvt012.guardar}"  
+                 rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
+                 <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{bvt012.delete}" 
+                 rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
+                 <p:separator/>  
+                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panel, growl" process="@this" 
+                 title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
+                 <p:resetInput target="panel" /> 
+                 </p:commandButton>                            
+                </f:facet>   
+               </p:toolbar>  
+                </div>
+	
+				<!-- Panel -->
+			<div id="etiqueta">
+		         <p:panel id="panel"  header="#{msg.bvt012tit}">	
+         
+		         <h:panelGrid columns="3" cellpadding="2" >	
+			     <h:outputText value="#{msg.bvt012Per}"/> 
+			     <p:autoComplete id="per" value="#{bvt012.anoper}" emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completePeriodosSelect}" dropdown="true" maxResults="30" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('bvt012IngPer')}">
+			     <p:ajax event="itemSelect" update="tbResult" listener="#{bvt012.buscar}"/>
+			     </p:autoComplete>
+			     <p:message for="per"/>
+			     <h:outputText value="#{msg.bvt012Cod}" />
+			     <p:inputText id="codesc" maxlength="10"  value="#{bvt012.codesc}" required="true" requiredMessage="#{bd.getMessage('bvt012IngGrp')}"/>  
+			     <p:message for="codesc"/>
+			     <h:outputText value="#{msg.bvt012Desc}" />
+			     <p:inputText id="desesc"  maxlength="50"  value="#{bvt012.desesc}" required="true" requiredMessage="#{bd.getMessage('bvt012IngDes')}"/> 
+			     <p:message for="desesc"/>	 
+		         </h:panelGrid>
+		         <h:inputHidden id="vop" value="#{bvt012.validarOperacion}"/>
+	             </p:panel>
+				</div>
+			</div>	
+			
+
+			<!-- Tabla con el resultado -->
+			<div id="tablaresult">
+			<p:dataTable id="tbResult" emptyMessage="#{msg.result}" var="tb"  value="#{bvt012.list}"  
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvt012.rows}"  
+			filteredValue="#{bvt012.filtro}"  widgetVar="global">
+			
+			<f:facet name="header"> 			
+            <p:outputPanel>  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
+            </p:outputPanel>         
+            </f:facet> 
+            
+            <p:column style="width:30px" >  
+            <f:facet  name="header">
+            <p:commandLink onclick="fm_check('toDelete',true)"><p:graphicImage alt="img" title="#{msg.borrar}" value="../resources/img/borrar.png" style="height:20px; margin-left:6px; border: 0" /></p:commandLink>          
+            </f:facet>  
+            <input type="checkbox" name="toDelete" class="chk" value="#{tb.vbcodciaanocalnumper}#{tb.vcodesc}"/>
+            </p:column>  
+            
+            <p:column sortBy="#{tb.vbcodciaanocalnumper}" filterBy="#{tb.vbcodciaanocalnumper}" styleClass="wrap" style="width:100px">  
+            <f:facet name="header">#{msg.bvt012TbPer}</f:facet>  
+            <h:outputLabel value="#{tb.vbcodciaanocalnumper1}" onclick="enviar('#{tb.vcodesc}','#{tb.vdesesc}','1',  '#{tb.vbcodciaanocalnumper}')"  />
+            </p:column>
+            
+            <p:column sortBy="#{tb.vcodesc}" filterBy="#{tb.vcodesc}" styleClass="wrap" style="width:100px">  
+            <f:facet name="header">#{msg.bvt012TbCod}</f:facet> 
+            <h:outputLabel value="#{tb.vcodesc}" onclick="enviar('#{tb.vcodesc}','#{tb.vdesesc}','1',  '#{tb.vbcodciaanocalnumper}')"  />  
+            </p:column>  
+            
+                                   
+            <p:column sortBy="#{tb.vdesesc}" filterBy="#{tb.vdesesc}" styleClass="wrap">  
+            <f:facet name="header">#{msg.bvt012TbDes}</f:facet>  
+            <h:outputLabel value="#{tb.vdesesc}" onclick="enviar('#{tb.vcodesc}','#{tb.vdesesc}','1',  '#{tb.vbcodciaanocalnumper}')"  />
+            </p:column> 
+            
+                        
+            <p:column style="width:40px" >  
+            <f:facet name="header">#{msg.bvt012TbEnviar}</f:facet>  
+            <h:graphicImage value="../resources/img/update.png" onmouseout="uncursor()" 
+            onmouseover="cursor()" onclick="enviar('#{tb.vcodesc}','#{tb.vdesesc}','1',  '#{tb.vbcodciaanocalnumper}')"  class="chk"  title="Enviar" alt="" />  
+            </p:column> 
+            
+            
+            <f:facet name="footer">
+             #{msg.rows} #{bvt012.rows} 
+            </f:facet> 
+            </p:dataTable>  
+           </div>
+		</f:view>
+	</h:form>
+</h:body>
+</html>

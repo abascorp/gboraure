@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  KREAS TALENTO
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+<script src="../resources/js/load.js" type="text/javascript"></script>
+</h:head>
+<h:body onload="HideMenuResolution()">
+	<h:form>
+	 <!-- Static navbar -->
+    <header class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid" >    
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" ><h:graphicImage value="../resources/img/OpenLogo.png" alt="img" style="height:50px; margin-top:-15px"/></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+           <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><strong>&nbsp;&nbsp;#{loginBean.getLogged()}</strong><span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><p:commandLink title="#{msg.html20}" actionListener="#{navigateBean.href('chgpwd')}"><i class="fa fa-lock fa-1" style="margin-top: -3px"></i><small>&nbsp;&nbsp;#{msg.html20}</small></p:commandLink></li>
+                <li><p:commandLink title="#{msg.salir}" actionListener="#{loginBean.logout}" ><i class="fa fa-sign-out fa-1" style="margin-top: -3px"></i><small>&nbsp;&nbsp;#{msg.salir}</small></p:commandLink></li>                            
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opciones del Menú&nbsp;<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><p:commandLink title="#{msg.globalBasico}" actionListener="#{navigateBean.href('bvtcat1')}" rendered="#{smnubean.opcmnu('M01')}" onclick="mnuBas()" ><h:graphicImage value="../resources/img/basicos.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.globalBasico}</small></p:commandLink></li>
+                <li><p:commandLink title="#{msg.globalAdmin}"  actionListener="#{navigateBean.href('uploadreport')}" rendered="#{smnubean.opcmnu('M08')}" onclick="mnuAdmin()"   ><h:graphicImage value="../resources/img/administracion.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.globalAdmin}</small></p:commandLink></li>
+                <li><p:commandLink title="#{msg.globalSeguridad}" actionListener="#{navigateBean.href('bvt003')}" rendered="#{smnubean.opcmnu('M13')}" onclick="mnuSeg()" ><h:graphicImage value="../resources/img/seguridad.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.globalSeguridad}</small></p:commandLink></li>
+                <li><p:commandLink title="#{msg.globalMail}"  actionListener="#{navigateBean.href('mailgrupos')}" rendered="#{smnubean.opcmnu('M44')}" onclick="mnuTask()"><h:graphicImage value="../resources/img/scheduled_tasks.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.globalMail}</small></p:commandLink></li>
+                <li><p:commandLink title="#{msg.globalRep}" actionListener="#{navigateBean.href('bvt001')}" rendered="#{smnubean.opcmnu('M44')}" onclick="mnuRep()"><h:graphicImage value="../resources/img/reportes.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.globalRep}</small></p:commandLink></li>
+                <li><p:commandLink title="#{msg.pres}" rendered="#{smnubean.opcmnu('M23')}" onclick="mnuGto()"><h:graphicImage value="../resources/img/gastos.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.pres}</small></p:commandLink></li>
+                <li><p:commandLink title="#{msg.presventas}" rendered="#{smnubean.opcmnu('M35')}" onclick="mnuBudget()"><h:graphicImage value="../resources/img/presupuesto.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.presventas}</small></p:commandLink></li>              
+                <li><p:commandLink title="#{msg.globalDotacion}" ><h:graphicImage value="../resources/img/dotacion.png"  alt="Menu"  styleClass="imagen" title="Menu" /><small>&nbsp;&nbsp;#{msg.globalDotacion}</small></p:commandLink></li>              
+              </ul>
+            </li>
+            <li><a href="#menu-toggle" id="menu-toggle"><span class="glyphicon glyphicon-align-left" title="Menú" style="margin-top: 3px"></span></a></li>
+           </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    </header><br/><br/><br/><br/>
+
+	</h:form>
+</h:body>
+</html>

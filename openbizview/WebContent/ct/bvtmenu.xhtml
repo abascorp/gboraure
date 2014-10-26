@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los términos de la Licencia Pública General GNU publicada 
+    por la Fundación para el Software Libre, ya sea la versión 3 
+    de la Licencia, o (a su elección) cualquier versión posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
+    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una información más detallada. 
+
+    Debería haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:include src="common/cabeceras.xhtml" />
+<ui:include src="common/timeout.xhtml" />
+<h:body onload="mnuSeg()">
+		<f:view>
+<!-- Top-->
+<ui:include src="common/top.xhtml" />
+<div id="wrapper">
+        <!-- Sidebar -->
+        <ui:include src="common/menu.xhtml" />
+                <!-- Menu Toggle Script -->
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content --> 
+             
+     <div class="container-fluid" id="containerF">
+			
+				<h:form id="formBvtmenu"  >	
+				
+				<!-- Div para colocar botones -->
+				<div id="botones">              
+                <p:toolbar>  
+                <f:facet name="left"> 
+                 <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{bvtmenu.guardar}"  
+                 rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
+                 <p:commandButton update="tbResult, panel, growl" accesskey="r" id="btnEl"  action="#{bvtmenu.delete}" 
+                 rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
+                 <p:separator/>   
+                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panel, growl" process="@this" action="#{bvtmenu.reset()}"
+                 title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
+                 <p:resetInput target="panel" /> 
+                 <f:actionListener binding="#{bd.setRol('')}"/>
+                 </p:commandButton>                               
+                </f:facet>   
+               </p:toolbar>  
+                </div><br />
+     
+		     <!-- Mensaje e imagen --> 		
+		     <div id="encabezados">   
+			  <p:growl globalOnly="true" id="growl" life="30000"/>
+			  <ui:include src="common/loader.xhtml"/>
+			  </div>
+	
+				<!-- Panel -->
+			<div class="panel panel-info" style="margin-top: 30px">
+           <div class="panel-body">
+		         <p:panel id="panel"  header="#{msg.bvtmenutit}">
+		         <h:panelGrid columns="1" columnClasses="col1">	 
+			     <p:autoComplete id="rol" value="#{bvtmenu.b_codrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250">
+			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setRol(bvtmenu.b_codrol)}" />
+			     </p:autoComplete>  
+			     <p:watermark for="rol" value="&#160;&#160;#{msg.bvtmenurol}" />  
+			     <p:message for="rol"/> 
+		         </h:panelGrid>
+	             </p:panel>
+			</div>
+			</div>
+			
+
+			<!-- Tabla con el resultado -->
+			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvtmenu.lazyModel}"   lazy="true" sortBy="#{tb.codrol}" 
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvtmenu.rows}"  
+			widgetVar="global">
+			
+			<f:facet name="header"> 			
+            <p:outputPanel>  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
+                <p:commandButton id="toggler" type="button"  style="float:right" icon="ui-icon-calculator" />
+                <p:columnToggler datasource="tbResult" trigger="toggler" />
+            </p:outputPanel>         
+            </f:facet> 
+		           
+		    <p:column sortBy="#{tb.codrol}"  styleClass="wrap" style="width:100px">  
+            <f:facet name="header">#{msg.bvtmenuTbRol}</f:facet> 
+            <h:outputLabel value="#{tb.b_codrol}" />  
+            </p:column> 
+                                
+            <p:column sortBy="#{tb.codopc}"  styleClass="wrap" style="width:100px">  
+            <f:facet name="header">#{msg.bvtmenuTbCod}</f:facet> 
+            <h:outputLabel value="#{tb.codopc}" />  
+            </p:column> 
+
+            <p:column sortBy="#{tb.desopc}"  styleClass="wrap">  
+            <f:facet name="header">#{msg.bvtmenuTbDes}</f:facet> 
+            <h:outputLabel value="#{tb.desopc}" />  
+            </p:column> 
+            
+            <p:column >  
+            <f:facet name="header">#{msg.bvtmenuTbAcc}</f:facet> 
+            <h:outputLabel value="#{tb.codvis}" />  
+            </p:column>  
+            
+                        
+            <p:column style="width:70px" >  
+            <f:facet  name="header">
+            <h:outputLabel value="#{msg.bvtmenuTbAcc}" styleClass="order" onclick="fm_check('toAcc',true)" />
+            </f:facet>  
+            <input type="checkbox" name="toAcc" class="chk" value="#{tb.codopc}"/>
+            </p:column>
+            
+            <p:column style="width:70px" >  
+            <f:facet  name="header">
+            <h:outputLabel value="#{msg.bvtmenuTbNegAcc}" styleClass="order" onclick="fm_check('toDacc',true)" />
+            </f:facet>  
+            <input type="checkbox" name="toDacc" class="chk" value="#{tb.codopc}"/>
+            </p:column>
+              
+     </p:dataTable>   
+       </h:form>
+   </div>
+    
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	
+
+</f:view>	
+</h:body>
+</html>

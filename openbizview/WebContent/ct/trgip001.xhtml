@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los términos de la Licencia Pública General GNU publicada 
+    por la Fundación para el Software Libre, ya sea la versión 3 
+    de la Licencia, o (a su elección) cualquier versión posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
+    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una información más detallada. 
+
+    Debería haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+<f:view>
+
+<!-- Top-->
+<ui:include src="common/top.xhtml" />
+<div id="wrapper">
+        <!-- Sidebar -->
+        <ui:include src="common/menu.xhtml" />
+                <!-- Menu Toggle Script -->
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content --> 
+             
+     <div class="container-fluid" id="containerF">
+	<h:form id="formTrgip001"  >
+		<f:view>
+			  <!-- Botonera --> 
+     <div id="botones">              
+       <p:toolbar>  
+       <f:facet name="left">
+                 <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{trgip001.guardar}" 
+                 value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
+                 <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{trgip001.delete}" 
+                 value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
+                 <p:separator/>  
+                 <p:commandButton update="tbResult" icon="ui-icon-arrowrefresh-1-s"  onclick="limpiar();"  
+                 title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" />                            
+                </f:facet>
+               </p:toolbar>  
+      </div>
+      
+      <!-- Mensaje e imagen --> 		
+     <div id="encabezados">   
+	  <p:growl globalOnly="true" id="growl" life="30000"/>
+	  <ui:include src="common/loader.xhtml"/>
+	  </div>
+	
+				<!-- Panel -->
+			  <!-- Panel -->      
+     <div class="panel panel-info" style="margin-top: 30px">
+     <div class="panel-body">
+		         <p:panel id="panel"  header="#{msg.tgip001tit}">
+		         <div id="trgip001">
+		         <h:panelGrid columns="3">	 
+		         <h:outputText value="#{msg.tgip001Anopro}"/>
+                 <p:inputText id="anopro" value="#{trgip001.anopro}" maxlength="4" converter="javax.faces.Integer" converterMessage="#{utils.getMessage('tgip001Ing')}" required="true" requiredMessage="#{bd.getMessage('tgip001IngAnio')}"/>
+                 <p:message for="anopro"/>
+                 <h:outputText value="#{msg.tgip001Mespro}"/>
+                 <p:inputText id="mespro" value="#{trgip001.mespro}" maxlength="2" converter="javax.faces.Integer" converterMessage="#{utils.getMessage('tgip001Ing')}" required="true" requiredMessage="#{bd.getMessage('tgip001IngMes')}"/>
+                 <p:message for="mespro"/>
+			     <h:outputText value="#{msg.tgip001Anocon}"/>
+			     <p:inputText id="anocon" value="#{trgip001.anocon}" maxlength="4" converter="javax.faces.Integer" converterMessage="#{utils.getMessage('tgip001Ing')}" required="true" requiredMessage="#{bd.getMessage('tgip001IngAniocon')}"/>
+			     <p:message for="anocon"/>
+			     <h:outputText value="#{msg.tgip001Mescon}" />
+			     <p:inputText id="mescon" value="#{trgip001.mescon}" maxlength="2" converter="javax.faces.Integer" converterMessage="#{utils.getMessage('tgip001Ing')}" required="true" requiredMessage="#{bd.getMessage('tgip001IngMescon')}"/>
+			     <p:message for="mescon"/>
+			     <h:outputText value="#{msg.tgip001Semcon}" />
+			     <p:inputText id="semcon" value="#{trgip001.semcon}" maxlength="2" converter="javax.faces.Integer" converterMessage="#{utils.getMessage('tgip001Ing')}" required="true" requiredMessage="#{bd.getMessage('tgip001IngSemcon')}"/>
+			     <p:message for="semcon"/>
+			     <h:outputText value="#{msg.tgip001Ini}"/>
+			     <p:calendar pattern="dd/MM/yyyy" id="ini"  locale="es" navigator="true" maxlength="10" value="#{trgip001.mesini}" showOn="button" required="true" requiredMessage="#{bd.getMessage('tgip001IngIni')}"/>
+			     <p:message for="ini"/>
+			     <h:outputText value="#{msg.tgip001Fin}" />
+			     <p:calendar pattern="dd/MM/yyyy" id="fin"  locale="es" navigator="true" maxlength="10" value="#{trgip001.mesfin}" showOn="button" required="true" requiredMessage="#{bd.getMessage('tgip001IngFin')}"/>
+			     <p:message for="fin"/>
+		         </h:panelGrid>
+		         <h:inputHidden id="vop" value="#{trgip001.validarOperacion}"/>
+		         </div>
+	             </p:panel>
+			</div>
+			</div>	
+			
+
+			<!-- Tabla con el resultado -->
+			<div id="tablaresult">
+			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{trgip001.list}"  
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{trgip001.rows}"  
+			filteredValue="#{trgip001.filtro}"  widgetVar="global">
+			
+			<f:facet name="header"> 			
+            <p:outputPanel>  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
+            </p:outputPanel>         
+            </f:facet> 
+            
+                         
+            <p:column style="width:30px" >  
+            <f:facet  name="header">
+            <h:outputLabel value="#{msg.borrar}" styleClass="order" onclick="fm_check('toDelete',true)"   />
+            </f:facet>  
+            <input type="checkbox" name="toDelete" class="chk" value="#{tb.vlanopro}#{tb.vlmespro}#{tb.vlanocon}#{tb.vlmescon}#{tb.vlsemcon}"/>
+            </p:column>
+            
+            <p:column sortBy="#{tb.vlanopro}" filterBy="#{tb.vlanopro}" styleClass="wrap">  
+            <f:facet name="header">#{msg.tgip001AnoproTb}</f:facet> 
+            <h:outputLabel value="#{tb.vlanopro}" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " />  
+            </p:column>  
+            
+            <p:column sortBy="#{tb.vlmespro}" filterBy="#{tb.vlmespro}" styleClass="wrap">  
+            <f:facet name="header">#{msg.tgip001MesproTb}</f:facet>  
+            <h:outputLabel value="#{tb.vlmespro}" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " />
+            </p:column> 
+            
+            <p:column sortBy="#{tb.vlanocon}" filterBy="#{tb.vlanocon}" styleClass="wrap">  
+            <f:facet name="header">#{msg.tgip001AnoconTb}</f:facet>  
+            <h:outputLabel value="#{tb.vlanocon}" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " />
+            </p:column>
+            
+            <p:column sortBy="#{tb.vlmescon}" filterBy="#{tb.vlmescon}" styleClass="wrap">  
+            <f:facet name="header">#{msg.tgip001MesconTb}</f:facet>  
+            <h:outputLabel value="#{tb.vlmescon}" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " />
+            </p:column>
+            
+            <p:column sortBy="#{tb.vlsemcon}" filterBy="#{tb.vlsemcon}" styleClass="wrap">  
+            <f:facet name="header">#{msg.tgip001SemconTb}</f:facet>  
+            <h:outputLabel value="#{tb.vlsemcon}" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " />
+            </p:column>
+            
+            <p:column sortBy="#{tb.vlmesini}" filterBy="#{tb.vlmesini}" styleClass="wrap">  
+            <f:facet name="header">#{msg.tgip001IniTb}</f:facet>  
+            <h:outputLabel value="#{tb.vlmesini}" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " />
+            </p:column>
+            
+            <p:column sortBy="#{tb.vlmesfin}" filterBy="#{tb.vlmesfin}" styleClass="wrap">  
+            <f:facet name="header">#{msg.tgip001FinTb}</f:facet>  
+            <h:outputLabel value="#{tb.vlmesfin}" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " />
+            </p:column>
+            
+                       
+            <p:column style="width:40px" >  
+            <f:facet name="header">#{msg.enviar}</f:facet>  
+            <h:graphicImage value="../resources/img/update.png" onmouseout="uncursor()" class="chk"  title="Enviar" alt="" 
+            onmouseover="cursor()" onclick="enviar('#{tb.vlanopro}','#{tb.vlmespro}', '#{tb.vlanocon}', '#{tb.vlmescon}', '#{tb.vlsemcon}', '#{tb.vlmesini}', '#{tb.vlmesfin}','1') " /> 
+            </p:column>
+
+             
+            <f:facet name="footer">
+             #{msg.rows} #{trgip001.rows} 
+            </f:facet> 
+              </p:dataTable>   
+       </h:form>
+   </div>
+    
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	
+
+</f:view>	
+</h:body>
+</html>

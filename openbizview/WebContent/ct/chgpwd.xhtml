@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- 
+     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los términos de la Licencia Pública General GNU publicada 
+    por la Fundación para el Software Libre, ya sea la versión 3 
+    de la Licencia, o (a su elección) cualquier versión posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
+    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una información más detallada. 
+
+    Debería haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+
+	<h:form id="formChgpwd"  >
+		<f:view>
+         <div id="content">
+         <!-- Div para mensajes -->
+		 <p:growl globalOnly="true" id="growl" life="30000"/>
+			    <div id="loader"><ui:include src="common/loader.xhtml"/></div> 
+		 
+		 	<!-- Panel -->
+			<div id="etiqueta" style="padding-top:40px">
+		         <p:panel id="panel"  header="#{msg.bvt002tita}" >	  	         
+		         <h:panelGrid  columns="3" >	         
+                 <h:outputText value="#{msg.bvt002Cl}" />
+	             <p:password id="clave"  maxlength="15" style="width: 65%"  value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+	             <p:message for="clave"/>
+	              <h:outputText value="#{msg.bvt002Cl1}" />
+	             <p:password id="clave1"  maxlength="15" style="width: 65%"  value="#{bvt002.cluser1}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+	             <p:message for="clave1"/>
+		         </h:panelGrid>
+	             </p:panel><br/><br/>
+				
+				
+            <p:commandButton value="#{msg.chgpwdButtonCL}" action="#{bvt002.updatea()}" 
+            update="growl, panel" />&#160;&#160;
+            <p:commandButton value="#{msg.chgpwdButtonL}"  onclick="limpiar()"/>
+            </div>
+          </div>
+		</f:view>
+	</h:form>
+</h:body>
+</html>
