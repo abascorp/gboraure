@@ -42,6 +42,7 @@ public class TareaInvocar extends Bd implements Job {
   * 1- Envío de reporte y corre
   * 2- Envío de reporte a una ruta específica sin envío de corre
   * 3- Envío de reporte a una lista de personas en partícular (Ejemplo: recibos de pago o notificaciones particulares)	
+  * Nueva opción creada para versión 5 26/10/2014
   */
   //Metodo que se ejecutara cada cierto tiempo que lo programemos despues
   public void execute(JobExecutionContext jec) throws JobExecutionException {
