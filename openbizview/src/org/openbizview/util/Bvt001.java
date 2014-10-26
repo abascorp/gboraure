@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ
+o *  Copyright (C) 2011  ANDRES DOMINGUEZ
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -533,6 +533,7 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
+        //PARA QUE EJECUTE CON SQLSERVER
         case "SQLServer":
 	           query += "SELECT * FROM (SELECT ";
 	           query += "			   ROW_NUMBER() OVER (ORDER BY A.CODREP ASC) AS ROW_NUM, ";
