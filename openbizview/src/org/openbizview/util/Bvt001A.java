@@ -223,6 +223,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(2, desgrup.toUpperCase());
             pstmt.setString(3, login);
             pstmt.setString(4, login);
+            System.out.println(query);
             try {
                 //Avisando
             	pstmt.executeUpdate();
@@ -360,7 +361,7 @@ import org.primefaces.model.SortOrder;
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
-             break;
+        break;
         case "PostgreSQL":
         	   query += " SELECT trim(codgrup), trim(desgrup)";
                query += " FROM BVT001A";
@@ -369,6 +370,18 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
+        case "Microsoft SQL Server":
+			   query += " SELECT TOP " + pageSize + " TOT.CODGRUP, TOT.DESGRUP,  TOT.ROW_NUM ";
+			   query += " FROM (SELECT ";
+			   query += "       ROW_NUMBER() OVER (ORDER BY A.CODGRUP ASC) AS ROW_NUM, ";
+			   query += "       A.CODGRUP, ";
+			   query += "       A.DESGRUP ";
+			   query += "       FROM BVT001A A) TOT ";
+			   query += " WHERE ";
+			   query += " TOT.CODGRUP + TOT.DESGRUP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+			   query += " AND TOT.ROW_NUM > " + first;
+			   query += " ORDER BY " + sortField ;
+        break;
         }
  		
  		       
@@ -415,7 +428,10 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_bvt001a('" + ((String) filterValue).toUpperCase() + "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_bvt001a('" + ((String) filterValue).toUpperCase() + "')";
+            break;
+  		}
 
         
         pstmt = con.prepareStatement(query);

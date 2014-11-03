@@ -53,10 +53,21 @@ public class Autocomplete extends Bd {
 	 * @throws IOException 
 	 **/
 	 public List<String> completeGrupo(String query) throws NamingException, IOException {  
-	  List<String> results = new ArrayList<String>();  
-	 consulta.selectPntGenerica("Select codgrup||' - '||desgrup " +
-	   " from bvt001a " +
-		" where codgrup like '%" + query + "%' or desgrup like '%" + query.toUpperCase() + "%' order by codgrup", JNDI);
+	 
+	 String queryora = "Select codgrup||' - '||desgrup " +
+			   " from bvt001a " +
+				" where codgrup like '%" + query + "%' or desgrup like '%" + query.toUpperCase() + "%' order by codgrup";
+	 String querypg = "Select codgrup||' - '||desgrup " +
+			   " from bvt001a " +
+				" where codgrup like '%" + query + "%' or desgrup like '%" + query.toUpperCase() + "%' order by codgrup";	 
+	 String querysql = "Select codgrup + ' - ' + desgrup " +
+			   " from bvt001a " +
+				" where codgrup like '%" + query + "%' or desgrup like '%" + query.toUpperCase() + "%' order by codgrup";
+	 
+	 List<String> results = new ArrayList<String>();  
+	 
+	 consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+	 
 	 rows = consulta.getRows();
 	 tabla = consulta.getArray();
 	   for (int i = 0; i < rows; i++) {  
@@ -72,11 +83,19 @@ public class Autocomplete extends Bd {
 	 * @throws IOException 
 	 **/
 	 public List<String> completeCat1(String query) throws NamingException, IOException {  
-	  String vlqueryOra = "Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%" + query.toUpperCase() + "%' order by codcat1";
-	  String vlqueryPg = "Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%" + query.toUpperCase() + "%' order by codcat1";
-	  List<String> results = new ArrayList<String>();  
-	 consulta.selectPntGenericaMDB(vlqueryOra,vlqueryPg, "",  JNDI);
+
+	 String vlqueryOra = "Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%" + query.toUpperCase() + "%' order by codcat1";
+	  
+	 String vlqueryPg = "Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%" + query.toUpperCase() + "%' order by codcat1";
+	  
+	 String vlquerySql = "Select codcat1 + ' - ' + descat1 from bvtcat1 where codcat1 + descat1 like '%" + query.toUpperCase() + "%' order by codcat1";
+	  
+	 List<String> results = new ArrayList<String>();  
+	 
+	 consulta.selectPntGenericaMDB(vlqueryOra,vlqueryPg, vlquerySql,  JNDI);
+	 
 	 rows = consulta.getRows();
+	 
 	 tabla = consulta.getArray();
 	   for (int i = 0; i < rows; i++) {  
 		   results.add(tabla[i][0]);  
@@ -91,21 +110,37 @@ public class Autocomplete extends Bd {
 	 * @throws IOException 
 	 **/
 	 public List<String> completeCat1AccCat2(String query) throws NamingException, IOException {  
-		  List<String> results = new ArrayList<String>();  
 		  String segrol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("segrol"); //Usuario logeado
+		  
 		  if(segrol==null){
 	        	segrol = " - ";
 	        }
 	        if(segrol==""){
 	        	segrol = " - ";
 	        }
-	        String[] vecrol = segrol.split("\\ - ", -1);
-		 consulta.selectPntGenerica("Select codcat1||' - '||descat1 " +
-		   " from bvtcat1 " +
-			" where codcat1||descat1 like '%" + query + "%' and codcat1 in (select B_CODCAT1 from acccat1 where B_CODROL ='" + vecrol[0].toUpperCase() + "') order by codcat1", JNDI);
-		 rows = consulta.getRows();
-		 tabla = consulta.getArray();
-		   for (int i = 0; i < rows; i++) {  
+	      String[] vecrol = segrol.split("\\ - ", -1);
+	      
+		String queryora = "Select codcat1||' - '||descat1 " +
+			" from bvtcat1 " +
+			" where codcat1||descat1 like '%" + query + "%' and codcat1 in (select B_CODCAT1 from acccat1 where B_CODROL ='" + vecrol[0].toUpperCase() + "') order by codcat1";
+		String querypg = "Select codcat1||' - '||descat1 " +
+				" from bvtcat1 " +
+				" where codcat1||descat1 like '%" + query + "%' and codcat1 in (select B_CODCAT1 from acccat1 where B_CODROL ='" + vecrol[0].toUpperCase() + "') order by codcat1";		
+		String querysql = "Select codcat1 + ' - ' + descat1 " +
+				" from bvtcat1 " +
+				" where codcat1 + descat1 like '%" + query + "%' and codcat1 in (select B_CODCAT1 from acccat1 where B_CODROL ='" + vecrol[0].toUpperCase() + "') order by codcat1";
+		
+		List<String> results = new ArrayList<String>();  
+		  
+
+		 
+	      consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+		 
+	      rows = consulta.getRows();
+		 
+	      tabla = consulta.getArray();
+
+	      for (int i = 0; i < rows; i++) {  
 			   results.add(tabla[i][0]);  
 		    }  
 		    return results;  
@@ -129,10 +164,11 @@ public class Autocomplete extends Bd {
 	        String[] veccat1 = cat1.split("\\ - ", -1);
 	    String vlqueryOra = "Select codcat2||' - '||descat2 from bvtcat2 where codcat2||descat2 like '%" + query.toUpperCase() +  "%' and b_codcat1 = '" + veccat1[0] + "' order by codcat2";
 	    String vlqueryPg = "Select codcat2||' - '||descat2 from bvtcat2 where codcat2||descat2 like '%" + query.toUpperCase() +  "%' and b_codcat1 = '" + veccat1[0] + "' order by codcat2";
-	  	 
+	    String vlquerySql = "Select codcat2 + ' - ' + descat2 from bvtcat2 where codcat2 + descat2 like '%" + query.toUpperCase() +  "%' and b_codcat1 = '" + veccat1[0] + "' order by codcat2";
+	    
 	    //System.out.println(vlqueryOra);    
 	  List<String> results = new ArrayList<String>();  
-	 consulta.selectPntGenericaMDB(vlqueryOra, vlqueryPg, "", JNDI);
+	 consulta.selectPntGenericaMDB(vlqueryOra, vlqueryPg, vlquerySql, JNDI);
 	 rows = consulta.getRows();
 	 tabla = consulta.getArray();
 	   for (int i = 0; i < rows; i++) {  
@@ -149,8 +185,10 @@ public class Autocomplete extends Bd {
 	 **/
 	public List<String> completeCat2AccCat3(String query) throws NamingException, IOException {  
 		String segrol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("segrol"); //Usuario logeado
+
 		String cat1 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat1"); //Usuario logeado
-		  if(segrol==null){
+
+		    if(segrol==null){
 	        	segrol = " - ";
 	        }
 	        if(segrol==""){
@@ -165,12 +203,24 @@ public class Autocomplete extends Bd {
 	        String[] vecrol = segrol.split("\\ - ", -1);
 	        String[] veccat1 = cat1.split("\\ - ", -1);
 	
-	  List<String> results = new ArrayList<String>();  
-	  consulta.selectPntGenerica("Select codcat2||' - '||descat2 " +
+	  
+	  String queryora = "Select codcat2||' - '||descat2 " +
 			   " from bvtcat2 " +
-				" where codcat2||descat2 like '%" + query + "%' and codcat2 in (select B_CODCAT2 from acccat2 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' order by codcat2", JNDI);
-	 rows = consulta.getRows();
-	 tabla = consulta.getArray();
+				" where codcat2||descat2 like '%" + query + "%' and codcat2 in (select B_CODCAT2 from acccat2 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' order by codcat2";      
+	  String querypg  = "Select codcat2||' - '||descat2 " +
+			   " from bvtcat2 " +
+				" where codcat2||descat2 like '%" + query + "%' and codcat2 in (select B_CODCAT2 from acccat2 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' order by codcat2"; 	        
+	  String querysql = "Select codcat2 + ' - ' + descat2 " +
+			   " from bvtcat2 " +
+				" where codcat2 + descat2 like '%" + query + "%' and codcat2 in (select B_CODCAT2 from acccat2 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' order by codcat2"; 
+	  
+	  List<String> results = new ArrayList<String>();  
+	  
+
+	  consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+
+	   rows = consulta.getRows();
+	   tabla = consulta.getArray();
 	   for (int i = 0; i < rows; i++) {  
 		   results.add(tabla[i][0]);  
 	    }  
@@ -211,9 +261,16 @@ public class Autocomplete extends Bd {
 	        String[] veccat2 = cat2.split("\\ - ", -1);
 	
 	  List<String> results = new ArrayList<String>();  
-	  consulta.selectPntGenerica("Select codcat3||' - '||descat3 " +
+	  String queryora = "Select codcat3||' - '||descat3 " +
 			   " from bvtcat3 " +
-				" where codcat3||descat3 like '%" + query + "%' and codcat3 in (select B_CODCAT3 from acccat3 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' and b_codcat2 = '" + veccat2[0] + "' order by codcat3", JNDI);
+				" where codcat3||descat3 like '%" + query + "%' and codcat3 in (select B_CODCAT3 from acccat3 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' and b_codcat2 = '" + veccat2[0] + "' order by codcat3";
+	  String querypg  = "Select codcat3||' - '||descat3 " +
+			   " from bvtcat3 " +
+				" where codcat3||descat3 like '%" + query + "%' and codcat3 in (select B_CODCAT3 from acccat3 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' and b_codcat2 = '" + veccat2[0] + "' order by codcat3";	 
+	  String querysql = "Select codcat3 + ' - ' + descat3 " +
+			   " from bvtcat3 " +
+				" where codcat3 + descat3 like '%" + query + "%' and codcat3 in (select B_CODCAT3 from acccat3 where B_CODROL ='" + vecrol[0].toUpperCase() + "') and b_codcat1 = '" + veccat1[0] + "' and b_codcat2 = '" + veccat2[0] + "' order by codcat3";
+	 consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI); 
 	 rows = consulta.getRows();
 	 tabla = consulta.getArray();
 	   for (int i = 0; i < rows; i++) {  
@@ -249,11 +306,11 @@ public class Autocomplete extends Bd {
 		        String[] veccat2 = cat2.split("\\ - ", -1);
 		        String vlqueryOra = "Select codcat3||' - '||descat3 from bvtcat3 where codcat3||descat3 like '%" + query.toUpperCase() +  "%' and b_codcat1 = '" + veccat1[0] + "' and b_codcat2 = '" + veccat2[0] + "' order by codcat3";
 			    String vlqueryPg = "Select codcat3||' - '||descat3 from bvtcat3 where codcat3||descat3 like '%" + query.toUpperCase() +  "%' and b_codcat1 = '" + veccat1[0] + "' and b_codcat2 = '" + veccat2[0] + "' order by codcat3";
-			
+			    String vlquerySql = "Select codcat3+' - '+descat3 from bvtcat3 where codcat3+descat3 like '%" + query.toUpperCase() +  "%' and b_codcat1 = '" + veccat1[0] + "' and b_codcat2 = '" + veccat2[0] + "' order by codcat3";
 			   // System.out.println(vlqueryOra);
 			   // System.out.println(vlqueryPg);
 	  List<String> results = new ArrayList<String>();  
-	 consulta.selectPntGenericaMDB(vlqueryOra,vlqueryPg, "" , JNDI);
+	 consulta.selectPntGenericaMDB(vlqueryOra,vlqueryPg, vlquerySql , JNDI);
 		 rows = consulta.getRows();
 		 tabla = consulta.getArray();
 		   for (int i = 0; i < rows; i++) {  
@@ -270,10 +327,21 @@ public class Autocomplete extends Bd {
 				 **/
 	public List<String> completeUorg(String query) throws NamingException, IOException {  
 	  List<String> results = new ArrayList<String>();  
-	  consulta.selectPntGenerica("select distinct 'UNIDAD ORIGEN'||' - '|| trim(UORG)"
+
+	  
+	  String queryora = "select distinct 'UNIDAD ORIGEN'||' - '|| trim(UORG)"
 	       + " from BI_HISTORIALINV "
 	       + " where UORG like'" + query.toUpperCase() + "%'"
-	       + " order by 1",JNDI );
+	       + " order by 1";
+	  String querypg = "select distinct 'UNIDAD ORIGEN'||' - '|| trim(UORG)"
+		       + " from BI_HISTORIALINV "
+		       + " where UORG like'" + query.toUpperCase() + "%'"
+		       + " order by 1";	 
+	  String querysql = "select distinct 'UNIDAD ORIGEN'+' - '+ trim(UORG)"
+		       + " from BI_HISTORIALINV "
+		       + " where UORG like'" + query.toUpperCase() + "%'"
+		       + " order by 1";
+	  consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
 	 rows = consulta.getRows();
 	 tabla = consulta.getArray();
 	   for (int i = 0; i < rows; i++) {  
@@ -290,9 +358,18 @@ public class Autocomplete extends Bd {
 	 **/
 	 public List<String> completeCat4(String query) throws NamingException, IOException {  
 	  List<String> results = new ArrayList<String>();  
-	 consulta.selectPntGenerica("Select codcat4||' - '||descat4 " +
-	   " from bvtcat4 " +
-		" where codcat4 like '%" + query + "%' or descat4 like '%" + query.toUpperCase() + "%' order by codcat4", JNDI);
+
+	  String queryora = "Select codcat4||' - '||descat4 " +
+			   " from bvtcat4 " +
+				" where codcat4 like '%" + query + "%' or descat4 like '%" + query.toUpperCase() + "%' order by codcat4";
+	  String querypg = "Select codcat4||' - '||descat4 " +
+			   " from bvtcat4 " +
+				" where codcat4 like '%" + query + "%' or descat4 like '%" + query.toUpperCase() + "%' order by codcat4";	  
+	  String querysql = "Select codcat4+' - '+descat4 " +
+			   " from bvtcat4 " +
+				" where codcat4 like '%" + query + "%' or descat4 like '%" + query.toUpperCase() + "%' order by codcat4";
+	  
+	  consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
 	 rows = consulta.getRows();
 	 tabla = consulta.getArray();
 	   for (int i = 0; i < rows; i++) {  
@@ -312,11 +389,24 @@ public class Autocomplete extends Bd {
 	        }
 	        String[] vecuorg = uorg.split("\\ - ", -1);
 		  List<String> results = new ArrayList<String>();  
-		 consulta.selectPntGenerica("select distinct trim(CPRO)||' - '||NPRO "
+
+	  	String queryora = "select distinct trim(CPRO)||' - '||NPRO "
 			        + " from BI_HISTORIALINV "
 			        + " where trim(CPRO)||NPRO like'" + query.toUpperCase() + "%'"
 			        + " and UORG = '" + vecuorg[1] + "'"
-			        + " order by 1",JNDI );
+			        + " order by 1";
+	  	String querypg = "select distinct trim(CPRO)||' - '||NPRO "
+		        + " from BI_HISTORIALINV "
+		        + " where trim(CPRO)||NPRO like'" + query.toUpperCase() + "%'"
+		        + " and UORG = '" + vecuorg[1] + "'"
+		        + " order by 1";
+	  	String querysql = "select distinct trim(CPRO)+' - '+NPRO "
+		        + " from BI_HISTORIALINV "
+		        + " where trim(CPRO)+NPRO like'" + query.toUpperCase() + "%'"
+		        + " and UORG = '" + vecuorg[1] + "'"
+		        + " order by 1";
+	  	
+	  	consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
 		rows = consulta.getRows();
 		 tabla = consulta.getArray();
 		  for (int i = 0; i < rows; i++) {  
@@ -331,11 +421,23 @@ public class Autocomplete extends Bd {
 		 * @return List String
 	 * @throws IOException 
 		 **/
+	 
 		 public List<String> completeUser(String query) throws NamingException, IOException {  
-		  List<String> results = new ArrayList<String>();  
-		  consulta.selectPntGenerica("Select coduser||' - '||desuser" +
-		  " from bvt002 " +
-		  " where coduser like '%" + query + "%' or desuser like '%" + query.toUpperCase() + "%' order by coduser", JNDI);
+
+		 String queryora = "Select coduser||' - '|| desuser "  +
+				 " from bvt002 " +
+				 " where coduser like '%" + query + "%' or desuser like '%" + query.toUpperCase() + "%' order by coduser";
+		 String querypg  = "Select coduser||' - '|| desuser "  +
+				 " from bvt002 " +
+				 " where coduser like '%" + query + "%' or desuser like '%" + query.toUpperCase() + "%' order by coduser";
+		 String querysql = "Select coduser + ' - ' + desuser " +
+				 " from bvt002 " +
+				 " where coduser like '%" + query + "%' or desuser like '%" + query.toUpperCase() + "%' order by coduser";
+	     
+		 List<String> results = new ArrayList<String>();
+		  
+		 consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+
 		 rows = consulta.getRows();
 		 tabla = consulta.getArray();
 		   for (int i = 0; i < rows; i++) {  
@@ -351,17 +453,26 @@ public class Autocomplete extends Bd {
 		 * @throws IOException 
 			 **/
 		 public List<String> completeRol(String query) throws NamingException, IOException {  
-		  List<String> results = new ArrayList<String>();  
-		  consulta.selectPntGenerica("Select codrol||' - '||desrol " +
+
+		 String queryora = "Select codrol||' - '||desrol " +
 				   " from bvt003 " +
-					" where codrol||desrol like '%" + query + "%' or desrol like '%" + query.toUpperCase() + "%' order by codrol", JNDI);
+					" where codrol||desrol like '%" + query + "%' or desrol like '%" + query.toUpperCase() + "%' order by codrol ";
+		 String querypg = "Select codrol||' - '||desrol " +
+				   " from bvt003 " +
+					" where codrol||desrol like '%" + query + "%' or desrol like '%" + query.toUpperCase() + "%' order by codrol ";
+		 String querysql = "Select codrol + ' - ' + desrol " +
+				   " from bvt003 " +
+					" where codrol + desrol like '%" + query + "%' or desrol like '%" + query.toUpperCase() + "%' order by codrol ";
+		 		
+		 List<String> results = new ArrayList<String>();  
+		 consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
 		 rows = consulta.getRows();
 		 tabla = consulta.getArray();
 		   for (int i = 0; i < rows; i++) {  
 			   results.add(tabla[i][0]);  
 		    }  
 		    return results;  
-		} 
+		 } 
 		 
 		 /**
 			 * Lista Categoria4.
@@ -373,15 +484,36 @@ public class Autocomplete extends Bd {
 		 coduser = (String) UIComponent.getCurrentComponent(FacesContext.getCurrentInstance()).getAttributes().get("coduser");
 		 session = (String) UIComponent.getCurrentComponent(FacesContext.getCurrentInstance()).getAttributes().get("session");
 	  List<String> results = new ArrayList<String>();  
-	 consulta.selectPntGenerica("Select codcat4||' - '||descat4 " +
+
+	  String queryora = "Select codcat4||' - '||descat4 " +
 	   " from bvtcat4 " +
 		" where descat4 like '%" + query.toUpperCase() + "%' and b_codcat1 =( select cat1 from temp01 where coduser ='"
 		+ coduser + "' and SESSIONID = '" + session + "') and b_codcat2 =( select cat2 from temp01 where coduser ='"
 	   + coduser + "' and SESSIONID = '" + session + "') and b_codcat3 =( select cat3 from temp01 where coduser ='"
 	   + coduser + "' and SESSIONID = '" + session + "')"
-	   + " order by codcat4", JNDI);
-		 rows = consulta.getRows();
-		 tabla = consulta.getArray();
+	   + " order by codcat4";
+
+	  String querypg = "Select codcat4||' - '||descat4 " +
+			   " from bvtcat4 " +
+				" where descat4 like '%" + query.toUpperCase() + "%' and b_codcat1 =( select cat1 from temp01 where coduser ='"
+				+ coduser + "' and SESSIONID = '" + session + "') and b_codcat2 =( select cat2 from temp01 where coduser ='"
+			   + coduser + "' and SESSIONID = '" + session + "') and b_codcat3 =( select cat3 from temp01 where coduser ='"
+			   + coduser + "' and SESSIONID = '" + session + "')"
+			   + " order by codcat4";
+
+	  String querysql = "Select codcat4+' - '+descat4 " +
+			   " from bvtcat4 " +
+				" where descat4 like '%" + query.toUpperCase() + "%' and b_codcat1 =( select cat1 from temp01 where coduser ='"
+				+ coduser + "' and SESSIONID = '" + session + "') and b_codcat2 =( select cat2 from temp01 where coduser ='"
+			   + coduser + "' and SESSIONID = '" + session + "') and b_codcat3 =( select cat3 from temp01 where coduser ='"
+			   + coduser + "' and SESSIONID = '" + session + "')"
+			   + " order by codcat4";
+
+	  consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+
+	  rows = consulta.getRows();
+
+	  tabla = consulta.getArray();
 		   for (int i = 0; i < rows; i++) {  
 			   results.add(tabla[i][0]);  
 		    }  
@@ -395,13 +527,28 @@ public class Autocomplete extends Bd {
 	 * @throws IOException 
 		 **/
 		 public List<String> completeRep(String query) throws NamingException, IOException {  
+		  
 		  List<String> results = new ArrayList<String>();  
-		 consulta.selectPntGenerica("Select codrep||' - '||desrep " +
+
+		  String queryora = "Select codrep||' - '||desrep " +
 		   " from bvt001 " +
-			" where codrep like '%" + query + "%' or desrep like '%" + query.toUpperCase() + "%' order by codrep", JNDI);
-		 rows = consulta.getRows();
-		 tabla = consulta.getArray();
-		   for (int i = 0; i < rows; i++) {  
+			" where codrep like '%" + query + "%' or desrep like '%" + query.toUpperCase() + "%' order by codrep";
+
+		  String querypg = "Select codrep||' - '||desrep " +
+		   " from bvt001 " +
+			" where codrep like '%" + query + "%' or desrep like '%" + query.toUpperCase() + "%' order by codrep";
+
+		  String querysql = "Select codrep+' - '+desrep " +
+		   " from bvt001 " +
+			" where codrep like '%" + query + "%' or desrep like '%" + query.toUpperCase() + "%' order by codrep";
+		 
+		  consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+		 
+		  rows = consulta.getRows();
+		 
+		  tabla = consulta.getArray();
+		  
+		  for (int i = 0; i < rows; i++) {  
 			   results.add(tabla[i][0]);  
 		    }  
 		    return results;  
@@ -415,9 +562,17 @@ public class Autocomplete extends Bd {
 			 **/
 		public List<String> completeCias(String query) throws NamingException, IOException {  
 		  List<String> results = new ArrayList<String>();  
-		 consulta.selectPntGenerica("Select codcia||' - '||descia " +
+
+		  String queryora = "Select codcia||' - '||descia " +
 		   " from bvt010" +
-			" where codcia||descia like '%" + query + "%' or descia like '%" + query.toUpperCase() + "%' order by codcia", JNDI);
+			" where codcia||descia like '%" + query + "%' or descia like '%" + query.toUpperCase() + "%' order by codcia";
+		  String querypg = "Select codcia||' - '||descia " +
+				   " from bvt010" +
+					" where codcia||descia like '%" + query + "%' or descia like '%" + query.toUpperCase() + "%' order by codcia";
+		  String querysql = "Select codcia + ' - ' + descia " +
+				   " from bvt010" +
+					" where codcia + descia like '%" + query + "%' or descia like '%" + query.toUpperCase() + "%' order by codcia";
+		 consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
 		 rows = consulta.getRows();
 		 tabla = consulta.getArray();
 		   for (int i = 0; i < rows; i++) {  
@@ -645,9 +800,17 @@ public class Autocomplete extends Bd {
 			 **/
 			 public List<String> completeMailGrupos(String query) throws NamingException, IOException {  
 			  List<String> results = new ArrayList<String>();  
-			 consulta.selectPntGenerica("Select IDGRUPO||' - '||DESGRUPO " +
+			 
+			  String queryora = "Select IDGRUPO||' - '||DESGRUPO " +
 			   " from mailgrupos " +
-				" where IDGRUPO||DESGRUPO like '%" + query.toUpperCase() + "%' order by IDGRUPO", JNDI);
+				" where IDGRUPO||DESGRUPO like '%" + query.toUpperCase() + "%' order by IDGRUPO";
+			  String querypg = "Select IDGRUPO||' - '||DESGRUPO " +
+					   " from mailgrupos " +
+						" where IDGRUPO||DESGRUPO like '%" + query.toUpperCase() + "%' order by IDGRUPO";
+			  String querysql = "Select LTRIM(RTRIM(CAST(IDGRUPO AS CHAR)))+' - '+DESGRUPO " +
+					   " from mailgrupos " +
+						" where LTRIM(RTRIM(cast(IDGRUPO as char)))+DESGRUPO like '%" + query.toUpperCase() + "%' order by IDGRUPO";
+			 consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI); 
 			 rows = consulta.getRows();
 			 tabla = consulta.getArray();
 			   for (int i = 0; i < rows; i++) {  

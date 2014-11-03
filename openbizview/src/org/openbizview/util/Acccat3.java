@@ -507,7 +507,42 @@ public class Acccat3 extends Bd implements Serializable {
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+        	query += " SELECT TOP " + pageSize;
+        	query += " TOT.ROW_NUM,  ";
+        	query += " TOT.B_CODROL, ";
+        	query += " TOT.B_CODCAT1, ";
+        	query += " TOT.DESCAT1, ";
+        	query += " TOT.B_CODCAT2, "; 
+        	query += " TOT.DESCAT2, ";
+        	query += " TOT.B_CODCAT3,  ";
+        	query += " TOT.DESCAT3 ";
+        	query += " FROM (SELECT  ";
+        	query += "		ROW_NUMBER() OVER (ORDER BY A.B_CODROL ASC) AS ROW_NUM,  ";
+        	query += "		A.B_CODROL,  ";
+        	query += "		A.B_CODCAT1, "; 
+        	query += "		B.DESCAT1,  ";
+        	query += "		A.B_CODCAT2, ";
+        	query += "		C.DESCAT2,  ";
+        	query += "		A.B_CODCAT3,  ";
+        	query += "		D.DESCAT3 ";
+        	query += "		FROM ACCCAT3 A, BVTCAT1 B, BVTCAT2 C, BVTCAT3 D ";
+        	query += "		WHERE  ";
+        	query += "		A.B_CODCAT1=B.CODCAT1  ";
+        	query += "		AND A.B_CODCAT1=C.B_CODCAT1 ";
+        	query += "		AND A.B_CODCAT2=C.CODCAT2 ";
+        	query += "		AND A.B_CODCAT1=D.B_CODCAT1 ";
+        	query += "		AND A.B_CODCAT2=D.B_CODCAT2 ";
+        	query += "		AND A.B_CODCAT3=D.CODCAT3) TOT ";
+        	query += " WHERE ";
+        	query += " TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
+        	query += " AND TOT.B_CODCAT1 LIKE '" + veccodcat1[0].toUpperCase() + "%'";
+        	query += " AND TOT.B_CODCAT2 LIKE '" + veccodcat2[0].toUpperCase() + "%'";
+        	query += " AND TOT.B_CODCAT1+TOT.DESCAT1+TOT.B_CODCAT2+TOT.DESCAT2+TOT.B_CODCAT3+TOT.DESCAT3 LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+        	query += " AND TOT.ROW_NUM > " + first;
+        	query += " ORDER BY " + sortField ;
+          break;
+          }
 
         
         pstmt = con.prepareStatement(query);
@@ -543,9 +578,14 @@ public class Acccat3 extends Bd implements Serializable {
   		Context initContext = new InitialContext();     
     	DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
-  		   		
+
+    	//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+  		DatabaseMetaData databaseMetaData = con.getMetaData();
+  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección        
+        
   		String query = "";
-        String cat1 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat1"); //Usuario logeado
+
+  		String cat1 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat1"); //Usuario logeado
         String cat2 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat2"); //Usuario logeado
          
         if(cat1==null){
@@ -563,11 +603,30 @@ public class Acccat3 extends Bd implements Serializable {
         String[] veccat1 = cat1.split("\\ - ", -1);
         String[] veccat2 = cat2.split("\\ - ", -1);
 
-        	query = "Select codcat3, codcat3||' - '||descat3";
-            query += " from bvtcat3";
-            query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
-            query += " and B_CODCAT2 = '" + veccat2[0].toUpperCase() + "'";
-            query += " order by codcat3";
+        switch ( productName ) {
+        case "Oracle": 
+			query = "Select codcat3, codcat3||' - '||descat3";
+			query += " from bvtcat3";
+			query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
+			query += " and B_CODCAT2 = '" + veccat2[0].toUpperCase() + "'";
+			query += " order by codcat3";
+			break;
+        case "PostgreSQL": 
+			query = "Select codcat3, codcat3||' - '||descat3";
+			query += " from bvtcat3";
+			query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
+			query += " and B_CODCAT2 = '" + veccat2[0].toUpperCase() + "'";
+			query += " order by codcat3";
+			break;
+        case "Microsoft SQL Server": 
+			query = "Select codcat3, codcat3+' - '+descat3";
+			query += " from bvtcat3";
+			query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
+			query += " and B_CODCAT2 = '" + veccat2[0].toUpperCase() + "'";
+			query += " order by codcat3";
+			break;
+			}
+            
 
         ////System.out.println(query);
 
@@ -637,7 +696,10 @@ public class Acccat3 extends Bd implements Serializable {
         case "PostgreSQL":
         	 query = "SELECT count_acccat3('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_acccat3('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);

@@ -112,7 +112,7 @@ private int rows;
                    case "PostgreSQL":
                    	rs = stmt.executeQuery(strCadena1);
                         break;
-                   case "SqlServer":
+                   case "Microsoft SQL Server":
                    	rs = stmt.executeQuery(strCadena2);
                         break;     
                    }

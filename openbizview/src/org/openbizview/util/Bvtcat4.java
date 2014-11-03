@@ -547,7 +547,41 @@ public class Bvtcat4 extends Bd implements Serializable{
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsft SQL Server":
+	        	query += "SELECT * ";
+	        	query += "FROM (SELECT ";
+	        	query += "		ROW_NUMBER() OVER (ORDER BY A.CODCAT4 ASC) AS ROW_NUM,  ";
+	        	query += "		A.CODCAT4,  ";
+	        	query += "		A.DESCAT4,  ";
+	        	query += "		A.B_CODCAT1,  ";
+	        	query += "		B.DESCAT1,  ";
+	        	query += "		A.B_CODCAT2,  ";
+	        	query += "		C.DESCAT2,  ";
+	        	query += "		A.B_CODCAT3, "; 
+	        	query += "		D.DESCAT3,  ";
+	        	query += "		A.EQUICAT4,  ";
+	        	query += "		A.TIPPRO ";
+	        	query += "		FROM  ";
+	        	query += "		BVTCAT4 A, "; 
+	        	query += "		BVTCAT1 B, "; 
+	        	query += "		BVTCAT2 C, "; 
+	        	query += "		BVTCAT3 D ";
+	        	query += "		WHERE A.B_CODCAT1=B.CODCAT1 ";
+	        	query += "		AND A.B_CODCAT1=C.B_CODCAT1 ";
+	        	query += "		AND A.B_CODCAT2=C.CODCAT2 ";
+	        	query += "		AND A.B_CODCAT1=D.B_CODCAT1 ";
+	        	query += "		AND A.B_CODCAT2=D.B_CODCAT2 ";
+	        	query += "		AND A.B_CODCAT3=D.CODCAT3) TOT ";
+	        	query += "WHERE ";
+	        	query += "TOT.B_CODCAT1 LIKE '" + veccodcat1[0].toUpperCase() + "%'";
+	        	query += "AND TOT.B_CODCAT2 LIKE '" + veccodcat2[0].toUpperCase() + "%'";
+	        	query += "AND  TOT.B_CODCAT3 LIKE '" + veccodcat3[0].toUpperCase() + "%'";
+	        	query += "AND  TOT.CODCAT4 + TOT.DESCAT4 LIKE  '%" + ((String) filterValue).toUpperCase() + "%'";
+	        	query += "AND TOT.ROW_NUM <= " + pageSize;
+	        	query += "AND TOT.ROW_NUM > " + first;
+	        	query += "ORDER BY " + sortField ;
+          break;
+          }
         
         pstmt = con.prepareStatement(query);
         ////System.out.println(query);
@@ -626,7 +660,10 @@ public class Bvtcat4 extends Bd implements Serializable{
         case "PostgreSQL":
         	 query = "SELECT count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);

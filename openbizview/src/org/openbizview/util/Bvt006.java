@@ -311,7 +311,25 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+	        	query += " SELECT * "; 
+	        	query += " FROM (SELECT ";
+	        	query += "	     ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) AS ROW_NUM, "; 
+	        	query += "	     B_CODREP, ";
+	        	query += "	     B_DESREP, ";
+	        	query += "	     B_CODUSER, ";
+	        	query += "	     CONVERT(VARCHAR(10), FECACC, 103) + ' ' + CONVERT(VARCHAR(8), FECACC, 14) FECACC ";
+	        	query += "	     FROM BVT006) TOT ";
+	        	query += " WHERE "; 
+	        	query += " TOT.B_CODUSER LIKE '" + vlcoduser[0] + "%'";
+	        	query += " AND TOT.B_CODREP + TOT.B_DESREP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+	        	query += " AND TOT.ROW_NUM <= " + pageSize;
+	        	query += " AND TOT.ROW_NUM > " + first;
+	        	query += " ORDER BY  ";
+	        	query += " TOT.B_CODUSER,  ";
+	        	query += " TOT.FECACC DESC ";
+          break;
+          }
 
  		 		
 
@@ -368,7 +386,10 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  +  "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  +  "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);

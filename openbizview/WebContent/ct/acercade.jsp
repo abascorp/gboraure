@@ -21,7 +21,7 @@ To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
 <%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
-<jsp:useBean id="bd" class="org.cs.util.Bd" scope="session"/>
+<jsp:useBean id="bd" class="org.openbizview.util.Bd" scope="session"/>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 

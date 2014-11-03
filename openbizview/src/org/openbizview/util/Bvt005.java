@@ -483,7 +483,26 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+	        	query += " SELECT * ";
+	        	query += " FROM (SELECT "; 
+	        	query += " 		 ROW_NUMBER() OVER (ORDER BY A.CODOPC ASC) AS ROW_NUM, "; 
+	        	query += "		 A.CODOPC, ";
+	        	query += "		 A.DESOPC, ";
+	        	query += "		 CASE ";
+	        	query += "	 		WHEN A.CODVIS = '0' THEN 'ACCESO' ";
+	        	query += " 			ELSE 'SIN ACCESO' ";
+	        	query += "		 END COND, ";
+	        	query += "		 A.B_CODROL ";
+	        	query += "		 FROM BVT005 A) TOT ";
+	        	query += " WHERE ";
+	        	query += " TOT.B_CODROL + TOT.CODOPC + TOT.DESOPC LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+	        	query += " AND  TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
+	        	query += " AND TOT.ROW_NUM <= " + pageSize;
+	        	query += " AND TOT.ROW_NUM > " + first;
+	        	query += " ORDER BY " + sortField ;
+        	break;
+  		}
         
         pstmt = con.prepareStatement(query);
         //System.out.println(query);
@@ -538,7 +557,10 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);

@@ -442,11 +442,31 @@ public void setRows(int rows) {
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+        	query += " SELECT TOP " + pageSize;
+        	query += " A.ROW_NUM, ";
+        	query += " A.IDGRUPO, ";
+        	query += " A.IDMAIL, ";
+        	query += " A.MAIL ";
+        	query += " FROM (SELECT  ";
+        	query += " 		ROW_NUMBER() OVER (ORDER BY A.IDGRUPO ASC) AS ROW_NUM, ";
+        	query += " 		A.IDGRUPO,  ";
+        	query += " 		B.IDMAIL,  ";
+        	query += " 		B.MAIL ";
+        	query += " 		FROM  ";
+        	query += " 		MAILGRUPOS A, MAILLISTA B ";
+        	query += " 		WHERE A.IDGRUPO=B.IDGRUPO) A ";
+        	query += " WHERE ";
+        	query += " CAST(A.IDGRUPO AS CHAR) + A.IDMAIL + A.MAIL LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+        	query += " AND CAST(A.IDGRUPO AS CHAR) LIKE '" + vecidgrupo[0] + "%'";
+        	query += " AND A.ROW_NUM > " + first;
+        	query += " ORDER BY " + sortField ;
+          break;
+          }
 
         
         pstmt = con.prepareStatement(query);
-        //System.out.println(query);
+        System.out.println(query);
 
          r =  pstmt.executeQuery();
         
@@ -503,7 +523,10 @@ public void setRows(int rows) {
         case "PostgreSQL":
         	 query = "SELECT count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);

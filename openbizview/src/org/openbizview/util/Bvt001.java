@@ -325,7 +325,7 @@ import org.primefaces.model.SortOrder;
      		if(codgrup==""){
      			codgrup = " - ";
      		}
-     		////System.out.println("Grupo: " + veccodgrup[0].toUpperCase());
+     		System.out.println("Grupo: " + veccodgrup[0].toUpperCase());
      		con = ds.getConnection();		
             //Class.forName(getDriver());
             //con = DriverManager.getConnection(
@@ -480,7 +480,7 @@ import org.primefaces.model.SortOrder;
      * Leer Datos de paises
      * @throws SQLException 
      * @throws ClassNotFoundException 
-     * @throws NamingException 
+     * @throws NamingException
      * @throws IOException 
      **/ 	
   	public void select(int first, int pageSize, String sortField, Object filterValue) throws SQLException, ClassNotFoundException, NamingException  {
@@ -533,35 +533,40 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        case "SQLServer":
-	           query += "SELECT * FROM (SELECT ";
-	           query += "			   ROW_NUMBER() OVER (ORDER BY A.CODREP ASC) AS ROW_NUM, ";
-	           query += "			   LTRIM(RTRIM(A.CODREP)) AS CODREP, ";
-	           query += "			   LTRIM(RTRIM(A.DESREP)) AS DESREP, ";
-	           query += "			   LTRIM(RTRIM(A.COMREP)) AS COMREP, ";
-	           query += "			   LTRIM(RTRIM(A.CODGRUP)) AS CODGRUP, ";
-	           query += "			   LTRIM(RTRIM(B.DESGRUP)) AS DESGRUP";
-	           query += "			   FROM BVT001 A LEFT OUTER JOIN BVT001A B ON A.CODGRUP = B.DESGRUP ";
-	           query += "			   WHERE ";
-	           query += "			   A.CODREP + A.DESREP LIKE LTRIM(RTRIM('%" + ((String) filterValue).toUpperCase() + "%')) ";
-	           query += "			   AND A.CODREP IN (SELECT ";
-	           query += "								B_CODREP ";
-	           query += "								FROM ";
-	           query += "								BVT007 "; 
-	           query += "								WHERE ";
-	           query += "								B_CODROL = = '" + vlRol + "')";
-	           if(!veccodgrup[0].equals("")){
-	           query += "			   AND A.CODGRUP LIKE LTRIM(RTRIM(('" + veccodgrup[0].toUpperCase() +  "%')) REP ";
-	            }
-	           query += "WHERE ";
-	           query += "REP.ROW_NUM <= " + pageSize;
-	           query += "AND REP.ROW_NUM > " + first; 
-	           query += "ORDER BY " + sortField.replace("v", "") ;
+        case "Microsoft SQL Server":
+        	query += " SELECT TOP " + pageSize;
+        	query += " TOT.CODREP, "; 
+        	query += " TOT.DESREP, "; 
+        	query += " TOT.COMREP, "; 
+        	query += " TOT.CODGRUP, "; 
+        	query += " TOT.DESGRUP ";
+        	query += " FROM (SELECT "; 
+        	query += " 	  ROW_NUMBER() OVER (ORDER BY A.CODREP ASC) AS ROW_NUM ";
+        	query += " 	  ,A.CODREP AS CODREP ";
+        	query += " 	  ,A.DESREP AS DESREP ";
+        	query += " 	  ,A.COMREP AS COMREP ";
+        	query += " 	  ,A.CODGRUP AS CODGRUP ";
+        	query += " 	  ,B.DESGRUP AS DESGRUP ";
+        	query += " 	  FROM BVT001 A LEFT OUTER JOIN BVT001A B ON A.CODGRUP = B.CODGRUP "; 
+        	query += " 	  WHERE "; 
+        	query += " 	  A.CODREP + A.DESREP LIKE ('" + ((String) filterValue).toUpperCase() +  "%') ";
+	  		   if(!veccodgrup[0].equals("")){
+		  	   query += " AND A.CODGRUP LIKE '" + veccodgrup[0].toUpperCase() +  "%'";
+		  	 	}        	
+        	query += " 	  AND A.CODREP IN (SELECT ";
+        	query += " 					   B_CODREP "; 
+        	query += " 					   FROM  ";
+        	query += " 					   BVT007 ";  
+        	query += " 					   WHERE "; 
+        	query += " 					   B_CODROL = '" + vlRol + "')) TOT "; 
+        	query += " WHERE "; 
+        	query += " TOT.ROW_NUM > " + first;
+        	query += " ORDER BY " + sortField.replace("v", "");
 	         break;            		   
   		}
   		
   		pstmt = con.prepareStatement(query);
-        //System.out.println(query);
+        System.out.println(query);
   		
         r =  pstmt.executeQuery();
         		
@@ -612,7 +617,7 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_bvt001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "')";
              break;
-        case "SQLServer":
+        case "Microsoft SQL Server":
         	 query = "SELECT DBO.COUNT_BVT001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "')"; 
   		}
 

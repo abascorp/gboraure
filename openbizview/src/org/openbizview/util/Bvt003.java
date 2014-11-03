@@ -359,7 +359,20 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+               query += " SELECT * ";
+               query += " FROM (SELECT ";
+               query += "       ROW_NUMBER() OVER (ORDER BY A.CODROL ASC) AS ROW_NUM, ";         
+     	       query += "       A.CODROL, ";
+     	       query += "	    A.DESROL ";
+     	       query += " 		FROM BVT003 A";
+     	       query += " 		WHERE A.CODROL + DESROL LIKE '%" + ((String) filterValue).toUpperCase() + "%') TOT";
+	  	       query += " WHERE ";
+	  	       query += " TOT.ROW_NUM <= " + pageSize;
+	           query += " AND TOT.ROW_NUM > " + first;
+	           query += " ORDER BY " + sortField ;
+          break;
+  		}
 
         
         pstmt = con.prepareStatement(query);
@@ -404,7 +417,10 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_bvt003('" + ((String) filterValue).toUpperCase() +  "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_bvt003('" + ((String) filterValue).toUpperCase() +  "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);

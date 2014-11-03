@@ -41,57 +41,39 @@
   <listener>
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
-  
-  <!-- Nombre JNDI -->
   <context-param>
     <param-name>JNDI_BD</param-name>
     <param-value>java:comp/env/jdbc/orabiz</param-value>
   </context-param>
-
-  
-  <!-- Nombre JNDIMAIL -->
   <context-param>
     <param-name>JNDI_MAIL</param-name>
     <param-value>java:comp/env/mail/recibos</param-value>
-  </context-param> 
-  
-  <!-- Formato de fecha -->
+  </context-param>
   <context-param>
     <param-name>FORMAT_DATE</param-name>
     <param-value>dd/MM/yyyy</param-value>
   </context-param>
-  
-  
-  <!-- Número de hilos a usar en el servidor para subir reportes -->
   <context-param>
     <param-name>THREAD_NUMBER</param-name>
     <param-value>100</param-value>
   </context-param>
-  
-  <!-- Tema primefaces -->
   <context-param>
     <param-name>primefaces.THEME</param-name>
     <param-value>bootstrap</param-value>
   </context-param>
-  
-   <!-- Configuración Quartz Servlet para propeties del quartz -->
-   <servlet>
-	<servlet-name>QuartzInitializer</servlet-name>
-	<servlet-class>org.quartz.ee.servlet.QuartzInitializerServlet</servlet-class>
-	<init-param>
-	<param-name>shutdown-on-unload</param-name>
-	<param-value>true</param-value>
-	</init-param>
-	<init-param>	 
-	<param-name>config-file</param-name>
-	<param-value>../../WEB-INF/quartz.properties</param-value>
-	</init-param>
-	<load-on-startup>2</load-on-startup>
-	</servlet>
-
-    
-  
-  <!-- Uploads primefaces -->
+  <servlet>
+    <servlet-name>QuartzInitializer</servlet-name>
+    <servlet-class>org.quartz.ee.servlet.QuartzInitializerServlet</servlet-class>
+    <init-param>
+      <param-name>shutdown-on-unload</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>config-file</param-name>
+      <param-value>../../WEB-INF/quartz.properties</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
   <filter>
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
     <filter-class>
@@ -106,8 +88,6 @@
     <filter-name>PrimeFaces FileUpload Filter</filter-name>
     <servlet-name>Faces Servlet</servlet-name>
   </filter-mapping>
-  
-  <!-- Birt Report -->
   <context-param>
     <param-name>BIRT_VIEWER_LOCALE</param-name>
     <param-value>en-US</param-value>

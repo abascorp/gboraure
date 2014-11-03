@@ -422,16 +422,45 @@ private String login = (String) FacesContext.getCurrentInstance().getExternalCon
  		
  		Context initContext = new InitialContext();     
  		DataSource ds = (DataSource) initContext.lookup(JNDI);
-
  		con = ds.getConnection();
+
+ 		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+ 		DatabaseMetaData databaseMetaData = con.getMetaData();
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+
+ 		String query = "";
  		
+ 		switch ( productName ) {
+ 		case "Oracle":
+            query += " SELECT anocal, numper, to_char(fecini,'dd/mm/yyyy'), to_char(fecfin,'dd/mm/yyyy'), descrip";
+            query += " FROM bvt011";
+            query += " where anocal  like trim('" + anocal +  "%')";
+            query += " and numper  like trim('" + numper +  "%')";
+            query += " ORDER BY 1 desc";
+        break;	
+ 		case "PostgreSQL":
+            query += " SELECT anocal, numper, to_char(fecini,'dd/mm/yyyy'), to_char(fecfin,'dd/mm/yyyy'), descrip";
+            query += " FROM bvt011";
+            query += " where anocal  like trim('" + anocal +  "%')";
+            query += " and numper  like trim('" + numper +  "%')";
+            query += " ORDER BY 1 desc";
+        break;
+ 		case "Microsoft SQL Server":
+ 			query += " SELECT "; 
+ 			query += " ANOCAL, ";
+ 			query += " NUMPER, ";
+ 			query += " CONVERT(VARCHAR,FECINI,103) FECINI, ";
+ 			query += " CONVERT(VARCHAR,FECFIN,103) FECFIN, "; 
+ 			query += " DESCRIP ";
+ 			query += " FROM BVT011 ";
+ 			query += " WHERE ANOCAL  LIKE '" + anocal +  "%'";
+ 			query += " AND NUMPER  LIKE '" + numper +  "%'";
+ 			query += " ORDER BY 1 DESC ";
+        break;
+        }
  		
  		//Consulta paginada
-               String query = " SELECT anocal, numper, to_char(fecini,'dd/mm/yyyy'), to_char(fecfin,'dd/mm/yyyy'), descrip";
-               query += " FROM bvt011";
-               query += " where anocal  like trim('" + anocal +  "%')";
-               query += " and numper  like trim('" + numper +  "%')";
-               query += " ORDER BY 1 desc";
+
        
        pstmt = con.prepareStatement(query);
        ////System.out.println(query);

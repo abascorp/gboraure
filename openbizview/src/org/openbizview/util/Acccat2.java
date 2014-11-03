@@ -497,7 +497,33 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+        	query +=  " SELECT TOP " + pageSize;
+        	query +=  " TOT.ROW_NUM, "; 
+        	query +=  " TOT.B_CODROL, ";
+        	query +=  " TOT.B_CODCAT1, "; 
+        	query +=  " TOT.DESCAT1, "; 
+        	query +=  " TOT.B_CODCAT2, "; 
+        	query +=  " TOT.DESCAT2 ";
+        	query +=  " FROM (SELECT  ";
+        	query +=  " 	  ROW_NUMBER() OVER (ORDER BY A.B_CODROL ASC) AS ROW_NUM, "; 
+        	query +=  " 	  A.B_CODROL, "; 
+        	query +=  " 	  A.B_CODCAT1, "; 
+        	query +=  " 	  B.DESCAT1,  ";
+        	query +=  " 	  A.B_CODCAT2, "; 
+        	query +=  " 	  C.DESCAT2 ";
+        	query +=  " 	  FROM ACCCAT2 A, BVTCAT1 B, BVTCAT2 C ";
+        	query +=  " 	  WHERE A.B_CODCAT1=B.CODCAT1  ";
+        	query +=  " 	  AND   A.B_CODCAT1=C.B_CODCAT1 ";
+        	query +=  " 	  AND   A.B_CODCAT2=C.CODCAT2) TOT ";
+        	query +=  " WHERE ";
+        	query +=  " TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
+        	query +=  " AND TOT.B_CODCAT1 LIKE '" + veccodcat1[0].toUpperCase() + "%'";
+        	query +=  " AND TOT.B_CODCAT1 + TOT.DESCAT1 + TOT.B_CODCAT2 + TOT.DESCAT2 LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+        	query +=  " AND TOT.ROW_NUM > " + first;
+        	query +=  " ORDER BY " + sortField ;
+          break;
+          }
  		 		
         
         pstmt = con.prepareStatement(query);
@@ -532,7 +558,8 @@ import org.primefaces.model.SortOrder;
     	Context initContext = new InitialContext();     
    		DataSource ds = (DataSource) initContext.lookup(JNDI);
    		con = ds.getConnection();
-   	   //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+   		
+   	    //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
  		DatabaseMetaData databaseMetaData = con.getMetaData();
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
    	      		
@@ -559,7 +586,10 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_acccat2('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] +  "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_acccat2('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] +  "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);
@@ -592,8 +622,13 @@ import org.primefaces.model.SortOrder;
   		Context initContext = new InitialContext();     
     	DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
-  		   		
+ 
+    	//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+  		DatabaseMetaData databaseMetaData = con.getMetaData();
+  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+  		
   		String query = "";
+  		
         String cat1 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat1"); //Usuario logeado
          
         if(cat1==null){
@@ -604,10 +639,27 @@ import org.primefaces.model.SortOrder;
         }
         String[] veccat1 = cat1.split("\\ - ", -1);
 
+  		switch ( productName ) {
+  		case "Oracle":
         	query = "Select codcat2, codcat2||' - '||descat2";
             query += " from bvtcat2";
             query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
             query += " order by codcat2";
+	        break;
+  		case "PostgreSQL":
+        	query = "Select codcat2, codcat2||' - '||descat2";
+            query += " from bvtcat2";
+            query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
+            query += " order by codcat2";
+	        break;
+  		case "Microsoft SQL Server":
+        	query = "Select codcat2, codcat2 + ' - ' + descat2";
+            query += " from bvtcat2";
+            query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
+            query += " order by codcat2";
+	        break;
+	        }        
+
 
         //System.out.println(query);
 

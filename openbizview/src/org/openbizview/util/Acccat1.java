@@ -458,11 +458,33 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+				query += " SELECT TOP " + pageSize;
+				query += " TOT.B_CODROL, "; 
+				query += " TOT.DESROL, "; 
+				query += " TOT.B_CODCAT1, "; 
+				query += " TOT.DESCAT1 "; 
+				query += " FROM (SELECT "; 
+				query += "       ROW_NUMBER() OVER (ORDER BY A.B_CODROL ASC) AS ROW_NUM, ";
+				query += " 	     A.B_CODROL, "; 
+				query += " 	     B.DESROL, "; 
+				query += " 	     A.B_CODCAT1, "; 
+				query += " 	     C.DESCAT1 ";
+				query += " 	     FROM ACCCAT1 A, BVT003 B, BVTCAT1 C ";
+				query += " 	     WHERE "; 
+				query += " 	     A.B_CODROL=B.CODROL "; 
+				query += " 	     AND   A.B_CODCAT1=C.CODCAT1) TOT "; 
+				query += " WHERE ";
+				query += " TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
+				query += " AND TOT.B_CODCAT1 + TOT.DESCAT1 LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+				query += " AND TOT.ROW_NUM > " + first;
+				query += " ORDER BY " + sortField ;
+          break;
+          }
   		
         
         pstmt = con.prepareStatement(query);
-        ////System.out.println(query);
+        System.out.println(query);
   		
         r =  pstmt.executeQuery();
 
@@ -497,6 +519,7 @@ import org.primefaces.model.SortOrder;
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
    	      		
  		String query = "";
+ 		
  		if(b_codrol==null){
  			b_codrol = " - ";
  		}
@@ -512,7 +535,10 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);
@@ -548,12 +574,30 @@ import org.primefaces.model.SortOrder;
     	DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
   		   		
+    	//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+  		DatabaseMetaData databaseMetaData = con.getMetaData();
+  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+    	      		
   		String query = "";
 
+  		switch ( productName ) {
+  		case "Oracle":
+	    	query = "Select codcat1, codcat1||' - '||descat1";
+	        query += " from bvtcat1";
+	        query += " order by codcat1";
+	        break;
+  		case "PostgreSQL":
+	    	query = "Select codcat1, codcat1||' - '||descat1";
+	        query += " from bvtcat1";
+	        query += " order by codcat1";
+	        break;
+  		case "Microsoft SQL Server":
+	    	query = "Select codcat1, codcat1 + ' - ' + descat1";
+	        query += " from bvtcat1";
+	        query += " order by codcat1";
+	        break;
+	        }
 
-        	query = "Select codcat1, codcat1||' - '||descat1";
-            query += " from bvtcat1";
-            query += " order by codcat1";
 
         ////System.out.println(query);
 

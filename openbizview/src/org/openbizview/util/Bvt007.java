@@ -446,11 +446,34 @@ import org.primefaces.model.SortOrder;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
-        }
+        case "Microsoft SQL Server":
+      	   query += " SELECT TOP " + pageSize;
+      	   query += " TOT.B_CODROL, ";
+      	   query += " TOT.DESROL, ";
+      	   query += " TOT.B_CODREP, ";
+      	   query += " TOT.DESREP ";
+      	   query += " FROM (SELECT ";
+      	   query += " 	    ROW_NUMBER() OVER (ORDER BY A.B_CODROL ASC) AS ROW_NUM, ";
+      	   query += " 	    A.B_CODROL, ";
+      	   query += " 	    B.DESROL, ";
+      	   query += " 	    A.B_CODREP, "; 
+      	   query += " 	    C.DESREP ";
+      	   query += " 	    FROM BVT007 A, BVT003 B, BVT001 C ";
+      	   query += " 	    WHERE ";
+      	   query += " 	    A.B_CODROL = B.CODROL ";
+      	   query += " 	    AND A.B_CODREP=C.CODREP "; 
+      	   query += " 	    AND A.B_CODROL + B.DESROL + A.B_CODREP + C.DESREP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+      	   query += " 	    AND A.B_CODROL LIKE '" + veccodrol[0] + "%') TOT ";
+      	   query += " WHERE ";
+      	   query += " TOT.ROW_NUM <= " + pageSize;
+      	   query += " AND TOT.ROW_NUM > " + first;
+      	   query += " ORDER BY " + sortField ;
+          break;
+  		}
  		
         
         pstmt = con.prepareStatement(query);
-        ////System.out.println(query);
+        System.out.println(query);
   		
         r =  pstmt.executeQuery();
 
@@ -481,12 +504,30 @@ import org.primefaces.model.SortOrder;
   		Context initContext = new InitialContext();     
     	DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
-  		   		
-  		String query = "";
 
-        	query = " Select codrep, codrep||' - '||desrep";
+        //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+ 		DatabaseMetaData databaseMetaData = con.getMetaData();
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección  		   		
+
+ 		String query = "";
+
+  		switch ( productName ) {
+        case "Oracle":
+     		query = " Select codrep, codrep||' - '||desrep";
             query += " from bvt001";
             query += " order by codrep";
+             break;
+        case "PostgreSQL":
+     		query = " Select codrep, codrep||' - '||desrep";
+            query += " from bvt001";
+            query += " order by codrep";
+             break;
+        case "Microsoft SQL Server":
+     		query = " Select codrep, codrep + ' - ' + desrep";
+            query += " from bvt001";
+            query += " order by codrep";
+          break;
+  		}
 
         ////System.out.println(query);
 
@@ -544,7 +585,10 @@ import org.primefaces.model.SortOrder;
         case "PostgreSQL":
         	 query = "SELECT count_bvt007('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
              break;
-        }
+        case "Microsoft SQL Server":
+       	 query = "SELECT DBO.count_bvt007('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
+            break;
+            }
 
         
         pstmt = con.prepareStatement(query);
