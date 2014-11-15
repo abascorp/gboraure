@@ -24,9 +24,21 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<h:body>
+<ui:include src="common/cabeceras.xhtml" />
+<ui:include src="common/timeout.xhtml" />
+<h:body >
+		<f:view>
+<!-- Top-->
+<ui:include src="common/top.xhtml" />
+<div id="wrapper">
+        <!-- Sidebar -->
+        <ui:include src="common/menu.xhtml" />
+                <!-- Menu Toggle Script -->
+        <!-- /#sidebar-wrapper -->
 
-
+        <!-- Page Content --> 
+             
+     <div class="container-fluid" id="containerF">
 	<h:form id="formChgpwd"  >
 		<f:view>
          <div id="content">
@@ -37,23 +49,34 @@
 		 	<!-- Panel -->
 			<div id="etiqueta" style="padding-top:40px">
 		         <p:panel id="panel"  header="#{msg.bvt002tita}" >	  	         
-		         <h:panelGrid  columns="3" >	         
-                 <h:outputText value="#{msg.bvt002Cl}" />
-	             <p:password id="clave"  maxlength="15" style="width: 65%"  value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+		         <h:panelGrid  columns="1" columnClasses="col1" >	         
+	             <p:password id="clave"  maxlength="15" styleClass="form-control"  value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
 	             <p:message for="clave"/>
-	              <h:outputText value="#{msg.bvt002Cl1}" />
-	             <p:password id="clave1"  maxlength="15" style="width: 65%"  value="#{bvt002.cluser1}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+	             <p:watermark for="clave" value="#{msg.bvt002Cl}" />
+	             <p:password id="clave1"  maxlength="15" styleClass="form-control"  value="#{bvt002.cluser1}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+	             <p:watermark for="clave1" value="#{msg.bvt002Cl1}" />
 	             <p:message for="clave1"/>
 		         </h:panelGrid>
 	             </p:panel><br/><br/>
 				
 				
             <p:commandButton value="#{msg.chgpwdButtonCL}" action="#{bvt002.updatea()}" 
-            update="growl, panel" />&#160;&#160;
-            <p:commandButton value="#{msg.chgpwdButtonL}"  onclick="limpiar()"/>
-            </div>
+            update="growl, panel" icon="ui-icon-disk" styleClass="botonera"/>&#160;&#160;
+            <p:commandButton value="#{msg.chgpwdButtonL}"  process="@this"  icon="ui-icon-arrowrefresh-1-s" styleClass="botonera">
+            <p:resetInput target="panel" /> 
+            </p:commandButton>
+            </div><br/>
           </div>
 		</f:view>
 	</h:form>
+   </div>
+    
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	
+
+</f:view>	
 </h:body>
 </html>

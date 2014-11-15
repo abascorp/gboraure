@@ -77,8 +77,13 @@
 			     <p:password id="cluser" maxlength="10" styleClass="form-control" value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:watermark for="cluser" value="#{msg.bvt002Cl}" />
 			     <p:message for="cluser"/>
+			     <p:inputText id="mail" maxlength="150" styleClass="form-control" value="#{bvt002.mail}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('confmailIngMail')}">  
+			     <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+			     </p:inputText>
+			     <p:watermark for="mail" value="#{msg.bvt002mail}" />
+			     <p:message for="mail"/>
 			     <p:autoComplete id="rol" value="#{bvt002.b_codrol}" completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
-		         <p:watermark for="rol" value="#{msg.bvt002Rol}" />
+		         <p:watermark for="rol" value="&nbsp;&nbsp;#{msg.bvt002Rol}" />
 		         <p:message for="rol"/>
 		         </h:panelGrid>
 		         <h:inputHidden id="vop" value="#{bvt002.validarOperacion}"/>
@@ -107,7 +112,7 @@
             
             <p:column style="width:40px" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><p:graphicImage alt="img" title="#{msg.borrar}" value="../resources/img/borrar.png" style="height:20px; margin-left:6px; border: 0" /></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
             </f:facet>
             <input type="checkbox" name="toDelete" class="chk" value="#{tb.coduser}"/>
             </p:column>  
@@ -127,9 +132,14 @@
             <h:outputLabel value="#{tb.desrol}"  />
             </p:column> 
             
+            <p:column sortBy="#{tb.mail}"  styleClass="wrap">  
+            <f:facet name="header">#{msg.bvt002TbMail}</f:facet>  
+            <h:outputLabel value="#{tb.mail}"  />
+            </p:column> 
+            
             <p:column style="width:60px" >  
             <f:facet name="header">#{msg.enviar}</f:facet>   
-            <p:commandLink styleClass="edit" onclick="enviar('#{tb.coduser}','#{tb.desuser}','#{tb.cluser}','#{tb.b_codrol}','1')" 
+            <p:commandLink styleClass="edit" onclick="enviar('#{tb.coduser}','#{tb.desuser}','#{tb.cluser}','#{tb.b_codrol}','1', '#{tb.mail}')" 
             title="Enviar"><i class="fa fa-pencil-square-o fa-2x"></i></p:commandLink>
             </p:column> 
             

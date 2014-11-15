@@ -223,7 +223,7 @@ public class Programacion extends Bd implements Serializable {
     
     //Opciones de envío
     private String opctareas = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("opc"); 
-    private String ruta_salida = "NA"; //Directorio de envío
+    private String ruta_salida; //Directorio de envío
     
     
     
@@ -1250,10 +1250,6 @@ public class Programacion extends Bd implements Serializable {
    		
      	String query = "";
      	
-     	if(opctareas==null){
-     		opctareas = "1";
-     	}
-     	
      	switch ( productName ) {
         case "Oracle":
         	query += "  select * from ";
@@ -1279,60 +1275,12 @@ public class Programacion extends Bd implements Serializable {
 	        query += " LIMIT " + pageSize;
 	        query += " OFFSET " + first;
              break;
-        case "Microsoft SQL Server":
-        	query += " SELECT TOP 15 ";
-        	query += " A.ROW_NUM, A.JOB, A.DISPARADOR, A.DIASEM, A.HORA, A.MINUTO, A.INTERVALO, A.DIASEM, A.CODREP, A.IDGRUP, A.ASUNTO, A.CONTENIDO, A.DESGRUPO, A.FRECUENCIA, A.DIAMES,  ";
-        	query += " A.DIAINICIO, A.CHK, A.ACTIVA, A.TAREA ";
-        	query += " FROM (SELECT  ";
-        	query += " 		ROW_NUMBER() OVER (ORDER BY A.JOB ASC) AS ROW_NUM, ";
-        	query += " 		A.JOB,  ";
-        	query += " 		A.DISPARADOR,  ";
-        	query += " 		CAST(SUBSTRING(A.HORA,1,2) AS CHAR) HORA,  ";
-        	query += " 		CAST(SUBSTRING(A.HORA,4,2) AS CHAR) MINUTO,   ";
-        	query += " 		CASE  ";
-        	query += " 			WHEN A.FRECUENCIA = '0' THEN '" + getMessage("mailintervalo1") + "'";
-        	query += " 			WHEN A.FRECUENCIA = '1' THEN '" + getMessage("mailintervalo2") + "'";
-        	query += " 			WHEN A.FRECUENCIA = '2' THEN '" + getMessage("mailintervalo3") + "'";
-        	query += " 			WHEN A.FRECUENCIA = '3' THEN '" + getMessage("mailintervalo4") + "'";
-        	query += " 			WHEN A.FRECUENCIA = '4' THEN '" + getMessage("mailintervalo5") + "'";
-        	query += " 			ELSE '" + getMessage("mailintervalo6")+ "'";
-        	query += " 		END INTERVALO,  ";
-        	query += " 		A.DIASEM, ";
-        	query += " 		A.CODREP,   ";
-        	query += " 		CAST(A.IDGRUPO AS CHAR) IDGRUP,  ";
-        	query += " 		A.ASUNTO,  ";
-        	query += " 		A.CONTENIDO,  ";
-        	query += " 		B.DESGRUPO,  ";
-        	query += " 		A.FRECUENCIA,  ";
-        	query += " 		A.DIAMES,  ";
-        	query += " 		A.DIAINICIO,  "; 
-        	query += " 		CASE  ";
-        	query += " 			WHEN ACTIVA = '0' THEN 'CHKACTIVA'  ";
-        	query += " 			ELSE 'CHKINACTIVA'  ";
-        	query += " 		END CHK,  ";
-        	query += " 		ACTIVA,  ";
-        	query += " 		CASE  ";
-        	query += " 			WHEN ACTIVA = '0' THEN '"+ getMessage("mailtarea0") + "'";
-        	query += " 			ELSE '"+ getMessage("mailtarea1") + "'";
-        	query += " 		END TAREA, ";
-        	query += " 		A.OPCTAREAS ";
-        	query += " 		FROM  ";
-        	query += " 		T_PROGRAMACION A, MAILGRUPOS B ";
-        	query += " 		WHERE  ";
-        	query += " 		A.IDGRUPO = B.IDGRUPO) A ";
-        	query += " WHERE ";
-        	query += " A.JOB + A.DISPARADOR + A.CODREP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-        	query += " AND A.OPCTAREAS LIKE '" + opctareas + "%'";
-        	query += " AND A.ROW_NUM > " + first;
-        	query += " ORDER BY " + sortField.replace("v", "") ;
-
-             break;
-             }
+        }
 
 
         
         pstmt = con.prepareStatement(query);
-        System.out.println(query);
+        //System.out.println(query);
 
          r =  pstmt.executeQuery();
         
@@ -1395,10 +1343,7 @@ public class Programacion extends Bd implements Serializable {
         case "PostgreSQL":
         	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "')";
              break;
-        case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "')";
-            break;
-            }
+        }
 
         
         pstmt = con.prepareStatement(query);
@@ -1438,11 +1383,8 @@ public class Programacion extends Bd implements Serializable {
   	    //Selecciona nombre del reporte y id del grupo según hora programada
   	  
   		try {
-  		String queryora = "select trim(codrep), trim(rutarep), trim(rutatemp) from t_programacion where disparador='" + vltrigger.toUpperCase() + "'";
-  		String querypg  = "select trim(codrep), trim(rutarep), trim(rutatemp) from t_programacion where disparador='" + vltrigger.toUpperCase() + "'";
-  		String querysql = "select codrep, rutarep, rutatemp from t_programacion where disparador='" + vltrigger.toUpperCase() + "'";
+  			consulta.selectPntGenerica("select trim(codrep), trim(rutarep), trim(rutatemp) from t_programacion where disparador='" + vltrigger.toUpperCase() + "'", JNDI);
   		
-  		consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
   		////System.out.println("select nombrereporte, idgrupo, trim(rutareporte), trim(rutatemp) from mailtarea where hora='" + formato.format(new Date()) + "'");
   		   
   	    rows = consulta.getRows();
@@ -1454,22 +1396,11 @@ public class Programacion extends Bd implements Serializable {
 
   		}
   		//Consulta lista de correos
-  		String queryora2 = "select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
+  		consulta.selectPntGenerica("select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
   				" from maillista a, t_programacion b" +
   				" where a.idgrupo=b.idgrupo  " +
-  				" and disparador='" + vltrigger.toUpperCase() + "'";
-
-  		String querypg2 = "select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
-  				" from maillista a, t_programacion b" +
-  				" where a.idgrupo=b.idgrupo  " +
-  				" and disparador='" + vltrigger.toUpperCase() + "'";  		
-
-  		String querysql2 = "select a.mail, b.rutatemp, b.codrep, b.asunto, b.contenido" +
-  				" from maillista a, t_programacion b" +
-  				" where a.idgrupo=b.idgrupo  " +
-  				" and disparador='" + vltrigger.toUpperCase() + "'";
+  				" and disparador='" + vltrigger.toUpperCase() + "'", JNDI);
   		
-  		consulta.selectPntGenericaMDB(queryora2, querypg2, querysql2, JNDI);
   		rows = consulta.getRows();
   		vltabla = consulta.getArray();
   		
@@ -1524,13 +1455,11 @@ public class Programacion extends Bd implements Serializable {
     	//
     	//Convierte para el query con string utils
     	String param = "'" + StringUtils.join(chkbox, "','") + "'";
-    	String queryora = "select trim(disparador) from t_programacion where disparador not in (" + param + ") and activa = '0'";
-    	String querypg  = "select trim(disparador) from t_programacion where disparador not in (" + param + ") and activa = '0'";
-    	String querysql = "select disparador from t_programacion where disparador not in (" + param + ") and activa = '0'";
+    	String query = "select trim(disparador) from t_programacion where disparador not in (" + param + ") and activa = '0'";
     	//System.out.println(query);
     	
     	//Consultando las tareas
-    	consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);//Consultando en la base de datos
+    	consulta.selectPntGenerica(query, JNDI);//Consultando en la base de datos
     	int vlrows = consulta.getRows();//Toma registros de la consulta
     	String[][] vltabla = consulta.getArray();
     	//System.out.println("Registros: " + vlrows);
@@ -1557,13 +1486,8 @@ public class Programacion extends Bd implements Serializable {
     	} else {
     		//Los activa a todos
     		//System.out.println("Todos activos");
-    		
-    		String queryora1 = "select trim(disparador) from t_programacion where disparador in (" + param + ")";
-    		String querypg1 = "select trim(disparador) from t_programacion where disparador in (" + param + ")";
-    		String querysql1 = "select disparador from t_programacion where disparador in (" + param + ")";
-    		
-    		consulta.selectPntGenericaMDB(queryora1, querypg1, querysql1,  JNDI);//Consultando en la base de datos
-    		
+    		query = "select trim(disparador) from t_programacion where disparador in (" + param + ")";
+    		consulta.selectPntGenerica(query, JNDI);//Consultando en la base de datos
     		vlrows = consulta.getRows();
     		vltabla = consulta.getArray();
     		if(vlrows>0){//Valida si la consulta devuelve registros
@@ -1904,7 +1828,7 @@ public class Programacion extends Bd implements Serializable {
 	    	int vlrows = 0; 
 	    	String vlqueryOra = "select codrep, listagg (paramname, '|') WITHIN GROUP (ORDER BY paramname) arr FROM bvtparams_temp  where SESSIONID = '" + session + "' and codrep = '" + reporte + "' GROUP BY codrep";
 	    	String vlqueryPg = "select codrep, string_agg(paramname,'|' order by paramname)  arr from bvtparams_temp where SESSIONID = '" + session + "' and codrep = '" + reporte + "' GROUP BY codrep";
-	    	String vlquerySqlSrv = "select codrep, string_agg(paramname,'+' order by paramname)  arr from bvtparams_temp where SESSIONID = '" + session + "' and codrep = '" + reporte + "' GROUP BY codrep";
+	    	String vlquerySqlSrv = "";
 	    	try {
 				consulta.selectPntGenericaMDB(vlqueryOra, vlqueryPg, vlquerySqlSrv, JNDI);
 				vlrows = consulta.getRows();

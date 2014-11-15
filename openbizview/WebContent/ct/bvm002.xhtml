@@ -75,25 +75,22 @@
 		         <h:panelGrid  columns="1" columnClasses="col1" >
 			     <p:autoComplete id="cia" value="#{bvm002.bcodcia}" emptyMessage="#{msg.html138}"  required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCias}"  dropdown="true" scrollHeight="250">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setCia(bvm002.bcodcia)}" />
-			     <f:event type="preRenderView" listener="#{bvm002.initialize}"/>
 			     </p:autoComplete>
 			     <p:watermark for="cia" value="&#160;&#160;#{msg.bvm002Cia}" />
 			     <p:message for="cia"/>  
 			     <p:autoComplete id="per" value="#{bvm002.bnumper}" emptyMessage="#{msg.html138}"  required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completePeriodosSelect}" dropdown="true" maxResults="30" scrollHeight="250">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setPeriodo(bvm002.bnumper)}" />
-			     <f:event type="preRenderView" listener="#{bvm002.initialize}"/>
+		
 			     </p:autoComplete>
 			     <p:watermark for="per" value="&#160;&#160;#{msg.bvm002Per}" />
 			     <p:message for="per"/>  
 			     <p:autoComplete id="esc" value="#{bvm002.bcodesc}" emptyMessage="#{msg.html138}"  required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeEscenario}" dropdown="true" maxResults="30" scrollHeight="250">
-			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setEsc(bvm002.bcodesc)}" />
-			     <f:event type="preRenderView" listener="#{bvm002.initialize}"/>
+			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setEsc(bvm002.bcodesc)}" />			   
 			     </p:autoComplete>   	         
 			     <p:watermark for="esc" value="&#160;&#160;#{msg.bvm002Esc}" />
 			     <p:message for="esc"/>  
 			     <p:autoComplete id="codneg" value="#{bvm002.codneg}" emptyMessage="#{msg.html138}"  required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeNegocio}" dropdown="true" maxResults="30" scrollHeight="250">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setTipneg(bvm002.codneg)}" />
-			     <f:event type="preRenderView" listener="#{bvm002.initialize}"/>
 			     </p:autoComplete>
 			     <p:watermark for="codneg" value="&#160;&#160;#{msg.bvm002Codneg}" />
 			     <p:message for="codneg"/>  
@@ -108,7 +105,7 @@
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
 			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvm002.rows}"  
-			filteredValue="#{bvm002.filtro}"  widgetVar="global">
+			  widgetVar="global">
 			
 			<f:facet name="header"> 			
             <p:outputPanel>  

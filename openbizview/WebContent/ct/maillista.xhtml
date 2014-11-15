@@ -109,18 +109,18 @@
             
             <p:column style="width:40px" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><p:graphicImage alt="img" title="#{msg.borrar}" value="../resources/img/borrar.png" style="height:20px; margin-left:6px; border: 0" /></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
             </f:facet>    
             <input type="checkbox" name="toDelete" class="chk" value="#{tb.idgrupo}#{tb.idmail}"/>
             </p:column>  
             
 
-            <p:column sortBy="#{tb.a.idgrupo}"  styleClass="wrap">  
+            <p:column sortBy="#{tb.a.idgrupo}" style="width:100px" styleClass="wrap">  
             <f:facet name="header">#{msg.maillistaGrupoTb}</f:facet> 
             <h:outputLabel value="#{tb.idgrupo}"  />  
             </p:column>  
             
-            <p:column sortBy="#{tb.idmail}"  styleClass="wrap">  
+            <p:column sortBy="#{tb.idmail}" style="width:100px" styleClass="wrap">  
             <f:facet name="header">#{msg.maillistaIdTb}</f:facet>  
             <h:outputLabel value="#{tb.idmail}"  />
             </p:column> 

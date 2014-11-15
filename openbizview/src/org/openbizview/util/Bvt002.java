@@ -81,7 +81,7 @@ import org.primefaces.model.SortOrder;
 					//Counter
 					counter(filterValue);
 					//Contador lazy
-					lazyModel.setRowCount(rows);  //Necesario para crear la paginación
+					lazyModel.setRowCount(rows);  //Necesario para crear la paginaciï¿½n
 				} catch (SQLException | NamingException | ClassNotFoundException e) {	
 					e.printStackTrace();
 				}             
@@ -117,6 +117,7 @@ import org.primefaces.model.SortOrder;
 	private String b_codrol = "";
 	private String desrol = "";
 	private String cluserold = "";
+	private String mail = "";
 	private int columns;
 	private String[][] arr;
 	private Object filterValue = "";
@@ -125,7 +126,26 @@ import org.primefaces.model.SortOrder;
 	
 	
 	
+	
 	     /**
+	 * @return the mail
+	 */
+	public String getMail() {
+		return mail;
+	}
+
+
+
+	/**
+	 * @param mail the mail to set
+	 */
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+
+
+		/**
 	 * @return the cluser1
 	 */
 	public String getCluser1() {
@@ -256,7 +276,7 @@ import org.primefaces.model.SortOrder;
 	//Variables seran utilizadas para capturar mensajes de errores de Oracle y parametros de metodos
 	FacesMessage msj = null;
 	PntGenerica consulta = new PntGenerica();
-	boolean vGacc; //Validador de opciones del menú
+	boolean vGacc; //Validador de opciones del menï¿½
 	private int rows; //Registros de tabla
 	private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario"); //Usuario logeado
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +292,7 @@ import org.primefaces.model.SortOrder;
 	/**
      * Inserta Usuarios.
      * <p>
-     * Parámetros del Método: String coduser, String desuser, String clave, String b_codrol.
+     * Parï¿½metros del Mï¿½todo: String coduser, String desuser, String clave, String b_codrol.
      **/
     public void insert() throws  NamingException {
     	//Valida que los campos no sean nulos
@@ -282,7 +302,7 @@ import org.primefaces.model.SortOrder;
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO Bvt002 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO Bvt002 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, coduser.toUpperCase());
             pstmt.setString(2, desuser.toUpperCase());
@@ -290,6 +310,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(4, veccodrol[0].toUpperCase());
             pstmt.setString(5, login);
             pstmt.setString(6, login);
+            pstmt.setString(7, mail.toLowerCase());
 
             ////System.out.println(query);
             try {
@@ -356,7 +377,7 @@ import org.primefaces.model.SortOrder;
 
        /**
      * Actualiza Usuarios
-     * <p> Parámetros del Método: String coduser, String desuser, String cluser, String p_codrol.
+     * <p> Parï¿½metros del Mï¿½todo: String coduser, String desuser, String cluser, String p_codrol.
      **/
     public void update() throws  NamingException {
     
@@ -375,12 +396,14 @@ import org.primefaces.model.SortOrder;
                if(!cluser.equals(""))
                    query += st[0];
              query += " , B_CODROL = ?";
+             query += " , MAIL = ?";
              query += " WHERE CODUSER = ?";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, desuser.toUpperCase());
             pstmt.setString(2, veccodrol[0].toUpperCase());
-            pstmt.setString(3, coduser.toUpperCase());
+            pstmt.setString(3, mail.toLowerCase());
+            pstmt.setString(4, coduser.toUpperCase());
 
             try {
                 //Avisando
@@ -394,7 +417,7 @@ import org.primefaces.model.SortOrder;
            		cluser = "";
            		b_codrol = " - ";
            		cluserold = "";
-                limpiarValores();	
+                mail = "";	
             } catch (SQLException e) {
                 e.printStackTrace();
                 msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
@@ -419,7 +442,7 @@ import org.primefaces.model.SortOrder;
     
     /**
      * Actualiza Usuarios
-     * <p> Parámetros del Método: String coduser, String desuser, String cluser, String p_codrol.
+     * <p> Parï¿½metros del Mï¿½todo: String coduser, String desuser, String cluser, String p_codrol.
      **/
     public void updatea() throws  NamingException {
         try {
@@ -466,9 +489,9 @@ import org.primefaces.model.SortOrder;
   		Context initContext = new InitialContext();     
  		DataSource ds = (DataSource) initContext.lookup(JNDI);
  		con = ds.getConnection();		
- 		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+ 		//Reconoce la base de datos de conecciï¿½n para ejecutar el query correspondiente a cada uno
  		DatabaseMetaData databaseMetaData = con.getMetaData();
- 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conecciï¿½n
  		
  		
  		String query = "";
@@ -477,7 +500,7 @@ import org.primefaces.model.SortOrder;
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL)";
+        	   query += " (SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL), trim(a.mail)";
         	   query += " FROM Bvt002 A, BVT003 B " ;
         	   query += " WHERE A.B_CODROL=B.CODROL" ;
         	   query += " AND A.CODUSER||A.DESUSER like '%" + ((String) filterValue).toUpperCase() + "%'";
@@ -486,7 +509,7 @@ import org.primefaces.model.SortOrder;
 	           query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-			   query += " SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL)";
+			   query += " SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL), trim(a.mail)";
 			   query += " FROM Bvt002 A, BVT003 B" ;
 			   query += " WHERE A.B_CODROL=B.CODROL " ;
 			   query += " and A.CODUSER||A.DESUSER like '%" + ((String) filterValue).toUpperCase() + "%'";
@@ -497,7 +520,7 @@ import org.primefaces.model.SortOrder;
         case "Microsoft SQL Server":
 			   query += "SELECT * FROM (SELECT ";
 			   query += "			   ROW_NUMBER() OVER (ORDER BY A.CODUSER ASC) AS ROW_NUM, ";
-			   query += "			   A.CODUSER , A.DESUSER, A.CLUSER, A.B_CODROL, B.DESROL ";
+			   query += "			   A.CODUSER , A.DESUSER, A.CLUSER, A.B_CODROL, B.DESROL, a.mail ";
 			   query += "			   FROM Bvt002 A, BVT003 B ";
 			   query += "			   WHERE A.B_CODROL=B.CODROL) TOT ";
 			   query += "WHERE  ";
@@ -520,6 +543,7 @@ import org.primefaces.model.SortOrder;
         select.setCluser(r.getString(3));
         select.setb_codrol(r.getString(4) + " - " + r.getString(5));
         select.setDesrol(r.getString(5));
+        select.setMail(r.getString(6));
         	//Agrega la lista
         	list.add(select);
         }
@@ -538,9 +562,9 @@ import org.primefaces.model.SortOrder;
     	Context initContext = new InitialContext();     
    		DataSource ds = (DataSource) initContext.lookup(JNDI);
    		con = ds.getConnection();
-   	   //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+   	   //Reconoce la base de datos de conecciï¿½n para ejecutar el query correspondiente a cada uno
  		DatabaseMetaData databaseMetaData = con.getMetaData();
- 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conecciï¿½n
    	      		
  		String query = "";
   		
@@ -579,8 +603,8 @@ import org.primefaces.model.SortOrder;
         
     /**
      * Leer datos de Usuarios
-     *<p> Parámetros del Método: String coduser, String desuser.
-      * * Fila desde y hasta para paginación, orden de la consulta.
+     *<p> Parï¿½metros del Mï¿½todo: String coduser, String desuser.
+      * * Fila desde y hasta para paginaciï¿½n, orden de la consulta.
      * @throws NamingException 
      * @throws IOException 
      **/
@@ -588,7 +612,7 @@ import org.primefaces.model.SortOrder;
     @SuppressWarnings("null")
 	public void  selectBvt002a(String usuario, String orden, String pool) throws NamingException  {
 
-        //Pool de conecciones JNDI. Cambio de metodología de conexión a bd. Julio 2010
+        //Pool de conecciones JNDI. Cambio de metodologï¿½a de conexiï¿½n a bd. Julio 2010
         Context initContext = new InitialContext();
         DataSource ds = (DataSource) initContext.lookup(JNDI);
         try {
@@ -647,9 +671,9 @@ import org.primefaces.model.SortOrder;
              Statement stmt;
              ResultSet rs;
              Connection con = ds.getConnection();
-           //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+           //Reconoce la base de datos de conecciÃ³n para ejecutar el query correspondiente a cada uno
       		DatabaseMetaData databaseMetaData = con.getMetaData();
-      		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+      		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conecciÃ³n
              //Class.forName(getDriver());
              //con = DriverManager.getConnection(
              //        getUrl(), getUsuario(), getClave());
@@ -679,7 +703,7 @@ import org.primefaces.model.SortOrder;
        		}
        		
              
-             System.out.println(query);
+             //System.out.println(query);
              try {
                  rs = stmt.executeQuery(query);
                  rows = 1;
@@ -718,13 +742,13 @@ import org.primefaces.model.SortOrder;
      }
 
      /**
-      * @return Retorna número de filas
+      * @return Retorna nï¿½mero de filas
       **/
      public int getRows(){
      	return rows;
      }
      /**
-      * @return Retorna número de columnas
+      * @return Retorna nï¿½mero de columnas
       **/
      public int getColumns(){
      	return columns;
@@ -737,6 +761,7 @@ import org.primefaces.model.SortOrder;
    		cluser = "";
    		b_codrol = " - ";
    		cluserold = "";
+   		mail = "";
  	}
 
 

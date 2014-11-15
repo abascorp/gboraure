@@ -63,10 +63,12 @@ public class TareaInvocar extends Bd implements Job {
 	
 	//Envía reporte
     //Selecciona nombre del reporte y id del grupo según hora programada
+   	String vlqueryORA = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato) from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job";
+   	String vlqueryPG = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato) from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job";
+   	String vlquerySQL = "select codrep, rutarep, rutatemp, opctareas, ruta_salida, formato from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job";
   
 	try {
-		consulta.selectPntGenerica("select trim(codrep), trim(rutarep), trim(rutatemp) from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job", JNDI);
-	
+	    consulta.selectPntGenericaMDB(vlqueryORA, vlqueryPG, vlquerySQL, JNDI);
 	//System.out.println("select nombrereporte, idgrupo, trim(rutareporte), trim(rutatemp) from mailtarea where hora='" + formato.format(new Date()) + "'");
 	   
     rowsrep = consulta.getRows();
@@ -74,16 +76,33 @@ public class TareaInvocar extends Bd implements Job {
 	
 	//Imprime reporte
 	if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo
-	 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), "pdf", vltablarep[0][1].toString(), vltablarep[0][2].toString(), vltablarep[0][0].toString(), sqlDate);
-
+	 if(!vltablarep[0][3].equals("2")){//Si no es igual a 2, es para envío de correo
+	 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][5].toString(), vltablarep[0][1].toString(), vltablarep[0][2].toString(), vltablarep[0][0].toString(), sqlDate);
+	 } else { //Se envia a URL particular, no se evía por correo
+	 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][5].toString(), vltablarep[0][1].toString(), vltablarep[0][4].toString(), vltablarep[0][0].toString(), sqlDate);	 
+	 }
 	}
 	//Consulta lista de correos
-	consulta.selectPntGenerica("select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
+	String vlquerymailORA = "select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
 			" from maillista a, t_programacion b" +
 			" where a.idgrupo=b.idgrupo  " +
 			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
 			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
-	        " and job =trim('" + job + "') order by a.mail", JNDI);
+	        " and job =trim('" + job + "') order by a.mail";
+	String vlquerymailPG = "select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
+			" from maillista a, t_programacion b" +
+			" where a.idgrupo=b.idgrupo  " +
+			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
+			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
+	        " and job =trim('" + job + "') order by a.mail";
+	String vlquerymailSQL = "select a.mail, b.rutatemp, b.codrep, b.asunto, b.contenido" +
+			" from maillista a, t_programacion b" +
+			" where a.idgrupo=b.idgrupo  " +
+			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
+			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
+	        " and job =trim('" + job + "') order by a.mail";
+	
+	consulta.selectPntGenericaMDB(vlquerymailORA, vlquerymailPG, vlquerymailSQL, JNDI);	
 	
 	/*
 	System.out.println("select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
@@ -95,7 +114,8 @@ public class TareaInvocar extends Bd implements Job {
 	rowsmail = consulta.getRows();
 	vltablamail = consulta.getArray();
 	
-	if (rowsmail>0){//Si la consulta es mayor a cero devuelve registros envía el correo
+	if (rowsmail>0 && !vltablarep[0][3].equals("2")){//Si la consulta es mayor a cero devuelve registros envía el correo
+		                                             //Envía correo siempre y cuando la opción no sea 2 (Envíar a URL)
 		for(int i=0;i<rowsmail;i++){
 		 new Sendmail().mailthread(vltablamail[i][0], vltablamail[i][1], vltablamail[i][2], vltablamail[i][3], vltablamail[i][4]);
 		}

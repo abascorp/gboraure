@@ -39,14 +39,15 @@ function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6,vT7,vT8,vT9,vT10,vT11){
 	  document.getElementById("formmailconfig:ruta").value = "NA";
 	}
 
-    function detalle(vT0,vT1,vT2,vT3,vT4,vT5,vT6){
+    function detalle(vT0,vT1,vT2,vT3,vT4,vT5,vT6,vT7){
     	$("#txt_det_1").text(vT0);
     	$("#txt_det_2").text(vT1);
     	$("#txt_det_3").text(vT2);
     	$("#txt_det_4").text(vT3);
     	$("#txt_det_5").text(vT4);
     	$("#txt_det_6").text(vT5);
-    	$("#txt_det_7").text(vT6);    	
+    	$("#txt_det_7").text(vT6); 
+    	$("#txt_det_8").text(vT7); 
     }
 
 	function controlSwitch(){

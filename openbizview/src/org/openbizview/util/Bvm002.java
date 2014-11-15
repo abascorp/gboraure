@@ -141,9 +141,7 @@ public class Bvm002 extends Bd implements Serializable {
     private String vvolumen;
     private String vcodart;
     private String vdesart;
-    
-    
-    
+
 
 	/**
 	 * @return the bvnumper
@@ -567,7 +565,7 @@ public class Bvm002 extends Bd implements Serializable {
 	           query += " and rn > (" + first + ")";
 
        pstmt = con.prepareStatement(query);
-       ////System.out.println(query);
+       System.out.println(query);
  		
        ResultSet r =  pstmt.executeQuery();
        

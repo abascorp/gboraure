@@ -223,7 +223,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(2, desgrup.toUpperCase());
             pstmt.setString(3, login);
             pstmt.setString(4, login);
-            System.out.println(query);
+            //System.out.println(query);
             try {
                 //Avisando
             	pstmt.executeUpdate();

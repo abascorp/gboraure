@@ -325,7 +325,7 @@ import org.primefaces.model.SortOrder;
      		if(codgrup==""){
      			codgrup = " - ";
      		}
-     		System.out.println("Grupo: " + veccodgrup[0].toUpperCase());
+     		//System.out.println("Grupo: " + veccodgrup[0].toUpperCase());
      		con = ds.getConnection();		
             //Class.forName(getDriver());
             //con = DriverManager.getConnection(
@@ -356,6 +356,8 @@ import org.primefaces.model.SortOrder;
             pstmt.close();
             con.close();
     	} catch (Exception e){
+    		msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+        	FacesContext.getCurrentInstance().addMessage(null, msj);
     		
     	}
     }
@@ -566,7 +568,7 @@ import org.primefaces.model.SortOrder;
   		}
   		
   		pstmt = con.prepareStatement(query);
-        System.out.println(query);
+        //System.out.println(query);
   		
         r =  pstmt.executeQuery();
         		

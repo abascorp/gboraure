@@ -466,7 +466,7 @@ public void setRows(int rows) {
 
         
         pstmt = con.prepareStatement(query);
-        System.out.println(query);
+        //System.out.println(query);
 
          r =  pstmt.executeQuery();
         

@@ -92,6 +92,43 @@
      </div>
      </div>
      
+     <!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">#{msg.bvt001Det}</h4>
+	      </div>
+	      <div class="modal-body">
+	  <div class="list-group">
+	  <div class="panel panel-info" id="containerF">
+	        <div class="panel-body">    
+	        <p:panel id="panelDetalle" >
+	        <h:panelGrid columns="2" columnClasses="col1,colmsg">
+	        <h:outputText value="#{msg.bvt001TbCod}"/>
+	        <span id="txt_det_1" class="detalleTarea"></span>
+	        <h:outputText value="#{msg.bvt001TbDes}"/>
+	        <span id="txt_det_2" class="detalleTarea"></span>
+	        <h:outputText value="#{msg.bvt001TbCom}"/>
+	        <span id="txt_det_3" class="detalleTarea"></span>
+	        <h:outputText value="#{msg.bvt001tbGrp}"/>
+	        <span id="txt_det_4" class="detalleTarea"></span>  
+			</h:panelGrid>
+	        </p:panel>
+	        </div>
+	        </div>    	   
+	  </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-info" data-dismiss="modal" >#{msg.html48}</button>
+	       </div>
+	    </div>
+	  </div>
+	</div>
+        
+
+     
      <p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvt001.lazyModel}"  lazy="true" sortBy="#{tb.codrep}"
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
@@ -113,7 +150,7 @@
             
             <p:column style="width:40px" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><p:graphicImage alt="img" title="#{msg.borrar}" value="../resources/img/borrar.png" style="text-align: center; height:20px; border: 0" /></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
             </f:facet>  
             <input type="checkbox" name="toDelete" class="chk" value="#{tb.codrep}"/>
             </p:column>  
@@ -127,10 +164,16 @@
             <f:facet name="header">#{msg.bvt001TbDes}</f:facet>  
             <h:outputLabel value="#{tb.desrep}"  />  
             </p:column> 
+           
             
-            <p:column>  
-            <f:facet name="header">#{msg.bvt001TbCom}</f:facet>  
-            <h:outputLabel value="#{tb.comrep}"  />  
+            <p:column style="width:100px" styleClass="wrap">  
+            <f:facet name="header">#{msg.maildetalle}</f:facet>  
+            <center>
+            <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal"
+            onclick="detalle('#{tb.codrep}','#{tb.desrep}','#{tb.comrep}','#{tb.vgrupo}') ;">
+            <i class="fa fa-search fa-2x"></i>
+            </button>
+            </center>
             </p:column>
             
             <p:column styleClass="wrap" style="width:100px" >  
@@ -155,6 +198,7 @@
 			
 
             </p:dataTable>   
+
        </h:form>
    </div>
     

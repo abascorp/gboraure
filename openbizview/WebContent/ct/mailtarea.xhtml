@@ -75,6 +75,9 @@
                  <f:selectItems value="#{listBean.opcTareas}"/>
                  <p:ajax update=":formmailconfig:tbResult" listener="#{bd.setOpcTareas(programacion.opctareas)}" oncomplete="inputs();controlSwitch()" />
                  </h:selectOneMenu>  
+                 <h:selectOneMenu id="emiters" value="#{programacion.formato}" >
+                 <f:selectItems value="#{listBean.opcEmiters}"/>
+                 </h:selectOneMenu>  
                  <p:tooltip for="opciones" value="#{msg.mailtareaOpciones}" />   
 			     <p:inputText id="tarea" maxlength="20"  value="#{programacion.tarea}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="tarea" value="#{msg.mailtareaNbrTarea}" />
@@ -146,9 +149,17 @@
 			 </div>	
 			 </div> 
 			 
-		<!-- Panel Info-->   
-        <p:dialog header="#{msg.maildetalle1}"  widgetVar="dlg1"  modal="true" height="auto"  width="auto" showEffect="fade">              
-        <div class="panel panel-info" id="containerF">
+		 <!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">#{msg.maildetalle}</h4>
+	      </div>
+	      <div class="modal-body">
+	  <div class="list-group">
+	   <div class="panel panel-info" id="containerF">
         <div class="panel-body">    
         <p:panel id="panelDetalle" >
         <h:panelGrid columns="2" columnClasses="col1,colmsg">
@@ -165,12 +176,21 @@
         <h:outputText value="#{msg.mailtareaDiag6}"/>
         <span id="txt_det_6" class="detalleTarea"></span>
         <h:outputText value="#{msg.mailtareaDiag7}"/>  
-        <span id="txt_det_7" class="detalleTarea"></span>     
+        <span id="txt_det_7" class="detalleTarea"></span> 
+        <h:outputText value="#{msg.mailtareaDiag8}"/>  
+        <span id="txt_det_8" class="detalleTarea"></span>     
 		</h:panelGrid>
         </p:panel>
         </div>
-        </div> 
-        </p:dialog>
+        </div>   
+	  </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-info" data-dismiss="modal" >#{msg.html48}</button>
+	       </div>
+	    </div>
+	  </div>
+	</div>	 
         
         
         <!-- Panel Params-->  
@@ -245,10 +265,10 @@
             <p:column style="width:100px" styleClass="wrap">  
             <f:facet name="header">#{msg.maildetalle}</f:facet>  
             <center>
-            <p:commandLink  
-            onclick="detalle('#{tb.vjob}', '#{tb.vdisparador}','#{tb.vfrecuenciades}','#{tb.vhora}:#{tb.vminuto}','#{tb.vcodrep}','#{tb.viddesidgrupo}','#{tb.vactivadetalletb}');PF('dlg1').show();"
-            title="Detalle"><i class="fa fa-search fa-2x"></i>
-            </p:commandLink>  
+           <button type="button" title="Detalle" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal"
+           onclick="detalle('#{tb.vjob}', '#{tb.vdisparador}','#{tb.vfrecuenciades}','#{tb.vhora}:#{tb.vminuto}','#{tb.vcodrep}','#{tb.viddesidgrupo}','#{tb.vactivadetalletb}','#{tb.vformato}') ;">			
+			<i class="fa fa-search fa-2x"></i>
+			</button> 
             </center>
             </p:column>
                         
@@ -256,7 +276,7 @@
             <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>  
             <center>
             <p:commandLink update=":formmailconfig:panel"
-            onclick="enviar('#{tb.vjob}', '#{tb.vdisparador}','#{tb.vhora}','#{tb.vminuto}','#{tb.vfrecuencia}','#{tb.vdiasem}','#{tb.vcodrep}', '#{tb.vidgrupo} - #{tb.viddesidgrupo}', '#{tb.vasunto}', '#{tb.vcontenido}', '#{tb.vdiames}', '#{tb.vdiainicio}','#{tb.ruta_salida}');"
+            onclick="enviar('#{tb.vjob}', '#{tb.vformato}','#{tb.vhora}','#{tb.vminuto}','#{tb.vfrecuencia}','#{tb.vdiasem}','#{tb.vcodrep}', '#{tb.vidgrupo} - #{tb.viddesidgrupo}', '#{tb.vasunto}', '#{tb.vcontenido}', '#{tb.vdiames}', '#{tb.vdiainicio}');"
             title="Enviar"><i class="fa fa-pencil-square-o fa-2x"></i></p:commandLink>  
             </center>
             </p:column>

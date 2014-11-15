@@ -28,7 +28,7 @@
 <ui:include src="common/timeout.xhtml" />
 <h:body >
 <f:view>
-		
+	
 <!-- Top-->
 <ui:include src="common/top.xhtml" />
 <div id="wrapper">
@@ -103,7 +103,7 @@
             
             <p:column style="width:40px" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><p:graphicImage alt="img" title="#{msg.borrar}" value="../resources/img/borrar.png" style="height:20px; border: 0" /></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
             </f:facet>  
             <input type="checkbox" name="toDelete" class="chk" value="#{tb.codgrup}"/>
             </p:column>  

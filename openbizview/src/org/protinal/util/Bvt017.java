@@ -17,7 +17,7 @@
     En caso contrario, consulte <http://www.gnu.org/licenses/>.
  */
 
-package org.openbizview.util;
+package org.protinal.util;
 
 /*
  * To change this template, choose Tools | Templates
@@ -40,6 +40,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openbizview.getset.GrupPlan;
+import org.openbizview.util.Bd;
 import org.openbizview.util.PntGenerica;
 
 /**

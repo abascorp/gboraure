@@ -471,8 +471,7 @@
 	//Selecciona las opciones de paginación de todas las tablas
 		private SelectItem[] opcTareas = new SelectItem[]{
 		new SelectItem("1", getMessage("mailtareaopc1")),
-		new SelectItem("2", getMessage("mailtareaopc2")),
-		new SelectItem("3", getMessage("mailtareaopc3"))};
+		new SelectItem("2", getMessage("mailtareaopc2"))};
 
 		/**
 		 * @return the opcTareas
@@ -488,6 +487,30 @@
 			this.opcTareas = opcTareas;
 		}
 		
-		
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////lista de opciones formato//////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Selecciona las opciones de paginación de todas las tablas
+	private SelectItem[] opcEmiters = new SelectItem[]{
+	new SelectItem("pdf", getMessage("maltareaoutputPdf")),
+	new SelectItem("xls", getMessage("maltareaoutputXls")),
+	new SelectItem("xlsx", getMessage("maltareaoutputXlsx")),
+	new SelectItem("ods", getMessage("maltareaoutputOds"))};
+
+	/**
+	 * @return the opcEmiters
+	 */
+	public SelectItem[] getOpcEmiters() {
+		return opcEmiters;
+	}
+
+	/**
+	 * @param opcEmiters the opcEmiters to set
+	 */
+	public void setOpcEmiters(SelectItem[] opcEmiters) {
+		this.opcEmiters = opcEmiters;
+	}
+	
+	
 	
 	}
