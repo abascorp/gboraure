@@ -225,9 +225,42 @@ public class Programacion extends Bd implements Serializable {
     private String opctareas = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("opc"); 
     private String ruta_salida; //Directorio de envío
     
+    //Formatos
+    private String formato;
+    private String vformato;
     
     
     
+    
+    
+	/**
+	 * @return the formato
+	 */
+	public String getFormato() {
+		return formato;
+	}
+
+	/**
+	 * @param formato the formato to set
+	 */
+	public void setFormato(String formato) {
+		this.formato = formato;
+	}
+
+	/**
+	 * @return the vformato
+	 */
+	public String getVformato() {
+		return vformato;
+	}
+
+	/**
+	 * @param vformato the vformato to set
+	 */
+	public void setVformato(String vformato) {
+		this.vformato = vformato;
+	}
+
 	/**
 	 * @return the ruta_salida
 	 */
@@ -1194,7 +1227,7 @@ public class Programacion extends Bd implements Serializable {
      		
      		String[] vecreporte = reporte.split("\\ - ", -1);
      		
-     		String query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'" + sdfecha.format(diainicio) + "',?,?,?,?,?,?)";
+     		String query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'" + sdfecha.format(diainicio) + "',?,?,?,?,?,?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, vltrigger.toUpperCase());
             pstmt.setString(2, "unico");
@@ -1215,6 +1248,7 @@ public class Programacion extends Bd implements Serializable {
             pstmt.setString(17, paramnames);
             pstmt.setString(18, ruta_salida);
             pstmt.setString(19, opctareas);
+            pstmt.setString(20, formato);
 
             try {
                 pstmt.executeUpdate();
@@ -1250,12 +1284,16 @@ public class Programacion extends Bd implements Serializable {
    		
      	String query = "";
      	
+     	if(opctareas==null){
+     		opctareas = "1";
+     	}
+     	
      	switch ( productName ) {
         case "Oracle":
         	query += "  select * from ";
      	    query += " ( select query.*, rownum as rn from";
         	query += " ( select trim(a.job), trim(a.disparador), trim(to_char(substr(a.hora,1,2),'00')), trim(to_char(substr(a.hora,4,2),'00')), decode(a.frecuencia,'0', '" + getMessage("mailintervalo1") + "','1','" + getMessage("mailintervalo2") + "','2','" + getMessage("mailintervalo3") + "','3','" + getMessage("mailintervalo4") + "','4','" + getMessage("mailintervalo5") + "','" + getMessage("mailintervalo6") + "'), a.diasem";
-      		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"')";
+      		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"', trim(a.formato))";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
@@ -1266,7 +1304,7 @@ public class Programacion extends Bd implements Serializable {
              break;
         case "PostgreSQL":
         	query = "select trim(a.job), trim(a.disparador), trim(cast(substr(a.hora,1,2) as text)), trim(cast(substr(a.hora,4,2) as text)),  case when a.frecuencia = '0' then '" + getMessage("mailintervalo1") + "' when a.frecuencia = '1' then '" + getMessage("mailintervalo2") + "' when a.frecuencia = '2' then'" + getMessage("mailintervalo3") + "' when a.frecuencia = '3' then '" + getMessage("mailintervalo4") + "' when a.frecuencia = '4' then '" + getMessage("mailintervalo5") + "' else '" + getMessage("mailintervalo6") + "' end, a.diasem";
-      		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end";
+      		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end, trim(a.formato)";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
@@ -1304,6 +1342,7 @@ public class Programacion extends Bd implements Serializable {
             select.setClase(r.getString(15));
             select.setActiva(r.getString(16));
             select.setVactivadetalletb(r.getString(17));
+            select.setVformato(r.getString(18));
         	//Agrega la lista
         	list.add(select);
         	rows = list.size();
@@ -1844,6 +1883,8 @@ public class Programacion extends Bd implements Serializable {
 	    }
 	    
 	    
-  	
+  	 public void prueba(){
+  		 System.out.println("Ajaaaaaaa...................");
+  	 }
 }
 
