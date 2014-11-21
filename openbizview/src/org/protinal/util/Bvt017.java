@@ -28,6 +28,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -51,8 +52,14 @@ import org.openbizview.util.PntGenerica;
 @SessionScoped
 public class Bvt017 extends Bd {
 
-	public Bvt017() throws ClassNotFoundException, SQLException, NamingException{
-       select();
+	@PostConstruct
+	public void ini()  {
+       try {
+		select();
+	} catch (ClassNotFoundException | SQLException | NamingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
 

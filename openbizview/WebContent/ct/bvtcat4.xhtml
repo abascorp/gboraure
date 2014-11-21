@@ -77,12 +77,12 @@
 			     </p:autoComplete>
                  <p:watermark for="bcodcat1" value="&#160;&#160;#{msg.bvtcat4Cat1}" />
                  <p:message for="bcodcat1"/>
-			     <p:autoComplete id="bcodcat2" value="#{bvtcat4.b_codcat2}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat2}"  dropdown="true" scrollHeight="250">
+			     <p:autoComplete id="bcodcat2" value="#{bvtcat4.b_codcat2}" emptyMessage="#{msg.html138}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat2}"  dropdown="true" scrollHeight="250">
 			      <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat2(bvtcat4.b_codcat2)}" />
 			     </p:autoComplete>
                  <p:watermark for="bcodcat2" value="&#160;&#160;#{msg.bvtcat4Cat2}" />
                  <p:message for="bcodcat2"/>
-			     <p:autoComplete id="bcodcat3" value="#{bvtcat4.b_codcat3}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeCat3}"  dropdown="true"  scrollHeight="250">
+			     <p:autoComplete id="bcodcat3" value="#{bvtcat4.b_codcat3}" emptyMessage="#{msg.html138}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeCat3}"  dropdown="true"  scrollHeight="250">
 			      <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat3(bvtcat4.b_codcat3)}" />
 			     </p:autoComplete>
                  <p:watermark for="bcodcat3" value="&#160;&#160;#{msg.bvtcat4Cat3}" />

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Date;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -67,7 +68,8 @@ public class Bvm002 extends Bd implements Serializable {
 		return lazyModel;
 	}	
 
-	public Bvm002(){
+	@PostConstruct
+	public void init(){
 		lazyModel  = new LazyDataModel<Bvm002>(){
 			/**
 			 * 

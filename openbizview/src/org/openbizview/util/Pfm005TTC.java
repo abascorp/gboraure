@@ -28,6 +28,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -49,8 +50,14 @@ import org.openbizview.getset.Roles;
 	@ViewScoped
 	public class Pfm005TTC extends Bd {
 	
-	public Pfm005TTC() throws ClassNotFoundException, SQLException, NamingException{
-	  select();
+	@PostConstruct
+	public void init(){
+	  try {
+		select();
+	} catch (ClassNotFoundException | SQLException | NamingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
 	private String tipo = "";

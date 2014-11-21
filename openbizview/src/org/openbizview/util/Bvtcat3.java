@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -68,7 +69,8 @@ public class Bvtcat3 extends Bd implements Serializable {
 		return lazyModel;
 	}	
 	
-	public Bvtcat3() throws ClassNotFoundException, SQLException, NamingException{
+	@PostConstruct
+	public void init() {
 		
 		lazyModel  = new LazyDataModel<Bvtcat3>(){
 			/**

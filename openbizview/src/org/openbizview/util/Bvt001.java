@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -68,8 +69,8 @@ import org.primefaces.model.SortOrder;
 			return lazyModel;
 		}	
 	
-	
-	public Bvt001() throws ClassNotFoundException, SQLException, NamingException{
+	@PostConstruct
+	public void init() {
 		
 		lazyModel  = new LazyDataModel<Bvt001>(){
 			/**

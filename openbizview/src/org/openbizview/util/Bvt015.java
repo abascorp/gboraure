@@ -55,6 +55,7 @@ import org.openbizview.util.PntGenerica;
 	@ViewScoped
 	public class Bvt015 extends Bd {
 	
+		
 		public Bvt015() throws ClassNotFoundException, SQLException, NamingException{
 	 		
 	        select();

@@ -61,7 +61,7 @@
 				
 				
             <p:commandButton value="#{msg.chgpwdButtonCL}" action="#{bvt002.updatea()}" 
-            update="growl, panel" icon="ui-icon-disk" styleClass="botonera"/>&#160;&#160;
+            update="growl, panel" oncomplete="PF('idleDialog').show()" icon="ui-icon-disk" styleClass="botonera"/>&#160;&#160;
             <p:commandButton value="#{msg.chgpwdButtonL}"  process="@this"  icon="ui-icon-arrowrefresh-1-s" styleClass="botonera">
             <p:resetInput target="panel" /> 
             </p:commandButton>
@@ -70,6 +70,19 @@
 		</f:view>
 	</h:form>
    </div>
+   
+   <p:dialog header="#{msg.logClave}" resizable="false" closable="false"
+		widgetVar="idleDialog" modal="true" width="400">
+		<h:outputText value="#{msg.bvt002up}" />
+		<br />
+		<br />
+		<h:form>
+			<center>
+				<p:commandButton value="OPEN-BIZVIEW - LOGIN" icon=""
+					action="#{loginBean.logout}" />
+			</center>
+		</h:form>
+	</p:dialog>
     
         <!-- /#page-content-wrapper -->
 

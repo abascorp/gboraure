@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -72,7 +73,8 @@ import org.primefaces.model.SortOrder;
 		}
 
 
-	public Acccat1() throws ClassNotFoundException, SQLException, NamingException{
+	@PostConstruct	
+	public void init() {
 		lazyModel  = new LazyDataModel<Acccat1>(){
 			/**
 			 * 
@@ -122,7 +124,12 @@ import org.primefaces.model.SortOrder;
             
 		};
 	  //
-	  selectAcccat1();
+	  try {
+		selectAcccat1();
+	} catch (NamingException | SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 
 	
@@ -484,7 +491,7 @@ import org.primefaces.model.SortOrder;
   		
         
         pstmt = con.prepareStatement(query);
-        System.out.println(query);
+        //System.out.println(query);
   		
         r =  pstmt.executeQuery();
 

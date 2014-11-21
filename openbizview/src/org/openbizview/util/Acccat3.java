@@ -71,7 +71,9 @@ public class Acccat3 extends Bd implements Serializable {
 	public LazyDataModel<Acccat3> getLazyModel() {
 		return lazyModel;
 	}
-	public Acccat3() throws ClassNotFoundException, SQLException, NamingException{
+	
+	@PostConstruct
+	public void init() {
 		
 		lazyModel  = new LazyDataModel<Acccat3>(){
 			/**
@@ -122,10 +124,14 @@ public class Acccat3 extends Bd implements Serializable {
             
 		};
         //
-        selectAcccat3();
+        try {
+			selectAcccat3();
+		} catch (NamingException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	@PostConstruct
 	//Load the table before the html table is rended on the page
     public void initialize() 
     {

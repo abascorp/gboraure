@@ -24,6 +24,7 @@ public class LoginBean extends Bd {
     HttpSession sesionOk;
     HttpServletRequest rq = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private String sessionId;
+    StringMD md = new StringMD(); //Objeto encriptador
     String logged = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
     String loggedUsr = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("desuser");
 
@@ -100,17 +101,17 @@ public class LoginBean extends Bd {
 		// y se convierte en mayúscula
 		if(rows>0){
 		String vLusuario = tabla[0][0].toUpperCase().toString();
-		String vLclave = tabla[0][1].toUpperCase().toString();
+		String vLclave = tabla[0][1].toString();
 		////System.out.println("Usuario: " + vLusuario);
 		////System.out.println("Clave: " + vLclave);
 		
 		//Valida que usuario y claves sean los mismos, realiza el login y crea la variable de session
-		if(usuario.equals(vLusuario) && !clave.equals(vLclave)){
+		if(usuario.equals(vLusuario) && !md.getStringMessageDigest(clave,StringMD.SHA256).equals(vLclave)){
 			////System.out.println(getMessage("logCl"));
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("logCl"), "");
 			FacesContext.getCurrentInstance().addMessage(null, msj);
 
-		} else	if(usuario.equals(vLusuario) && clave.equals(vLclave)){
+		} else	if(usuario.equals(vLusuario) && md.getStringMessageDigest(clave,StringMD.SHA256).equals(vLclave)){
 			////System.out.println("Usuario y contraseña correctos");
 
 			//Creando la variable de session	

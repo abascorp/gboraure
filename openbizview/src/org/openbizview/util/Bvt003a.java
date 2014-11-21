@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ import org.primefaces.model.SortOrder;
 	 */
 	@ManagedBean
 	@ViewScoped
-	public class Bvt003 extends Bd implements Serializable {
+	public class Bvt003a extends Bd implements Serializable {
 		
 		/**
 		 * 
@@ -60,27 +61,25 @@ import org.primefaces.model.SortOrder;
 		private static final long serialVersionUID = 1L;
 		
 		
-	private LazyDataModel<Bvt003> lazyModel;  
+	private LazyDataModel<Bvt003a> lazyModel;  
 	
 	/**
 	 * @return the lazyModel
 	 */
-	public LazyDataModel<Bvt003> getLazyModel() {
+	public LazyDataModel<Bvt003a> getLazyModel() {
 		return lazyModel;
 	}	
-
 	
-	
-	@PostConstruct	
-	public void init(){
-		lazyModel  = new LazyDataModel<Bvt003>(){
+	@PostConstruct
+	public void init() {
+		lazyModel  = new LazyDataModel<Bvt003a>(){
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 7217573531435419432L;
 			
             @Override
-			public List<Bvt003> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
+			public List<Bvt003a> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
             	//Filtro
             	if (filters != null) {
                	 for(Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
@@ -121,17 +120,84 @@ import org.primefaces.model.SortOrder;
             }
             
 		};
-	
+		//
+		try {
+			selectBvt003();
+		} catch (NamingException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
+	
+	@PostConstruct
+	//Load the table before the html table is rended on the page
+    public void initialize() 
+    {
+		try {
+			selectBvt003();
+		} catch (NamingException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+	
 	private String codrol = "";
-	private String desrol = "";
+	private String coduser = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bcoduser"); //Usuario logeado
 	private Object filterValue = "";
-	private List<Bvt003> list = new ArrayList<Bvt003>();
+	private List<Bvt003a> list = new ArrayList<Bvt003a>();
+	private Map<String,String> listrol = new HashMap<String, String>();   //Lista de compañías disponibles para acceso a seguridad 
+	private List<String> selectedBvt002;   //Listado de roles seleccionadas
+	private Map<String, String> sorted;
 	private int validarOperacion = 0;
 	private int rows;
+	private String exito = "exito";
 	
-	     /**
+	
+	
+	 /**
+	 * @return the selectedBvt002
+	 */
+	public List<String> getSelectedBvt002() {
+		return selectedBvt002;
+	}
+
+	/**
+	 * @param selectedBvt002 the selectedBvt002 to set
+	 */
+	public void setSelectedBvt002(List<String> selectedBvt002) {
+		this.selectedBvt002 = selectedBvt002;
+	}
+
+	/**
+	 * @return the sorted
+	 */
+	public Map<String, String> getSorted() {
+		return sorted;
+	}
+
+	/**
+	 * @param sorted the sorted to set
+	 */
+	public void setSorted(Map<String, String> sorted) {
+		this.sorted = sorted;
+	}
+
+	/**
+	 * @return the exito
+	 */
+	public String getExito() {
+		return exito;
+	}
+
+	/**
+	 * @param exito the exito to set
+	 */
+	public void setExito(String exito) {
+		this.exito = exito;
+	}
+
+		/**
 	 * @return the codrol
 	 */
 	public String getCodrol() {
@@ -145,22 +211,22 @@ import org.primefaces.model.SortOrder;
 		this.codrol = codrol;
 	}
 	
-	/**
-	 * @return the desrol
-	 */
-	public String getDesrol() {
-		return desrol;
-	}
 	
+	
+
 	/**
-	 * @param desrol the desrol to set
+	 * @return the coduser
 	 */
-	public void setDesrol(String desrol) {
-		this.desrol = desrol;
+	public String getCoduser() {
+		return coduser;
 	}
 
-	
-	
+	/**
+	 * @param coduser the coduser to set
+	 */
+	public void setCoduser(String coduser) {
+		this.coduser = coduser;
+	}
 
 	/**
 	 * @return the validarOperacion
@@ -193,13 +259,13 @@ import org.primefaces.model.SortOrder;
 	ResultSet r;
 
 	/**
-     * Inserta roles.
+     * Inserta roles adicionales.
      * <p>
      * <b>Parametros del Metodo:<b> String codrol, String desrol unidos como un solo string.<br>
      * String pool, String login.<br><br>
      * <b>Ejemplo:</b>insertBvt003("01|EJEMPLO","jdbc/opennomina","admin").
      **/
-    public void insert() throws  NamingException {
+    private void insert(String prol) throws  NamingException {
     	//Valida que los campos no sean nulos
         try {
         	Context initContext = new InitialContext();     
@@ -207,28 +273,25 @@ import org.primefaces.model.SortOrder;
 
      		con = ds.getConnection();		
      		
-            String query = "INSERT INTO Bvt003 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO Bvt003a VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, codrol.toUpperCase());
-            pstmt.setString(2, desrol.toUpperCase());
+            pstmt.setString(1, prol.toUpperCase());
+            pstmt.setString(2, coduser.split(" - ")[0].toUpperCase());
             pstmt.setString(3, login);
             pstmt.setString(4, login);
             ////System.out.println(query);
             try {
                 //Avisando
-                pstmt.executeUpdate();
-                msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");               
-                limpiarValores();
+                pstmt.executeUpdate();           
              } catch (SQLException e)  {
             	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+            	FacesContext.getCurrentInstance().addMessage(null, msj);
             }
             pstmt.close();
             con.close();
             
         } catch (Exception e) {
         }
-    	
-        FacesContext.getCurrentInstance().addMessage(null, msj);
     }
     
     /**
@@ -251,9 +314,9 @@ import org.primefaces.model.SortOrder;
      		
      		String param = "'" + StringUtils.join(chkbox, "','") + "'";
      		
-     		String query = "DELETE from Bvt003 WHERE codrol in (" + param + ")";
+     		String query = "DELETE from Bvt003a WHERE coduser||codrol in (" + param + ")";
             pstmt = con.prepareStatement(query);
-            ////System.out.println(query);
+            //System.out.println(query);
             //Antes de insertar verifica si el rol del usuario tiene permisos para insertar
             
             try {
@@ -278,54 +341,21 @@ import org.primefaces.model.SortOrder;
     
     
     
-
-    /**
-     * Actualiza roles
-     * <b>Parametros del Metodo:<b> String codrol, String desrol unidos como un solo string.<br>
-     * String pool, String login.<br><br>
-     * <b>Ejemplo:</b>updateBvt003("01|EJEMPLO","jdbc/opennomina","admin").
-     **/
-    public void update() throws  NamingException {
-        try {
-        	Context initContext = new InitialContext();     
-     		DataSource ds = (DataSource) initContext.lookup(JNDI);
-
-     		con = ds.getConnection();
-     		
-            String query = "UPDATE Bvt003";
-             query += " SET desrol = ?, usract = ?, fecact='" + getFecha() + "'";
-             query += " WHERE codrol = ?";
-            ////System.out.println(query);
-            pstmt = con.prepareStatement(query);
-            pstmt.setString(1, desrol.toUpperCase());
-            pstmt.setString(2, login);
-            pstmt.setString(3, codrol.toUpperCase());
-            try {
-                //Avisando
-                pstmt.executeUpdate();
-                if(pstmt.getUpdateCount()==0){
-                	msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("msnNoUpdate"), "");
-                } else {
-                	msj = new FacesMessage(FacesMessage.SEVERITY_INFO,  getMessage("msnUpdate"), "");
-                }
-                desrol = "";
-            	validarOperacion = 0;
-                
-            } catch (SQLException e) {
-            	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, e.getMessage(), "");
-            }
-            pstmt.close();
-            con.close();
-        } catch (Exception e) {
-        }
-        FacesContext.getCurrentInstance().addMessage(null, msj);
-    }
-    
+  
     public void guardar() throws NamingException, SQLException, ClassNotFoundException{   	
-    	if(validarOperacion==0){
-    		insert();
-    	} else {
-    		update();
+    	if (selectedBvt002.size()<=0){
+    		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("acccat2IngUsr"), "");
+    		FacesContext.getCurrentInstance().addMessage(null, msj);
+    	} else {  	
+    	   for (int i = 0; i< selectedBvt002.size(); i++){
+    		  //System.out.println("Selected :" + selectedBvt002.get(i));
+    		insert(selectedBvt002.get(i));           
+    	   }
+   		limpiarValores();   
+        if(exito=="exito"){
+        	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");
+        	FacesContext.getCurrentInstance().addMessage(null, msj);
+        }
     	}
     }
     
@@ -342,6 +372,10 @@ import org.primefaces.model.SortOrder;
  		DatabaseMetaData databaseMetaData = con.getMetaData();
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
  		
+ 		if(coduser==null){
+ 			coduser = " - ";
+ 		}
+ 		String[] vecuser = coduser.split("\\ - ", -1);
  		
  		String query = "";
 
@@ -349,19 +383,19 @@ import org.primefaces.model.SortOrder;
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(CODROL), trim(DESROL)";
-        	   query += " FROM BVT003";
-        	   query += " WHERE codrol||desrol like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and codrol like '%" + codrol.toUpperCase() + "%'";
+        	   query += " (SELECT trim(coduser), trim(codrol)";
+        	   query += " FROM BVT003a";
+        	   query += " WHERE codrol||coduser like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and coduser like '" + vecuser[0].toUpperCase() + "%'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-        	   query += " SELECT trim(codrol), trim(desrol) ";
-        	   query += " FROM BVT003";
-        	   query += " WHERE codrol||desrol like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and codrol like '%" + codrol.toUpperCase() + "%'";
+        	   query += " SELECT trim(coduser), trim(codrol) ";
+        	   query += " FROM BVT003a";
+        	   query += " WHERE codrol||coduser like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and coduser like '" + vecuser[0].toUpperCase() + "%'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -371,10 +405,9 @@ import org.primefaces.model.SortOrder;
                query += " FROM (SELECT ";
                query += "       ROW_NUMBER() OVER (ORDER BY A.CODROL ASC) AS ROW_NUM, ";         
      	       query += "       A.CODROL, ";
-     	       query += "	    A.DESROL ";
+     	       query += "	    A.coduser ";
      	       query += " 		FROM BVT003 A";
      	       query += " 		WHERE A.CODROL + DESROL LIKE '%" + ((String) filterValue).toUpperCase() + "%') TOT";
-     	       query += "       and a.codrol like '%" + codrol.toUpperCase() + "%'";
 	  	       query += " WHERE ";
 	  	       query += " TOT.ROW_NUM <= " + pageSize;
 	           query += " AND TOT.ROW_NUM > " + first;
@@ -390,12 +423,13 @@ import org.primefaces.model.SortOrder;
         
         
         while (r.next()){
-     	Bvt003 select = new Bvt003();
-     	select.setCodrol(r.getString(1));
-        select.setDesrol(r.getString(2));	
+     	Bvt003a select = new Bvt003a();
+     	select.setCodrol(r.getString(2));
+        select.setCoduser(r.getString(1));
         	//Agrega la lista
         	list.add(select);
         }
+        coduser = null;
         //Cierra las conecciones
         pstmt.close();
         con.close();
@@ -417,16 +451,21 @@ import org.primefaces.model.SortOrder;
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
    	      		
  		String query = "";
+ 		
+ 		if(coduser==null){
+ 			coduser = " - ";
+ 		}
+ 		String[] vecuser = coduser.split("\\ - ", -1);
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt003('" + ((String) filterValue).toUpperCase() + "') from dual";
+        	 query = "SELECT count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt003('" + ((String) filterValue).toUpperCase() +  "')";
+        	 query = "SELECT count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] +  "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvt003('" + ((String) filterValue).toUpperCase() +  "')";
+       	 query = "SELECT DBO.count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] +  "')";
             break;
             }
 
@@ -444,6 +483,7 @@ import org.primefaces.model.SortOrder;
          e.printStackTrace();    
      }
         //Cierra las conecciones
+     coduser=null;
         pstmt.close();
         con.close();
         r.close();
@@ -459,10 +499,84 @@ import org.primefaces.model.SortOrder;
 
   	private void limpiarValores() {
     	codrol = "";
-    	desrol = "";
+    	coduser = "";
     	validarOperacion = 0;
 	}
+  	
+  	
+  	/**
+     * Leer Datos de nominas para asignar a menucheck
+     * @throws NamingException 
+	 * @throws SQLException 
+     * @throws IOException 
+     **/ 	
+  	private void selectBvt003() throws NamingException, SQLException  {
+  		
+  		Context initContext = new InitialContext();     
+    	DataSource ds = (DataSource) initContext.lookup(JNDI);
+        con = ds.getConnection();
+ 
+    	//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+  		DatabaseMetaData databaseMetaData = con.getMetaData();
+  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+  		
+  		String query = "";
+  		
+  		if(coduser==null){
+ 			coduser = " - ";
+ 		}
+ 		String[] vecuser = coduser.split("\\ - ", -1);
 
+  		switch ( productName ) {
+  		case "Oracle":
+        	query = "Select trim(codrol), codrol||' - '||desrol";
+            query += " from bvt003";
+            query += " where codrol not in (select b_codrol from bvt002 where coduser = '" + vecuser[0].toUpperCase() + "')";
+            query += " order by codrol";
+	        break;
+  		case "PostgreSQL":
+  			query = "Select trim(codrol), codrol||' - '||desrol";
+            query += " from bvt003";
+            query += " where codrol not in (select b_codrol from bvt002 where coduser = '" + vecuser[0].toUpperCase() + "')";
+            query += " order by codrol";
+	        break;
+  		case "Microsoft SQL Server":
+  			query = "Select codrol, codrol||' - '||desrol";
+            query += " from bvt003";
+            query += " where codrol not in (select b_codrol from bvt002 where coduser ? '" + vecuser[0].toUpperCase() + "')";
+            query += " order by codrol";
+	        break;
+	        }        
+
+
+        //System.out.println(query);
+
+        
+        pstmt = con.prepareStatement(query);
+        ////System.out.println(query);
+  		
+        r =  pstmt.executeQuery();
+        
+  		
+        
+        while (r.next()){
+        	String cat2 = new String(r.getString(1));
+        	String descat2 = new String(r.getString(2));
+        	
+            listrol.put(descat2, cat2);
+            sorted = sortByValues(listrol);
+            
+        }
+        //Cierra las conecciones
+        coduser=null;
+        pstmt.close();
+        con.close();
+        
+  	}
+
+  	public void reset() {
+  		coduser = "";    
+    }
   	
 
 

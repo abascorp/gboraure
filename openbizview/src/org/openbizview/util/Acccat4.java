@@ -72,7 +72,8 @@ import org.primefaces.model.SortOrder;
 			return lazyModel;
 		}
 	
-	public Acccat4() throws ClassNotFoundException, SQLException, NamingException{
+	@PostConstruct	
+	public void init() {
 		
 		lazyModel  = new LazyDataModel<Acccat4>(){
 			/**
@@ -123,7 +124,12 @@ import org.primefaces.model.SortOrder;
             
 		};
         //
-	   selectAcccat4();
+	   try {
+		selectAcccat4();
+	} catch (NamingException | SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
 	@PostConstruct

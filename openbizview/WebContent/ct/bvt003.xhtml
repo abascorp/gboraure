@@ -51,7 +51,7 @@
                  <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{bvt003.delete}" 
                  rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
                  <p:separator/>   
-                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="growl, panel, growl" process="@this" onclick="limpiar()"
+                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panel, growl" process="@this" onclick="limpiar()"
                  title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
                  <p:resetInput target="panel" />  
                  </p:commandButton>                              

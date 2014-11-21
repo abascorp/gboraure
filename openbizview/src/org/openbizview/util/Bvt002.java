@@ -17,10 +17,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -59,7 +65,8 @@ import org.primefaces.model.SortOrder;
 
 
 
-	public Bvt002() throws ClassNotFoundException, SQLException, NamingException{
+	@PostConstruct	
+	public void init() {
 		lazyModel  = new LazyDataModel<Bvt002>(){
 			/**
 			 * 
@@ -123,6 +130,10 @@ import org.primefaces.model.SortOrder;
 	private Object filterValue = "";
 	private List<Bvt002> list = new ArrayList<Bvt002>();
 	private int validarOperacion = 0;
+	
+	//Cambio de password
+	StringMD md = new StringMD();
+	private String randomKey;
 	
 	
 	
@@ -442,7 +453,7 @@ import org.primefaces.model.SortOrder;
     
     /**
      * Actualiza Usuarios
-     * <p> Par�metros del M�todo: String coduser, String desuser, String cluser, String p_codrol.
+     * <p> Parámetros del Método: String coduser, String desuser, String cluser, String p_codrol.
      **/
     public void updatea() throws  NamingException {
         try {
@@ -457,7 +468,7 @@ import org.primefaces.model.SortOrder;
              query += " SET CLUSER = ?";
              query += " WHERE CODUSER = ?";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, cluser.toUpperCase());
+            pstmt.setString(1, md.getStringMessageDigest(cluser.toUpperCase(), StringMD.SHA256));
             pstmt.setString(2, login.toUpperCase());
             try {
             	if(!cluser.equals(cluser1)){
@@ -682,21 +693,21 @@ import org.primefaces.model.SortOrder;
                      ResultSet.CONCUR_READ_ONLY);
              String query = "";
              
-             System.out.println( productName );
+             //System.out.println( productName );
              
              switch ( productName ) {
              case "Oracle":
-            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser)";
+            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser), trim(mail)";
                  query += " FROM BVT002";
                  query += " where coduser = '" + user.toUpperCase() + "'";
                   break;
              case "PostgreSQL":
-            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser)";
+            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser), trim(mail)";
                  query += " FROM BVT002";
                  query += " where coduser = '" + user.toUpperCase() + "'";
                   break;
              case "Microsoft SQL Server":
-            	 query = "SELECT coduser, cluser, B_CODROL, desuser";
+            	 query = "SELECT coduser, cluser, B_CODROL, desuser, mail";
                  query += " FROM BVT002";
                  query += " where coduser = '" + user.toUpperCase() + "'";
      	         break;            		   
@@ -742,13 +753,13 @@ import org.primefaces.model.SortOrder;
      }
 
      /**
-      * @return Retorna n�mero de filas
+      * @return Retorna número de filas
       **/
      public int getRows(){
      	return rows;
      }
      /**
-      * @return Retorna n�mero de columnas
+      * @return Retorna número de columnas
       **/
      public int getColumns(){
      	return columns;
@@ -763,6 +774,88 @@ import org.primefaces.model.SortOrder;
    		cluserold = "";
    		mail = "";
  	}
+   	
+   	
+   	/**
+     * Envía notificación a usuario al cambiar la contraseña
+    **/
+    private void ChangePassNotification2(String mail, String clave) {
+    	try {
+    		Context initContext = new InitialContext();     
+        	Session session = (Session) initContext.lookup(JNDIMAIL);
+    			// Crear el mensaje a enviar
+    			MimeMessage mm = new MimeMessage(session);
+    			// Establecer las direcciones a las que será enviado
+    			// el mensaje (test2@gmail.com y test3@gmail.com en copia
+    			// oculta)
+    			// mm.setFrom(new
+    			// InternetAddress("opennomina@dvconsultores.com"));
+    			mm.addRecipient(Message.RecipientType.TO,
+    					new InternetAddress(mail));
+	        
+    			// Establecer el contenido del mensaje
+    			mm.setSubject(getMessage("mailUserUserChgPass"));
+    			mm.setText(getMessage("mailNewUserMsj2"));
+    			
+    			// use this is if you want to send html based message
+                mm.setContent(getMessage("mailNewUserMsj6") + " " + coduser.toUpperCase() + " / " + clave + "<br/><br/> " + getMessage("mailNewUserMsj2"), "text/html; charset=utf-8");
+
+    			// Enviar el correo electrónico
+    			Transport.send(mm);
+    			//System.out.println("Correo enviado exitosamente");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+     }
+   	
+   	
+   	//Recuperación de contraseñas
+   	/**
+     * Recuperación de contraseña por parte del usuario
+     * @throws NamingException 
+   	 * @throws ClassNotFoundException 
+     * @throws IOException 
+     **/ 
+  	public void reqChgpass() throws NamingException, SQLException, ClassNotFoundException{
+  			try {
+  	        	Context initContext = new InitialContext();     
+  	        	DataSource ds = (DataSource) initContext.lookup(JNDI);
+  	        	con = ds.getConnection();
+  	        
+  	        randomKey = "BIZ"+md.randomKey();
+  	        	
+  			String query = "UPDATE bvt002";
+  			       query+= " set cluser = '" + md.getStringMessageDigest(randomKey.toUpperCase(), StringMD.SHA256) + "'";
+  			       query+= " where coduser = '" +  coduser.toUpperCase() + "'";
+  			pstmt = con.prepareStatement(query); 
+  			//System.out.println(query);
+  			Bvt002 seg = new Bvt002(); // Crea objeto para el login
+  			int rows = 0;
+  			// LLama al método que retorna el usuario y la contraseña
+  			seg.selectLogin(coduser.toUpperCase(), JNDI);
+  			rows = seg.getRows();
+  			String[][] vltabla = seg.getArray();
+            //Valida que exista el usuario
+  			if (rows == 0) {
+  				msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("noreg"), "");
+
+  			} else {
+  			pstmt.executeUpdate();
+
+            	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("chgpass7"), "");
+            	ChangePassNotification2(vltabla[0][4].toLowerCase(), randomKey);
+            cluser= "";
+  			}
+  			} catch (SQLException e) {
+                e.printStackTrace();
+                msj = new FacesMessage(FacesMessage.SEVERITY_FATAL,  e.getMessage(), "");
+            }
+  			
+  			pstmt.close();
+            con.close();
+              
+  		FacesContext.getCurrentInstance().addMessage(null, msj); 
+  	}
 
 
 }

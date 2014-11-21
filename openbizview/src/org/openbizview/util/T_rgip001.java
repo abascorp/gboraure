@@ -30,6 +30,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -64,8 +65,14 @@ import java.util.Date;
 	    private List<Calendario> filtro;
 	    private int validarOperacion = 0;
 	
-	public T_rgip001() throws ClassNotFoundException, SQLException, NamingException{
-	  select();
+	@PostConstruct
+	public void init(){
+	  try {
+		select();
+	} catch (ClassNotFoundException | SQLException | NamingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
 	

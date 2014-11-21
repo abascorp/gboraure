@@ -51,8 +51,13 @@ import org.openbizview.getset.AsociarCat;
 	@ViewScoped
 	public class Asocat extends Bd {
 	
-	public Asocat() throws ClassNotFoundException, SQLException, NamingException{
-	   select();
+	public void init() {
+	   try {
+		select();
+	} catch (ClassNotFoundException | SQLException | NamingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
 	private String bcodcat4 = "";

@@ -1882,9 +1882,5 @@ public class Programacion extends Bd implements Serializable {
 			return paramNames;
 	    }
 	    
-	    
-  	 public void prueba(){
-  		 System.out.println("Ajaaaaaaa...................");
-  	 }
 }
 

@@ -39,21 +39,20 @@
         <!-- Page Content --> 
              
      <div class="container-fluid" id="containerF">
-	  <h:form id="formAcccat2"  >
+	  <h:form id="formBvt003a"  >
 				
 				<div id="botones">              
                 <p:toolbar>  
                 <f:facet name="left"> 
-                 <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{acccat2.guardar}" 
+                 <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{bvt003a.guardar}" 
                  rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
-                 <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{acccat2.delete}" 
+                 <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{bvt003a.delete}" 
                  rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
                  <p:separator/>  
-                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panel,growl" process="@this" actionListener="#{acccat2.reset()}"
+                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panel,growl" process="@this" actionListener="#{bvt003a.reset()}"
                  title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
                  <p:resetInput target="panel" /> 
-                 <f:actionListener binding="#{bd.setRol('')}"/>
-                 <f:actionListener binding="#{bd.setAccCat1('')}"/>
+                  <f:actionListener binding="#{bd.setBcoduser('')}"/>
                  </p:commandButton>                             
                 </f:facet>   
                </p:toolbar>  
@@ -65,24 +64,19 @@
 			  <ui:include src="common/loader.xhtml"/>
 			  </div>
 	
-	
 				<!-- Panel -->
 				<div class="panel panel-info" style="margin-top: 30px">
            <div class="panel-body">
-		         <p:panel id="panel"  header="#{msg.acccat2tit}">
+		         <p:panel id="panel"  header="#{msg.bvt003atit}">
 		         <h:panelGrid columns="1" columnClasses="col1">	 
-			     <p:autoComplete id="rol" value="#{acccat2.b_codrol}" emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
-			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setRol(acccat2.b_codrol)}" />		
+			     <p:autoComplete id="coduser" value="#{bvt003a.coduser}" emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeUser}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
+			     <p:ajax event="itemSelect" update="roles, tbResult" listener="#{bd.setBcoduser(bvt003a.coduser)}" />
+			     <f:event type="preRenderView" listener="#{bvt003a.initialize}"/>			
 			     </p:autoComplete>
-		         <p:watermark for="rol" value="#{msg.acccat2rol}" />
-		         <p:message for="rol"/>
-			     <p:autoComplete id="bcodcat1" value="#{acccat2.b_codcat1}" emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeCat1AccCat2}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
-			     <p:ajax event="itemSelect" update="tbResult, bcodcat2" listener="#{bd.setAccCat1(acccat2.b_codcat1)}" />			     	
-			     </p:autoComplete>
-			     <p:watermark for="bcodcat1" value="#{msg.acccat2Cat1}" />
-			     <p:message for="bcodcat1"/>
-			     <p:selectCheckboxMenu  value="#{acccat2.selectedAcccat2}" id="bcodcat2"  label="#{msg.acccat2Lista}" filter="true" filterText="Filter" filterMatchMode="contains" panelStyle="width:400px;"  >  
-                 <f:selectItems value="#{acccat2.sorted}" />  
+		         <p:watermark for="coduser" value="#{msg.bvt006User} *" />
+		         <p:message for="coduser"/>
+			     <p:selectCheckboxMenu  value="#{bvt003a.selectedBvt002}" id="roles" label="#{msg.bvt003a}" filter="true" filterText="Filter" filterMatchMode="contains" panelStyle="width:400px;"  required="true" >  
+                 <f:selectItems value="#{bvt003a.sorted}" />  
                  </p:selectCheckboxMenu>  
 		         </h:panelGrid>
 	             </p:panel>
@@ -92,10 +86,10 @@
 			
 
 			<!-- Tabla con el resultado -->
-			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{acccat2.lazyModel}"   lazy="true" sortBy="#{tb.b_codcat2}"
+			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvt003a.lazyModel}"   lazy="true" sortBy="#{tb.coduser}"
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
-			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{acccat2.rows}"  
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvt003a.rows}"  
 			widgetVar="global">
 			
 			<f:facet name="header"> 			
@@ -111,36 +105,22 @@
             
             <p:column style="width:40px" >  
             <f:facet  name="header">
-           <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
             </f:facet>  
-            <input type="checkbox" name="toDelete" class="chk" value="#{tb.b_codrol}#{tb.b_codcat1}#{tb.b_codcat2}"/>
+            <input type="checkbox" name="toDelete" class="chk" value="#{tb.coduser}#{tb.codrol}"/>
             </p:column>
            
             
-            <p:column sortBy="#{tb.b_codrol}" styleClass="wrap" style="width:100px">  
-            <f:facet name="header">#{msg.acccat2TbUsuario}</f:facet> 
-            <h:outputLabel value="#{tb.b_codrol}" />  
+            <p:column sortBy="#{tb.coduser}" styleClass="wrap" >  
+            <f:facet name="header">#{msg.mailconfigTbUser}</f:facet> 
+            <h:outputLabel value="#{tb.coduser}" />  
             </p:column>  
             
-            <p:column sortBy="#{tb.a.b_codcat1}" styleClass="wrap" style="width:100px">  
-            <f:facet name="header">#{msg.acccat2TbCod1}</f:facet>  
-            <h:outputLabel value="#{tb.b_codcat1}" />
+            <p:column sortBy="#{tb.codrol}" styleClass="wrap">  
+            <f:facet name="header">#{msg.bvtmenuTbRol}</f:facet>  
+            <h:outputLabel value="#{tb.codrol}" />
             </p:column> 
             
-            <p:column sortBy="#{tb.descat1}" styleClass="wrap">  
-            <f:facet name="header">#{msg.acccat2TbCat1}</f:facet>  
-            <h:outputLabel value="#{tb.descat1}"  />
-            </p:column> 
-            
-            <p:column sortBy="#{tb.b_codcat2}" styleClass="wrap" style="width:100px">  
-            <f:facet name="header">#{msg.acccat2TbCod2}</f:facet>  
-            <h:outputLabel value="#{tb.b_codcat2}"  />
-            </p:column> 
-            
-            <p:column sortBy="#{tb.descat2}" styleClass="wrap">  
-            <f:facet name="header">#{msg.acccat2TbCat2}</f:facet>  
-            <h:outputLabel value="#{tb.descat2}"  />
-            </p:column> 
           
              </p:dataTable>   
        </h:form>

@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -48,7 +49,8 @@ public class Maillista  extends Bd implements Serializable {
 		return lazyModel;
 	}	
 	
-	public Maillista() throws SQLException, NamingException{
+	@PostConstruct
+	public void init() {
 		
 		lazyModel  = new LazyDataModel<Maillista>(){
 			/**

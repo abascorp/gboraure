@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -52,8 +53,14 @@ import org.openbizview.util.PntGenerica;
 @ViewScoped
 public class Bvt011 extends Bd {
 
-	public Bvt011() throws ClassNotFoundException, SQLException, NamingException{
-         select();
+	@PostConstruct
+	public void init() {
+         try {
+			select();
+		} catch (ClassNotFoundException | SQLException | NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private String bcodciaorigen = "";

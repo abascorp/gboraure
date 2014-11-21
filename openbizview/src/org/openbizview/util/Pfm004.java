@@ -50,7 +50,8 @@ import org.openbizview.util.PntGenerica;
 @ViewScoped
 public class Pfm004 extends Bd {
 
-	public Pfm004() throws IOException {	
+	@PostConstruct
+	public void init() {	
         try {
 			select();
 			selectInputs();    //Inputs para modificar planificación
