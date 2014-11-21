@@ -714,7 +714,7 @@ import org.primefaces.model.SortOrder;
        		}
        		
              
-             //System.out.println(query);
+            // System.out.println(query);
              try {
                  rs = stmt.executeQuery(query);
                  rows = 1;
@@ -835,6 +835,8 @@ import org.primefaces.model.SortOrder;
   			seg.selectLogin(coduser.toUpperCase(), JNDI);
   			rows = seg.getRows();
   			String[][] vltabla = seg.getArray();
+  			//System.out.println("Mail: " + vltabla[0][4].toLowerCase());
+        	//System.out.println("RandomKey: " + randomKey);
             //Valida que exista el usuario
   			if (rows == 0) {
   				msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("noreg"), "");
@@ -844,6 +846,7 @@ import org.primefaces.model.SortOrder;
 
             	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("chgpass7"), "");
             	ChangePassNotification2(vltabla[0][4].toLowerCase(), randomKey);
+            	
             cluser= "";
   			}
   			} catch (SQLException e) {
