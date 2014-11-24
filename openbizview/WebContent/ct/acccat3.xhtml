@@ -79,13 +79,12 @@
                  <p:message for="rol"/>
 			     <p:autoComplete id="bcodcat1" value="#{acccat3.b_codcat1}"  emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeCat1AccCat2}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
 			     <p:ajax event="itemSelect" update="bcodcat3, tbResult"  listener="#{bd.setAccCat1(acccat3.b_codcat1)}" />
-			     <f:event type="preRenderView" listener="#{acccat3.initialize}"/>	
 			     </p:autoComplete>
                  <p:watermark for="bcodcat1" value="#{msg.acccat3Cat1}" />
                  <p:message for="bcodcat1"/>
 			     <p:autoComplete id="bcodcat2" value="#{acccat3.b_codcat2}"  emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeCat2AccCat3}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
 			     <p:ajax event="itemSelect"  update="bcodcat3, tbResult" listener="#{bd.setAccCat2(acccat3.b_codcat2)}" />
-			     <f:event type="preRenderView" listener="#{acccat3.initialize}"/>
+			     <f:event type="preRenderView" listener="#{acccat3.init}"/>
 			     </p:autoComplete>
                  <p:watermark for="bcodcat2" value="#{msg.acccat3Cat2}" />
                  <p:message for="bcodcat2"/>

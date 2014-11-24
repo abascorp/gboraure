@@ -123,25 +123,10 @@ public class Acccat3 extends Bd implements Serializable {
             }
             
 		};
-        //
-        try {
-			selectAcccat3();
-		} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sorted = new HashMap<String,String>();
+		selectAcccat3();
 	}
 	
-	//Load the table before the html table is rended on the page
-    public void initialize() 
-    {
-		try {
-			selectAcccat3();
-		} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
 	
 	 private String b_codrol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("segrol");
 	 private String b_codcat1 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat1"); 
@@ -579,8 +564,8 @@ public class Acccat3 extends Bd implements Serializable {
 	 * @throws SQLException 
      * @throws IOException 
      **/ 	
-  	private void selectAcccat3() throws NamingException, SQLException  {
-  		
+  	private void selectAcccat3() {
+  		try {
   		Context initContext = new InitialContext();     
     	DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
@@ -655,6 +640,11 @@ public class Acccat3 extends Bd implements Serializable {
         //Cierra las conecciones
         pstmt.close();
         con.close();
+        
+  		} catch (NamingException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
         
   	}
   	

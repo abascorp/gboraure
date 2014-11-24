@@ -124,13 +124,9 @@ import org.primefaces.model.SortOrder;
 	            }
 	            
 			};	
+			sorted = new HashMap<String,String>();
 			selectAcccat2();	
 		}
-	
-	//Constructor 
-	public Acccat2(){
-				
-	}
 		
 	
 	 private String b_codrol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("segrol");
@@ -370,14 +366,14 @@ import org.primefaces.model.SortOrder;
      * @throws ClassNotFoundException 
      **/ 
     public void guardar() throws NamingException, SQLException, ClassNotFoundException{  
-    	System.out.println("Selected :" + selectedAcccat2.size());
+    	//System.out.println("Selected :" + selectedAcccat2.size());
         if (selectedAcccat2.size()<=0){
     		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("acccat2IngCat2"), "");
     		FacesContext.getCurrentInstance().addMessage(null, msj);
     	} else {  	
     	   for (int i = 0; i< selectedAcccat2.size(); i++){
-    		  System.out.println("Selected :" + selectedAcccat2.get(i));
-    		//insert(selectedAcccat2.get(i));           
+    		  //System.out.println("Selected :" + selectedAcccat2.get(i));
+    		insert(selectedAcccat2.get(i));           
     	   }
    		limpiarValores();   
         if(exito=="exito"){
@@ -581,7 +577,6 @@ import org.primefaces.model.SortOrder;
      * @throws IOException 
      **/ 	
   	private void selectAcccat2()   {
-  		System.out.println("Selecting");
   		Context initContext;
 		try {
 		initContext = new InitialContext();

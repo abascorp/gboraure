@@ -124,26 +124,12 @@ import org.primefaces.model.SortOrder;
             
 		};
         //
-	   try {
+		sorted = new HashMap<String,String>();
 		selectAcccat4();
-	} catch (NamingException | SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+
 	}
 	
-	@PostConstruct
-	//Load the table before the html table is rended on the page
-    public void initialize()
-    {
-		try {
-			selectAcccat4();
-		} catch (NamingException | SQLException  e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-	
+		
 	private String b_codrol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("segrol");
 	private String b_codcat1 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat1"); 
 	private String b_codcat2 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cat2"); 
@@ -735,8 +721,8 @@ import org.primefaces.model.SortOrder;
 	 * @throws SQLException 
      * @throws IOException 
      **/ 	
-  	private void selectAcccat4() throws NamingException, SQLException  {
-  		
+  	private void selectAcccat4()  {
+  		try {
   		Context initContext = new InitialContext();     
     	DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
@@ -822,7 +808,10 @@ import org.primefaces.model.SortOrder;
         //Cierra las conecciones
         pstmt.close();
         con.close();
-        
+  		} catch (NamingException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
   	}
   	
       

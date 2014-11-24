@@ -121,52 +121,38 @@ import org.primefaces.model.SortOrder;
             
 		};
 		//
-		try {
-			selectBvt003();
-		} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		listrol = new HashMap<String,String>();
+		selectBvt003();
+
 	}
 	
-	
-	@PostConstruct
-	//Load the table before the html table is rended on the page
-    public void initialize() 
-    {
-		try {
-			selectBvt003();
-		} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
+
 	
 	private String codrol = "";
 	private String coduser = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bcoduser"); //Usuario logeado
 	private Object filterValue = "";
 	private List<Bvt003a> list = new ArrayList<Bvt003a>();
 	private Map<String,String> listrol = new HashMap<String, String>();   //Lista de compañías disponibles para acceso a seguridad 
-	private List<String> selectedBvt002;   //Listado de roles seleccionadas
+	private List<String> selectedBvt003;   //Listado de roles seleccionadas
 	private Map<String, String> sorted;
 	private int validarOperacion = 0;
 	private int rows;
 	private String exito = "exito";
 	
 	
-	
-	 /**
-	 * @return the selectedBvt002
+
+	/**
+	 * @return the selectedBvt003
 	 */
-	public List<String> getSelectedBvt002() {
-		return selectedBvt002;
+	public List<String> getSelectedBvt003() {
+		return selectedBvt003;
 	}
 
 	/**
-	 * @param selectedBvt002 the selectedBvt002 to set
+	 * @param selectedBvt003 the selectedBvt003 to set
 	 */
-	public void setSelectedBvt002(List<String> selectedBvt002) {
-		this.selectedBvt002 = selectedBvt002;
+	public void setSelectedBvt003(List<String> selectedBvt003) {
+		this.selectedBvt003 = selectedBvt003;
 	}
 
 	/**
@@ -343,13 +329,13 @@ import org.primefaces.model.SortOrder;
     
   
     public void guardar() throws NamingException, SQLException, ClassNotFoundException{   	
-    	if (selectedBvt002.size()<=0){
+    	if (selectedBvt003.size()<=0){
     		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("acccat2IngUsr"), "");
     		FacesContext.getCurrentInstance().addMessage(null, msj);
     	} else {  	
-    	   for (int i = 0; i< selectedBvt002.size(); i++){
+    	   for (int i = 0; i< selectedBvt003.size(); i++){
     		  //System.out.println("Selected :" + selectedBvt002.get(i));
-    		insert(selectedBvt002.get(i));           
+    		insert(selectedBvt003.get(i));           
     	   }
    		limpiarValores();   
         if(exito=="exito"){
@@ -371,7 +357,7 @@ import org.primefaces.model.SortOrder;
  		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
  		DatabaseMetaData databaseMetaData = con.getMetaData();
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
- 		
+ 		//System.out.println("coduser :" + coduser);
  		if(coduser==null){
  			coduser = " - ";
  		}
@@ -429,7 +415,6 @@ import org.primefaces.model.SortOrder;
         	//Agrega la lista
         	list.add(select);
         }
-        coduser = null;
         //Cierra las conecciones
         pstmt.close();
         con.close();
@@ -483,7 +468,6 @@ import org.primefaces.model.SortOrder;
          e.printStackTrace();    
      }
         //Cierra las conecciones
-     coduser=null;
         pstmt.close();
         con.close();
         r.close();
@@ -510,8 +494,8 @@ import org.primefaces.model.SortOrder;
 	 * @throws SQLException 
      * @throws IOException 
      **/ 	
-  	private void selectBvt003() throws NamingException, SQLException  {
-  		
+  	private void selectBvt003()  {
+  		try {
   		Context initContext = new InitialContext();     
     	DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
@@ -560,18 +544,20 @@ import org.primefaces.model.SortOrder;
   		
         
         while (r.next()){
-        	String cat2 = new String(r.getString(1));
-        	String descat2 = new String(r.getString(2));
+        	String codrol = new String(r.getString(1));
+        	String desrol = new String(r.getString(2));
         	
-            listrol.put(descat2, cat2);
+            listrol.put(desrol, codrol);
             sorted = sortByValues(listrol);
             
         }
         //Cierra las conecciones
-        coduser=null;
         pstmt.close();
         con.close();
-        
+  		} catch (NamingException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
   	}
 
   	public void reset() {

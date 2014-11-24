@@ -70,12 +70,12 @@
 		         <p:panel id="panel"  header="#{msg.bvt003atit}">
 		         <h:panelGrid columns="1" columnClasses="col1">	 
 			     <p:autoComplete id="coduser" value="#{bvt003a.coduser}" emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeUser}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
-			     <p:ajax event="itemSelect" update="roles, tbResult" listener="#{bd.setBcoduser(bvt003a.coduser)}" />
-			     <f:event type="preRenderView" listener="#{bvt003a.initialize}"/>			
+			     <p:ajax event="itemSelect" update="tbResult, roles" listener="#{bd.setBcoduser(bvt003a.coduser)}" />
+			     <f:event type="preRenderView" listener="#{bvt003a.init}"/>			
 			     </p:autoComplete>
 		         <p:watermark for="coduser" value="#{msg.bvt006User} *" />
 		         <p:message for="coduser"/>
-			     <p:selectCheckboxMenu  value="#{bvt003a.selectedBvt002}" id="roles" label="#{msg.bvt003a}" filter="true" filterText="Filter" filterMatchMode="contains" panelStyle="width:400px;"  required="true" >  
+			     <p:selectCheckboxMenu  value="#{bvt003a.selectedBvt003}" id="roles" label="#{msg.bvt003a}" filter="true" filterText="Filter" filterMatchMode="contains" panelStyle="width:400px;"  required="true" >  
                  <f:selectItems value="#{bvt003a.sorted}" />  
                  </p:selectCheckboxMenu>  
 		         </h:panelGrid>

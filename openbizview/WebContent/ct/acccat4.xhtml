@@ -89,7 +89,7 @@
 	             <p:message for="bcodcat2"/>
 			     <p:autoComplete id="bcodcat3" value="#{acccat4.b_codcat3}"  emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeCat3AccCat4}"  required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" dropdown="true"  scrollHeight="250">
 			     <p:ajax event="itemSelect" update="bcodcat4, tbResult" listener="#{bd.setAccCat3(acccat4.b_codcat3)}" />
-			      <f:event type="preRenderView" listener="#{acccat4.initialize}"/>
+			      <f:event type="preRenderView" listener="#{acccat4.init}"/>
 			     </p:autoComplete>
 			     <p:watermark for="bcodcat3" value="#{msg.acccat4Cat3}" />
 			     <p:message for="bcodcat3"/>

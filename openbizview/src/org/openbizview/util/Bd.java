@@ -308,7 +308,7 @@ public class Bd  {
 	}
 	
 	/**
-	 * Setea las opciones de envio, solo para usar en malprogramación
+	 * Setea las opciones de envio, solo para usar en mailprogramación
 	 * @param next
 	 */
 	public void setOpcTareas(String opc){
