@@ -108,7 +108,7 @@ public class Maillista  extends Bd implements Serializable {
 	private int validarOperacion = 0;//Param guardar para validar si guarda o actualiza
 	private Object filterValue = "";
 	private List<Maillista> list = new ArrayList<Maillista>();
-   	
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
 	
      
 
@@ -244,11 +244,12 @@ public void setRows(int rows) {
     		
      		String[] vecidgrupo = idgrupo.split("\\ - ", -1);
 
-            String query = "INSERT INTO MAILLISTA VALUES (?,?,?)";
+            String query = "INSERT INTO MAILLISTA VALUES (?,?,?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, Integer.parseInt(vecidgrupo[0]));
             pstmt.setString(2, idmail.toUpperCase());
             pstmt.setString(3, mail.toLowerCase());
+            pstmt.setInt(4, Integer.parseInt(instancia));
 
             try {
                 pstmt.executeUpdate();
@@ -291,7 +292,7 @@ public void setRows(int rows) {
         	
         	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 
-        	String query = "DELETE from MAILlista WHERE IDGRUPO||IDMAIL in (" + param + ")";
+        	String query = "DELETE from MAILlista WHERE IDGRUPO||IDMAIL in (" + param + ") and instancia = '" + instancia + "'";
             pstmt = con.prepareStatement(query);
             //System.out.println(query);
             
@@ -340,12 +341,12 @@ public void setRows(int rows) {
             case "Oracle":
             	query = "UPDATE MAILLISTA";
          	    query += " SET mail = ?";
-         	    query += " where IDGRUPO = ? and IDMAIL = ?";
+         	    query += " where IDGRUPO = ? and IDMAIL = ? and instancia = '" + instancia + "'";
                  break;
             case "PostgreSQL":
             	query = "UPDATE MAILLISTA";
          	    query += " SET mail = ?";
-         	    query += " where cast(IDGRUPO as text) = ? and cast(IDMAIL as text) = ?";
+         	    query += " where cast(IDGRUPO as text) = ? and cast(IDMAIL as text) = ? and instancia = '" + instancia + "'";
                  break;
             }
 
@@ -430,6 +431,8 @@ public void setRows(int rows) {
         	   query += " WHERE A.IDGRUPO=B.IDGRUPO";
         	   query += " and a.idgrupo||b.idmail||b.mail like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and  a.idgrupo like '" + vecidgrupo[0] + "%'";
+        	   query += " and  b.idmail like '" + idmail + "%'";
+        	   query += " AND   b.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -440,6 +443,8 @@ public void setRows(int rows) {
     	       query += " WHERE A.IDGRUPO=B.IDGRUPO";
     	       query += " and cast(a.idgrupo as text)||b.idmail||b.mail like '%" + ((String) filterValue).toUpperCase() + "%'";
     	       query += " and  cast(a.idgrupo as text) like '" + vecidgrupo[0] + "%'";
+    	       query += " and  b.idmail like '" + idmail + "%'";
+    	       query += " AND   b.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -461,6 +466,8 @@ public void setRows(int rows) {
         	query += " WHERE ";
         	query += " CAST(A.IDGRUPO AS CHAR) + A.IDMAIL + A.MAIL LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
         	query += " AND CAST(A.IDGRUPO AS CHAR) LIKE '" + vecidgrupo[0] + "%'";
+        	query += " and  a.idmail like '" + idmail + "%'";
+        	query += " AND   A.instancia = '" + instancia + "'";
         	query += " AND A.ROW_NUM > " + first;
         	query += " ORDER BY " + sortField ;
           break;
@@ -520,13 +527,13 @@ public void setRows(int rows) {
  		
  		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "') from dual";
+        	 query = "SELECT count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "')";
+        	 query = "SELECT count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "')";
+       	 query = "SELECT DBO.count_maillista('" + ((String) filterValue).toUpperCase() + "','" + vecidgrupo[0] + "','" + instancia + "')";
             break;
             }
 

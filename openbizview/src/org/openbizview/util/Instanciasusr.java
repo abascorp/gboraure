@@ -53,7 +53,7 @@ import org.primefaces.model.SortOrder;
 	 */
 	@ManagedBean
 	@ViewScoped
-	public class Bvt007 extends Bd implements Serializable {
+	public class Instanciasusr extends Bd implements Serializable {
 		
 		/**
 		 * 
@@ -61,26 +61,28 @@ import org.primefaces.model.SortOrder;
 		private static final long serialVersionUID = 1L;
 		
 		
-		private LazyDataModel<Bvt007> lazyModel;  
+		private LazyDataModel<Instanciasusr> lazyModel;  
 		
 		
-		/**
+	
+	/**
 		 * @return the lazyModel
 		 */
-		public LazyDataModel<Bvt007> getLazyModel() {
+		public LazyDataModel<Instanciasusr> getLazyModel() {
 			return lazyModel;
-		}	
-	
+		}
+
+
 	@PostConstruct	
 	public void init() {
-		lazyModel  = new LazyDataModel<Bvt007>(){
+		lazyModel  = new LazyDataModel<Instanciasusr>(){
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 7217573531435419432L;
 			
             @Override
-			public List<Bvt007> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
+			public List<Instanciasusr> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
             	//Filtro
             	if (filters != null) {
                	 for(Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
@@ -123,85 +125,56 @@ import org.primefaces.model.SortOrder;
 		};
 	  //
 	  try {
-		selectRep();
+		  selectInstanciasUsr();
 	} catch (NamingException | SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	}
+
 	
-	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
-	private String b_codrol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("segrol");
-	private String b_codrep = "";
-	private String desrol = "";
-	private String desrep;
+	private String coduser = "";
+	private String instancias = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bcoduser");
+	private String descripcion = "";
 	private Object filterValue = "";
-	private List<Bvt007> list = new ArrayList<Bvt007>();
-	private Map<String,String> listRep = new HashMap<String, String>();   //Lista de compañías disponibles para acceso a seguridad 
-	private List<String> selectedRep;   //Listado de compañias seleccionadas
-	private Map<String, String> sorted;
-	private String exito = "exito";
-	
-	
-		
+	private List<Instanciasusr> list = new ArrayList<Instanciasusr>();
+	private Map<String,String> listUsr = new HashMap<String, String>();   //Lista de compañías disponibles para acceso a seguridad 
+    private List<String> selectedUsr;   //Listado de compañias seleccionadas
+    private Map<String, String> sorted;
+    private String exito = "exito";
 
-   
 
 	/**
-	 * @return the b_codrol
+	 * @return the coduser
 	 */
-	public String getB_codrol() {
-		return b_codrol;
+	public String getCoduser() {
+		return coduser;
 	}
 
-	/**
-	 * @param b_codrol the b_codrol to set
-	 */
-	public void setB_codrol(String b_codrol) {
-		this.b_codrol = b_codrol;
-	}
 
 	/**
-	 * @return the b_codrep
+	 * @param coduser the coduser to set
 	 */
-	public String getB_codrep() {
-		return b_codrep;
+	public void setCoduser(String coduser) {
+		this.coduser = coduser;
 	}
 
-	/**
-	 * @param b_codrep the b_codrep to set
-	 */
-	public void setB_codrep(String b_codrep) {
-		this.b_codrep = b_codrep;
-	}
 
 	/**
-	 * @return the desrol
+	 * @return the instancias
 	 */
-	public String getDesrol() {
-		return desrol;
+	public String getInstancias() {
+		return instancias;
 	}
 
-	/**
-	 * @param desrol the desrol to set
-	 */
-	public void setDesrol(String desrol) {
-		this.desrol = desrol;
-	}
 
 	/**
-	 * @return the desrep
+	 * @param instancias the instancias to set
 	 */
-	public String getDesrep() {
-		return desrep;
+	public void setInstancias(String instancias) {
+		this.instancias = instancias;
 	}
 
-	/**
-	 * @param desrep the desrep to set
-	 */
-	public void setDesrep(String desrep) {
-		this.desrep = desrep;
-	}
 
 	/**
 	 * @return the filterValue
@@ -210,6 +183,7 @@ import org.primefaces.model.SortOrder;
 		return filterValue;
 	}
 
+
 	/**
 	 * @param filterValue the filterValue to set
 	 */
@@ -217,19 +191,22 @@ import org.primefaces.model.SortOrder;
 		this.filterValue = filterValue;
 	}
 
+
 	/**
 	 * @return the list
 	 */
-	public List<Bvt007> getList() {
+	public List<Instanciasusr> getList() {
 		return list;
 	}
+
 
 	/**
 	 * @param list the list to set
 	 */
-	public void setList(List<Bvt007> list) {
+	public void setList(List<Instanciasusr> list) {
 		this.list = list;
 	}
+
 
 	/**
 	 * @param rows the rows to set
@@ -240,33 +217,37 @@ import org.primefaces.model.SortOrder;
 	
 	
 
-		/**
-	 * @return the listRep
+	/**
+	 * @return the listUsr
 	 */
-	public Map<String, String> getListRep() {
-		return listRep;
+	public Map<String, String> getListUsr() {
+		return listUsr;
 	}
 
-	/**
-	 * @param listRep the listRep to set
-	 */
-	public void setListRep(Map<String, String> listRep) {
-		this.listRep = listRep;
-	}
 
 	/**
-	 * @return the selectedRep
+	 * @param listUsr the listUsr to set
 	 */
-	public List<String> getSelectedRep() {
-		return selectedRep;
+	public void setListUsr(Map<String, String> listUsr) {
+		this.listUsr = listUsr;
 	}
 
+
 	/**
-	 * @param selectedRep the selectedRep to set
+	 * @return the selectedUsr
 	 */
-	public void setSelectedRep(List<String> selectedRep) {
-		this.selectedRep = selectedRep;
+	public List<String> getSelectedUsr() {
+		return selectedUsr;
 	}
+
+
+	/**
+	 * @param selectedUsr the selectedUsr to set
+	 */
+	public void setSelectedUsr(List<String> selectedUsr) {
+		this.selectedUsr = selectedUsr;
+	}
+
 
 	/**
 	 * @return the sorted
@@ -281,45 +262,61 @@ import org.primefaces.model.SortOrder;
 	public void setSorted(Map<String, String> sorted) {
 		this.sorted = sorted;
 	}
+	
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Variables seran utilizadas para capturar mensajes de errores de Oracle y parametros de metodos
-		FacesMessage msj = null;
-		PntGenerica consulta = new PntGenerica();
-		boolean vGacc; //Validador de opciones del menú
-		private int rows; //Registros de tabla
-		private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario"); //Usuario logeado
+	FacesMessage msj = null;
+	PntGenerica consulta = new PntGenerica();
+	boolean vGacc; //Validador de opciones del menú
+	private int rows; //Registros de tabla
+	private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario"); //Usuario logeado
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-		//Coneccion a base de datos
-		//Pool de conecciones JNDI
-			Connection con;
-			PreparedStatement pstmt = null;
-			ResultSet r;
+	//Coneccion a base de datos
+	//Pool de conecciones JNDI
+	Connection con;
+	PreparedStatement pstmt = null;
+	ResultSet r;
 
 	/**
-     * Inserta acceso reportes.
+     * Inserta acceso categoria1.
      * <p>
-     * <b>Parametros del Metodo:<b> String rol, String codrep unidos como un solo string.<br>
+     * <b>Parametros del Metodo:<b> String rol, String cat1 unidos como un solo string.<br>
      * String pool, String login.<br><br>
      **/
-    public void insert(String pcodrep) throws  NamingException {
-    	//Valida que los campos no sean nulos
-    
-        		String[] veccodrol = b_codrol.split("\\ - ", -1);
+    private void insert(String pusuarios) throws  NamingException {
+    		String[] veccat1 = pusuarios.split("\\ - ", -1);
         try {
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO Bvt007 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+            String query = "INSERT INTO instancias_usr VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, veccodrol[0].toUpperCase());
-            pstmt.setString(2, pcodrep.toUpperCase());
+            pstmt.setString(1, veccat1[0].toUpperCase());
+            pstmt.setInt(2, Integer.parseInt(instancias.split(" - ")[0]));
             pstmt.setString(3, login);
             pstmt.setString(4, login);
-            pstmt.setInt(5, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
@@ -328,14 +325,16 @@ import org.primefaces.model.SortOrder;
              } catch (SQLException e)  {
             	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
             	FacesContext.getCurrentInstance().addMessage(null, msj);
+            	exito = "error";
             }
             
             pstmt.close();
             con.close();
         } catch (Exception e) {
         	e.printStackTrace();
-        }	        
+        }	       
     }
+    
     
     /**
      * Genera las operaciones de guardar o modificar
@@ -345,13 +344,13 @@ import org.primefaces.model.SortOrder;
      * @throws ClassNotFoundException 
      **/ 
     public void guardar() throws NamingException, SQLException, ClassNotFoundException{  
-        if (selectedRep.size()<=0){
-    		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("bvt007IngRep"), "");
+        if (selectedUsr.size()<=0){
+    		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("InstanciasUsrIngUsr"), "");
     		FacesContext.getCurrentInstance().addMessage(null, msj);
     	} else {  	
-    	   for (int i = 0; i< selectedRep.size(); i++){
-    		   ////System.out.println("Selected :" + selectedAcccat1.get(i));
-    		insert(selectedRep.get(i));           
+    	   for (int i = 0; i< selectedUsr.size(); i++){
+    		  //System.out.println("Selected :" + selectedUsr.get(i));
+    		insert(selectedUsr.get(i));           
     	   }
    		limpiarValores();   
         if(exito=="exito"){
@@ -377,7 +376,7 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from Bvt007 WHERE b_codrol||b_codrep in (" + param + ") and instancia = '" + instancia + "'";
+	        	String query = "DELETE from instancias_usr WHERE coduser||instancia in (" + param + ")";
 	        		        	
 	            pstmt = con.prepareStatement(query);
 	            ////System.out.println(query);
@@ -412,162 +411,88 @@ import org.primefaces.model.SortOrder;
   		
   		Context initContext = new InitialContext();     
  		DataSource ds = (DataSource) initContext.lookup(JNDI);
- 		con = ds.getConnection();	
- 		
+ 		con = ds.getConnection();		
  		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
  		DatabaseMetaData databaseMetaData = con.getMetaData();
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
  		
  		
  		String query = "";
- 		
- 		if(b_codrol==null){
- 			b_codrol = " - ";
+ 		if(instancias==null){
+ 			instancias = " - ";
  		}
- 		if(b_codrol==""){
- 			b_codrol = " - ";
+ 		if(instancias==""){
+ 			instancias = " - ";
  		}
- 		
- 		String[] veccodrol = b_codrol.split("\\ - ", -1);  	
+ 		String[] veccodrol = instancias.split("\\ - ", -1);
 
   		switch ( productName ) {
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(a.b_codrol), trim(b.desrol), trim(a.b_codrep), trim(c.desrep)";
-        	   query += " FROM Bvt007 a, bvt003 b, bvt001 c";
-        	   query += " WHERE a.b_codrol=b.codrol";
-        	   query += " and   a.b_codrep=c.codrep ";
-        	   query += " and a.b_codrol||b.desrol||a.b_codrep||c.desrep like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and  a.b_codrol like '" + veccodrol[0] + "%'";
-        	   query += " AND   a.instancia = '" + instancia + "'";
+        	   query += " (SELECT trim(a.coduser), trim(a.instancia), trim(b.descripcion)";
+        	   query += " FROM instancias_usr a, instancias b";
+  		       query += " where a.instancia=b.instancia";
+  		       query += " and   a.instancia like '" + veccodrol[0] + "%'";
+        	   query += " AND   a.coduser||a.instancia||b.descripcion like '%" + ((String) filterValue).toUpperCase() + "%'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-        	   query += " SELECT trim(a.b_codrol), trim(b.desrol), trim(a.b_codrep), trim(c.desrep)";
-        	   query += " FROM Bvt007 a, bvt003 b, bvt001 c";
-        	   query += " WHERE a.b_codrol=b.codrol";
-        	   query += " and   a.b_codrep=c.codrep ";
-        	   query += " and a.b_codrol||b.desrol||a.b_codrep||c.desrep like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and  a.b_codrol like '" + veccodrol[0] + "%'";
-        	   query += " AND  a.instancia = '" + instancia + "'";
+      	       query += " SELECT trim(a.coduser), a.instancia, trim(b.descripcion)";
+    	       query += " FROM instancias_usr a, instancias b";
+		       query += " where a.instancia=b.instancia";
+		       query += " and   cast(a.instancia as text) like '" + veccodrol[0] + "%'";
+    	       query += " AND   a.coduser||cast(a.instancia as text)||b.descripcion like '%" + ((String) filterValue).toUpperCase() + "%'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
         case "Microsoft SQL Server":
-      	   query += " SELECT TOP " + pageSize;
-      	   query += " TOT.B_CODROL, ";
-      	   query += " TOT.DESROL, ";
-      	   query += " TOT.B_CODREP, ";
-      	   query += " TOT.DESREP ";
-      	   query += " FROM (SELECT ";
-      	   query += " 	    ROW_NUMBER() OVER (ORDER BY A.B_CODROL ASC) AS ROW_NUM, ";
-      	   query += " 	    A.B_CODROL, ";
-      	   query += " 	    B.DESROL, ";
-      	   query += " 	    A.B_CODREP, "; 
-      	   query += " 	    C.DESREP ";
-      	   query += " 	    FROM BVT007 A, BVT003 B, BVT001 C ";
-      	   query += " 	    WHERE ";
-      	   query += " 	    A.B_CODROL = B.CODROL ";
-      	   query += " 	    AND A.B_CODREP=C.CODREP "; 
-      	   query += " 	    AND A.B_CODROL + B.DESROL + A.B_CODREP + C.DESREP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-      	   query += " 	    AND A.B_CODROL LIKE '" + veccodrol[0] + "%') TOT ";
-      	   query += "       AND   a.instancia = '" + instancia + "'";
-      	   query += " WHERE ";
-      	   query += " TOT.ROW_NUM <= " + pageSize;
-      	   query += " AND TOT.ROW_NUM > " + first;
-      	   query += " ORDER BY " + sortField ;
+				query += " SELECT TOP " + pageSize;
+				query += " TOT.B_CODROL, "; 
+				query += " TOT.DESROL, "; 
+				query += " TOT.B_CODCAT1, "; 
+				query += " TOT.DESCAT1 "; 
+				query += " FROM (SELECT "; 
+				query += "       ROW_NUMBER() OVER (ORDER BY A.B_CODROL ASC) AS ROW_NUM, ";
+				query += " 	     A.B_CODROL, "; 
+				query += " 	     B.DESROL, "; 
+				query += " 	     A.B_CODCAT1, "; 
+				query += " 	     C.DESCAT1 ";
+				query += " 	     FROM ACCCAT1 A, BVT003 B, BVTCAT1 C ";
+				query += " 	     WHERE "; 
+				query += " 	     A.B_CODROL=B.CODROL "; 
+				query += " 	     AND   A.B_CODCAT1=C.CODCAT1) TOT "; 
+				query += " WHERE ";
+				query += " TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
+				query += " AND TOT.B_CODCAT1 + TOT.DESCAT1 LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+				query += " AND TOT.ROW_NUM > " + first;
+				query += " ORDER BY " + sortField ;
           break;
-  		}
- 		
+          }
+  		
         
         pstmt = con.prepareStatement(query);
         //System.out.println(query);
   		
         r =  pstmt.executeQuery();
 
+        
         while (r.next()){
-        	Bvt007 select = new Bvt007();
-     	    select.setB_codrol(r.getString(1));
-     	    select.setDesrol(r.getString(2));
-     	    select.setB_codrep(r.getString(3));
-     	    select.setDesrep(r.getString(4));
+        	Instanciasusr select = new Instanciasusr();
+     	    select.setCoduser(r.getString(1));
+     	    select.setInstancias(r.getString(2));
+            select.setDescripcion(r.getString(3));
         	//Agrega la lista
         	list.add(select);
         }
         //Cierra las conecciones
         pstmt.close();
         con.close();
-
   	}
   	
-  	
-  	/**
-     * Leer Datos de nominas para asignar a menucheck
-     * @throws NamingException 
-	 * @throws SQLException 
-     * @throws IOException 
-     **/ 	
-  	private void selectRep() throws NamingException, SQLException  {
-  		
-  		Context initContext = new InitialContext();     
-    	DataSource ds = (DataSource) initContext.lookup(JNDI);
-        con = ds.getConnection();
-
-        //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
- 		DatabaseMetaData databaseMetaData = con.getMetaData();
- 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección  		   		
-
- 		String query = "";
-
-  		switch ( productName ) {
-        case "Oracle":
-     		query = " Select codrep, codrep||' - '||desrep";
-            query += " from bvt001";
-            query += " where instancia = '" + instancia + "'";
-            query += " order by codrep";
-            
-             break;
-        case "PostgreSQL":
-     		query = " Select codrep, codrep||' - '||desrep";
-            query += " from bvt001";
-            query += " where  instancia = '" + instancia + "'";
-            query += " order by codrep";
-             break;
-        case "Microsoft SQL Server":
-     		query = " Select codrep, codrep + ' - ' + desrep";
-            query += " from bvt001";
-            query += " where instancia = '" + instancia + "'";
-            query += " order by codrep";
-          break;
-  		}
-
-        ////System.out.println(query);
-
-        
-        pstmt = con.prepareStatement(query);
-        ////System.out.println(query);
-  		
-        r =  pstmt.executeQuery();
-        
-  		
-        
-        while (r.next()){
-        	String codrep = new String(r.getString(1));
-        	String desrep = new String(r.getString(2));
-        	
-            listRep.put(desrep, codrep);
-            sorted = sortByValues(listRep);
-            
-        }
-        //Cierra las conecciones
-        pstmt.close();
-        con.close();
-        
-  	}
   	
   	/**
      * Leer registros en la tabla
@@ -585,24 +510,23 @@ import org.primefaces.model.SortOrder;
    	      		
  		String query = "";
  		
- 		if(b_codrol==null){
- 			b_codrol = " - ";
+ 		if(instancias==null){
+ 			instancias = " - ";
  		}
- 		if(b_codrol==""){
- 			b_codrol = " - ";
+ 		if(instancias==""){
+ 			instancias = " - ";
  		}
- 		
- 		String[] veccodrol = b_codrol.split("\\ - ", -1);
+ 		String[] veccodrol = instancias.split("\\ - ", -1);
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt007('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "') from dual";
+        	 query = "SELECT count_instanciasusr('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt007('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "')";
+        	 query = "SELECT count_instanciasusr('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvt007('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "')";
+       	 query = "SELECT DBO.count_instanciasusr('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
             break;
             }
 
@@ -626,26 +550,83 @@ import org.primefaces.model.SortOrder;
 
   	}
 
-      
+  	
+  	
+  	/**
+     * Leer Datos de nominas para asignar a menucheck
+     * @throws NamingException 
+	 * @throws SQLException 
+     * @throws IOException 
+     **/ 	
+  	private void selectInstanciasUsr() throws NamingException, SQLException  {
+  		
+  		Context initContext = new InitialContext();     
+    	DataSource ds = (DataSource) initContext.lookup(JNDI);
+        con = ds.getConnection();
+  		   		
+    	//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+  		DatabaseMetaData databaseMetaData = con.getMetaData();
+  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+    	      		
+  		String query = "";
+
+  		switch ( productName ) {
+  		case "Oracle":
+	    	query = "Select trim(coduser), trim(coduser)||' - '||trim(desuser)";
+	        query += " from bvt002";
+	        query += " order by coduser";
+	        break;
+  		case "PostgreSQL":
+  			query = "Select trim(coduser), trim(coduser)||' - '||trim(desuser)";
+	        query += " from bvt002";
+	        query += " order by coduser";
+	        break;
+  		case "Microsoft SQL Server":
+  			query = "Select coduser, coduser||' - '||desuser";
+	        query += " from bvt002";
+	        query += " order by coduser";
+	        break;
+	        }
+
+
+        //System.out.println(query);
+
+        
+        pstmt = con.prepareStatement(query);
+        ////System.out.println(query);
+  		
+        r =  pstmt.executeQuery();
+        
+  		
+        
+        while (r.next()){
+        	String cat1 = new String(r.getString(1));
+        	String descat1 = new String(r.getString(2));
+        	
+            listUsr.put(descat1, cat1);
+            sorted = sortByValues(listUsr);
+            
+        }
+        //Cierra las conecciones
+        pstmt.close();
+        con.close();
+        
+  	}
    
-/**
-	 * @return the rows
-	 */
-	public int getRows() {
-		return rows;
-	}
-	
+   /**
+  	 * @return the rows
+  	 */
+  	public int getRows() {
+  		return rows;
+  	}
 
-	public void reset() {
-  		b_codrol = null;    
-    }
-	
   	private void limpiarValores() {
-		// TODO Auto-generated method stub
-  		b_codrol = "";
-  		b_codrep = "";
-	}
+ 		// TODO Auto-generated method stub
+  		instancias = "";
+ 	}
 
-
+  	public void reset() {
+  		instancias = null;     
+    }
 
 }

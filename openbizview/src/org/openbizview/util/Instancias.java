@@ -53,7 +53,7 @@ import org.primefaces.model.SortOrder;
 	 */
 	@ManagedBean
 	@ViewScoped
-	public class Bvt001A extends Bd implements Serializable {
+	public class Instancias extends Bd implements Serializable {
 		
 		/**
 		 * 
@@ -61,26 +61,26 @@ import org.primefaces.model.SortOrder;
 		private static final long serialVersionUID = 1L;
 		
 		
-		private LazyDataModel<Bvt001A> lazyModel;  
+		private LazyDataModel<Instancias> lazyModel;  
 		
 		
 		/**
 		 * @return the lazyModel
 		 */
-		public LazyDataModel<Bvt001A> getLazyModel() {
+		public LazyDataModel<Instancias> getLazyModel() {
 			return lazyModel;
 		}	
 	
 		@PostConstruct
 		public void init() {
-			lazyModel  = new LazyDataModel<Bvt001A>(){
+			lazyModel  = new LazyDataModel<Instancias>(){
 				/**
 				 * 
 				 */
 				private static final long serialVersionUID = 7217573531435419432L;
 				
 	            @Override
-				public List<Bvt001A> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
+				public List<Instancias> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
 	            	//Filtro
 	            	if (filters != null) {
 	               	 for(Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
@@ -124,40 +124,44 @@ import org.primefaces.model.SortOrder;
 		}
 		
 	
-	private String codgrup = "";
-	private String desgrup = "";
-	private List<Bvt001A> list = new ArrayList<Bvt001A>();
+	private String instancia = "";
+	private String descripcion = "";
 	private Object filterValue = "";
+	private List<Instancias> list = new ArrayList<Instancias>();
 	private int validarOperacion = 0;
-	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+	
+	
+	   
 
 	
-	
+
 	/**
-	 * @return the codgrup
+	 * @return the instancia
 	 */
-	public String getcodgrup() {
-		return codgrup;
+	public String getInstancia() {
+		return instancia;
 	}
+
 	/**
-	 * @param codgrup the codgrup to set
+	 * @param instancia the instancia to set
 	 */
-	public void setcodgrup(String codgrup) {
-		this.codgrup = codgrup;
+	public void setInstancia(String instancia) {
+		this.instancia = instancia;
 	}
+
 	/**
-	 * @return the desgrup
+	 * @return the descripcion
 	 */
-	public String getdesgrup() {
-		return desgrup;
+	public String getDescripcion() {
+		return descripcion;
 	}
+
 	/**
-	 * @param desgrup the desgrup to set
+	 * @param descripcion the descripcion to set
 	 */
-	public void setdesgrup(String desgrup) {
-		this.desgrup = desgrup;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
-	
 
 	/**
 	 * @return the validarOperacion
@@ -170,23 +174,6 @@ import org.primefaces.model.SortOrder;
 	 */
 	public void setValidarOperacion(int validarOperacion) {
 		this.validarOperacion = validarOperacion;
-	}
-	
-	
-
-
-	/**
-	 * @return the list
-	 */
-	public List<Bvt001A> getList() {
-		return list;
-	}
-
-	/**
-	 * @param list the list to set
-	 */
-	public void setList(List<Bvt001A> list) {
-		this.list = list;
 	}
 
 
@@ -211,7 +198,7 @@ import org.primefaces.model.SortOrder;
      /**
      * Inserta categoria1.
      * <p>
-     * <b>Parametros del Metodo:<b> String codgrup1, String desgrup1 unidos como un solo string.<br>
+     * <b>Parametros del Metodo:<b> String codigo, String descripcion unidos como un solo string.<br>
      * String pool, String login.<br><br>
      **/
     public void insert() throws  NamingException {   	
@@ -221,20 +208,18 @@ import org.primefaces.model.SortOrder;
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO Bvt001A VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+                 
+            String query = "INSERT INTO instancias VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, codgrup.toUpperCase());
-            pstmt.setString(2, desgrup.toUpperCase());
+            pstmt.setInt(1, Integer.parseInt(instancia));
+            pstmt.setString(2, descripcion.toUpperCase());
             pstmt.setString(3, login);
             pstmt.setString(4, login);
-            pstmt.setInt(5, Integer.parseInt(instancia));
-            //System.out.println(query);
             try {
                 //Avisando
             	pstmt.executeUpdate();
             	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");
-                limpiarValores();
-
+                limpiarValores();                
              } catch (SQLException e)  {
             	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
             }
@@ -264,7 +249,7 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from Bvt001A WHERE codgrup in (" + param + ") and instancia = '" + instancia + "'";
+	        	String query = "DELETE from instancias WHERE instancia in (" + param + ")";
 	        		        	
 	            pstmt = con.prepareStatement(query);
 	            ////System.out.println(query);
@@ -273,7 +258,7 @@ import org.primefaces.model.SortOrder;
 	                //Avisando
 	                pstmt.executeUpdate();
 	                msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnDelete"), "");
-	                list.clear();	
+	                limpiarValores();	
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	                msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
@@ -292,7 +277,7 @@ import org.primefaces.model.SortOrder;
   
     /**
      * Actualiza categoria1
-     * <b>Parametros del Metodo:<b> String codgrup1, String desgrup1 unidos como un solo string.<br>
+     * <b>Parametros del Metodo:<b> String codigo, String descripcion unidos como un solo string.<br>
      * String pool, String login.<br><br>
      **/
     public void update() throws  NamingException {
@@ -302,14 +287,14 @@ import org.primefaces.model.SortOrder;
 
       		con = ds.getConnection();		
       		
-            String query = "UPDATE Bvt001A";
-             query += " SET desgrup = ?, usract = ?, fecact='" + getFecha() + "'";
-             query += " WHERE codgrup = ? and instancia = '" + instancia + "'";
+            String query = "UPDATE instancias";
+             query += " SET descripcion = ?, usract = ?, fecact='" + getFecha() + "'";
+             query += " WHERE instancia = ?";
            // //System.out.println(query);
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, desgrup.toUpperCase());
+            pstmt.setString(1, descripcion.toUpperCase());
             pstmt.setString(2, login);
-            pstmt.setString(3, codgrup.toUpperCase());
+            pstmt.setInt(3, Integer.parseInt(instancia));
             // Antes de ejecutar valida si existe el registro en la base de Datos.
             try {
                 //Avisando
@@ -319,7 +304,7 @@ import org.primefaces.model.SortOrder;
                 } else {
                 	msj = new FacesMessage(FacesMessage.SEVERITY_INFO,  getMessage("msnUpdate"), "");
                 }
-                desgrup = "";
+                descripcion = "";
             	validarOperacion = 0;
             } catch (SQLException e) {
             	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, e.getMessage(), "");
@@ -345,67 +330,64 @@ import org.primefaces.model.SortOrder;
     * @throws NamingException 
  * @throws IOException 
     **/ 	
- 	public void select(int first, int pageSize, String sortField, Object filterValue) throws SQLException, ClassNotFoundException, NamingException  {
- 		
+ 	public void select(int first, int pageSize, String sortField, Object filterValue) throws SQLException, ClassNotFoundException, NamingException {
+ 				
  		Context initContext = new InitialContext();     
  		DataSource ds = (DataSource) initContext.lookup(JNDI);
- 		con = ds.getConnection();	
+ 		con = ds.getConnection();		
  		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
  		DatabaseMetaData databaseMetaData = con.getMetaData();
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
- 		//System.out.println(productName);
+ 		
+ 		
  		String query = "";
 
   		switch ( productName ) {
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(codgrup), trim(desgrup)";
-        	   query += " FROM BVT001A";
-               query += " WHERE CODGRUP||desgrup like '%" + ((String) filterValue).toUpperCase() + "%'";
-               query += " AND   codgrup like '" + codgrup + "%'";
-               query += " AND   instancia = '" + instancia + "'";
+        	   query += " (SELECT trim(instancia), trim(descripcion)";
+        	   query += " FROM instancias";
+        	   query += " WHERE instancia||descripcion like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and instancia like '%" + instancia + "%'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
-        break;
+             break;
         case "PostgreSQL":
-        	   query += " SELECT trim(codgrup), trim(desgrup)";
-               query += " FROM BVT001A";
-               query += " WHERE CODGRUP||desgrup like '%" + ((String) filterValue).toUpperCase() + "%'";
-               query += " AND   codgrup like '" + codgrup + "%'";
-               query += " AND   instancia = '" + instancia + "'";
-               query += " order by " + sortField ;
+        	   query += " SELECT instancia, trim(descripcion) ";
+        	   query += " FROM instancias";
+        	   query += " WHERE cast(instancia as text)||descripcion like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and cast(instancia as text) like '%" + instancia + "%'";
+	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
              break;
         case "Microsoft SQL Server":
-			   query += " SELECT TOP " + pageSize + " TOT.CODGRUP, TOT.DESGRUP,  TOT.ROW_NUM ";
-			   query += " FROM (SELECT ";
-			   query += "       ROW_NUMBER() OVER (ORDER BY A.CODGRUP ASC) AS ROW_NUM, ";
-			   query += "       A.CODGRUP, ";
-			   query += "       A.DESGRUP ";
-			   query += "       FROM BVT001A A) TOT ";
-			   query += " WHERE ";
-			   query += " TOT.CODGRUP + TOT.DESGRUP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-			   query += " AND   tot.codgrup like '" + codgrup + "%'";
-			   query += " AND   tot.instancia = '" + instancia + "'";
-			   query += " AND TOT.ROW_NUM > " + first;
-			   query += " ORDER BY " + sortField ;
-        break;
-        }
- 		
- 		       
-       
+	        	query += " SELECT * ";
+	        	query += " FROM (SELECT  ";
+	        	query += " 	  ROW_NUMBER() OVER (ORDER BY codigo ASC) AS ROW_NUM,  ";
+	        	query += " 	  instancia,  ";
+	        	query += " 	  descripcion  ";
+	        	query += " 	  FROM instancias) TOT  ";
+	        	query += " WHERE  ";
+	        	query += " TOT.instancia + TOT.descripcion LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+	        	query += " AND TOT.instancia LIKE '%" + instancia + "%'";
+	        	query += " AND TOT.ROW_NUM <= " + pageSize;
+	        	query += " AND TOT.ROW_NUM > " + first;
+	        	query += " ORDER BY " + sortField ;
+          break;        }
+
+  		
        pstmt = con.prepareStatement(query);
-       //System.out.println(query);
+       
  		
        r =  pstmt.executeQuery();
        
        while (r.next()){
-    	Bvt001A select = new Bvt001A();
-    	select.setcodgrup(r.getString(1));
-    	select.setdesgrup(r.getString(2));
+    	Instancias select = new Instancias();
+    	select.setInstancia(r.getString(1));
+    	select.setDescripcion(r.getString(2));
        	
        	//Agrega la lista
        	list.add(select);
@@ -415,6 +397,7 @@ import org.primefaces.model.SortOrder;
        con.close();
 
  	}
+ 	
  	
  	/**
      * Leer registros en la tabla
@@ -434,15 +417,15 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt001a('" + ((String) filterValue).toUpperCase() + "','" + instancia + "') from dual";
+        	 query = "SELECT count_instancias('" + ((String) filterValue).toUpperCase() + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt001a('" + ((String) filterValue).toUpperCase() + "','" + instancia + "')";
+        	 query = "SELECT count_instancias('" + ((String) filterValue).toUpperCase() +  "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvt001a('" + ((String) filterValue).toUpperCase() + "','" + instancia + "')";
+       	 query = "SELECT DBO.count_instancias('" + ((String) filterValue).toUpperCase() +  "')";
             break;
-  		}
+         }
 
         
         pstmt = con.prepareStatement(query);
@@ -474,8 +457,8 @@ import org.primefaces.model.SortOrder;
 
   	private void limpiarValores() {
 		// TODO Auto-generated method stub
-  		codgrup = "";
-  		desgrup = "";
+  		instancia = "";
+  		descripcion = "";
   		validarOperacion = 0;
 	}
 

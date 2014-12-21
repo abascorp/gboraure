@@ -1,10 +1,20 @@
 package org.openbizview.util;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 
 @ManagedBean
@@ -35,12 +45,30 @@ public class Db extends Bd implements Serializable  {
 		q4 = "select * from bvt006";
 		consulta.selectPntGenerica(q4, JNDI);
 		r4 = consulta.getRows();
+
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	   toprep();
+	   //System.out.println("instancia: " + instancia);
     }
+	
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia");
+	private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("login"); //Usuario logeado
+	private List<Db> list = new ArrayList<Db>();
+	
+	//Coneccion a base de datos
+	//Pool de conecciones JNDI
+	//Coneccion a base de datos
+	//Pool de conecciones JNDIFARM
+	Connection con;
+	PreparedStatement pstmt = null;
+	PreparedStatement pstmt1 = null;
+	ResultSet r;
+	
+	
 
 	//Querys
 	private String q1;
@@ -108,6 +136,36 @@ public class Db extends Bd implements Serializable  {
 		this.r4 = r4;
 	}
 	
+	
+	/**
+	 * @return the instancia
+	 */
+	public String getInstancia() {
+		return instancia;
+	}
+	/**
+	 * @param instancia the instancia to set
+	 */
+	public void setInstancia(String instancia) {
+		this.instancia = instancia;
+	}
+
+	
+	
+	/**
+	 * @return the list
+	 */
+	public List<Db> getList() {
+		return list;
+	}
+	/**
+	 * @param list the list to set
+	 */
+	public void setList(List<Db> list) {
+		this.list = list;
+	}
+	
+	
 	/**
 	 * Tope de los reportes impresos para graficar
 	 */
@@ -125,6 +183,8 @@ public class Db extends Bd implements Serializable  {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 	/**
 	 * Retorna el primer reporte impreso
@@ -207,6 +267,7 @@ public class Db extends Bd implements Serializable  {
 		return rep;
 	}
 	
+	
 	/**
 	 * Retorna el segundo reporte impreso
 	 */
@@ -219,6 +280,7 @@ public class Db extends Bd implements Serializable  {
 		}
 		return rep;
 	}
+	
 	
 	/**
 	 * Retorna el tercer reporte impreso
@@ -233,6 +295,7 @@ public class Db extends Bd implements Serializable  {
 		return rep;
 	}
 	
+	
 	/**
 	 * Retorna el cuarto reporte impreso
 	 */
@@ -246,6 +309,7 @@ public class Db extends Bd implements Serializable  {
 		return rep;
 	}
 	
+	
 	/**
 	 * Retorna el quinto reporte impreso
 	 */
@@ -258,5 +322,59 @@ public class Db extends Bd implements Serializable  {
 		}
 		return rep;
 	}
+	
+	
+	
+	/*
+	 * Listar instancias al momento del login
+	 * si el usuario no tiene alguna instancia predefinida
+	 * muestra el modal para seleccionar la instancia,
+	 * lee de las instancias asociadas al usuario
+	 */
+     public List<String> select() throws NamingException, SQLException   {
+  		
+  		Context initContext = new InitialContext();     
+ 		DataSource ds = (DataSource) initContext.lookup(JNDI);
+ 		con = ds.getConnection();
+ 		List<String> values = new ArrayList<String>();
+ 		
+ 		String query = "SELECT a.instancia||' - '||trim(b.descripcion) ";
+	       query += " FROM instancias_usr a, instancias b";
+	       query += " where a.instancia=b.instancia";
+	       query += " and coduser = '" + login + "'";
 
+  		  		
+  		pstmt = con.prepareStatement(query);
+        //System.out.println(query);
+  		
+        r =  pstmt.executeQuery();
+        		
+        while (r.next()){
+ 
+        values.add(r.getString(1));
+
+        }
+        //Cierra las conecciones
+        pstmt.close();
+        con.close();
+        return values;
+    }
+	
+	/*
+	 * Indica si retorna muestra el modal o no
+	 */
+    public String modal(){
+    	String modal = "0";
+    	if(instancia.equals(null) || instancia.equals("0")){
+    		modal = "1";
+    	}
+    	return modal;
+    }
+    
+    /*
+     * Define la instancia seleccionada
+     */
+     public void instancia(String instancia){
+    	 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", instancia.split(" - ")[0]);
+     }
 }

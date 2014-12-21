@@ -23,13 +23,14 @@ function limpiar()
     clearUpdateInput('formBvt002:coduser', 'white');
 }
 
-function enviar(vT0,vT1,vT2,vT3,vT4,vT5){
-	  document.getElementById("formBvt002:coduser").value= rTrim(vT0);
-	  document.getElementById("formBvt002:desuser").value= rTrim(vT1);
-	  document.getElementById("formBvt002:cluser").value= rTrim(vT2);
-	  document.getElementById("formBvt002:rol_input").value= rTrim(vT3);
+function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6){
+	  document.getElementById("formBvt002:tabView:coduser").value= rTrim(vT0);
+	  document.getElementById("formBvt002:tabView:desuser").value= rTrim(vT1);
+	  document.getElementById("formBvt002:tabView:cluser").value= rTrim(vT2);
+	  document.getElementById("formBvt002:tabView:rol_input").value= rTrim(vT3);
 	  document.getElementById("formBvt002:vop").value= rTrim(vT4);
-	  document.getElementById("formBvt002:mail").value= rTrim(vT5);
+	  document.getElementById("formBvt002:tabView:mail").value= rTrim(vT5);
+	  document.getElementById("formBvt002:tabView:instancia_input").value= rTrim(vT6);
 	  updateInput('formBvt002:coduser', '#F2F2F2');
 	}
 

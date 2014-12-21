@@ -119,11 +119,13 @@ public class LoginBean extends Bd {
 			sesionOk.setAttribute("usuario", usuario);
 			//sesionOk.setMaxInactiveInterval(getSession());
 			sessionId = sesionOk.getId();
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
+			//FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("login", usuario.toUpperCase());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rol", tabla[0][2].toString());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("desuser", tabla[0][3].toString());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", sessionId);
+			//Instancia
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", tabla[0][5].toString());
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml"); 
 			new Programacion().recuperarTriggers("0");
 		} 

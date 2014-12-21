@@ -53,10 +53,16 @@ hr {border: 3px solid #fafafa; border-radius: 300px/10px; height: 0px; text-alig
 }
 
 .imagen{
-	width: 25px;
-	height: 25px;
+	width: 35px;
+	height: 35px;
 	border: 0;
   }
+  
+  .imagenIndex{
+	width: 20px;
+	height: 20px;
+	border: 0;
+  }  
   
 
 #encabezados{float: right; z-index: 9; margin-top: -20px; margin-right: 20px; }

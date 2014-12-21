@@ -131,8 +131,8 @@ import org.primefaces.model.SortOrder;
 	private List<Bvt005> list = new ArrayList<Bvt005>();
 	String exito = "exito";
 	int rows = 0;
-	
-	
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 	
 	
 	/**
@@ -262,7 +262,7 @@ import org.primefaces.model.SortOrder;
 
      		con = ds.getConnection();		
      		
-            String query = "INSERT INTO Bvt005 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO Bvt005 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, veccodrol[0].toUpperCase());
             pstmt.setString(2, vecValores[0].toUpperCase());
@@ -270,6 +270,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(4, vecValores[2].toUpperCase());
             pstmt.setString(5, login);
             pstmt.setString(6, login);
+            pstmt.setInt(7, Integer.parseInt(instancia));
             ////System.out.println(query);
           ////System.out.println(query);
             try {
@@ -336,9 +337,9 @@ import org.primefaces.model.SortOrder;
     		
     		String[] veccodrol = b_codrol.split("\\ - ", -1);
     		
-    		String query = "DELETE Bvt005 from WHERE b_codrol ='" + veccodrol[0].toUpperCase() + "'";
+    		String query = "DELETE from Bvt005  WHERE b_codrol ='" + veccodrol[0].toUpperCase() + "' and instancia = '" + instancia + "'";
            pstmt = con.prepareStatement(query);
-           ////System.out.println(query);
+           //System.out.println(query);
            //Antes de insertar verifica si el rol del usuario tiene permisos para insertar
            
            try {
@@ -376,7 +377,7 @@ import org.primefaces.model.SortOrder;
      		con = ds.getConnection();
      		
             String query = "UPDATE BVT005 SET CODVIS = '" + codvis + "'"
-                    + " WHERE B_CODROL = ? AND CODOPC IN ('" + param + "')" ;
+                    + " WHERE B_CODROL = ? AND CODOPC IN ('" + param + "') and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, veccodrol[0].toUpperCase());
@@ -472,6 +473,7 @@ import org.primefaces.model.SortOrder;
         	   query += " FROM Bvt005";
         	   query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and  b_codrol like '" + veccodrol[0] + "%'";
+        	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -481,6 +483,7 @@ import org.primefaces.model.SortOrder;
        	       query += " FROM Bvt005";
        	       query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
        	       query += " and  b_codrol like '" + veccodrol[0] + "%'";
+       	       query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -500,6 +503,7 @@ import org.primefaces.model.SortOrder;
 	        	query += " WHERE ";
 	        	query += " TOT.B_CODROL + TOT.CODOPC + TOT.DESOPC LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
 	        	query += " AND  TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
+	        	query += " AND   tot.instancia = '" + instancia + "'";
 	        	query += " AND TOT.ROW_NUM <= " + pageSize;
 	        	query += " AND TOT.ROW_NUM > " + first;
 	        	query += " ORDER BY " + sortField ;
@@ -554,13 +558,13 @@ import org.primefaces.model.SortOrder;
  		
  		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "') from dual";
+        	 query = "SELECT count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
+        	 query = "SELECT count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
+       	 query = "SELECT DBO.count_bvt005('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "')";
             break;
             }
 

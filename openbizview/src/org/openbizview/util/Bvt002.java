@@ -130,6 +130,7 @@ import org.primefaces.model.SortOrder;
 	private Object filterValue = "";
 	private List<Bvt002> list = new ArrayList<Bvt002>();
 	private int validarOperacion = 0;
+	private String instancia = "";
 	
 	//Cambio de password
 	StringMD md = new StringMD();
@@ -282,6 +283,25 @@ import org.primefaces.model.SortOrder;
 	public void setDesrol(String desrol) {
 		this.desrol = desrol;
 	}
+	
+	
+	
+
+	/**
+	 * @return the instancia
+	 */
+	public String getInstancia() {
+		return instancia;
+	}
+
+
+
+	/**
+	 * @param instancia the instancia to set
+	 */
+	public void setInstancia(String instancia) {
+		this.instancia = instancia;
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Variables seran utilizadas para capturar mensajes de errores de Oracle y parametros de metodos
@@ -303,7 +323,7 @@ import org.primefaces.model.SortOrder;
 	/**
      * Inserta Usuarios.
      * <p>
-     * Par�metros del M�todo: String coduser, String desuser, String clave, String b_codrol.
+     * Parámetros del Mátodo: String coduser, String desuser, String clave, String b_codrol.
      **/
     public void insert() throws  NamingException {
     	//Valida que los campos no sean nulos
@@ -313,15 +333,16 @@ import org.primefaces.model.SortOrder;
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO Bvt002 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+            String query = "INSERT INTO Bvt002 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, coduser.toUpperCase());
             pstmt.setString(2, desuser.toUpperCase());
-            pstmt.setString(3, cluser.toUpperCase());
+            pstmt.setString(3, md.getStringMessageDigest(cluser.toUpperCase(), StringMD.SHA256));
             pstmt.setString(4, veccodrol[0].toUpperCase());
             pstmt.setString(5, login);
             pstmt.setString(6, login);
             pstmt.setString(7, mail.toLowerCase());
+            pstmt.setInt(8, Integer.parseInt(instancia.split(" - ")[0]));
 
             ////System.out.println(query);
             try {
@@ -388,34 +409,33 @@ import org.primefaces.model.SortOrder;
 
        /**
      * Actualiza Usuarios
-     * <p> Par�metros del M�todo: String coduser, String desuser, String cluser, String p_codrol.
+     * <p> Parámetros del Método: String coduser, String desuser, String cluser, String p_codrol.
      **/
     public void update() throws  NamingException {
     
     		String[] veccodrol = b_codrol.split("\\ - ", -1);
-        String[] st = new String[2];
-        st[0] = " ,CLUSER = '" + cluser.toUpperCase() + "'";
+
         try {
 
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
 
-     		con = ds.getConnection();		
+     		con = ds.getConnection();	
+     		
+     		if(instancia==""){
+     			instancia = "0 - ";
+     		}
+     		String[] vecinst = instancia.split("\\ - ", -1);
      		
             String query = "UPDATE Bvt002";
-             query += " SET DESUSER = ?";
-               if(!cluser.equals(""))
-                   query += st[0];
-             query += " , B_CODROL = ?";
-             query += " , MAIL = ?";
-             query += " WHERE CODUSER = ?";
-            ////System.out.println(query);
+             query += " SET DESUSER = '" + desuser.toUpperCase() + "'";
+             query += " , B_CODROL = '" + veccodrol[0].toUpperCase() + "'";
+             query += " , MAIL = '" + mail.toLowerCase() + "'";
+             query += " , instancia = '" + vecinst[0] + "'";
+             query += " WHERE CODUSER = '" + coduser.toUpperCase() + "'";
+             
+            //System.out.println(query);
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, desuser.toUpperCase());
-            pstmt.setString(2, veccodrol[0].toUpperCase());
-            pstmt.setString(3, mail.toLowerCase());
-            pstmt.setString(4, coduser.toUpperCase());
-
             try {
                 //Avisando
             	pstmt.executeUpdate();
@@ -426,9 +446,10 @@ import org.primefaces.model.SortOrder;
                 }
                 desuser = "";
            		cluser = "";
-           		b_codrol = " - ";
+           		b_codrol = "";
            		cluserold = "";
                 mail = "";	
+                instancia = "";
             } catch (SQLException e) {
                 e.printStackTrace();
                 msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
@@ -500,9 +521,9 @@ import org.primefaces.model.SortOrder;
   		Context initContext = new InitialContext();     
  		DataSource ds = (DataSource) initContext.lookup(JNDI);
  		con = ds.getConnection();		
- 		//Reconoce la base de datos de conecci�n para ejecutar el query correspondiente a cada uno
+ 		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
  		DatabaseMetaData databaseMetaData = con.getMetaData();
- 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conecci�n
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
  		
  		
  		String query = "";
@@ -511,19 +532,22 @@ import org.primefaces.model.SortOrder;
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL), trim(a.mail)";
-        	   query += " FROM Bvt002 A, BVT003 B " ;
+        	   query += " (SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL), trim(a.mail), a.instancia||' - '||trim(c.descripcion)";
+        	   query += " FROM Bvt002 A, BVT003 B, INSTANCIAS C " ;
         	   query += " WHERE A.B_CODROL=B.CODROL" ;
+        	   query += " and A.instancia=c.instancia(+)" ;
+        	   query += " AND A.CODUSER like '" + coduser.toUpperCase() + "%'";
         	   query += " AND A.CODUSER||A.DESUSER like '%" + ((String) filterValue).toUpperCase() + "%'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-			   query += " SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL), trim(a.mail)";
-			   query += " FROM Bvt002 A, BVT003 B" ;
+			   query += " SELECT trim(A.CODUSER) , trim(A.DESUSER), trim(A.CLUSER), trim(A.B_CODROL), trim(B.DESROL), trim(a.mail), a.instancia||' - '||trim(c.descripcion)";
+			   query += " FROM Bvt002 A LEFT JOIN INSTANCIAS C ON a.INSTANCIA=c.INSTANCIA , BVT003 B" ;
 			   query += " WHERE A.B_CODROL=B.CODROL " ;
-			   query += " and A.CODUSER||A.DESUSER like '%" + ((String) filterValue).toUpperCase() + "%'";
+			   query += " AND A.CODUSER||A.DESUSER like '%" + ((String) filterValue).toUpperCase() + "%'";
+			   query += " AND A.CODUSER like '" + coduser.toUpperCase() + "%'";
 			   query += " order by " + sortField ;
 			   query += " LIMIT " + pageSize;
 			   query += " OFFSET " + first;
@@ -531,11 +555,12 @@ import org.primefaces.model.SortOrder;
         case "Microsoft SQL Server":
 			   query += "SELECT * FROM (SELECT ";
 			   query += "			   ROW_NUMBER() OVER (ORDER BY A.CODUSER ASC) AS ROW_NUM, ";
-			   query += "			   A.CODUSER , A.DESUSER, A.CLUSER, A.B_CODROL, B.DESROL, a.mail ";
+			   query += "			   A.CODUSER , A.DESUSER, A.CLUSER, A.B_CODROL, B.DESROL, a.mail, a.instancia ";
 			   query += "			   FROM Bvt002 A, BVT003 B ";
 			   query += "			   WHERE A.B_CODROL=B.CODROL) TOT ";
 			   query += "WHERE  ";
 			   query += "TOT.CODUSER + TOT.DESUSER LIKE '%" + ((String) filterValue).toUpperCase() + "%')) ";
+			   query += " AND TOT.CODUSER like '" + coduser.toUpperCase() + "%'";
 			   query += "AND TOT.ROW_NUM <= " + pageSize;
 			   query += "AND TOT.ROW_NUM > " + first; 
 			   query += "ORDER BY " + sortField;        		
@@ -555,6 +580,7 @@ import org.primefaces.model.SortOrder;
         select.setb_codrol(r.getString(4) + " - " + r.getString(5));
         select.setDesrol(r.getString(5));
         select.setMail(r.getString(6));
+        select.setInstancia(r.getString(7));
         	//Agrega la lista
         	list.add(select);
         }
@@ -578,6 +604,7 @@ import org.primefaces.model.SortOrder;
  		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conecci�n
    	      		
  		String query = "";
+ 		
   		
   		switch ( productName ) {
         case "Oracle":
@@ -697,17 +724,17 @@ import org.primefaces.model.SortOrder;
              
              switch ( productName ) {
              case "Oracle":
-            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser), trim(mail)";
+            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser), trim(mail), instancia";
                  query += " FROM BVT002";
                  query += " where coduser = '" + user.toUpperCase() + "'";
                   break;
              case "PostgreSQL":
-            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser), trim(mail)";
+            	 query = "SELECT trim(coduser), trim(cluser), trim(B_CODROL), trim(desuser), trim(mail), instancia";
                  query += " FROM BVT002";
                  query += " where coduser = '" + user.toUpperCase() + "'";
                   break;
              case "Microsoft SQL Server":
-            	 query = "SELECT coduser, cluser, B_CODROL, desuser, mail";
+            	 query = "SELECT coduser, cluser, B_CODROL, desuser, mail, instancia";
                  query += " FROM BVT002";
                  query += " where coduser = '" + user.toUpperCase() + "'";
      	         break;            		   
@@ -770,9 +797,10 @@ import org.primefaces.model.SortOrder;
    		coduser = "";
    		desuser = "";
    		cluser = "";
-   		b_codrol = " - ";
+   		b_codrol = "";
    		cluserold = "";
    		mail = "";
+   		instancia = "";
  	}
    	
    	

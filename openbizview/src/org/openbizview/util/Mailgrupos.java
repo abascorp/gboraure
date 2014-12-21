@@ -106,7 +106,8 @@ public class Mailgrupos  extends Bd implements Serializable {
 	private int validarOperacion = 0;//Param guardar para validar si guarda o actualiza
 	private Object filterValue = "";
 	private List<Mailgrupos> list = new ArrayList<Mailgrupos>();
-   	
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+	
 	   
 	
 	/**
@@ -231,10 +232,11 @@ public void setRows(int rows) {
      		con = ds.getConnection();
     		
 
-            String query = "INSERT INTO MAILGRUPOS VALUES (?,?)";
+            String query = "INSERT INTO MAILGRUPOS VALUES (?,?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, Integer.parseInt(idgrupo));
             pstmt.setString(2, desgrupo.toUpperCase());
+            pstmt.setInt(3, Integer.parseInt(instancia));
 
             try {
                 pstmt.executeUpdate();
@@ -277,7 +279,7 @@ public void setRows(int rows) {
         	
         	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 
-        	String query = "DELETE from MAILGRUPOS WHERE IDGRUPO in (" + param + ")";
+        	String query = "DELETE from MAILGRUPOS WHERE IDGRUPO in (" + param + ") and instancia = '" + instancia + "'";
             pstmt = con.prepareStatement(query);
             ////System.out.println(query);
             
@@ -318,7 +320,7 @@ public void setRows(int rows) {
 
             String query = "UPDATE MAILGRUPOS";
             	   query += " SET DESGRUPO = ?";
-            	   query += " where IDGRUPO = ?";
+            	   query += " where IDGRUPO = ? and instancia = '" + instancia + "'";
 
 
             //System.out.println(query);
@@ -390,6 +392,7 @@ public void setRows(int rows) {
         	   query += " FROM MAILGRUPOS";
         	   query += " WHERE idgrupo||desgrupo like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and  idgrupo like '" + idgrupo + "%'";
+        	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -399,6 +402,7 @@ public void setRows(int rows) {
     	       query += " FROM MAILGRUPOS";
     	       query += " WHERE idgrupo||desgrupo like '%" + ((String) filterValue).toUpperCase() + "%'";
     	       query += " and  cast(idgrupo as text) like '" + idgrupo + "%'";
+    	       query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -416,6 +420,7 @@ public void setRows(int rows) {
         	   query += " WHERE ";
         	   query += " LTRIM(RTRIM(CAST(TOT.IDGRUPO AS CHAR))) + TOT.DESGRUPO LIKE '%" + ((String) filterValue).toUpperCase() + "%' ";
         	   query += " AND LTRIM(RTRIM(CAST(TOT.IDGRUPO AS CHAR))) LIKE '" + idgrupo + "%' ";
+        	   query += " AND   tot.instancia = '" + instancia + "'";
         	   query += " AND TOT.ROW_NUM > " + first;
         	   query += " ORDER BY TOT." + sortField ;
           break;
@@ -464,13 +469,13 @@ public void setRows(int rows) {
  		
  		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_mailgrupo('" + ((String) filterValue).toUpperCase() + "') from dual";
+        	 query = "SELECT count_mailgrupo('" + ((String) filterValue).toUpperCase() + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_mailgrupo('" + ((String) filterValue).toUpperCase() + "')";
+        	 query = "SELECT count_mailgrupo('" + ((String) filterValue).toUpperCase() + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_mailgrupo('" + ((String) filterValue).toUpperCase() + "')";
+       	 query = "SELECT DBO.count_mailgrupo('" + ((String) filterValue).toUpperCase() + "','" + instancia + "')";
             break;
             }
 

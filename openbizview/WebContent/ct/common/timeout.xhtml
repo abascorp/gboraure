@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  KREAS TALENTO
+     Copyright (C) 2011  DVCONSULTORES
  -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -14,7 +14,7 @@
 	<p:idleMonitor timeout="900000" onidle="PF('idleDialog').show()" />
 
 	<p:dialog header="#{msg.sessionCad}" resizable="false" closable="false"
-		widgetVar="idleDialog" modal="true" width="400">
+		widgetVar="idleDialog" modal="true" width="400" fitViewport="true">
 		<h:outputText value="#{msg.sessionMsj}" />
 		<br />
 		<br />
@@ -25,5 +25,6 @@
 			</center>
 		</h:form>
 	</p:dialog>
+	
 </h:body>
 </html>

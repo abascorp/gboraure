@@ -145,7 +145,8 @@ import org.primefaces.model.SortOrder;
 	private List<String> selectedAcccat4;   //Listado de compañias seleccionadas
 	private Map<String, String> sorted;
 	private String exito = "exito";
-	
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 	
 	
 	
@@ -382,7 +383,7 @@ import org.primefaces.model.SortOrder;
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO acccat4 VALUES (?,?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO acccat4 VALUES (?,?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, b_codrol.split(" - ")[0].toUpperCase());
             pstmt.setString(2, b_codcat1.split(" - ")[0].toUpperCase());
@@ -391,6 +392,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(5, pcat4.toUpperCase());
             pstmt.setString(6, login);
             pstmt.setString(7, login);
+            pstmt.setInt(8, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
@@ -449,7 +451,7 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from acccat4 WHERE b_codrol||b_codcat1||b_codcat2||b_codcat3||b_codcat4 in (" + param + ")";
+	        	String query = "DELETE from acccat4 WHERE b_codrol||b_codcat1||b_codcat2||b_codcat3||b_codcat4 in (" + param + ") and instancia = '" + instancia + "'";
 	        		        	
 	            pstmt = con.prepareStatement(query);
 	            ////System.out.println(query);
@@ -540,6 +542,7 @@ import org.primefaces.model.SortOrder;
                query += " and   A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
                query += " and   A.b_codcat3 like '" + veccodcat3[0].toUpperCase() + "%'";
         	   query += " AND   a.b_codcat1||b.descat1||a.b_codcat2||c.descat2||a.b_codcat3||d.descat3||a.b_codcat4||e.descat4 like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " AND   a.instancia = '" + instancia + "'";
         	   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -562,6 +565,7 @@ import org.primefaces.model.SortOrder;
                query += " and   A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
                query += " and   A.b_codcat3 like '" + veccodcat3[0].toUpperCase() + "%'";
         	   query += " AND   a.b_codcat1||b.descat1||a.b_codcat2||c.descat2||a.b_codcat3||d.descat3||a.b_codcat4||e.descat4 like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -607,6 +611,7 @@ import org.primefaces.model.SortOrder;
         	query += " AND TOT.B_CODCAT2 LIKE '" + veccodcat2[0].toUpperCase() + "%'";
         	query += " AND TOT.B_CODCAT3 LIKE '" + veccodcat3[0].toUpperCase() + "%'";
         	query += " AND TOT.B_CODCAT1+TOT.DESCAT1+TOT.B_CODCAT2+TOT.DESCAT2+TOT.B_CODCAT3+TOT.DESCAT3+TOT.B_CODCAT4+TOT.DESCAT4 LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+        	query += " AND   tot.instancia = '" + instancia + "'";
         	query += " ORDER BY " + sortField ;
           break;
           }
@@ -684,13 +689,13 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_acccat4('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "') from dual";
+        	 query = "SELECT count_acccat4('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_acccat4('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "')";
+        	 query = "SELECT count_acccat4('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_acccat4('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "')";
+       	 query = "SELECT DBO.count_acccat4('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "','" + instancia + "')";
             break;
             }
 
@@ -765,6 +770,7 @@ import org.primefaces.model.SortOrder;
   			query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
   			query += " and B_CODCAT2 = '" + veccat2[0].toUpperCase() + "'";
   			query += " and B_CODCAT3 = '" + veccat3[0].toUpperCase() + "'";
+  			query += " and   instancia = '" + instancia + "'";
   			query += " order by codcat4";
 	        break;
   		case "PostgreSQL":
@@ -773,6 +779,7 @@ import org.primefaces.model.SortOrder;
   			query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
   			query += " and B_CODCAT2 = '" + veccat2[0].toUpperCase() + "'";
   			query += " and B_CODCAT3 = '" + veccat3[0].toUpperCase() + "'";
+  			query += " and   instancia = '" + instancia + "'";
   			query += " order by codcat4";
 	        break;
   		case "Microsoft SQL Server":
@@ -781,6 +788,7 @@ import org.primefaces.model.SortOrder;
   			query += " where B_CODCAT1 = '" + veccat1[0].toUpperCase() + "'";
   			query += " and B_CODCAT2 = '" + veccat2[0].toUpperCase() + "'";
   			query += " and B_CODCAT3 = '" + veccat3[0].toUpperCase() + "'";
+  			query += " and   instancia = '" + instancia + "'";
   			query += " order by codcat4";
 	        break;
 	        }

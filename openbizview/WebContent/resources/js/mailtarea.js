@@ -77,3 +77,7 @@ function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6,vT7,vT8,vT9,vT10,vT11){
 			document.getElementById("formmailconfig:tabView:contenido_input").value= "";
 		}
 	}
+	
+	function loadT(){
+		document.getElementById("formmailconfig:ruta").value = "NA";
+	}

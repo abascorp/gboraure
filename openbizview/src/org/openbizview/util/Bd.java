@@ -76,8 +76,8 @@ public class Bd  {
     protected static final String JNDI = ctx.getExternalContext().getInitParameter("JNDI_BD"); //"jdbc/orabiz"; //Nombre del JNDI
 	static final String JNDIMAIL = ctx.getExternalContext().getInitParameter("JNDI_MAIL"); //"jdbc/orabiz"; //Nombre del JNDI
     static final String THREADNUMBER = ctx.getExternalContext().getInitParameter("THREAD_NUMBER");
-   
-    java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat("dd/MMM/yyyy", locale );
+    static final String FECHAFORMAT = ctx.getExternalContext().getInitParameter("FORMAT_DATE");
+    java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat(FECHAFORMAT, locale );
     java.text.SimpleDateFormat sdfDefautl = new java.text.SimpleDateFormat("dd/MM/yyyy");
 
     String fecha = sdfecha.format(fecact); //Fecha formateada para insertar en tablas

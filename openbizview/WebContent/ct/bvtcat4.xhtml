@@ -72,32 +72,25 @@
 	          <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.bvtcat4tit}" toggleable="true" style="white-space: normal;">
 		         <h:panelGrid columns="1" columnClasses="col1">	 
-			     <p:autoComplete id="bcodcat1" value="#{bvtcat4.b_codcat1}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat1}"  dropdown="true" scrollHeight="250">
+			     <p:autoComplete id="bcodcat1" placeholder="&#160;&#160;#{msg.bvtcat4Cat1}" value="#{bvtcat4.b_codcat1}" required="true" emptyMessage="#{msg.html138}" requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat1}"  dropdown="true" scrollHeight="250">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat1(bvtcat4.b_codcat1)}" />
 			     </p:autoComplete>
-                 <p:watermark for="bcodcat1" value="&#160;&#160;#{msg.bvtcat4Cat1}" />
                  <p:message for="bcodcat1"/>
-			     <p:autoComplete id="bcodcat2" value="#{bvtcat4.b_codcat2}" emptyMessage="#{msg.html138}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat2}"  dropdown="true" scrollHeight="250">
+			     <p:autoComplete id="bcodcat2" placeholder="&#160;&#160;#{msg.bvtcat4Cat2}" value="#{bvtcat4.b_codcat2}" emptyMessage="#{msg.html138}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat2}"  dropdown="true" scrollHeight="250">
 			      <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat2(bvtcat4.b_codcat2)}" />
 			     </p:autoComplete>
-                 <p:watermark for="bcodcat2" value="&#160;&#160;#{msg.bvtcat4Cat2}" />
                  <p:message for="bcodcat2"/>
-			     <p:autoComplete id="bcodcat3" value="#{bvtcat4.b_codcat3}" emptyMessage="#{msg.html138}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeCat3}"  dropdown="true"  scrollHeight="250">
+			     <p:autoComplete id="bcodcat3" placeholder="&#160;&#160;#{msg.bvtcat4Cat3}" value="#{bvtcat4.b_codcat3}" emptyMessage="#{msg.html138}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeCat3}"  dropdown="true"  scrollHeight="250">
 			      <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat3(bvtcat4.b_codcat3)}" />
 			     </p:autoComplete>
-                 <p:watermark for="bcodcat3" value="&#160;&#160;#{msg.bvtcat4Cat3}" />
                  <p:message for="bcodcat3"/>
-			     <p:inputText id="codcat4" maxlength="10"  styleClass="form-control" value="#{bvtcat4.codcat4}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
-			     <p:watermark for="codcat4" value="#{msg.bvtcat4Cod}" />
+			     <p:inputText id="codcat4" maxlength="10" placeholder="#{msg.bvtcat4Cod}" styleClass="form-control" value="#{bvtcat4.codcat4}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:message for="codcat4"/>
-			     <p:inputText id="descat4"  maxlength="50" styleClass="form-control"  value="#{bvtcat4.descat4}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
-			     <p:watermark for="descat4" value="#{msg.bvtcat4Desc}" />
+			     <p:inputText id="descat4"  maxlength="50" placeholder="#{msg.bvtcat4Desc}" styleClass="form-control"  value="#{bvtcat4.descat4}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:message for="descat4"/>
-			     <p:inputText id="equicat4" maxlength="10" styleClass="form-control" value="#{bvtcat4.equicat4}" />
-			     <p:watermark for="equicat4" value="#{msg.bvtcat4Equi}" />
+			     <p:inputText id="equicat4" maxlength="10" placeholder="#{msg.bvtcat4Equi}" styleClass="form-control" value="#{bvtcat4.equicat4}" />
 			     <p:message for="equicat4"/>
-			     <p:inputText id="tippro"  maxlength="50"  styleClass="form-control" value="#{bvtcat4.tippro}" />
-			     <p:watermark for="tippro" value="#{msg.bvtcat4Tipo}" />
+			     <p:inputText id="tippro"  maxlength="50" placeholder="#{msg.bvtcat4Tipo}" styleClass="form-control" value="#{bvtcat4.tippro}" />
 			     <p:message for="tippro"/>
 		         </h:panelGrid>
 		         <h:inputHidden id="vop" value="#{bvtcat4.validarOperacion}"/>

@@ -68,11 +68,9 @@
 		     <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.bvtcat1tit}">	  	         
 		         <h:panelGrid  columns="1" columnClasses="col1">	         
-			     <p:inputText id="codcat" maxlength="10" styleClass="form-control" value="#{bvtcat1.codcat1}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
-			     <p:watermark for="codcat" value="#{msg.bvtcat1Cod}" />
+			     <p:inputText id="codcat" placeholder="#{msg.bvtcat1Cod}" maxlength="10" styleClass="form-control" value="#{bvtcat1.codcat1}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:message for="codcat"/>
-			     <p:inputText id="descat"  maxlength="50" styleClass="form-control"  value="#{bvtcat1.descat1}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" /> 	
-			     <p:watermark for="descat" value="#{msg.bvtcat1Desc}" />
+			     <p:inputText id="descat" placeholder="#{msg.bvtcat1Desc}" maxlength="50" styleClass="form-control"  value="#{bvtcat1.descat1}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" />
 			     <p:message for="descat"/>
 		         </h:panelGrid>
 		         <h:inputHidden id="vop" value="#{bvtcat1.validarOperacion}"/>
@@ -82,11 +80,11 @@
 			
 
 			<!-- Tabla con el resultado -->
-			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvtcat1.lazyModel}"   lazy="true" sortBy="#{tb.codcat1}"
+			<p:dataTable id="tbResult"  styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvtcat1.lazyModel}"   lazy="true" sortBy="#{tb.codcat1}"
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
 			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvtcat1.rows}"  
-			 widgetVar="global">
+			widgetVar="global">
 			
 			<f:facet name="header"> 			
             <p:outputPanel>  
@@ -99,7 +97,7 @@
             </p:outputPanel>         
             </f:facet> 
             
-            <p:column style="width:40px" >  
+            <p:column  style="width:40px" >  
             <f:facet  name="header">
             <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
             </f:facet>  

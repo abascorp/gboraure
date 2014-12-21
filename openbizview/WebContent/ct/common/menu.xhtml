@@ -47,18 +47,27 @@
         
         <!-- Administración -->
         <li>
-            <h:outputLink styleClass="mnuAdmin" style="display:none;" rendered="#{smnubean.opcmnu('M10')}" value="uploadreport"><i class="fa fa-cloud-upload fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.adm2}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuAdmin" style="display:none;" rendered="#{smnubean.opcmnu('M07')}" value="uploadreport"><i class="fa fa-cloud-upload fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.adm1}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuAdmin" style="display:none;" rendered="#{smnubean.opcmnu('M11')}" value="bvt006"><i class="fa fa-archive fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.adm4}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuAdmin" style="display:none;" rendered="#{smnubean.opcmnu('M08')}" value="bvt006"><i class="fa fa-archive fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.adm2}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuAdmin" style="display:none;" rendered="#{smnubean.opcmnu('M12')}" value="biaudit"><i class="fa fa-pencil fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.adm3}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuAdmin" style="display:none;" rendered="#{smnubean.opcmnu('M09')}" value="biaudit"><i class="fa fa-pencil fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.adm3}" /></span></h:outputLink>
         </li>
        
         <!-- Seguridad -->
         <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M14')}" value="bvt003"><i class="fa fa-cog fa-fw fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg01}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M11')}" value="instancias"><i class="fa fa-database fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.instancias}" /></span></h:outputLink>
+        </li>
+        <li>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M12')}" value="instanciasusr"><i class="fa fa-cubes fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.instanciasUsr}" /></span></h:outputLink>
+        </li>
+        <li>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M13')}" value="bvt003"><i class="fa fa-cog fa-fw fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg01}" /></span></h:outputLink>
+        </li>
+         <li>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M14')}" value="bvt003a"><i class="fa fa-cogs fa-fw fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg03a}" /></span></h:outputLink>
         </li>
         <li>
             <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M15')}" value="bvtmenu"><i class="fa fa-pencil fa-fw fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg02}" /></span></h:outputLink>
@@ -66,88 +75,86 @@
         <li>
             <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M16')}" value="bvt002"><i class="fa fa-user fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg03}" /></span></h:outputLink>
         </li>
-         <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M14')}" value="bvt003a"><i class="fa fa-cogs fa-fw fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg03a}" /></span></h:outputLink>
+        <li>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M17')}" value="bvt007"><i class="fa fa-bar-chart-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg08}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M17')}" value="acccat1"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg04}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M18')}" value="bvt005"><i class="fa fa-floppy-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg09}" /></span></h:outputLink>
+        </li>
+        
+        <li>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M19')}" value="acccat1"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg04}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M18')}" value="acccat2"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg05}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M20')}" value="acccat2"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg05}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M19')}" value="acccat3"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg06}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M21')}" value="acccat3"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg06}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M20')}" value="acccat4"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg07}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M22')}" value="acccat4"><i class="fa fa-folder-open fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg07}" /></span></h:outputLink>
         </li>
-        <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M21')}" value="bvt007"><i class="fa fa-bar-chart-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg08}" /></span></h:outputLink>
-        </li>
-        <li>
-            <h:outputLink styleClass="mnuSeg" style="display:none;" rendered="#{smnubean.opcmnu('M22')}" value="bvt005"><i class="fa fa-floppy-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.seg09}" /></span></h:outputLink>
-        </li>
-       
+        
         <!-- Tareas -->
         <li>
-            <h:outputLink styleClass="mnuTask" style="display:none;" rendered="#{smnubean.opcmnu('M45')}" value="mailgrupos"><i class="fa fa-list-ol fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.mail02}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuTask" style="display:none;" rendered="#{smnubean.opcmnu('M24')}" value="mailgrupos"><i class="fa fa-list-ol fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.mail02}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuTask" style="display:none;" rendered="#{smnubean.opcmnu('M46')}" value="maillista"><i class="fa fa-users fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.mail03}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuTask" style="display:none;" rendered="#{smnubean.opcmnu('M25')}" value="maillista"><i class="fa fa-users fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.mail03}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuTask" style="display:none;" rendered="#{smnubean.opcmnu('M47')}" value="mailtarea"><i class="fa fa-envelope-o fa-fw fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.mail04}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuTask" style="display:none;" rendered="#{smnubean.opcmnu('M26')}" value="mailtarea"><i class="fa fa-envelope-o fa-fw fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.mail04}" /></span></h:outputLink>
         </li>
       
          <!-- Reportes -->
         <li>
-            <h:outputLink styleClass="mnuRep"  rendered="#{smnubean.opcmnu('M48')}" value="bvt001a"><i class="fa fa-file-text-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.rep01}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuRep"  rendered="#{smnubean.opcmnu('M27')}" value="bvt001a"><i class="fa fa-file-text-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.rep01}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuRep" rendered="#{smnubean.opcmnu('M48')}" value="bvt001"><i class="fa fa-bar-chart-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.rep}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuRep" rendered="#{smnubean.opcmnu('M27')}" value="bvt001"><i class="fa fa-bar-chart-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.rep}" /></span></h:outputLink>
         </li>
         
         <!-- Desarrollos personalizado para proagro gastos -->
         <li>
-            <h:outputLink styleClass="mnuGto"  style="display:none;" rendered="#{smnubean.opcmnu('M24')}" value="bvt017"><i class="fa fa-slack fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres01}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto"  style="display:none;" value="bvt017"><i class="fa fa-slack fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres01}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuGto" style="display:none;" rendered="#{smnubean.opcmnu('M25')}" value="bvt008"><i class="fa fa-file-text-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres02}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto" style="display:none;" value="bvt008"><i class="fa fa-file-text-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres02}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuGto" style="display:none;" rendered="#{smnubean.opcmnu('M26')}" value="bvt013"><i class="fa fa-empire fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres08}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto" style="display:none;"  value="bvt013"><i class="fa fa-empire fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres08}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuGto" style="display:none;" rendered="#{smnubean.opcmnu('M27')}" value="bvt009"><i class="fa fa-cube fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres03}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto" style="display:none;"  value="bvt009"><i class="fa fa-cube fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres03}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuGto" style="display:none;" rendered="#{smnubean.opcmnu('M28')}" value="bvt014"><i class="fa fa-cube fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres04}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto" style="display:none;"  value="bvt014"><i class="fa fa-cube fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres04}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuGto" style="display:none;" rendered="#{smnubean.opcmnu('M29')}" value="bvt010"><i class="fa fa-university fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres05}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto" style="display:none;"  value="bvt010"><i class="fa fa-university fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres05}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuGto" style="display:none;" rendered="#{smnubean.opcmnu('M30')}" value="bvtreljer"><i class="fa fa-money fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres13}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto" style="display:none;"  value="bvtreljer"><i class="fa fa-money fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres13}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuGto" style="display:none;" rendered="#{smnubean.opcmnu('M31')}" value="bvm001"><i class="fa fa-external-link fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres09}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuGto" style="display:none;"  value="bvm001"><i class="fa fa-external-link fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres09}" /></span></h:outputLink>
         </li>
         
         <!-- Desarrollos personalizado para proagro Presupuesto Financiero -->
         <li>
-            <h:outputLink styleClass="mnuBudget" style="display:none;" rendered="#{smnubean.opcmnu('M36')}" value="bvm002"><i class="fa fa-database fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres10}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuBudget" style="display:none;"  value="bvm002"><i class="fa fa-database fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres10}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuBudget" style="display:none;" rendered="#{smnubean.opcmnu('M37')}" value="bvt015"><i class="fa fa-cogs fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres11}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuBudget" style="display:none;"  value="bvt015"><i class="fa fa-cogs fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.pres11}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuBudget" style="display:none;" rendered="#{smnubean.opcmnu('M38')}" value="pfm004"><i class="fa fa-cogs fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.presplan01}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuBudget" style="display:none;"  value="pfm004"><i class="fa fa-cogs fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.presplan01}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuBudget" style="display:none;" rendered="#{smnubean.opcmnu('M39')}" value="pfm005ttc"><i class="fa fa-table fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.presplan02A}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuBudget" style="display:none;"  value="pfm005ttc"><i class="fa fa-table fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.presplan02A}" /></span></h:outputLink>
         </li>
         <li>
-            <h:outputLink styleClass="mnuBudget" style="display:none;" rendered="#{smnubean.opcmnu('M40')}" value="pfm004"><i class="fa fa-file-text-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.presplan02B}" /></span></h:outputLink>
+            <h:outputLink styleClass="mnuBudget" style="display:none;"  value="pfm004"><i class="fa fa-file-text-o fa-2x"></i><span class="mnuLeftBasicos"><h:outputText value="#{msg.presplan02B}" /></span></h:outputLink>
         </li>
 
 

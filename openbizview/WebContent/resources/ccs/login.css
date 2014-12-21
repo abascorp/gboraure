@@ -13,17 +13,19 @@
 	
 	/*
 	   Para Tablas detalle de datos
+	   background: url(../../resources/img/bklogin.png);
 	*/
 	
 	
 	
 	body {
+	    background: url(http://lorempixel.com/1520/800/city/9) no-repeat center center fixed; 
 	    font-family: Verdana, Arial, Helvetica, sans-serif;
 	    font-size: 11px;
 	    color: #003062;
 	    margin: 0px;
 	    padding: 0px;	   
-	    background: url(../../resources/img/bklogin.png);
+	    
 		}
 	
 	#ini{

@@ -129,7 +129,8 @@ import org.primefaces.model.SortOrder;
 	private Object filterValue = "";
 	private List<Bvtmenu> list = new ArrayList<Bvtmenu>();
 	String exito = "exito";
-	
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 
 	
 	/**
@@ -245,7 +246,7 @@ import org.primefaces.model.SortOrder;
 
      		con = ds.getConnection();		
      		
-            String query = "INSERT INTO Bvtmenu VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO Bvtmenu VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, veccodrol[0]);
             pstmt.setString(2, vecValores[0].toUpperCase());
@@ -253,6 +254,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(4, vecValores[2].toUpperCase());
             pstmt.setString(5, login);
             pstmt.setString(6, login);
+            pstmt.setInt(7, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
@@ -291,59 +293,67 @@ import org.primefaces.model.SortOrder;
 		   FacesContext.getCurrentInstance().addMessage(null, msj);
 		   exito="error";
 	   } else {
+	   //Menú estandart
+	   //Básicos
 	   insertBvTMENU(veccodrol[0], "M01|"+getMessage("bas").toUpperCase()+"|0", JNDI, login);
 	   insertBvTMENU(veccodrol[0], "M02|"+getMessage("bas1")+"|0", JNDI, login);
 	   insertBvTMENU(veccodrol[0], "M03|"+getMessage("bas2")+"|0", JNDI, login);
 	   insertBvTMENU(veccodrol[0], "M04|"+getMessage("bas3")+"|0", JNDI, login);
 	   insertBvTMENU(veccodrol[0], "M05|"+getMessage("bas4")+"|0", JNDI, login);
-	   insertBvTMENU(veccodrol[0], "M06|"+getMessage("bas5")+"|0", JNDI, login);
-	   insertBvTMENU(veccodrol[0], "M07|"+getMessage("bas6")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M08|"+getMessage("adm").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M09|"+getMessage("adm1")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M10|"+getMessage("adm2")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M11|"+getMessage("adm3")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M12|"+getMessage("adm4")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M13|"+getMessage("seg").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M14|"+getMessage("seg01")+"|0", JNDI, login);
+	   //Administración
+       insertBvTMENU(veccodrol[0], "M06|"+getMessage("adm").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M07|"+getMessage("adm1")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M08|"+getMessage("adm2")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M09|"+getMessage("adm3")+"|0", JNDI, login);
+       //Seguridad
+       insertBvTMENU(veccodrol[0], "M10|"+getMessage("seg").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M11|"+getMessage("instancias")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M12|"+getMessage("instanciasUsr")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M13|"+getMessage("seg01")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M14|"+getMessage("seg03a")+"|0", JNDI, login);
        insertBvTMENU(veccodrol[0], "M15|"+getMessage("seg02")+"|0", JNDI, login);
        insertBvTMENU(veccodrol[0], "M16|"+getMessage("seg03")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M17|"+getMessage("seg04")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M18|"+getMessage("seg05")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M19|"+getMessage("seg06")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M20|"+getMessage("seg07")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M21|"+getMessage("seg08")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M22|"+getMessage("seg09")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M23|"+getMessage("pres").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M24|"+getMessage("pres01")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M25|"+getMessage("pres02")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M26|"+getMessage("pres08")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M27|"+getMessage("pres03")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M28|"+getMessage("pres04")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M29|"+getMessage("pres05")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M30|"+getMessage("pres13")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M31|"+getMessage("pres09")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M32|"+getMessage("pres_a").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M33|"+getMessage("pres06")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M34|"+getMessage("pres07")+"|0", JNDI, login);   
-       insertBvTMENU(veccodrol[0], "M35|"+getMessage("presventas")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M36|"+getMessage("pres10")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M37|"+getMessage("pres11")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M38|"+getMessage("pres12")+"|0", JNDI, login);
-       
-       insertBvTMENU(veccodrol[0], "M39|"+getMessage("presplan")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M40|"+getMessage("presplan01")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M41|"+getMessage("presplan02")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M42|"+getMessage("presplan02A")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M43|"+getMessage("presplan02B")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M17|"+getMessage("seg08")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M18|"+getMessage("seg09")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M19|"+getMessage("seg04")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M20|"+getMessage("seg05")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M21|"+getMessage("seg06")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M22|"+getMessage("seg07")+"|0", JNDI, login);
+       //Tareas
+       insertBvTMENU(veccodrol[0], "M23|"+getMessage("mail").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M24|"+getMessage("mail02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M25|"+getMessage("mail03")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M26|"+getMessage("mail04")+"|0", JNDI, login); 
+       //Reportes
+       insertBvTMENU(veccodrol[0], "M27|"+getMessage("rep").toUpperCase()+"|0", JNDI, login);
 
        
-       insertBvTMENU(veccodrol[0], "M44|"+getMessage("mail").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M45|"+getMessage("mail02")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M46|"+getMessage("mail03")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M47|"+getMessage("mail04")+"|0", JNDI, login);
-              
-       insertBvTMENU(veccodrol[0], "M48|"+getMessage("rep").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M49|"+getMessage("salir").toUpperCase()+"|0", JNDI, login);
+       //Desarrollos particulares caso proagro
+       insertBvTMENU(veccodrol[0], "P01|"+getMessage("pres").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P02|"+getMessage("pres01")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P03|"+getMessage("pres02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P04|"+getMessage("pres08")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P05|"+getMessage("pres03")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P06|"+getMessage("pres04")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P07|"+getMessage("pres05")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P08|"+getMessage("pres13")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P09|"+getMessage("pres09")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P10|"+getMessage("pres_a").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P11|"+getMessage("pres06")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P12|"+getMessage("pres07")+"|0", JNDI, login);   
+       insertBvTMENU(veccodrol[0], "P13|"+getMessage("presventas")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P14|"+getMessage("pres10")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P15|"+getMessage("pres11")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P16|"+getMessage("pres12")+"|0", JNDI, login);
+       
+       insertBvTMENU(veccodrol[0], "P17|"+getMessage("presplan")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P18|"+getMessage("presplan01")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P19|"+getMessage("presplan02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P20|"+getMessage("presplan02A")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "P21|"+getMessage("presplan02B")+"|0", JNDI, login);
+
+       
+       
 	   }
 	   if(exito.equals("exito")){
 	   msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");  
@@ -367,7 +377,7 @@ import org.primefaces.model.SortOrder;
     		
     		String[] veccodrol = b_codrol.split("\\ - ", -1);
     		
-    		String query = "DELETE from bvtmenu WHERE b_codrol ='" + veccodrol[0].toUpperCase() + "'";
+    		String query = "DELETE from bvtmenu WHERE b_codrol ='" + veccodrol[0].toUpperCase() + "' and instancia = '" + instancia + "'";
            pstmt = con.prepareStatement(query);
            ////System.out.println(query);
            //Antes de insertar verifica si el rol del usuario tiene permisos para insertar
@@ -408,7 +418,7 @@ import org.primefaces.model.SortOrder;
      		con = ds.getConnection();
      		
             String query = "UPDATE BVTMENU SET CODVIS = '" + codvis + "'"
-                    + " WHERE B_CODROL = ? AND CODOPC IN ('" + param + "')" ;
+                    + " WHERE B_CODROL = ? AND CODOPC IN ('" + param + "') and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, veccodrol[0].toUpperCase());
@@ -501,6 +511,7 @@ import org.primefaces.model.SortOrder;
         	   query += " FROM BVTMENU";
         	   query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and b_codrol like trim('" + veccodrol[0].toUpperCase() +  "%')";
+        	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -510,6 +521,7 @@ import org.primefaces.model.SortOrder;
         	   query += " FROM BVTMENU";
         	   query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and b_codrol like trim('" + veccodrol[0].toUpperCase() +  "%')";
+        	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -530,6 +542,7 @@ import org.primefaces.model.SortOrder;
         	query += " WHERE  ";
         	query += " TOT.B_CODROL + TOT.CODOPC + TOT.DESOPC LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
         	query += " AND TOT.B_CODROL LIKE '" + veccodrol[0].toUpperCase() +  "%')";
+        	query += " AND   tot.instancia = '" + instancia + "'";
         	query += " AND TOT.ROW_NUM <= " + pageSize;
         	query += " AND TOT.ROW_NUM > " + first;
         	query += " ORDER BY " + sortField ;
@@ -538,7 +551,7 @@ import org.primefaces.model.SortOrder;
  		
         
         pstmt = con.prepareStatement(query);
-        ////System.out.println(query);
+        //System.out.println(query);
   		
         r =  pstmt.executeQuery();
         
@@ -581,13 +594,13 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() + "') from dual";
+        	 query = "SELECT count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() +  "')";
+        	 query = "SELECT count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() +  "')";
+       	 query = "SELECT DBO.count_bvtmenu('" + ((String) filterValue).toUpperCase() + "','" +  veccodrol[0].toUpperCase() + "','" + instancia + "')";
             break;
             }
 

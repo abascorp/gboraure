@@ -17,7 +17,7 @@
     En caso contrario, consulte <http://www.gnu.org/licenses/>.
  */
 
-package org.protinal.util;
+package org.openbizview.util;
 
 /*
  * To change this template, choose Tools | Templates

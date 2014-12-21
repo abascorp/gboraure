@@ -66,8 +66,10 @@
 				<!-- Panel -->
 			<div class="panel panel-info" style="margin-top: 30px">
            <div class="panel-body">
-		         <p:panel id="panel"  header="#{msg.bvt002tit}">	  	         
-		         <h:panelGrid  columns="1" columnClasses="col1">		         
+           <p:panel id="panel"  header="#{msg.bvt002tit}" toggleable="true">	
+            <p:tabView id="tabView" style="height:auto;" > 
+             <p:tab id="Bas" title="#{msg.bvt002Tab1}">
+               <h:panelGrid  columns="1" columnClasses="col1">		         
 			     <p:inputText id="coduser" maxlength="10" styleClass="form-control" value="#{bvt002.coduser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="coduser" value="#{msg.bvt002Cod}" />
 			     <p:message for="coduser"/>
@@ -77,6 +79,10 @@
 			     <p:password id="cluser" maxlength="10" styleClass="form-control" value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:watermark for="cluser" value="#{msg.bvt002Cl}" />
 			     <p:message for="cluser"/>
+               </h:panelGrid> 
+             </p:tab>
+             <p:tab id="Ubic" title="#{msg.bvt002Tab2}">  
+               <h:panelGrid  columns="1" columnClasses="col1">	
 			     <p:inputText id="mail" maxlength="150" styleClass="form-control" value="#{bvt002.mail}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('confmailIngMail')}">  
 			     <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 			     </p:inputText>
@@ -85,9 +91,12 @@
 			     <p:autoComplete id="rol" value="#{bvt002.b_codrol}" completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 		         <p:watermark for="rol" value="&nbsp;&nbsp;#{msg.bvt002Rol}" />
 		         <p:message for="rol"/>
-		         </h:panelGrid>
-		         <h:inputHidden id="vop" value="#{bvt002.validarOperacion}"/>
-	             </p:panel>
+		         <p:autoComplete id="instancia" placeholder="&nbsp;&nbsp;#{msg.bvt002Instancia}" value="#{bvt002.instancia}"  completeMethod="#{autocomplete.completeInstancias}"  dropdown="true" scrollHeight="250" />
+		         </h:panelGrid>		
+		       </p:tab>           
+             </p:tabView>
+	         <h:inputHidden id="vop" value="#{bvt002.validarOperacion}"/> 
+	         </p:panel> 
 				</div>
 			</div>	
 				
@@ -139,7 +148,7 @@
             
             <p:column style="width:60px" >  
             <f:facet name="header">#{msg.enviar}</f:facet>   
-            <p:commandLink styleClass="edit" onclick="enviar('#{tb.coduser}','#{tb.desuser}','#{tb.cluser}','#{tb.b_codrol}','1', '#{tb.mail}')" 
+            <p:commandLink styleClass="edit" onclick="enviar('#{tb.coduser}','#{tb.desuser}','#{tb.cluser}','#{tb.b_codrol}','1', '#{tb.mail}', '#{tb.instancia}')" 
             title="Enviar"><i class="fa fa-pencil-square-o fa-2x"></i></p:commandLink>
             </p:column> 
             

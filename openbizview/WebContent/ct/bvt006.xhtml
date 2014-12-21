@@ -69,10 +69,9 @@
 		     <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.adm4}">
 		         <h:panelGrid columns="1" columnClasses="col1">	 
-			     <p:autoComplete id="usuario" value="#{bvt006.bcoduser}"   completeMethod="#{autocomplete.completeUser}"  dropdown="true" scrollHeight="250">
+			     <p:autoComplete id="usuario" placeholder="&#160;&#160;#{msg.bvt006User}" value="#{bvt006.bcoduser}"   completeMethod="#{autocomplete.completeUser}"  dropdown="true" scrollHeight="250">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setBcoduser(bvt006.bcoduser)}" />
 			     </p:autoComplete> 
-			     <p:watermark for="usuario" value="&#160;&#160;#{msg.bvt006User}" />   
 		         </h:panelGrid>
 	             </p:panel>
 			 </div>

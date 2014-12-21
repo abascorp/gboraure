@@ -138,8 +138,26 @@ import org.primefaces.model.SortOrder;
 	private int validarOperacion = 0;
 	private int rows;
 	private String exito = "exito";
+	private String desrol = "";
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 	
 	
+	
+
+	/**
+	 * @return the desrol
+	 */
+	public String getDesrol() {
+		return desrol;
+	}
+
+	/**
+	 * @param desrol the desrol to set
+	 */
+	public void setDesrol(String desrol) {
+		this.desrol = desrol;
+	}
 
 	/**
 	 * @return the selectedBvt003
@@ -259,17 +277,19 @@ import org.primefaces.model.SortOrder;
 
      		con = ds.getConnection();		
      		
-            String query = "INSERT INTO Bvt003a VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO Bvt003a VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, prol.toUpperCase());
             pstmt.setString(2, coduser.split(" - ")[0].toUpperCase());
             pstmt.setString(3, login);
             pstmt.setString(4, login);
+            pstmt.setInt(5, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
                 pstmt.executeUpdate();           
              } catch (SQLException e)  {
+            	 exito = "error";
             	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
             	FacesContext.getCurrentInstance().addMessage(null, msj);
             }
@@ -300,7 +320,7 @@ import org.primefaces.model.SortOrder;
      		
      		String param = "'" + StringUtils.join(chkbox, "','") + "'";
      		
-     		String query = "DELETE from Bvt003a WHERE coduser||codrol in (" + param + ")";
+     		String query = "DELETE from Bvt003a WHERE coduser||codrol in (" + param + ") and instancia = '" + instancia + "'";
             pstmt = con.prepareStatement(query);
             //System.out.println(query);
             //Antes de insertar verifica si el rol del usuario tiene permisos para insertar
@@ -369,19 +389,23 @@ import org.primefaces.model.SortOrder;
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(coduser), trim(codrol)";
-        	   query += " FROM BVT003a";
-        	   query += " WHERE codrol||coduser like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and coduser like '" + vecuser[0].toUpperCase() + "%'";
+        	   query += " (SELECT trim(coduser), trim(b.desrol), trim(a.codrol)";
+        	   query += " FROM BVT003a a, bvt003 b";
+        	   query += " where a.codrol = b.codrol";
+        	   query += " and a.coduser||b.desrol like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and a.coduser like '" + vecuser[0].toUpperCase() + "%'";
+        	   query += " AND a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-        	   query += " SELECT trim(coduser), trim(codrol) ";
-        	   query += " FROM BVT003a";
-        	   query += " WHERE codrol||coduser like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and coduser like '" + vecuser[0].toUpperCase() + "%'";
+	           query += " SELECT trim(coduser), trim(b.desrol), trim(a.codrol)";
+	      	   query += " FROM BVT003a a, bvt003 b";
+	      	   query += " where a.codrol = b.codrol";
+	      	   query += " and a.coduser||b.desrol like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " and a.coduser like '" + vecuser[0].toUpperCase() + "%'";
+        	   query += " AND a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -394,6 +418,7 @@ import org.primefaces.model.SortOrder;
      	       query += "	    A.coduser ";
      	       query += " 		FROM BVT003 A";
      	       query += " 		WHERE A.CODROL + DESROL LIKE '%" + ((String) filterValue).toUpperCase() + "%') TOT";
+     	       query += "       AND a.instancia = '" + instancia + "'";
 	  	       query += " WHERE ";
 	  	       query += " TOT.ROW_NUM <= " + pageSize;
 	           query += " AND TOT.ROW_NUM > " + first;
@@ -410,12 +435,14 @@ import org.primefaces.model.SortOrder;
         
         while (r.next()){
      	Bvt003a select = new Bvt003a();
-     	select.setCodrol(r.getString(2));
+     	select.setDesrol(r.getString(2));
         select.setCoduser(r.getString(1));
+        select.setCodrol(r.getString(3));
         	//Agrega la lista
         	list.add(select);
         }
         //Cierra las conecciones
+        coduser = null;
         pstmt.close();
         con.close();
 
@@ -444,13 +471,13 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] + "') from dual";
+        	 query = "SELECT count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] +  "')";
+        	 query = "SELECT count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] +  "')";
+       	 query = "SELECT DBO.count_bvt003a('" + ((String) filterValue).toUpperCase() + "','" + vecuser[0] + "','" + instancia + "')";
             break;
             }
 
@@ -468,6 +495,7 @@ import org.primefaces.model.SortOrder;
          e.printStackTrace();    
      }
         //Cierra las conecciones
+        coduser = null;
         pstmt.close();
         con.close();
         r.close();
@@ -516,18 +544,21 @@ import org.primefaces.model.SortOrder;
         	query = "Select trim(codrol), codrol||' - '||desrol";
             query += " from bvt003";
             query += " where codrol not in (select b_codrol from bvt002 where coduser = '" + vecuser[0].toUpperCase() + "')";
+            query += " AND instancia = '" + instancia + "'";
             query += " order by codrol";
 	        break;
   		case "PostgreSQL":
   			query = "Select trim(codrol), codrol||' - '||desrol";
             query += " from bvt003";
             query += " where codrol not in (select b_codrol from bvt002 where coduser = '" + vecuser[0].toUpperCase() + "')";
+            query += " AND instancia = '" + instancia + "'";
             query += " order by codrol";
 	        break;
   		case "Microsoft SQL Server":
   			query = "Select codrol, codrol||' - '||desrol";
             query += " from bvt003";
             query += " where codrol not in (select b_codrol from bvt002 where coduser ? '" + vecuser[0].toUpperCase() + "')";
+            query += " AND instancia = '" + instancia + "'";
             query += " order by codrol";
 	        break;
 	        }        
@@ -552,6 +583,7 @@ import org.primefaces.model.SortOrder;
             
         }
         //Cierra las conecciones
+        coduser = null;
         pstmt.close();
         con.close();
   		} catch (NamingException | SQLException e) {

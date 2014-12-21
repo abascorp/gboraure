@@ -130,6 +130,8 @@ import org.primefaces.model.SortOrder;
 	private List<Bvt003> list = new ArrayList<Bvt003>();
 	private int validarOperacion = 0;
 	private int rows;
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 	
 	     /**
 	 * @return the codrol
@@ -207,12 +209,13 @@ import org.primefaces.model.SortOrder;
 
      		con = ds.getConnection();		
      		
-            String query = "INSERT INTO Bvt003 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO Bvt003 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, codrol.toUpperCase());
             pstmt.setString(2, desrol.toUpperCase());
             pstmt.setString(3, login);
             pstmt.setString(4, login);
+            pstmt.setInt(5, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
@@ -251,7 +254,7 @@ import org.primefaces.model.SortOrder;
      		
      		String param = "'" + StringUtils.join(chkbox, "','") + "'";
      		
-     		String query = "DELETE from Bvt003 WHERE codrol in (" + param + ")";
+     		String query = "DELETE from Bvt003 WHERE codrol in (" + param + ") and instancia = '" + instancia + "'";
             pstmt = con.prepareStatement(query);
             ////System.out.println(query);
             //Antes de insertar verifica si el rol del usuario tiene permisos para insertar
@@ -294,7 +297,7 @@ import org.primefaces.model.SortOrder;
      		
             String query = "UPDATE Bvt003";
              query += " SET desrol = ?, usract = ?, fecact='" + getFecha() + "'";
-             query += " WHERE codrol = ?";
+             query += " WHERE codrol = ? and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, desrol.toUpperCase());
@@ -353,6 +356,7 @@ import org.primefaces.model.SortOrder;
         	   query += " FROM BVT003";
         	   query += " WHERE codrol||desrol like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and codrol like '%" + codrol.toUpperCase() + "%'";
+        	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -362,6 +366,7 @@ import org.primefaces.model.SortOrder;
         	   query += " FROM BVT003";
         	   query += " WHERE codrol||desrol like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and codrol like '%" + codrol.toUpperCase() + "%'";
+        	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -375,6 +380,7 @@ import org.primefaces.model.SortOrder;
      	       query += " 		FROM BVT003 A";
      	       query += " 		WHERE A.CODROL + DESROL LIKE '%" + ((String) filterValue).toUpperCase() + "%') TOT";
      	       query += "       and a.codrol like '%" + codrol.toUpperCase() + "%'";
+     	       query += "       AND   instancia = '" + instancia + "'";
 	  	       query += " WHERE ";
 	  	       query += " TOT.ROW_NUM <= " + pageSize;
 	           query += " AND TOT.ROW_NUM > " + first;
@@ -420,13 +426,13 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt003('" + ((String) filterValue).toUpperCase() + "') from dual";
+        	 query = "SELECT count_bvt003('" + ((String) filterValue).toUpperCase() + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt003('" + ((String) filterValue).toUpperCase() +  "')";
+        	 query = "SELECT count_bvt003('" + ((String) filterValue).toUpperCase() + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvt003('" + ((String) filterValue).toUpperCase() +  "')";
+       	 query = "SELECT DBO.count_bvt003('" + ((String) filterValue).toUpperCase() + "','" + instancia + "')";
             break;
             }
 

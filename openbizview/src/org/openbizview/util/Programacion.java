@@ -167,7 +167,8 @@ public class Programacion extends Bd implements Serializable {
 	//	recuperarTriggers();
 	//}
 	private String session = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("session"); //Session
-    private String tarea = ""; //Nombre de la tarea
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+	private String tarea = ""; //Nombre de la tarea
     private String vltrigger = ""; //Nombre del disparador
     private String diasemana = ""; //Día de la semana
     private String hora = ""; //Hora de la semana
@@ -1186,7 +1187,7 @@ public class Programacion extends Bd implements Serializable {
 
      		con = ds.getConnection();
      		
-            String query = "DELETE  from T_PROGRAMACION WHERE HORA ='" + hora +":" + minuto + "' and disparador = '" + vltrigger.toUpperCase() + "'";
+            String query = "DELETE  from T_PROGRAMACION WHERE HORA ='" + hora +":" + minuto + "' and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
           
@@ -1227,7 +1228,7 @@ public class Programacion extends Bd implements Serializable {
      		
      		String[] vecreporte = reporte.split("\\ - ", -1);
      		
-     		String query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'" + sdfecha.format(diainicio) + "',?,?,?,?,?,?,?)";
+     		String query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'" + sdfecha.format(diainicio) + "',?,?,?,?,?,?,?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, vltrigger.toUpperCase());
             pstmt.setString(2, "unico");
@@ -1249,6 +1250,7 @@ public class Programacion extends Bd implements Serializable {
             pstmt.setString(18, ruta_salida);
             pstmt.setString(19, opctareas);
             pstmt.setString(20, formato);
+            pstmt.setInt(21, Integer.parseInt(instancia));
 
             try {
                 pstmt.executeUpdate();
@@ -1293,11 +1295,12 @@ public class Programacion extends Bd implements Serializable {
         	query += "  select * from ";
      	    query += " ( select query.*, rownum as rn from";
         	query += " ( select trim(a.job), trim(a.disparador), trim(to_char(substr(a.hora,1,2),'00')), trim(to_char(substr(a.hora,4,2),'00')), decode(a.frecuencia,'0', '" + getMessage("mailintervalo1") + "','1','" + getMessage("mailintervalo2") + "','2','" + getMessage("mailintervalo3") + "','3','" + getMessage("mailintervalo4") + "','4','" + getMessage("mailintervalo5") + "','" + getMessage("mailintervalo6") + "'), a.diasem";
-      		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"', trim(a.formato))";
+      		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"'), trim(a.formato)";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
             query += " and a.opctareas like '" + opctareas + "%'";
+            query += " AND   a.instancia = '" + instancia + "'";
             query += " order by " + sortField.replace("v", "") + ") query";
 	        query += " ) where rownum <= " + pageSize ;
 	        query += " and rn > (" + first + ")";
@@ -1309,6 +1312,7 @@ public class Programacion extends Bd implements Serializable {
             query += " where a.idgrupo=b.idgrupo";
             query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
             query += " and a.opctareas like '" + opctareas + "%'";
+            query += " AND   a.instancia = '" + instancia + "'";
             query += " order by " + sortField.replace("v", "") ;
 	        query += " LIMIT " + pageSize;
 	        query += " OFFSET " + first;
@@ -1342,7 +1346,7 @@ public class Programacion extends Bd implements Serializable {
             select.setClase(r.getString(15));
             select.setActiva(r.getString(16));
             select.setVactivadetalletb(r.getString(17));
-            select.setVformato(r.getString(18));
+            select.setVformato(r.getString(18).toUpperCase());
         	//Agrega la lista
         	list.add(select);
         	rows = list.size();
@@ -1377,10 +1381,10 @@ public class Programacion extends Bd implements Serializable {
  		
  		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "') from dual";
+        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "')";
+        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "','" + instancia + "')";
              break;
         }
 

@@ -128,6 +128,8 @@ import org.primefaces.model.SortOrder;
 	private String bcoduser = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bcoduser");
 	private Object filterValue = "";
 	private List<Bvt006> list = new ArrayList<Bvt006>();
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 
 		/**
 	 * @return the bcodrep
@@ -240,7 +242,7 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from  Bvt006 WHERE b_codrep||b_coduser||to_char(fecacc,'dd/mm/yyyy hh:mm:ss') in (" + param + ")";
+	        	String query = "DELETE from  Bvt006 WHERE b_codrep||b_coduser||to_char(fecacc,'dd/mm/yyyy hh:mm:ss') in (" + param + ") and instancia = '" + instancia + "'";
 	        		        	
 	            pstmt = con.prepareStatement(query);
 	            ////System.out.println(query);
@@ -296,19 +298,21 @@ import org.primefaces.model.SortOrder;
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(B_CODREP), trim(B_DESREP), trim(B_CODUSER), to_char(FECACC, 'dd/mm/yyyy hh:mm:ss')";
+        	   query += " (SELECT trim(B_CODREP), trim(B_DESREP), trim(B_CODUSER), to_char(FECACC, 'dd/mm/yyyy hh:mi:ss')";
         	   query += " FROM bvt006";
         	   query += " WHERE B_CODUSER LIKE '" + vlcoduser[0] + "%'";
         	   query += " and b_codrep||b_desrep like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by  B_CODUSER, FECACC desc) query";
 	  		   query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-        	   query += " SELECT trim(B_CODREP), trim(B_DESREP), trim(B_CODUSER), to_char(FECACC, 'dd/mm/yyyy hh:mm:ss') ";
+        	   query += " SELECT trim(B_CODREP), trim(B_DESREP), trim(B_CODUSER), to_char(FECACC, 'dd/mm/yyyy hh:mi:ss') ";
         	   query += " FROM BVT006";
         	   query += " WHERE B_CODUSER LIKE '" + vlcoduser[0] + "%'";
         	   query += " and b_codrep||b_desrep like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " AND   instancia = '" + instancia + "'";
         	   query += " order by  B_CODUSER, FECACC desc";
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -325,6 +329,7 @@ import org.primefaces.model.SortOrder;
 	        	query += " WHERE "; 
 	        	query += " TOT.B_CODUSER LIKE '" + vlcoduser[0] + "%'";
 	        	query += " AND TOT.B_CODREP + TOT.B_DESREP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+	        	query += " AND  tot.instancia = '" + instancia + "'";
 	        	query += " AND TOT.ROW_NUM <= " + pageSize;
 	        	query += " AND TOT.ROW_NUM > " + first;
 	        	query += " ORDER BY  ";
@@ -383,13 +388,13 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  + "') from dual";
+        	 query = "SELECT count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  +  "')";
+        	 query = "SELECT count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  +  "')";
+       	 query = "SELECT DBO.count_bvt006('" + ((String) filterValue).toUpperCase() + "','" + vlcoduser[0]  + "','" + instancia + "')";
             break;
             }
 

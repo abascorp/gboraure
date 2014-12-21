@@ -128,7 +128,6 @@
 	</div>
         
 
-     
      <p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvt001.lazyModel}"  lazy="true" sortBy="#{tb.codrep}"
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
@@ -170,16 +169,12 @@
             <f:facet name="header">#{msg.maildetalle}</f:facet>  
             <center>
             <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal"
-            onclick="detalle('#{tb.codrep}','#{tb.desrep}','#{tb.comrep}','#{tb.vgrupo}') ;">
+            onclick="detalle('#{tb.codrep}','#{tb.desrep}','#{tb.comrep}','#{tb.vgrupodesgrupo}') ;">
             <i class="fa fa-search fa-2x"></i>
             </button>
             </center>
             </p:column>
-            
-            <p:column styleClass="wrap" style="width:100px" >  
-            <f:facet name="header">#{msg.bvt001tbGrp}</f:facet> 
-            <h:outputLabel value="#{tb.vgrupo}"  />  
-            </p:column> 
+
             
             <p:column style="width:60px" >  
             <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
@@ -191,7 +186,7 @@
             <p:column style="width:60px" >  
             <f:facet name="header">#{msg.bvt001TbPrint}</f:facet>  
             <p:commandLink styleClass="edit"  
-            onclick="imprimir('#{tb.codrep}','#{bvt001.getLogin()}', '#{bvt001.getVlRol()}', '#{tb.desrep}');" 
+            onclick="imprimir('#{tb.codrep}','#{bvt001.getLogin()}', '#{bvt001.getVlRol()}', '#{tb.desrep}', '#{tb.vinstancia}');" 
             immediate="true"
             title="Enviar"><i class="fa fa-print fa-2x"></i></p:commandLink>
 			</p:column>

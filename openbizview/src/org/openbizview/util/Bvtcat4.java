@@ -135,6 +135,8 @@ public class Bvtcat4 extends Bd implements Serializable{
 	private List<Bvtcat4> list = new ArrayList<Bvtcat4>();
 	private Object filterValue = "";
 	private int validarOperacion = 0;
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 	
      
 
@@ -335,7 +337,7 @@ public class Bvtcat4 extends Bd implements Serializable{
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO Bvtcat4 VALUES (?,?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?)";
+            String query = "INSERT INTO Bvtcat4 VALUES (?,?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, veccodcat1[0].toUpperCase());
             pstmt.setString(2, veccodcat2[0].toUpperCase());
@@ -346,6 +348,7 @@ public class Bvtcat4 extends Bd implements Serializable{
             pstmt.setString(7, login);
             pstmt.setString(8, equicat4.toUpperCase());
             pstmt.setString(9, tippro.toUpperCase());
+            pstmt.setInt(10, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
@@ -381,7 +384,7 @@ public class Bvtcat4 extends Bd implements Serializable{
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from Bvtcat4 WHERE b_codcat1||b_codcat2||b_codcat3||codcat4 in (" + param + ")";
+	        	String query = "DELETE from Bvtcat4 WHERE b_codcat1||b_codcat2||b_codcat3||codcat4 in (" + param + ") and instancia = '" + instancia + "'";
 	        		        	
 	            pstmt = con.prepareStatement(query);
 	            ////System.out.println(query);
@@ -429,7 +432,7 @@ public class Bvtcat4 extends Bd implements Serializable{
         	
             String query = "UPDATE Bvtcat4";
              query += " SET descat4 = ?, usract = ?, fecact='" + getFecha() + "', equicat4 = ?, tippro = ?";
-             query += " WHERE b_codcat1 = ? and b_codcat2 = ? and b_codcat3 = ? and codcat4 = ?";
+             query += " WHERE b_codcat1 = ? and b_codcat2 = ? and b_codcat3 = ? and codcat4 = ? and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, descat4.toUpperCase());
@@ -528,6 +531,8 @@ public class Bvtcat4 extends Bd implements Serializable{
                query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
                query += " and  A.b_codcat3 like '" + veccodcat3[0].toUpperCase() + "%'";
                query += " and  A.codcat4 ||a.descat4 like  '%" + ((String) filterValue).toUpperCase() + "%'";
+               query += " and  A.codcat4 like '" + codcat4 + "%'";
+               query += " AND   a.instancia = '" + instancia + "'";
                query += " order by a." + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -545,6 +550,8 @@ public class Bvtcat4 extends Bd implements Serializable{
                query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
                query += " and  A.b_codcat3 like '" + veccodcat3[0].toUpperCase() + "%'";
                query += " and  A.codcat4 ||a.descat4 like  '%" + ((String) filterValue).toUpperCase() + "%'";
+               query += " and  A.codcat4 like '" + codcat4 + "%'";
+               query += " AND   a.instancia = '" + instancia + "'";
                query += " order by a." + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -579,6 +586,8 @@ public class Bvtcat4 extends Bd implements Serializable{
 	        	query += "AND TOT.B_CODCAT2 LIKE '" + veccodcat2[0].toUpperCase() + "%'";
 	        	query += "AND  TOT.B_CODCAT3 LIKE '" + veccodcat3[0].toUpperCase() + "%'";
 	        	query += "AND  TOT.CODCAT4 + TOT.DESCAT4 LIKE  '%" + ((String) filterValue).toUpperCase() + "%'";
+	        	query += " AND   tot.instancia = '" + instancia + "'";
+	        	query += " and  tot.codcat4 like '" + codcat4 + "%'";
 	        	query += "AND TOT.ROW_NUM <= " + pageSize;
 	        	query += "AND TOT.ROW_NUM > " + first;
 	        	query += "ORDER BY " + sortField ;
@@ -657,13 +666,13 @@ public class Bvtcat4 extends Bd implements Serializable{
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "') from dual";
+        	 query = "SELECT count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "')";
+        	 query = "SELECT count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "')";
+       	 query = "SELECT DBO.count_bvtcat4('" + ((String) filterValue).toUpperCase() + "','" + veccodcat1[0] + "','" + veccodcat2[0] + "','" + veccodcat3[0] + "','" + instancia + "')";
             break;
             }
 

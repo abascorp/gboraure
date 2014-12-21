@@ -143,7 +143,8 @@ import org.primefaces.model.SortOrder;
     private List<String> selectedAcccat1;   //Listado de compañias seleccionadas
     private Map<String, String> sorted;
     private String exito = "exito";
-	
+    private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
+
 	
      
 	
@@ -325,12 +326,13 @@ import org.primefaces.model.SortOrder;
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO acccat1 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+            String query = "INSERT INTO acccat1 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, veccodrol[0].toUpperCase());
             pstmt.setString(2, pcat1.toUpperCase());
             pstmt.setString(3, login);
             pstmt.setString(4, login);
+            pstmt.setInt(5, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
@@ -390,7 +392,7 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from acccat1 WHERE b_codrol||b_codcat1 in (" + param + ")";
+	        	String query = "DELETE from acccat1 WHERE b_codrol||b_codcat1 in (" + param + ") and instancia = '" + instancia + "'";
 	        		        	
 	            pstmt = con.prepareStatement(query);
 	            ////System.out.println(query);
@@ -450,6 +452,7 @@ import org.primefaces.model.SortOrder;
   		       query += " and   a.b_codcat1=c.codcat1 ";
   		       query += " and   a.b_codrol like '" + veccodrol[0] + "%'";
         	   query += " AND   a.b_codcat1||c.descat1 like '%" + ((String) filterValue).toUpperCase() + "%'";
+        	   query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
 	           query += " and rn > (" + first + ")";
@@ -461,6 +464,7 @@ import org.primefaces.model.SortOrder;
 		       query += " and   a.b_codcat1=c.codcat1 ";
 		       query += " and   a.b_codrol like '" + veccodrol[0] + "%'";
       	       query += " AND   a.b_codcat1||c.descat1 like '%" + ((String) filterValue).toUpperCase() + "%'";
+      	       query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
 	           query += " OFFSET " + first;
@@ -484,6 +488,7 @@ import org.primefaces.model.SortOrder;
 				query += " WHERE ";
 				query += " TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
 				query += " AND TOT.B_CODCAT1 + TOT.DESCAT1 LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+				query += " AND   tot.instancia = '" + instancia + "'";
 				query += " AND TOT.ROW_NUM > " + first;
 				query += " ORDER BY " + sortField ;
           break;
@@ -537,13 +542,13 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "') from dual";
+        	 query = "SELECT count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
+        	 query = "SELECT count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-       	 query = "SELECT DBO.count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] +  "')";
+       	 query = "SELECT DBO.count_acccat1('" + ((String) filterValue).toUpperCase() + "','" + veccodrol[0] + "','" + instancia + "')";
             break;
             }
 
@@ -591,16 +596,19 @@ import org.primefaces.model.SortOrder;
   		case "Oracle":
 	    	query = "Select codcat1, codcat1||' - '||descat1";
 	        query += " from bvtcat1";
+	        query += " where   instancia = '" + instancia + "'";
 	        query += " order by codcat1";
 	        break;
   		case "PostgreSQL":
 	    	query = "Select codcat1, codcat1||' - '||descat1";
 	        query += " from bvtcat1";
+	        query += " where   instancia = '" + instancia + "'";
 	        query += " order by codcat1";
 	        break;
   		case "Microsoft SQL Server":
 	    	query = "Select codcat1, codcat1 + ' - ' + descat1";
 	        query += " from bvtcat1";
+	        query += " where   instancia = '" + instancia + "'";
 	        query += " order by codcat1";
 	        break;
 	        }

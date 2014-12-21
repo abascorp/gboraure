@@ -131,8 +131,9 @@ import org.primefaces.model.SortOrder;
         private String negocio = "";
 		private Object filterValue = "";
 		private List<BiAudit> list = new ArrayList<BiAudit>();
-		
+		private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
 
+		
        
 		/**
 		 * @return the fechadia
@@ -338,6 +339,7 @@ import org.primefaces.model.SortOrder;
             	   query += " (select to_char(fechadia,'dd/mm/yyyy'), substr(fecacc,12,22), detfaz, result, negocio";
             	   query += " FROM biaudit";
             	   query += " WHERE substr(fecacc,12,22)||detfaz||negocio like '%" + ((String) filterValue).toUpperCase() + "%'";
+            	   query += " AND   instancia = '" + instancia + "'";
             	   if(fechadia != null && !fechadia.equals("0") && !fechadia.equals(getMessage("biauditFecD"))){
                 	   query += " and fechadia = '" + fechadia + "'";
                 	   }
@@ -349,6 +351,7 @@ import org.primefaces.model.SortOrder;
             	   query += " select to_char(fechadia,'dd/mm/yyyy'), substr(fecacc,12,22), detfaz, result, negocio ";
             	   query += " FROM biaudit";
             	   query += " WHERE substr(fecacc,12,22)||detfaz||negocio like '%" + ((String) filterValue).toUpperCase() + "%'";
+            	   query += " AND   instancia = '" + instancia + "'";
             	   if(fechadia != null && !fechadia.equals("0") && !fechadia.equals(getMessage("biauditFecD"))){
             	   query += " and fechadia = '" + fechadia + "'";
             	   }
@@ -398,7 +401,7 @@ import org.primefaces.model.SortOrder;
 	 		String busqueda = "1";
 	 		
 	 		if (fechadia==null && productName.equals("Oracle")){
-	 			fechadia = "01/01/1900";
+	 			fechadia = "0";
 	 		} else	if (fechadia==null && productName.equals("PostgreSQL")){	 		
 	 			busqueda = "0";
 	 			fechadia = "01/01/1900";
@@ -406,16 +409,16 @@ import org.primefaces.model.SortOrder;
 	  		
 	  		switch ( productName ) {
 	        case "Oracle":
-	        	 query = "SELECT count_biaudit('" + ((String) filterValue).toUpperCase() + "','" + fechadia + "') from dual";
+	        	 query = "SELECT count_biaudit('" + ((String) filterValue).toUpperCase() + "','" + fechadia + "','" + instancia + "') from dual";
 	             break;
 	        case "PostgreSQL":
-	        	 query = "SELECT count_biaudit('" + ((String) filterValue).toUpperCase() + "','" + fechadia + "','" + busqueda +  "')";
+	        	 query = "SELECT count_biaudit('" + ((String) filterValue).toUpperCase() + "','" + fechadia + "','" + busqueda  + "','" + instancia + "')";
 	             break;
 	        }
 
 	        
 	        pstmt = con.prepareStatement(query);
-	        //System.out.println("Fechadia:" + fechadia);
+	        //System.out.println(query);
 	        //System.out.println("Bisqueda:" + busqueda);
 
 	         r =  pstmt.executeQuery();

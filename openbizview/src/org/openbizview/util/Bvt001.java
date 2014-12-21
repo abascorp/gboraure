@@ -131,9 +131,11 @@ import org.primefaces.model.SortOrder;
 	private String vgrupodesgrupo;
 	private String codgrup = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("codgrup"); 
 	private String vlRol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rol"); //Usuario logeado
+	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
 	private int rows;
 	private Object filterValue = "";
 	private List<Bvt001> list = new ArrayList<Bvt001>();
+	private String vinstancia = ""; //Istancia para el log
 
 	
 	/**
@@ -270,6 +272,24 @@ import org.primefaces.model.SortOrder;
 	public void setVgrupodesgrupo(String vgrupodesgrupo) {
 		this.vgrupodesgrupo = vgrupodesgrupo;
 	}
+	
+	
+	
+
+
+	/**
+	 * @return the vinstancia
+	 */
+	public String getVinstancia() {
+		return vinstancia;
+	}
+
+	/**
+	 * @param vinstancia the vinstancia to set
+	 */
+	public void setVinstancia(String vinstancia) {
+		this.vinstancia = vinstancia;
+	}
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -331,7 +351,7 @@ import org.primefaces.model.SortOrder;
             //Class.forName(getDriver());
             //con = DriverManager.getConnection(
             //      getUrl(), getUsuario(), getClave());
-            String query = "INSERT INTO Bvt001 VALUES (?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+            String query = "INSERT INTO Bvt001 VALUES (?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, codrep.toUpperCase());
             pstmt.setString(2, desrep.toUpperCase());
@@ -339,6 +359,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(4, login);
             pstmt.setString(5, login);
             pstmt.setString(6, veccodgrup[0].toUpperCase());
+            pstmt.setInt(7, Integer.parseInt(instancia));
             ////System.out.println(query);
             try {
                 //Avisando
@@ -381,8 +402,8 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from Bvt007 WHERE b_codrep in (" + param + ")";
-	        	String query1 = "DELETE from Bvt001 WHERE codrep in (" + param + ")";
+	        	String query = "DELETE from Bvt007 WHERE b_codrep in (" + param + ") and instancia = '" + instancia + "'";
+	        	String query1 = "DELETE from Bvt001 WHERE codrep in (" + param + ") and instancia = '" + instancia + "'";
 	        		        	
 	            pstmt = con.prepareStatement(query);
 	            pstmt1 = con.prepareStatement(query1);
@@ -433,7 +454,7 @@ import org.primefaces.model.SortOrder;
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
      		
-           String[] veccodgrup = codgrup.split("\\ - ", -1);
+           
      		
      		if(codgrup==null){
      			codgrup = " - ";
@@ -441,6 +462,8 @@ import org.primefaces.model.SortOrder;
      		if(codgrup==""){
      			codgrup = " - ";
      		}
+     		
+     		String[] veccodgrup = codgrup.split("\\ - ", -1);
 
      		con = ds.getConnection();		
             //Class.forName(getDriver());
@@ -448,7 +471,7 @@ import org.primefaces.model.SortOrder;
             //      getUrl(), getUsuario(), getClave());
             String query = "UPDATE Bvt001";
              query += " SET desrep = ?, comrep= ?, usract = ?, fecact='" + getFecha() + "', codgrup = '" + veccodgrup[0].toUpperCase() + "'";
-             query += " WHERE codrep = ?";
+             query += " WHERE codrep = ? and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, desrep.toUpperCase());
@@ -512,11 +535,12 @@ import org.primefaces.model.SortOrder;
         case "Oracle":
         	   query += "  select * from ";
         	   query += " ( select query.*, rownum as rn from";
-        	   query += " (SELECT trim(A.CODREP), trim(A.DESREP), trim(A.COMREP), trim(A.CODGRUP), trim(B.DESGRUP)";
+        	   query += " (SELECT trim(A.CODREP), trim(A.DESREP), trim(A.COMREP), trim(A.CODGRUP), trim(B.DESGRUP), a.instancia";
 		       query += " FROM BVT001 A, BVT001A B";
 		       query += " WHERE A.CODGRUP=B.CODGRUP(+)";
 		       query += " AND A.CODREP||A.DESREP LIKE trim('%" + ((String) filterValue).toUpperCase() +  "%') ";
 		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL = '" + vlRol + "')";
+		       query += " AND   A.instancia = '" + instancia + "'";
 	  		   if(!veccodgrup[0].equals("")){
 		  	   query += " AND   A.CODGRUP  LIKE trim('" + veccodgrup[0].toUpperCase() +  "%')";
 		  	 	}
@@ -525,10 +549,11 @@ import org.primefaces.model.SortOrder;
 	           query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-        	   query += " SELECT trim(A.CODREP), trim(A.DESREP), trim(A.COMREP), trim(A.CODGRUP), trim(fn_desgrup(A.CODGRUP)) ";
+        	   query += " SELECT trim(A.CODREP), trim(A.DESREP), trim(A.COMREP), trim(A.CODGRUP), trim(fn_desgrup(A.CODGRUP)), a.instancia ";
 		       query += " FROM BVT001 A ";
 		       query += " where A.CODREP||A.DESREP LIKE trim('%" + ((String) filterValue).toUpperCase() +  "%') ";
 		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL = '" + vlRol + "')";
+		       query += " AND   A.instancia = '" + instancia + "'";
 	  		   if(!veccodgrup[0].equals("")){
 		  	   query += " AND   A.CODGRUP  LIKE trim('" + veccodgrup[0].toUpperCase() +  "%')";
 		  	 	}
@@ -543,6 +568,7 @@ import org.primefaces.model.SortOrder;
         	query += " TOT.COMREP, "; 
         	query += " TOT.CODGRUP, "; 
         	query += " TOT.DESGRUP ";
+        	query += " TOT.instancia ";
         	query += " FROM (SELECT "; 
         	query += " 	  ROW_NUMBER() OVER (ORDER BY A.CODREP ASC) AS ROW_NUM ";
         	query += " 	  ,A.CODREP AS CODREP ";
@@ -553,6 +579,7 @@ import org.primefaces.model.SortOrder;
         	query += " 	  FROM BVT001 A LEFT OUTER JOIN BVT001A B ON A.CODGRUP = B.CODGRUP "; 
         	query += " 	  WHERE "; 
         	query += " 	  A.CODREP + A.DESREP LIKE ('" + ((String) filterValue).toUpperCase() +  "%') ";
+        	query += " AND   A.instancia = '" + instancia + "'";
 	  		   if(!veccodgrup[0].equals("")){
 		  	   query += " AND A.CODGRUP LIKE '" + veccodgrup[0].toUpperCase() +  "%'";
 		  	 	}        	
@@ -580,6 +607,7 @@ import org.primefaces.model.SortOrder;
      	select.setComrep(r.getString(3));
      	select.setVgrupo(r.getString(4));
         select.setVgrupodesgrupo(r.getString(5));	
+        select.setVinstancia(r.getString(6));
         	//Agrega la lista
         	list.add(select);
         }
@@ -615,13 +643,13 @@ import org.primefaces.model.SortOrder;
   		
   		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_bvt001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "') from dual";
+        	 query = "SELECT count_bvt001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "','" + instancia + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_bvt001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "')";
+        	 query = "SELECT count_bvt001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "','" + instancia + "')";
              break;
         case "Microsoft SQL Server":
-        	 query = "SELECT DBO.COUNT_BVT001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "')"; 
+        	 query = "SELECT DBO.COUNT_BVT001('" + ((String) filterValue).toUpperCase() + "','" +  vlRol +   "','" + veccodgrup[0] + "','" + instancia + "')"; 
   		}
 
         

@@ -44,15 +44,17 @@ response.sendRedirect("/openbizview/login.xhtml");
        String descripcion = request.getParameter("descripcion");
        String hora = request.getParameter("hora");
        String rol = request.getParameter("rol");
+       String instancia = request.getParameter("instancia");
         if (captura!=null){
          rep =  captura;
         }
       
-       log.insertBvt006(replog, descripcion,  usuario, hora);
+       log.insertBvt006(replog, descripcion,  usuario, hora, instancia);
         %>
         <birt:viewer id='birtViewer' reportDesign= "<%=rep%>"  isHostPage="true">
             <birt:param  name="ROL" value="<%=rol%>"  ></birt:param>
             <birt:param  name="USUARIO" value="<%=usuario%>"  ></birt:param>
+            <birt:param  name="INSTANCIA" value="<%=instancia%>"  ></birt:param>
         </birt:viewer>
     </body>
 </html>
