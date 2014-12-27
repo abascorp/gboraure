@@ -90,14 +90,7 @@
                 <p:columnToggler datasource="tbResult" trigger="toggler" />
             </p:outputPanel>         
             </f:facet> 
-            
-            <p:column style="width:40px" >  
-            <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
-            </f:facet>
-            <input type="checkbox" name="toDelete" class="chk" value="#{tb.fechadia}"/>
-            </p:column>
-            
+                        
             <p:column styleClass="wrap" style="width:100px">  
             <f:facet  name="header">#{msg.biauditTbFec}</f:facet>  
             <h:outputLabel  value="#{tb.fechadia}"/>

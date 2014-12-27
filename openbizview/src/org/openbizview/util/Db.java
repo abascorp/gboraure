@@ -30,19 +30,19 @@ public class Db extends Bd implements Serializable  {
 	       // ...
 	 //Lee cuantos reportes impresos
 	   try {
-		q1 = "select * from bvt001";
+		q1 = "select * from bvt001 where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q1, JNDI);	
 		r1 = consulta.getRows();
 		//Lee cuantas tareas
-		q2 = "select * from t_programacion";
+		q2 = "select * from t_programacion where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q2, JNDI);
 		r2 = consulta.getRows();
 		//Lee cuantos usuarios
-		q3 = "select * from bvt002";
+		q3 = "select * from bvt002 where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q3, JNDI);
 		r3 = consulta.getRows();
 		//Lee cuantos reportes impresos
-		q4 = "select * from bvt006";
+		q4 = "select * from bvt006 where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q4, JNDI);
 		r4 = consulta.getRows();
 
@@ -171,9 +171,9 @@ public class Db extends Bd implements Serializable  {
 	 */
 	public void toprep(){
 
-		chart1 = "select * from ( select query.*, rownum as rn from ( select count(b_codrep), b_codrep from bvt006 group by b_codrep order by 1 desc) query ) where rownum <= 5 and rn > (0)";
-		chart2 = "select count(b_codrep), b_codrep from bvt006 group by b_codrep order by 1 desc LIMIT 5 OFFSET 0";
-		chart3 = "SELECT ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) AS ROW_NUM, B_CODREP FROM BVT006 HAVING ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) <= 5 AND ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) > 0 ORDER BY 1 DESC";
+		chart1 = "select * from ( select query.*, rownum as rn from ( select count(b_codrep), b_codrep from bvt006 group by b_codrep order by 1 desc) query ) where rownum <= 5 and rn > (0) and instancia = '" + instancia + "'";
+		chart2 = "select count(b_codrep), b_codrep from bvt006 where instancia = '" + instancia + "' group by b_codrep order by 1 desc LIMIT 5 OFFSET 0";
+		chart3 = "SELECT ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) AS ROW_NUM, B_CODREP FROM BVT006 where instancia = '" + instancia + "' HAVING ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) <= 5 AND ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) > 0 ORDER BY 1 DESC";
 		try {
 			consulta.selectPntGenericaMDB(chart1, chart2, chart3, JNDI);		
 			rowschart = consulta.getRows();
