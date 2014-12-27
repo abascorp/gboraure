@@ -69,7 +69,8 @@
                <div class="panel-body" >
                 <p:panel id="panel" widgetVar="panel"  header="#{msg.maistareaTit}" toggleable="true" >	
                 <p:tabView id="tabView" style="height:auto;" >  
-                 <p:tab id="tab1" title="#{msg.tabNombres}">          
+                 <p:tab id="tab1" title="#{msg.tabNombres}">
+                 <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>          
 		         <h:panelGrid columns="1" columnClasses="col1" >	 
 		         <h:selectOneMenu id="opciones" value="#{programacion.opctareas}" >
                  <f:selectItems value="#{listBean.opcTareas}"/>
@@ -95,7 +96,8 @@
 	             </h:panelGrid>
                  </p:tab> 
                  
-                 <p:tab id="tab2" title="#{msg.tabPrograma}">          
+                 <p:tab id="tab2" title="#{msg.tabPrograma}"> 
+                 <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>         
 		         <h:panelGrid  columns="1" columnClasses="col1">	         
 			     <h:selectOneMenu id="frecuencia" value="#{programacion.frecuencia}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}">
                  <f:selectItems value="#{listBean.frecuencia}"/>
@@ -121,7 +123,8 @@
                  </h:panelGrid>
                  </p:tab> 
                  
-                 <p:tab id="tab3" title="#{msg.tabEnvio}">  
+                 <p:tab id="tab3" title="#{msg.tabEnvio}"> 
+                 <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div> 
                  <h:panelGrid columns="1" columnClasses="col1">
 		         <p:autoComplete id="reporte" value="#{programacion.reporte}"  completeMethod="#{autocomplete.completeRep}"  dropdown="true" maxResults="250" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
 		         <p:ajax event="itemSelect" listener="#{programacion.ReadParamsBirtReport(programacion.getRutaRepReal())}" update=":formmailconfig:panelParams"/>
@@ -136,6 +139,7 @@
 		         
 		         
 		         <p:tab id="tab4" title="Contenido">  
+		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
                  <h:panelGrid columns="1" columnClasses="col1">
 			     <p:inputText id="asunto"  maxlength="50"  value="#{programacion.asunto}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>			     
 			     <p:watermark for="asunto" value="#{msg.mailtareaAsunto}" />

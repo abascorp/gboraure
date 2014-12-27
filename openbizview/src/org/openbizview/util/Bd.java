@@ -170,47 +170,9 @@ public class Bd  {
         return sortedMap;
     }
 
-    
-    /**
-   	 * Setea compañia seleccionada para copias
-   	 * @param next
-   	 */
-   	public void setCia(String ciacopia){
-       	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cia", ciacopia);
-       }
-   	
-    /**
-   	 * Setea periodo seleccionada para copias
-   	 * @param next
-   	 */
-   	public void setPeriodo(String periodo){
-       	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodo);
-       }
-   	
-   	/**
-   	 * Setea escenario seleccionada para copias
-   	 * @param next
-   	 */
-   	public void setEsc(String esc){
-       	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("esc", esc);
-       }
-   	
-   	/**
-   	 * Setea escenario seleccionada para copias
-   	 * @param next
-   	 */
-   	public void setTipneg(String tipneg){
-       	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tipneg", tipneg);
-       }
-   	
-    /**
-	 * Setea compañia seleccionada para copias
-	 * @param next
-	 */
-	public void setCiaCopia(String ciacopia){
-    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ciacopia", ciacopia);
-    }
-	
+ 
+
+
 	 /**
 		 * Setea categoria1
 		 * @param next
@@ -244,14 +206,6 @@ public class Bd  {
 	}
 	
 	/**
-	 * Setea uorg
-	 * @param next
-	 */
-	public void setUorg(String uorg){
-	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("uorg", uorg);
-	}
-	
-	/**
 	 * Setea codgrup
 	 * @param next
 	 */
@@ -259,13 +213,7 @@ public class Bd  {
 	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("codgrup", codgrup);
 	}
 	
-	/**
-	 * Setea dim
-	 * @param next
-	 */
-	public void setDim(String dim){
-	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dim", dim);
-	}
+
 	
 	/**
 	 * Setea list
@@ -274,23 +222,7 @@ public class Bd  {
 	public void setIdgrupo(String idgrupo){
 	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("idgrupo", idgrupo);
 	}
-	
-	/**
-	 * Setea list
-	 * @param next
-	 */
-	public void setTippollo(String tippollo){
-	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tippollo", tippollo);
-	}
-	
-	/**
-	 * Setea list
-	 * @param next
-	 */
-	public void setTZona(String zona){
-	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("zona", zona);
-	}
-	
+		
 	/**
 	 * Setea usuario lista
 	 * @param next

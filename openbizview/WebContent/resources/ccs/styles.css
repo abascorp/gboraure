@@ -373,4 +373,12 @@ text-align: left ! important
 	text-shadow: 3px 3px 3px #afb5b8;
     filter: dropshadow(color=#afb5b8, offx=4, offy=4);
    }
+   
+   /* Wikis Styles */
+   #wiki{
+     float: right;
+     position: relative;
+     z-index: 1;
+     overflow: visible;
+   }
 	

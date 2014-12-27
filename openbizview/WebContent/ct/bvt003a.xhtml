@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+     Copyright (C) 2011  ANDRES DOMINGUEZ
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -68,6 +68,7 @@
 				<div class="panel panel-info" style="margin-top: 30px">
            <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.bvt003atit}">
+		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=rolesadicionales" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
 		         <h:panelGrid columns="1" columnClasses="col1">	 
 			     <p:autoComplete id="coduser" value="#{bvt003a.coduser}" emptyMessage="#{msg.html138}" completeMethod="#{autocomplete.completeUser}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
 			     <p:ajax event="itemSelect" update="tbResult, roles" listener="#{bd.setBcoduser(bvt003a.coduser)}" />

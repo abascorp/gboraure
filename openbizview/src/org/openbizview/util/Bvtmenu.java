@@ -325,34 +325,7 @@ import org.primefaces.model.SortOrder;
        insertBvTMENU(veccodrol[0], "M25|"+getMessage("mail03")+"|0", JNDI, login);
        insertBvTMENU(veccodrol[0], "M26|"+getMessage("mail04")+"|0", JNDI, login); 
        //Reportes
-       insertBvTMENU(veccodrol[0], "M27|"+getMessage("rep").toUpperCase()+"|0", JNDI, login);
-
-       
-       //Desarrollos particulares caso proagro
-       insertBvTMENU(veccodrol[0], "P01|"+getMessage("pres").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P02|"+getMessage("pres01")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P03|"+getMessage("pres02")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P04|"+getMessage("pres08")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P05|"+getMessage("pres03")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P06|"+getMessage("pres04")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P07|"+getMessage("pres05")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P08|"+getMessage("pres13")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P09|"+getMessage("pres09")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P10|"+getMessage("pres_a").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P11|"+getMessage("pres06")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P12|"+getMessage("pres07")+"|0", JNDI, login);   
-       insertBvTMENU(veccodrol[0], "P13|"+getMessage("presventas")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P14|"+getMessage("pres10")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P15|"+getMessage("pres11")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P16|"+getMessage("pres12")+"|0", JNDI, login);
-       
-       insertBvTMENU(veccodrol[0], "P17|"+getMessage("presplan")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P18|"+getMessage("presplan01")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P19|"+getMessage("presplan02")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P20|"+getMessage("presplan02A")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "P21|"+getMessage("presplan02B")+"|0", JNDI, login);
-
-       
+       insertBvTMENU(veccodrol[0], "R01|"+getMessage("rep").toUpperCase()+"|0", JNDI, login);       
        
 	   }
 	   if(exito.equals("exito")){

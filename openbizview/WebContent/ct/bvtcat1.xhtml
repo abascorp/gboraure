@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+     Copyright (C) 2011  ANDRES DOMINGUEZ
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -49,7 +49,7 @@
                  <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{bvtcat1.delete}" 
                  rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
                  <p:separator/>     
-                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="panel, growl" process="@this" 
+                 <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult,panel, growl" process="@this" 
                  title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" >  
                  <p:resetInput target="panel" /> 
                  </p:commandButton>                   
@@ -66,8 +66,9 @@
 			   <!-- Panel -->      
 		     <div class="panel panel-info" style="margin-top: 30px">
 		     <div class="panel-body">
-		         <p:panel id="panel"  header="#{msg.bvtcat1tit}">	  	         
-		         <h:panelGrid  columns="1" columnClasses="col1">	         
+		         <p:panel id="panel"  header="#{msg.bvtcat1tit}">	  	 
+		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=categoria1" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>         
+		         <h:panelGrid  columns="1" columnClasses="col1">	        
 			     <p:inputText id="codcat" placeholder="#{msg.bvtcat1Cod}" maxlength="10" styleClass="form-control" value="#{bvtcat1.codcat1}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:message for="codcat"/>
 			     <p:inputText id="descat" placeholder="#{msg.bvtcat1Desc}" maxlength="50" styleClass="form-control"  value="#{bvtcat1.descat1}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" />

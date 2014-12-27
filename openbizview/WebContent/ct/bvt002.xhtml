@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+     Copyright (C) 2011  ANDRES DOMINGUEZ
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -66,9 +66,10 @@
 				<!-- Panel -->
 			<div class="panel panel-info" style="margin-top: 30px">
            <div class="panel-body">
-           <p:panel id="panel"  header="#{msg.bvt002tit}" toggleable="true">	
-            <p:tabView id="tabView" style="height:auto;" > 
+           <p:panel id="panel"  header="#{msg.bvt002tit}" toggleable="true">
+             <p:tabView id="tabView" style="height:auto;" >            
              <p:tab id="Bas" title="#{msg.bvt002Tab1}">
+             <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=usuarios" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>	         
                <h:panelGrid  columns="1" columnClasses="col1">		         
 			     <p:inputText id="coduser" maxlength="10" styleClass="form-control" value="#{bvt002.coduser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="coduser" value="#{msg.bvt002Cod}" />
@@ -82,6 +83,7 @@
                </h:panelGrid> 
              </p:tab>
              <p:tab id="Ubic" title="#{msg.bvt002Tab2}">  
+             <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=usuarios" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>	          
                <h:panelGrid  columns="1" columnClasses="col1">	
 			     <p:inputText id="mail" maxlength="150" styleClass="form-control" value="#{bvt002.mail}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('confmailIngMail')}">  
 			     <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />

@@ -66,7 +66,8 @@
 				<!-- Panel -->
 			<div class="panel panel-info" style="margin-top: 30px">
            <div class="panel-body">
-		         <p:panel id="panel"  header="#{msg.mailgrupotit}">	  	         
+		         <p:panel id="panel"  header="#{msg.mailgrupotit}">	
+		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=grupos" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>  	         
 		         <h:panelGrid  columns="1" columnClasses="col1" >	         
 			     <p:inputText id="codigo" maxlength="10"  value="#{mailgrupos.idgrupo}" styleClass="form-control" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  	
 			     <p:watermark for="codigo" value="#{msg.mailgrupoCodigo}" />

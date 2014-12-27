@@ -68,7 +68,8 @@
 				<!-- Panel -->
 			<div class="panel panel-info" style="margin-top: 30px">
            <div class="panel-body">
-		         <p:panel id="panel"  header="#{msg.Insttit}">	  	         
+		         <p:panel id="panel"  header="#{msg.Insttit}">	
+		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=instancias" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>  	         
 		         <h:panelGrid columns="1" columnClasses="col1" >	         
 			     <p:inputText id="codrol" maxlength="10" styleClass="form-control" value="#{instancias.instancia}" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="codrol" value="#{msg.bvt003Cod}" />
