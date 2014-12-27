@@ -31,6 +31,7 @@ function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6){
 	  document.getElementById("formBvt002:vop").value= rTrim(vT4);
 	  document.getElementById("formBvt002:tabView:mail").value= rTrim(vT5);
 	  document.getElementById("formBvt002:tabView:instancia_input").value= rTrim(vT6);
-	  updateInput('formBvt002:coduser', '#F2F2F2');
+	  updateInput('formBvt002:tabView:coduser', '#F2F2F2');
+	  updateInput('formBvt002:tabView:cluser', '#F2F2F2');
 	}
 

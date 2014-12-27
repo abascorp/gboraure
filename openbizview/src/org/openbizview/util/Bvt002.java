@@ -131,6 +131,7 @@ import org.primefaces.model.SortOrder;
 	private List<Bvt002> list = new ArrayList<Bvt002>();
 	private int validarOperacion = 0;
 	private String instancia = "";
+	private String instancia_insert = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
 	
 	//Cambio de password
 	StringMD md = new StringMD();
@@ -342,7 +343,7 @@ import org.primefaces.model.SortOrder;
             pstmt.setString(5, login);
             pstmt.setString(6, login);
             pstmt.setString(7, mail.toLowerCase());
-            pstmt.setInt(8, Integer.parseInt(instancia.split(" - ")[0]));
+            pstmt.setInt(8, Integer.parseInt(instancia_insert));
 
             ////System.out.println(query);
             try {

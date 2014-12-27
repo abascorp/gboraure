@@ -242,10 +242,10 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from  Bvt006 WHERE b_codrep||b_coduser||to_char(fecacc,'dd/mm/yyyy hh:mm:ss') in (" + param + ") and instancia = '" + instancia + "'";
+	        	String query = "DELETE from  Bvt006 WHERE b_codrep||b_coduser||to_char(fecacc,'dd/mm/yyyy hh:mi:ss') in (" + param + ") and instancia = '" + instancia + "'";
 	        		        	
 	            pstmt = con.prepareStatement(query);
-	            ////System.out.println(query);
+	            //System.out.println(query);
 	
 	            try {
 	                //Avisando
