@@ -57,18 +57,13 @@ public class Autocomplete extends Bd {
 			IOException {
 
 		String queryora = "Select codgrup||' - '||desgrup " + " from bvt001a "
-				+ " where codgrup like '%" + query + "%' or desgrup like '%"
-				+ query.toUpperCase() + "%' and instancia = '"
-				+ instancia+ "' order by codgrup";
+				+ " where codgrup||desgrup like '%" + query.toUpperCase() + "%' and instancia = '"
+				+ instancia + "' order by codgrup";
 		String querypg = "Select codgrup||' - '||desgrup " + " from bvt001a "
-				+ " where codgrup like '%" + query + "%' or desgrup like '%"
-				+ query.toUpperCase() + "%' and instancia = '"
-				+ instancia
-				+ "' order by codgrup";
+				+ " where codgrup||desgrup like '%" + query.toUpperCase() + "%'  and instancia = '"
+				+ instancia	+ "' order by codgrup";
 		String querysql = "Select codgrup + ' - ' + desgrup "
-				+ " from bvt001a " + " where codgrup like '%" + query
-				+ "%' or desgrup like '%" + query.toUpperCase()
-				+ "%' and instancia = '"
+				+ " from bvt001a " + " where codgrup||desgrup like '%" + query.toUpperCase() + "%' and instancia = '"
 				+ instancia
 				+ "' order by codgrup";
 
