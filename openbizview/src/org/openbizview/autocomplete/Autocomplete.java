@@ -58,14 +58,19 @@ public class Autocomplete extends Bd {
 
 		String queryora = "Select codgrup||' - '||desgrup " + " from bvt001a "
 				+ " where codgrup like '%" + query + "%' or desgrup like '%"
-				+ query.toUpperCase() + "%' order by codgrup";
+				+ query.toUpperCase() + "%' and instancia = '"
+				+ instancia+ "' order by codgrup";
 		String querypg = "Select codgrup||' - '||desgrup " + " from bvt001a "
 				+ " where codgrup like '%" + query + "%' or desgrup like '%"
-				+ query.toUpperCase() + "%' order by codgrup";
+				+ query.toUpperCase() + "%' and instancia = '"
+				+ instancia
+				+ "' order by codgrup";
 		String querysql = "Select codgrup + ' - ' + desgrup "
 				+ " from bvt001a " + " where codgrup like '%" + query
 				+ "%' or desgrup like '%" + query.toUpperCase()
-				+ "%' order by codgrup";
+				+ "%' and instancia = '"
+				+ instancia
+				+ "' order by codgrup";
 
 		List<String> results = new ArrayList<String>();
 
