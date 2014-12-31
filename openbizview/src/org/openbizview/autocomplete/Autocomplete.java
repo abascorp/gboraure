@@ -553,7 +553,7 @@ public class Autocomplete extends Bd {
 		String querysql = "Select codrol + ' - ' + desrol " + " from bvt003 "
 				+ " where codrol + desrol like '%" + query
 				+ "%'  and instancia = '" + instancia + "' order by codrol ";
-		// System.out.println(querypg);
+		 //System.out.println(querypg);
 		List<String> results = new ArrayList<String>();
 		consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
 		rows = consulta.getRows();
