@@ -541,6 +541,7 @@ import org.primefaces.model.SortOrder;
 		       query += " AND A.CODREP||A.DESREP LIKE trim('%" + ((String) filterValue).toUpperCase() +  "%') ";
 		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL = '" + vlRol + "')";
 		       query += " AND   A.instancia = '" + instancia + "'";
+		       query += " AND   A.codrep like '" + codrep + "%'";
 	  		   if(!veccodgrup[0].equals("")){
 		  	   query += " AND   A.CODGRUP  LIKE trim('" + veccodgrup[0].toUpperCase() +  "%')";
 		  	 	}
@@ -554,6 +555,7 @@ import org.primefaces.model.SortOrder;
 		       query += " where A.CODREP||A.DESREP LIKE trim('%" + ((String) filterValue).toUpperCase() +  "%') ";
 		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL = '" + vlRol + "')";
 		       query += " AND   A.instancia = '" + instancia + "'";
+		       query += " AND   A.codrep like '" + codrep + "%'";
 	  		   if(!veccodgrup[0].equals("")){
 		  	   query += " AND   A.CODGRUP  LIKE trim('" + veccodgrup[0].toUpperCase() +  "%')";
 		  	 	}
@@ -580,6 +582,7 @@ import org.primefaces.model.SortOrder;
         	query += " 	  WHERE "; 
         	query += " 	  A.CODREP + A.DESREP LIKE ('" + ((String) filterValue).toUpperCase() +  "%') ";
         	query += " AND   A.instancia = '" + instancia + "'";
+        	query += " AND   A.codrep like '" + codrep + "%'";
 	  		   if(!veccodgrup[0].equals("")){
 		  	   query += " AND A.CODGRUP LIKE '" + veccodgrup[0].toUpperCase() +  "%'";
 		  	 	}        	
