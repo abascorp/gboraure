@@ -64,10 +64,11 @@ public class SeguridadMenuBean extends Bd {
 		if(login==""){
 			login = "";
 		}
-		consulta.selectPntGenerica("select codvis " + "from bvtmenu "
+		String vlquery = "select codvis " + "from bvtmenu "
 				+ " where codopc ='" + opc.toUpperCase()
-				+ "' and b_codrol = (select b_codrol " + " from bvt002 "
-				+ " where coduser = '" + login.toUpperCase() + "')", JNDI);
+				+ "' and b_codrol in (select b_codrol " + " from bvt002  where coduser = '" + login.toUpperCase() + "' union all select codrol " + " from bvt003a  where coduser = '" + login.toUpperCase() + "') and codvis = '0'";
+		consulta.selectPntGenerica(vlquery, JNDI);
+		//System.out.println(vlquery);
 		String[][] tabla = consulta.getArray();
 		int rows = consulta.getRows();
 		String vista;
@@ -81,7 +82,7 @@ public class SeguridadMenuBean extends Bd {
 		
 		}
 		}
-		////System.out.println(rendered);
+		
 		return rendered;
 	}
 
