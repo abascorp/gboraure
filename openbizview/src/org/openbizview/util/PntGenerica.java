@@ -103,7 +103,7 @@ private int rows;
                   		ResultSet.TYPE_SCROLL_INSENSITIVE,
                        ResultSet.CONCUR_READ_ONLY);
 
-   			////System.out.println(strCadena);
+   			 //System.out.println(strCadena);
                try{
                	switch ( productName ) {
                    case "Oracle":

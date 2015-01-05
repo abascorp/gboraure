@@ -171,7 +171,7 @@ public class Db extends Bd implements Serializable  {
 	 */
 	public void toprep(){
 
-		chart1 = "select * from ( select query.*, rownum as rn from ( select count(b_codrep), b_codrep from bvt006 group by b_codrep order by 1 desc) query ) where rownum <= 5 and rn > (0) and instancia = '" + instancia + "'";
+		chart1 = "select * from ( select query.*, rownum as rn from ( select count(b_codrep), b_codrep from bvt006 where instancia = '" + instancia + "' group by b_codrep order by 1 desc) query ) where rownum <= 5 and rn > (0) ";
 		chart2 = "select count(b_codrep), b_codrep from bvt006 where instancia = '" + instancia + "' group by b_codrep order by 1 desc LIMIT 5 OFFSET 0";
 		chart3 = "SELECT ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) AS ROW_NUM, B_CODREP FROM BVT006 where instancia = '" + instancia + "' HAVING ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) <= 5 AND ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) > 0 ORDER BY 1 DESC";
 		try {
