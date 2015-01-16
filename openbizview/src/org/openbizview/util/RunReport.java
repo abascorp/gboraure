@@ -59,6 +59,7 @@ public class RunReport implements Serializable {
 	 * @param nbrreporte: nombre del reporte al momento de la salida
 	 * @param feccon
      **/ 
+	@SuppressWarnings("deprecation")
 	public void outReporteRecibo(String reporte, String format, String ubicacionrep
 			, String rutasalida, String nbrreporte, Date feccon){
 		
@@ -70,6 +71,7 @@ public class RunReport implements Serializable {
       IReportRunnable report = null;
       IRunAndRenderTask task;
       IRenderOption options = new RenderOption();     
+      PDFRenderOption pdfOptions = new PDFRenderOption();
       final HashMap<String, Date> PARAMAMFECCON = new HashMap<String, Date>();
       
       PARAMAMFECCON.put("FECCON", feccon);
@@ -124,11 +126,20 @@ public class RunReport implements Serializable {
 
         //This will set the output file location, the format to render to, and
         //apply to the task
-        options.setOutputFormat(format);
-        options.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
+        //System.out.println(format.toUpperCase());
+        if( format.toUpperCase().equalsIgnoreCase("PDF") ){//TODO: modificación para que el reporte quepa en toda la página 15/01/2015
+			pdfOptions.setOption( IPDFRenderOption.FIT_TO_PAGE, true );
+			pdfOptions.setOutputFormat(format);
+			pdfOptions.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
+			task.setRenderOption(pdfOptions);
+		} else {
+            options.setOutputFormat(format);
+            options.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
+            task.setRenderOption(options);
+		}
         
        
-        task.setRenderOption(options);
+        
         
         try
         {
