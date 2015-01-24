@@ -577,19 +577,18 @@ public class Autocomplete extends Bd {
 		List<String> results = new ArrayList<String>();
 
 		String queryora = "Select codrep||' - '||desrep " + " from bvt001 "
-				+ " where codrep like '%" + query + "%' or desrep like '%"
-				+ query.toUpperCase() + "%' and instancia = '" + instancia
-				+ "' order by codrep";
+				+ " where codrep||desrep like '%" + query
+				+ "%'  and instancia = '" + instancia + "' order by codrep";
 
 		String querypg = "Select codrep||' - '||desrep " + " from bvt001 "
-				+ " where codrep like '%" + query + "%' or desrep like '%"
-				+ query.toUpperCase() + "%' and instancia = '" + instancia
-				+ "' order by codrep";
+				+ " where codrep||desrep like '%" + query
+				+ "%' and instancia = '" + instancia + "' order by codrep";
 
 		String querysql = "Select codrep+' - '+desrep " + " from bvt001 "
-				+ " where codrep like '%" + query + "%' or desrep like '%"
-				+ query.toUpperCase() + "%' and instancia = '" + instancia
-				+ "' order by codrep";
+				+ " where codrep||desrep like '%" + query
+				+ "%' and instancia = '" + instancia + "' order by codrep";
+		
+		//System.out.println(querypg);
 
 		consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
 

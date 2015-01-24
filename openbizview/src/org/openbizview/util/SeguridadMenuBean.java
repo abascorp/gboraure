@@ -66,7 +66,7 @@ public class SeguridadMenuBean extends Bd {
 		}
 		String vlquery = "select codvis " + "from bvtmenu "
 				+ " where codopc ='" + opc.toUpperCase()
-				+ "' and b_codrol in (select b_codrol " + " from bvt002  where coduser = '" + login.toUpperCase() + "' union all select codrol " + " from bvt003a  where coduser = '" + login.toUpperCase() + "') and codvis = '0'";
+				+ "' and b_codrol in (select b_codrol " + " from bvt002  where coduser = '" + login.toUpperCase() + "')";
 		consulta.selectPntGenerica(vlquery, JNDI);
 		//System.out.println(vlquery);
 		String[][] tabla = consulta.getArray();
