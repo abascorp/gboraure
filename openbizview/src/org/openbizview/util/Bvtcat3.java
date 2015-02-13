@@ -453,6 +453,8 @@ public class Bvtcat3 extends Bd implements Serializable {
                query += " WHERE A.B_CODCAT1=B.CODCAT1";
                query += " AND A.B_CODCAT1=C.B_CODCAT1";
                query += " AND A.B_CODCAT2=C.CODCAT2";
+               query += " and A.instancia=B.instancia";
+               query += " and A.instancia=c.instancia";
                query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
                query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
                query += " and  A.codcat3 ||a.descat3 like  '%" + ((String) filterValue).toUpperCase() + "%'";
@@ -467,6 +469,8 @@ public class Bvtcat3 extends Bd implements Serializable {
                query += " WHERE A.B_CODCAT1=B.CODCAT1";
                query += " AND A.B_CODCAT1=C.B_CODCAT1";
                query += " AND A.B_CODCAT2=C.CODCAT2";
+               query += " and A.instancia=B.instancia";
+               query += " and A.instancia=c.instancia";
                query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
                query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
                query += " AND   a.instancia = '" + instancia + "'";

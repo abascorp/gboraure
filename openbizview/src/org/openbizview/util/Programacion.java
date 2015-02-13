@@ -1298,6 +1298,7 @@ public class Programacion extends Bd implements Serializable {
       		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"'), trim(a.formato)";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
+            query += " and A.instancia=B.instancia";
             query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
             query += " and a.opctareas like '" + opctareas + "%'";
             query += " AND   a.instancia = '" + instancia + "'";
@@ -1310,6 +1311,7 @@ public class Programacion extends Bd implements Serializable {
       		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end, trim(a.formato)";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
+            query += " and A.instancia=B.instancia";
             query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
             query += " and a.opctareas like '" + opctareas + "%'";
             query += " AND   a.instancia = '" + instancia + "'";

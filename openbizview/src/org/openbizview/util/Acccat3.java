@@ -475,6 +475,9 @@ public class Acccat3 extends Bd implements Serializable {
     		   query += " and   a.b_codcat1=d.b_codcat1";
     		   query += " and   a.b_codcat2=d.b_codcat2";
     		   query += " and   a.b_codcat3=d.codcat3";
+    		   query += " and A.instancia=B.instancia";
+  		       query += " and A.instancia=c.instancia";
+  		       query += " and A.instancia=d.instancia";
     		   query += " and  a.b_codrol like '" + veccodrol[0] + "%'";
     		   query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
                query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
@@ -493,6 +496,9 @@ public class Acccat3 extends Bd implements Serializable {
     		   query += " and   a.b_codcat1=d.b_codcat1";
     		   query += " and   a.b_codcat2=d.b_codcat2";
     		   query += " and   a.b_codcat3=d.codcat3";
+    		   query += " and A.instancia=B.instancia";
+  		       query += " and A.instancia=c.instancia";
+  		       query += " and A.instancia=d.instancia";
     		   query += " and  a.b_codrol like '" + veccodrol[0] + "%'";
     		   query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
                query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";

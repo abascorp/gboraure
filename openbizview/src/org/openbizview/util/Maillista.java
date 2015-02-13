@@ -429,6 +429,7 @@ public void setRows(int rows) {
         	   query += " (SELECT trim(A.IDGRUPO), trim(B.IDMAIL), trim(B.MAIL)";
         	   query += " FROM MAILGRUPOS A, MAILLISTA B";
         	   query += " WHERE A.IDGRUPO=B.IDGRUPO";
+        	   query += " and A.instancia=B.instancia";
         	   query += " and a.idgrupo||b.idmail||b.mail like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " and  a.idgrupo like '" + vecidgrupo[0] + "%'";
         	   query += " and  b.idmail like '" + idmail + "%'";
@@ -441,6 +442,7 @@ public void setRows(int rows) {
       	       query += " SELECT A.IDGRUPO, trim(B.IDMAIL), trim(B.MAIL)";
     	       query += " FROM MAILGRUPOS A, MAILLISTA B";
     	       query += " WHERE A.IDGRUPO=B.IDGRUPO";
+    	       query += " and A.instancia=B.instancia";
     	       query += " and cast(a.idgrupo as text)||b.idmail||b.mail like '%" + ((String) filterValue).toUpperCase() + "%'";
     	       query += " and  cast(a.idgrupo as text) like '" + vecidgrupo[0] + "%'";
     	       query += " and  b.idmail like '" + idmail + "%'";
