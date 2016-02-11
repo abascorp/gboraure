@@ -21,19 +21,23 @@ import javax.naming.NamingException;
 
 public class MailThread extends Thread {
 
-	String to;
+	String trigger;
 	String ruta;
 	String file;
 	String asunto;
 	String contenido;
+	String formato;
+	PntGenerica consulta = new PntGenerica();
 
-	public MailThread(String to, String ruta, String file, String asunto,
-			String contenido) {
-		this.to = to;
+
+	public MailThread(String trigger, String ruta, String file, String asunto,
+			String contenido, String formato) {
+		this.trigger = trigger;
 		this.ruta = ruta;
 		this.file = file;
 		this.asunto = asunto;
 		this.contenido = contenido;
+		this.formato = formato;
 	}
 
 	public void run() {
@@ -51,7 +55,22 @@ public class MailThread extends Thread {
 			// oculta)
 			// mm.setFrom(new
 			// InternetAddress("opennomina@dvconsultores.com"));
-			mm.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            String vlquery = "select trim(a.mail)";
+            	   vlquery += " from maillista a, t_programacion b";
+            	   vlquery += " where a.idgrupo=b.idgrupo  ";
+            	   vlquery += " and disparador='" + trigger.toUpperCase() + "'";
+			//Consulta lista de correos
+		  	consulta.selectPntGenerica(vlquery,  Bd.JNDI);
+		  	System.out.println(vlquery);	
+		  	int rows = consulta.getRows();
+		  	String[][] vltabla = consulta.getArray();
+		  	if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  
+		  	//Recorre la lista de correos	
+		  	for(int i=0;i<rows;i++){	
+  				mm.addRecipient(Message.RecipientType.TO,
+					new InternetAddress(vltabla[i][0]));		  				
+  			}
+		  	}
 
 			// Establecer el contenido del mensaje
 			mm.setSubject(asunto);
@@ -71,10 +90,10 @@ public class MailThread extends Thread {
 
 			// Part two is attachment
 			messageBodyPart = new MimeBodyPart();
-			String filename = ruta + File.separator + file + ".pdf";
+			String filename = ruta + File.separator + file + "." + formato;
 			javax.activation.DataSource source = new FileDataSource(filename);
 			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(file + ".pdf");
+			messageBodyPart.setFileName(file + "." + formato);
 			multipart.addBodyPart(messageBodyPart);
 
 			// Send the complete message parts
@@ -85,8 +104,7 @@ public class MailThread extends Thread {
 			//System.out.println("Correo enviado exitosamente a :" + to + ". Reporte:" + file);
 
 		} catch (MessagingException|NamingException e) {
-			throw new RuntimeException(e);
-
+            e.printStackTrace();
 		}
 	}
 

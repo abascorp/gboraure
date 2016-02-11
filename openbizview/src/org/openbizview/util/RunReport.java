@@ -24,8 +24,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.naming.NamingException;
-
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.birt.report.engine.api.*;
 
 
@@ -42,9 +41,6 @@ public class RunReport implements Serializable {
 
 	}
 	
-	private int rows;
-	private String[][] vltabla;
-	private String vlquery;
 	PntGenerica consulta = new PntGenerica();
 
 
@@ -59,9 +55,9 @@ public class RunReport implements Serializable {
 	 * @param nbrreporte: nombre del reporte al momento de la salida
 	 * @param feccon
      **/ 
-	@SuppressWarnings("deprecation")
 	public void outReporteRecibo(String reporte, String format, String ubicacionrep
-			, String rutasalida, String nbrreporte, Date feccon){
+			, String rutasalida, String nbrreporte, Date feccon, String job, String hora
+			, String paramnames, String paramvalues){
 		
 	  //Variables used to control BIRT Engine instance
   	  //Now, setup the BIRT engine configuration. The Engine Home is hardcoded
@@ -71,38 +67,34 @@ public class RunReport implements Serializable {
       IReportRunnable report = null;
       IRunAndRenderTask task;
       IRenderOption options = new RenderOption();     
-      PDFRenderOption pdfOptions = new PDFRenderOption();
+      //PDFRenderOption pdfOptions = new PDFRenderOption();
       final HashMap<String, Date> PARAMAMFECCON = new HashMap<String, Date>();
       
       PARAMAMFECCON.put("FECCON", feccon);
-      
       
       //Lectura de parámeros dinámicos desde la tabla t_programación
       //Función agregada para versión 5 de bizview 11/10/2014
       //Por los momentos solo se trabajará con Strings
       final HashMap<String, String> PARAMAMARRAY = new HashMap<String, String>();
-      vlquery = "select trim(paramnames), trim(paramvalues), case when  LENGTH(trim(paramvalues)) is null then 0 else LENGTH(trim(paramvalues)) end from t_programacion where codrep = '" + reporte + "'";
-      try {
-		consulta.selectPntGenerica(vlquery, Bd.JNDI);
-	  } catch (NamingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-	  }
-      rows = consulta.getRows();
-      if(rows>0){
-    	  vltabla = consulta.getArray();
+
+      //Arreglo para longitud, se recibe como parámetro de longitud paramvalues
+      //Con la libreria String utils se define el separador y con ello se conoce la longitud de los parametros
+      //Por ejemplo recibe como parámetro P1|P2|P3, con separador '|', al recorrerlo devuelve longitud tres
+      //Se va pasando al reporte cada parametro
+      //DVConsultores Andrés Dominguez 18/08/2015
+      String[] arraySplitSrtings = StringUtils.splitByWholeSeparator(paramvalues, "|");
       
       //Si la longitud de los valores de parámetros es diferente de cero
       //Procede a leer y pasar parámetros
-      if(Integer.parseInt(vltabla[0][2])>0){
-    	  String[] arr1 = vltabla[0][0].split("\\|", -1);//Toma la lista de parametros de la tabla y hace un split, trabaja el arreglo y lo recorre
-    	  String[] arr2 = vltabla[0][1].split("\\|", -1);//Toma la lista de parametros de la tabla y hace un split, trabaja el arreglo y lo recorre
-    	  for(int i = 0; i < vltabla[0][0].split("\\|", -1).length; i++){
+      if(arraySplitSrtings.length>0){
+    	  String[] arr1 = paramnames.split("\\|", -1);//Toma la lista de parametros de la tabla y hace un split, trabaja el arreglo y lo recorre
+    	  String[] arr2 = paramvalues.split("\\|", -1);//Toma la lista de parametros de la tabla y hace un split, trabaja el arreglo y lo recorre
+    	  for(int i = 0; i < arraySplitSrtings.length; i++){
     		  PARAMAMARRAY.put(arr1[i], arr2[i]);
     	  }
     	  
        }//Valida longitud 
-      }//Valida registros
+
       //
  
         
@@ -110,7 +102,6 @@ public class RunReport implements Serializable {
         try
         {
       	  report = engine.openReportDesign( ubicacionrep + "/" + reporte + ".rptdesign"); 
-
         }
         catch (Exception e)
         {
@@ -127,16 +118,10 @@ public class RunReport implements Serializable {
         //This will set the output file location, the format to render to, and
         //apply to the task
         //System.out.println(format.toUpperCase());
-        if( format.toUpperCase().equalsIgnoreCase("PDF") ){//TODO: modificación para que el reporte quepa en toda la página 15/01/2015
-			pdfOptions.setOption( IPDFRenderOption.FIT_TO_PAGE, true );
-			pdfOptions.setOutputFormat(format);
-			pdfOptions.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
-			task.setRenderOption(pdfOptions);
-		} else {
             options.setOutputFormat(format);
             options.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
             task.setRenderOption(options);
-		}
+		
         
        
         

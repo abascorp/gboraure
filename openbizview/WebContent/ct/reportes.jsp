@@ -49,7 +49,7 @@ response.sendRedirect("/openbizview/login.xhtml");
          rep =  captura;
         }
       
-       log.insertBvt006(replog, descripcion,  usuario, hora, instancia);
+       //log.insertBvt006(replog, descripcion,  usuario, hora, instancia);
         %>
         <birt:viewer id='birtViewer' reportDesign= "<%=rep%>"  isHostPage="true">
             <birt:param  name="ROL" value="<%=rol%>"  ></birt:param>

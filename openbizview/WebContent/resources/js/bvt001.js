@@ -41,17 +41,22 @@
 				+ "&descripcion=" + descripcion
 				+ "&hora=" + displayTime()
 				+ "&instancia=" + instancia);
-	   
+	   //alert(displayTime());
 	}
 	
+	
+
 	//Muestra la hora del lado del cliente
 	function displayTime()
 	   {
 	       var localTime = new Date();
-	       var month= localTime.getMonth() +1; 
+	       var month= localTime.getMonth()+1; 
 	       var cadena = month.toString();
 	       var hora = localTime.getHours();
 	       var minutos = localTime.getMinutes();
+		   //var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		   var monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+		   var mes = monthNames[localTime.getMonth()];
 	      
 	       if(cadena.length==1){
 	       	month = '0'+month;
@@ -63,8 +68,12 @@
 	    	   minutos = '0'+minutos;
 	          } 
 	       
-	       var fechaHora = localTime.getDate()+"/"+month+"/"+localTime.getFullYear()+" "+formatAMPM(localTime);
-	     return fechaHora;
+	       var fechaHora = localTime.getDate()+"/"+mes+"/"+localTime.getFullYear()+" "+formatAMPM(localTime);
+	     
+		   //alert(month + ' ' + mes);
+		 
+		   return fechaHora;
+	   
 	   } 
 	
 	function formatAMPM(date) {
@@ -75,7 +84,7 @@
 		  hours = hours % 12;
 		  hours = hours ? hours : 12; // the hour '0' should be '12'
 		  minutes = minutes < 10 ? '0'+minutes : minutes;
-		  var strTime = hours + ':' + minutes + ':' + segundos + ' ' + ampm;
+		  var strTime = hours + ':' + minutes + ':' + segundos + " " + ampm;
 		  return strTime;
 		}
 	
@@ -113,7 +122,6 @@
 		    $( '#myModal' ).modal( 'hide' );
 		});
 	}
-	
 	
 	
 		//Morris charts snippet - js

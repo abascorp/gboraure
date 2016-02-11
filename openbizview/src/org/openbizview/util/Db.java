@@ -27,24 +27,41 @@ public class Db extends Bd implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	public void init() {
-	       // ...
+	       // ..
+		String[][] vlini = null;
 	 //Lee cuantos reportes impresos
 	   try {
-		q1 = "select * from bvt001 where instancia =  '" + instancia + "'";
+		q1 = "select count(*) from bvt001 where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q1, JNDI);	
 		r1 = consulta.getRows();
+		if (r1>0){
+			vlini = consulta.getArray();
+			r1 = Integer.parseInt(vlini[0][0]);
+		}
 		//Lee cuantas tareas
-		q2 = "select * from t_programacion where instancia =  '" + instancia + "'";
+		q2 = "select count(*) from t_programacion where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q2, JNDI);
 		r2 = consulta.getRows();
+		if (r2>0){
+			vlini = consulta.getArray();
+			r2 = Integer.parseInt(vlini[0][0]);
+		}
 		//Lee cuantos usuarios
-		q3 = "select * from bvt002 where instancia =  '" + instancia + "'";
+		q3 = "select count(*) from bvt002 where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q3, JNDI);
 		r3 = consulta.getRows();
+		if (r3>0){
+			vlini = consulta.getArray();
+			r3 = Integer.parseInt(vlini[0][0]);
+		}
 		//Lee cuantos reportes impresos
-		q4 = "select * from bvt006 where instancia =  '" + instancia + "'";
+		q4 = "select count(*) from bvt006 where instancia =  '" + instancia + "'";
 		consulta.selectPntGenerica(q4, JNDI);
 		r4 = consulta.getRows();
+		if (r4>0){
+			vlini = consulta.getArray();
+			r4 = Integer.parseInt(vlini[0][0]);
+		}
 
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block

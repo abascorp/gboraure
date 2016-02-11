@@ -33,15 +33,16 @@ public class Sendmail extends Bd {
 
 	}
 
+	PntGenerica consulta = new PntGenerica();
 
 	/**
 	 * Método que envía por correo reporte generado por Birt Report en PDF
 	 * @throws NamingException 
 	 * **/
-	public void mail(String to, String ruta, String file, String asunto, String contenido) throws NamingException{
+	public void mail(String trigger, String ruta, String file, String asunto, String contenido, String formato) throws NamingException{
 		////System.out.println("Registros :" + rows);
 				Context initContext = new InitialContext();     
-		    	Session session = (Session) initContext.lookup("mail/recibos");
+		    	Session session = (Session) initContext.lookup(JNDIMAIL);
 		        
 		        MimeMessage mm = new MimeMessage(session);      
 		        
@@ -55,8 +56,21 @@ public class Sendmail extends Bd {
 			// oculta)
 			// mm.setFrom(new
 			// InternetAddress("opennomina@dvconsultores.com"));
-			mm.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(to));
+		    //Consulta lista de correos
+		  	consulta.selectPntGenerica("select trim(a.mail)" +
+		  	" from maillista a, t_programacion b" +
+		  	" where a.idgrupo=b.idgrupo  " +
+		  	" and disparador='" + trigger.toUpperCase() + "'", JNDI);
+		  		
+		  	int rows = consulta.getRows();
+		  	String[][] vltabla = consulta.getArray();
+		  	if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  
+		  	//Recorre la lista de correos	
+		  	for(int i=0;i<rows;i++){	
+  				mm.addRecipient(Message.RecipientType.TO,
+					new InternetAddress(vltabla[i][0]));		  				
+  			}
+		  	}
 
 			// Establecer el contenido del mensaje
 			mm.setSubject(asunto);
@@ -76,10 +90,10 @@ public class Sendmail extends Bd {
 	         
 	        // Part two is attachment
 	         messageBodyPart = new MimeBodyPart();
-	         String filename = ruta + File.separator + file + ".pdf";
+	         String filename = ruta + File.separator + file + "." + formato;
 	         javax.activation.DataSource source = new FileDataSource(filename);
 	         messageBodyPart.setDataHandler(new DataHandler(source));
-	         messageBodyPart.setFileName(file + ".pdf");
+	         messageBodyPart.setFileName(file + "." + formato);
 	         multipart.addBodyPart(messageBodyPart);
 	         
 	         // Send the complete message parts
@@ -95,10 +109,11 @@ public class Sendmail extends Bd {
       }	    
 	}
 	
-	public void mailthread(String to, String ruta, String file, String asunto, String contenido){
-		ExecutorService ex = Executors.newFixedThreadPool(100);   //Número de hilos a usar para el insert
-		MailThread th = new MailThread(to, ruta, file, asunto, contenido); //Insert Generic
+	public void mailthread(String trigger, String ruta, String file, String asunto, String contenido, String formato) {
+		ExecutorService ex = Executors.newFixedThreadPool(50);   //Número de hilos a usar para el insert
+		MailThread th = new MailThread(trigger, ruta, file, asunto, contenido, formato); //Insert Generic
         ex.execute(th);
+        ex.shutdown();
 	}
 
 }

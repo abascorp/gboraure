@@ -38,19 +38,8 @@
 <h:body >
 <f:loadBundle basename="org.openbizview.util.MessagesBundle_es_VEN" var="msg" />
 		<f:view>
-		<!--
-		<div id="ini">
-		<h:graphicImage value="/resources/img/OpenLogoLogin.png" alt="img" style="height:40px; "/>
-				<br />
-				<h:outputText value="#{msg.sistema1}" />		
-					<hr size="2" style="color:black"/>			
-			</div>
-			-->
 		<div class="container">
-		    <f:metadata>
-			<f:event type="preRenderView" listener="#{loginBean.isLogged()}"/>
-			</f:metadata>
-			
+	
 	    <h:form styleClass="form-signin" id="loginform">
 		                <!--<h:outputText value="#{msg.idioma}"/>&#160;
 			           <h:selectOneMenu value="#{listBean.langSelected}">

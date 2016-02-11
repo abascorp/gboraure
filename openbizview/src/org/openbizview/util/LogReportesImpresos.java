@@ -26,16 +26,15 @@ public class LogReportesImpresos {
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(Bd.JNDI);
             con = ds.getConnection();
-     		
      		String query = "";
-            	query = "INSERT INTO Bvt006 VALUES (trim(?),?,?,'" + hora + "',?)";
-
+            	query = "INSERT INTO Bvt006 VALUES (trim('" + codrep.toUpperCase() + "'),'" + desrep.toUpperCase() + "','" + login + "','" + hora + "'," + instancia + ")";
+           
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, codrep.toUpperCase());
-            pstmt.setString(2, desrep.toUpperCase());
-            pstmt.setString(3, login);
-            pstmt.setInt(4, Integer.parseInt(instancia));
-            //System.out.println(query);
+            //pstmt.setString(1, codrep.toUpperCase());
+            //pstmt.setString(2, desrep.toUpperCase());
+            //pstmt.setString(3, login);
+            //pstmt.setInt(4, Integer.parseInt(instancia));
+            System.out.println(query);
             try {
                 //Avisando
             	pstmt.executeUpdate();

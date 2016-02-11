@@ -14,6 +14,7 @@
 				 org.eclipse.birt.report.context.BaseAttributeBean,
 				 org.eclipse.birt.report.resource.ResourceConstants,
 				 org.eclipse.birt.report.utility.ParameterAccessor" %>
+				 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <%-------------------------------------------------------------------------------------------
   Define variables de session.
 --------------------------------------------------------------------------------------------%>

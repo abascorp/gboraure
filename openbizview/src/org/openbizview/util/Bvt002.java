@@ -335,6 +335,8 @@ import org.primefaces.model.SortOrder;
             con = ds.getConnection();
             
             String query = "INSERT INTO Bvt002 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?)";
+            //Solo proagro
+            //String query = "INSERT INTO Bvt002 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?,'','')";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, coduser.toUpperCase());
             pstmt.setString(2, desuser.toUpperCase());
@@ -377,9 +379,9 @@ import org.primefaces.model.SortOrder;
 	     		DataSource ds = (DataSource) initContext.lookup(JNDI);
 
 	     		con = ds.getConnection();		
-	        	
+	     		
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
-	
+
 	        	String query = "DELETE from Bvt002 WHERE coduser in (" + param + ")";
 	        		        	
 	            pstmt = con.prepareStatement(query);

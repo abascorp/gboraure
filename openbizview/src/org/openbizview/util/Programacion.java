@@ -1428,7 +1428,7 @@ public class Programacion extends Bd implements Serializable {
   	    //Selecciona nombre del reporte y id del grupo según hora programada
   	  
   		try {
-  			consulta.selectPntGenerica("select trim(codrep), trim(rutarep), trim(rutatemp) from t_programacion where disparador='" + vltrigger.toUpperCase() + "'", JNDI);
+  			consulta.selectPntGenerica("select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), hora, trim(paramnames), trim(paramvalues) from t_programacion where disparador='" + vltrigger.toUpperCase() + "'", JNDI);
   		
   		////System.out.println("select nombrereporte, idgrupo, trim(rutareporte), trim(rutatemp) from mailtarea where hora='" + formato.format(new Date()) + "'");
   		   
@@ -1437,21 +1437,22 @@ public class Programacion extends Bd implements Serializable {
   		
   		//Imprime reporte
   		if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo
-  		 new RunReport().outReporteRecibo(vltabla[0][0].toString(), "pdf", vltabla[0][1].toString(), vltabla[0][2].toString(), vltabla[0][0].toString(), sqlDate);
+  		 new RunReport().outReporteRecibo(vltabla[0][0].toString(), vltabla[0][4].toString(), vltabla[0][1].toString(), vltabla[0][2].toString(), vltabla[0][0].toString(), sqlDate, vltabla[0][3].toString(), vltabla[0][5].toString(), vltabla[0][6].toString(), vltabla[0][7].toString());
 
   		}
   		//Consulta lista de correos
-  		consulta.selectPntGenerica("select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido)" +
+  		consulta.selectPntGenerica("select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido), trim(formato)" +
   				" from maillista a, t_programacion b" +
   				" where a.idgrupo=b.idgrupo  " +
   				" and disparador='" + vltrigger.toUpperCase() + "'", JNDI);
   		
   		rows = consulta.getRows();
   		vltabla = consulta.getArray();
-  		
-  		if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo
-  			for(int i=0;i<rows;i++){
-  			 new Sendmail().mailthread(vltabla[i][0], vltabla[i][1], vltabla[i][2], vltabla[i][3], vltabla[i][4]);
+  		if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  		
+  			for(int i=0;i<rows;i++){	
+
+  			 new Sendmail().mailthread(vltrigger.toUpperCase(), vltabla[i][1], vltabla[i][2], vltabla[i][3], vltabla[i][4], vltabla[i][5]);
+  				
   			}
   			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIN DEL BLOQUE", "");
 			FacesContext.getCurrentInstance().addMessage(null, msj);
@@ -1463,6 +1464,10 @@ public class Programacion extends Bd implements Serializable {
   			e.printStackTrace();
   		}
   	}
+  	
+  
+
+
   	
   	/**Cambia estatus en la base de datos a la tarea como inactiva
      * @throws NamingException */

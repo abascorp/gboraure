@@ -503,7 +503,7 @@ import org.primefaces.model.SortOrder;
         //Cierra las conecciones
         pstmt.close();
         con.close();
-
+        
   	}
   	
   	
