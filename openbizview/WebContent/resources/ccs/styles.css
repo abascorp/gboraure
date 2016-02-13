@@ -11,144 +11,86 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-/*
-   Para Tablas detalle de datos
-*/
-body {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 12px;  
+
+html, body {
+   background-color: #f8f8f8;
+   font-family: 'Ubuntu', serif;
+   font-size: 12px;
+   min-height:100%;
 }
 
-/********************Tabla del login********************************+*/
-
-.login1{padding-left: 12%}
-
-.column-reg1{width: 255px}
-.column-reg2{width: 215px}
-.col1{ padding-top: 2px;}
-.col2{}
-.colmsg{padding-left:30px;}
-.colparam{padding-left:30px; padding-bottom: 8px}
-
-
-.btnLogin{
-	float: left;
-	width: 80%;
-	margin-left: 10%;
-	height: 40px;
-	margin-bottom: 12px
-}
-
-
-/***********************Tabla del login***************************/
-
-/***********************Menu inicial slider************************/
-hr {border: 3px solid #fafafa; border-radius: 300px/10px; height: 0px; text-align: center;}
-
-#mnuini{
-	font-size: 11px;
-}
-
-.imagen{
-	width: 35px;
-	height: 35px;
-	border: 0;
-  }
-  
-  .imagenIndex{
-	width: 20px;
-	height: 20px;
-	border: 0;
-  }  
-  
-
-#encabezados{float: right; z-index: 9; margin-top: -20px; margin-right: 20px; }
-
-
-/***********************Menu inicial slider***********************************************************************************************************
-****************************************************************************************************************************************************
-******************************************************************************************************************************************************
-******************************************************************************************************************************************************/
-	.botonera{
+   #containerF {
+        background-color: white;
+	    height:100vh;
+    }
+    
+    /*Estilos propios*/
+    .botonera{
 		height: 38px;	
-		font-size: 11px;
 	}
 
  
 	 #botones{
-	 float: left;
-	 position: absolute;
-	 margin-top: -10px
+	 margin-top: 55px;
+	 padding-bottom: 5px;
 	 }
+	 
+	.ui-inputfield {
+    height: 45px;
+    margin-top: 5px;
+    }
+
+    .ui-inputtextarea{
+	   height: 60px;
+	}
 	
-	.autocol1{
-		width: 23%;
-		padding-left: 3% ;
-		font-size: 13px;
-		line-height:19px
+	.col1{ padding-top: 2px;}
+	
+	/*
+   Tabla resultado
+	*/
+	   /***Sobrecarga el estilo de primefaces en el datatable************/
+	.ui-datatable tr.ui-datatable-odd:hover {
+	    background: #D7E6EA;
+	}
+	
+	.ui-datatable tr.ui-datatable-even:hover {
+	    background: #D7E6EA;
+	}
+	
+	
+	.ui-datatable tr.ui-datatable-even {
+	   font-size: 10px;
+	   font-family: Verdana, Arial, Helvetica, sans-serif;
+	   height: 40px;
+	   border-color: rgba(111,111,111,0.2)  transparent;
+	   font-weight: lighter;
+	   background-color: #FAFAFA;
 	}
 
-
-/*Estilos para tablas encabezados y formularios********************************/
-    #containerF{
-        background: #feffff; /* Old browsers */
-		background: -moz-linear-gradient(top,  #feffff 0%, #d2ebf9 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feffff), color-stop(100%,#d2ebf9)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  #feffff 0%,#d2ebf9 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  #feffff 0%,#d2ebf9 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  #feffff 0%,#d2ebf9 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  #feffff 0%,#d2ebf9 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 ); /* IE6-9 */				
-        -webkit-border-radius: 5px;
-	    -moz-border-radius: 5px;
-	    border-radius: 5px;
-    }
-/*
-   Tabla resultado
-*/
-   /***Sobrecarga el estilo de primefaces en el datatable************/
-.ui-datatable tr.ui-datatable-odd:hover {
-    background: #D7E6EA;
-}
-
-.ui-datatable tr.ui-datatable-even:hover {
-    background: #D7E6EA;
-}
-
-
-.ui-datatable tr.ui-datatable-even {
-   font-size: 10px;
-   font-family: Verdana, Arial, Helvetica, sans-serif;
-   height: 40px;
-   border-color: rgba(111,111,111,0.2)  transparent;
-   font-weight: lighter;
-   background-color: #FAFAFA;
-}
-
-.ui-datatable tr.ui-datatable-odd {
-   font-size: 10px;
-   font-family: Verdana, Arial, Helvetica, sans-serif;  
-   height: 40px;
-   border-color: rgba(111,111,111,0.2)  transparent;
-   font-weight: lighter;
-   background-color: #FAFAFA;
-}
-
-/***Sobrecarga el estilo de primefaces en el header y footer de un datatable************/
-.ui-datatable .ui-datatable-header,
-.ui-datatable .ui-datatable-footer {
-    text-align:left;
-}
-
-.ui-datatable tbody td.wrap {
-    white-space: normal;
-}
-.ui-paginator {
-text-align: left ! important
-}
+	.ui-datatable tr.ui-datatable-odd {
+	   font-size: 10px;
+	   font-family: Verdana, Arial, Helvetica, sans-serif;  
+	   height: 40px;
+	   border-color: rgba(111,111,111,0.2)  transparent;
+	   font-weight: lighter;
+	   background-color: #FAFAFA;
+	}
+	
+	/***Sobrecarga el estilo de primefaces en el header y footer de un datatable************/
+	.ui-datatable .ui-datatable-header,
+	.ui-datatable .ui-datatable-footer {
+	    text-align:left;
+	}
+	
+	.ui-datatable tbody td.wrap {
+	    table-layout: fixed;
+	    white-space:normal !important;
+	    word-wrap: break-word;
+	}
+	.ui-paginator {
+	text-align: left ! important
+	}
 
 
 /***Sobrecarga el estilo de primefaces autocomplete************/
@@ -160,69 +102,10 @@ text-align: left ! important
 	}
 
 
+	
+	 
 
-/***Sobrecarga el estilo de primefaces paginacion************/
-
- 
-/***Sobrecarga el estilo de primefaces growl************/
-.ui-growl {
-    top: 55px;
-}
-
-.ui-growl-title {
-        font-weight:normal;
-        font-style: italic;
-        padding:0 0 7px 0;
-        display:block;
-        z-index:1;
-}
-
-/** Overloading de Primefaces checkmenu SelectCheckbox Menu **/
-.ui-selectcheckboxmenu-header .ui-inputfield {
-    float:left;
-    padding:0.1em;
-    margin-right:20px;
-    height: 25px;
-}
-
-
-.chk {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 14px;
-    height: 14px;
-}
-
-.edit {
-    padding-top: -5px;
-    padding-bottom: -5px;
-    margin-top: -5px;
-    margin-bottom: -5px;
-    margin-left: 7px;
-}
-
-
-  .ui-inputfield {
-    height: 45px;
-}
-
-.ui-inputtextarea{
-	   height: 60px;
-	}
-
-
-
- .colW1{ width: 800px;}
- 
- .menu .ui-selectonemenu-label { 
-    height: 30px;
-    width: 120px;
- }
- 
-
-	/*!
+/*!
 	 * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
 	 * Code licensed under the Apache License v2.0.
 	 * For details, see http://www.apache.org/licenses/LICENSE-2.0.
@@ -252,10 +135,10 @@ text-align: left ! important
 	    width: 0;
 	    height: 100%;
 	    margin-left: -230px;
-	    margin-top: -15px;
+	    margin-top: 52px;
 	    overflow-y: auto;
 	    background: #000;
-	    background-color: #222;
+	    background-color: #2A3F54;
 	    -webkit-transition: all 0.5s ease;
 	    -moz-transition: all 0.5s ease;
 	    -o-transition: all 0.5s ease;
@@ -304,13 +187,13 @@ text-align: left ! important
 	.sidebar-nav li a:hover {
 	    text-decoration: none;
 	    color: #fff;
-	    background-color: #000 !important;
+	    background-color: #425567 !important;
 	 
 	}
 	
     #current a { 
     color: #fff;
-	background-color: #000 !important;
+	background-color: #1D2C3B !important;
      }
     	
 	.sidebar-nav li a:active,
@@ -360,25 +243,4 @@ text-align: left ! important
 	    }
 	}
 	
-	
-	.ui-dialog{
-    margin-top:  55px;
-    position: fixed;
-    }
-	
-	.detalleTarea{
-	font-weight: bold;
-	font-style: italic;
-	font-size: 15px;
-	text-shadow: 3px 3px 3px #afb5b8;
-    filter: dropshadow(color=#afb5b8, offx=4, offy=4);
-   }
-   
-   /* Wikis Styles */
-   #wiki{
-     float: right;
-     position: relative;
-     z-index: 1;
-     overflow: visible;
-   }
 	

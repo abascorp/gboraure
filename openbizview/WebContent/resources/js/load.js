@@ -3,7 +3,7 @@
 	 * 
 	 */
 	/*
-	 *  Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+	 *  Copyright (C) 2011  ANDRES DOMINGUEZ
 	
 	    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
 	    bajo los términos de la Licencia Pública General GNU publicada 
@@ -175,3 +175,12 @@
 		jQuery('.mnuBudget').show();
 	}
 
+	//Modal delete
+	function modalDelete(){
+		$("#myModalDelete").modal();
+	}
+	
+	//Modal delete
+	function modalHide(){
+		$("#myModalDelete").modal('hide');
+	}

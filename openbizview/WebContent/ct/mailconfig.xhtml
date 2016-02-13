@@ -37,11 +37,11 @@
 				<p:toolbar>  
                  <f:facet name="left"> 
                   <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{mailconfig.guardar}" 
-                  rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
+                  rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
                   <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" onclick="borrar();"  action="#{mailconfig.delete}" 
-                  rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
+                  rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
                   <p:separator/>  
-                  <p:commandButton update="tbResult" icon="ui-icon-arrowrefresh-1-s"  onclick="limpiar();"  
+                  <p:commandButton update="tbResult" icon="fa fa-refresh text-info"  onclick="limpiar();"  
                   title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" />                            
                  </f:facet>   
                 </p:toolbar>  

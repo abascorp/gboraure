@@ -46,13 +46,13 @@
 			<!-- /#sidebar-wrapper -->
 
 			<!-- Page Content -->
-			<div class="container-fluid" id="containerF">
+			<div class="container-fluid" >
 				<h:form id="formDashBoard">
 
 
 					<div class="row">
 						<div class="col-lg-12">
-							<h1 class="page-header" style="margin-top: -13px">
+							<h1 class="page-header" style="margin-top: 55px">
 								#{msg.Bienvenido}: <small>#{loginBean.getLoggedUsr()}</small>
 							</h1>
 							<ol class="breadcrumb">
@@ -66,6 +66,7 @@
 
 					<div class="row">
 						<div class="col-lg-3 col-md-6">
+						<h:outputLink rendered="#{smnubean.opcmnu('R01')}" value="bvt001">	
 							<div class="panel panel-primary">
 								<div class="panel-heading">
 									<div class="row">
@@ -79,15 +80,17 @@
 									</div>
 								</div>
 								<div class="panel-footer">
-								<h:outputLink rendered="#{smnubean.opcmnu('R01')}" value="bvt001">									
+																
 										<span class="pull-left">#{msg.dashVerDetalle}</span> <span
 											class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 										<div class="clearfix"></div>								
-								</h:outputLink>
+								
 								</div>
 							</div>
+							</h:outputLink>
 						</div>
 						<div class="col-lg-3 col-md-6">
+						<h:outputLink rendered="#{smnubean.opcmnu('M26')}" value="mailtarea">
 							<div class="panel panel-success">
 								<div class="panel-heading">
 									<div class="row">
@@ -101,15 +104,16 @@
 									</div>
 								</div>
 								<div class="panel-footer">
-								<h:outputLink rendered="#{smnubean.opcmnu('M26')}" value="mailtarea">									
+																	
 										<span class="pull-left">#{msg.dashVerDetalle}</span> <span
 											class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-										<div class="clearfix"></div>									
-								</h:outputLink>
+										<div class="clearfix"></div>																	
 								</div>
 							</div>
+							</h:outputLink>
 						</div>
 						<div class="col-lg-3 col-md-6">
+						<h:outputLink rendered="#{smnubean.opcmnu('M16')}" value="bvt002">			
 							<div class="panel panel-warning">
 								<div class="panel-heading">
 									<div class="row">
@@ -123,15 +127,16 @@
 									</div>
 								</div>
 								<div class="panel-footer">
-								<h:outputLink rendered="#{smnubean.opcmnu('M16')}" value="bvt002">									
+														
 										<span class="pull-left">#{msg.dashVerDetalle}</span> <span
 											class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-										<div class="clearfix"></div>									
-								</h:outputLink>
+										<div class="clearfix"></div>																	
 								</div>
 							</div>
+							</h:outputLink>
 						</div>
 						<div class="col-lg-3 col-md-6">
+						<h:outputLink rendered="#{smnubean.opcmnu('M08')}" value="bvt006">	
 							<div class="panel panel-danger">
 								<div class="panel-heading">
 									<div class="row">
@@ -145,13 +150,13 @@
 									</div>
 								</div>
 								<div class="panel-footer">
-								<h:outputLink rendered="#{smnubean.opcmnu('M08')}" value="bvt006">									
+																
 										<span class="pull-left">#{msg.dashVerDetalle}</span> <span
 											class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-										<div class="clearfix"></div>									
-								</h:outputLink>
+										<div class="clearfix"></div>																	
 								</div>
 							</div>
+							</h:outputLink>
 						</div>
 					</div>
 

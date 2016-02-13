@@ -46,11 +46,11 @@
 				<p:toolbar>  
                  <f:facet name="left"> 
                   <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{maillista.guardar}" 
-                  rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="ui-icon-disk" styleClass="botonera"/>
+                  rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
                   <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" immediate="true"  action="#{maillista.delete}" 
-                  rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="ui-icon-trash" title="#{msg.htmle}" styleClass="botonera" />
+                  rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
                   <p:separator/>  
-                  <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panel" process="@this" action="#{maillista.reset()}"
+                  <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel" process="@this" action="#{maillista.reset()}"
                  title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
                  <p:resetInput target="panel" /> 
                  <f:actionListener binding="#{bd.setIdgrupo('')}"/>

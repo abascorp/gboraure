@@ -48,7 +48,7 @@
                   <p:commandButton icon="ui-icon-play" accesskey="t" title="#{msg.mailacc1}" value="#{msg.mailtareaCrearTarea}"  action="#{programacion.iniciarTarea()}" update="panelParams, panelRuta, panel, growl, tbResult" styleClass="botonera" oncomplete="controlSwitch()"/>  
                   <p:commandButton icon="ui-icon-stop" accesskey="s" title="#{msg.mailacc2}" value="#{msg.mailtareaBorrarTarea}" action="#{programacion.detenerTarea()}" update="panel, growl, tbResult" styleClass="botonera" oncomplete="controlSwitch()"/>
                   <p:commandButton icon="ui-icon-mail-open" accesskey="m" title="#{msg.mailacc3}" value="#{msg.mailtareaEnvío}" action="#{programacion.enviarMailmanual()}" update="panel, growl" styleClass="botonera" oncomplete="controlSwitch()"/>                  
-                  <p:commandButton icon="ui-icon-arrowrefresh-1-s" update="tbResult, panelRuta, panel, growl" process="@this"  oncomplete="controlSwitch()"
+                  <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panelRuta, panel, growl" process="@this"  oncomplete="controlSwitch()"
                  actionListener="#{programacion.reset()}" title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
                  <p:resetInput target="panel" /> 
                  <p:resetInput target="panelRuta" /> 

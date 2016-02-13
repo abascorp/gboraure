@@ -17,16 +17,10 @@
     En caso contrario, consulte <http://www.gnu.org/licenses/>.
  */
 
-function limpiar()
-{  //Llamado por el boton limpiar
-    document.getElementById("formBvt001A:vop").value= "0";
-    clearUpdateInput('formBvt001A:codcat', 'white');
-}
-
 function enviar(vT0,vT1,vT2){
 	  document.getElementById("formBvt001A:codcat").value= rTrim(vT0);
 	  document.getElementById("formBvt001A:descat").value= rTrim(vT1);
 	  document.getElementById("formBvt001A:vop").value= rTrim(vT2);
-	  updateInput('formBvt001A:codcat', '#F2F2F2');
+	  updateInput('formBvt001A:codcat', ' #F5F6CE');
 	}
 

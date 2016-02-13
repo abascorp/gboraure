@@ -60,7 +60,7 @@
 		         <h:panelGrid  columns="5" cellspacing="4" columnClasses="col1">	
 		         <p:inputMask id="fecha" placeholder="#{msg.biauditFecD}" styleClass="form-control" mask="99/99/9999" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{biAudit.fechadia}"/>        
 		         <p:commandButton value="#{msg.biauditir}" style="margin-left:10px" action="#{bd.setFecha(biAudit.fechadia)}" update="tbResult, panel"/>
-		         <p:commandButton icon="ui-icon-arrowrefresh-1-s" style="margin-left:10px" update="panel, tbResult" process="@this" 
+		         <p:commandButton icon="fa fa-refresh text-info" style="margin-left:10px" update="panel, tbResult" process="@this" 
                  title="#{msg.htmlr}"   accesskey="l" actionListener="#{biAudit.reset()}">  
                  <p:resetInput target="panel" /> 
                  <f:actionListener binding="#{bd.setFecha('0')}"/>
