@@ -1,3 +1,22 @@
+/*
+ *  Copyright (C) 2011  DVCONSULTORES
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los terminos de la Licencia Pública General GNU publicada 
+    por la Fundacion para el Software Libre, ya sea la version 3 
+    de la Licencia, o (a su eleccion) cualquier version posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
+    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una informacion mas detallada. 
+
+    Deberia haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ */
+
 package org.openbizview.util;
 
 import java.io.IOException;
@@ -89,7 +108,7 @@ public class LoginBean extends Bd {
 		seg.selectLogin(usuario, JNDI);
 		tabla = seg.getArray();
 		rows = seg.getRows();
-		System.out.println("Método");
+		//System.out.println("Método");
 		
 		if (rows == 0) {
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("noreg"), "");
@@ -102,17 +121,17 @@ public class LoginBean extends Bd {
 		if(rows>0){
 		String vLusuario = tabla[0][0].toUpperCase().toString();
 		String vLclave = tabla[0][1].toString();
-		System.out.println("Usuario: " + vLusuario);
-		System.out.println("Clave: " + vLclave);
+		//System.out.println("Usuario: " + vLusuario);
+		//System.out.println("Clave: " + vLclave);
 		
 		//Valida que usuario y claves sean los mismos, realiza el login y crea la variable de session
 		if(usuario.equals(vLusuario) && !md.getStringMessageDigest(clave,StringMD.SHA256).equals(vLclave)){
-			System.out.println(getMessage("logCl"));
+			//System.out.println(getMessage("logCl"));
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("logCl"), "");
 			FacesContext.getCurrentInstance().addMessage(null, msj);
 
 		} else	if(usuario.equals(vLusuario) && md.getStringMessageDigest(clave,StringMD.SHA256).equals(vLclave)){
-			System.out.println("Usuario y contraseña correctos");
+			//System.out.println("Usuario y contraseña correctos");
 
 			//Creando la variable de session	
 			sesionOk = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -126,6 +145,8 @@ public class LoginBean extends Bd {
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", sessionId);
 			//Instancia
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", tabla[0][5].toString());
+			//Se genera opción de logout
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("logoutEstandart", "0");
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml"); 
 			new Programacion().recuperarTriggers("0");
 		} 
@@ -140,10 +161,15 @@ public class LoginBean extends Bd {
      * @return String
      */ 
     public void logout() throws IOException{
+    	String logoutEstandart = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("logoutEstandart");
     	//Invalida la session
     	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     	//Redirecciona la página
+    	if(logoutEstandart.equals("1")){
+    		FacesContext.getCurrentInstance().getExternalContext().redirect(LOGOUT_URL); 	
+    	} else {
     	FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/login.xhtml"); 
+    	}
  	}
     
     /**
@@ -153,8 +179,8 @@ public class LoginBean extends Bd {
      * redirecciona al logout, retornando blanco.
      * @return String
      */ 
-	public String getLogged() throws IOException {		//System.out.println("Usuario Logeado:" + login);
-		if (!rq.isRequestedSessionIdValid()) {
+	public String getLogged() throws IOException {		//System.out.println("Usuario Logeado:" + logged);
+		if (!rq.isRequestedSessionIdValid() || logged==null) {
 			//rq.getCurrentInstance().execute("PF('yourdialogid').show()");
 			RequestContext.getCurrentInstance().execute("PF('idleDialog').show()");
 			return null;
@@ -171,7 +197,7 @@ public class LoginBean extends Bd {
      * @return String
      */ 
 	public String getLoggedUsr() throws IOException {		//System.out.println("Usuario Logeado:" + login);
-		if (!rq.isRequestedSessionIdValid()) {
+		if (!rq.isRequestedSessionIdValid() || logged==null) {
 			//rq.getCurrentInstance().execute("PF('yourdialogid').show()");
 			RequestContext.getCurrentInstance().execute("PF('idleDialog').show()");
 			return null;

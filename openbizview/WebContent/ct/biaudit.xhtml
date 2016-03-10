@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ
+     Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -46,19 +46,19 @@
 				<div id="botones">                    
 				</div>
 				
-				  <!-- Mensaje e imagen --> 		
-		      <div id="encabezados">   
-			  <ui:include src="common/loader.xhtml"/>
-			  </div>
+				<!-- Ajax loader --> 		
+				 <div class="pull-right" >   			  
+				 <ui:include src="common/loader.xhtml"/>
+				 </div>
 				
 					
 				<!-- Panel -->
-			 <div class="panel panel-info" style="margin-top: 30px">
+			 <div class="panel panel-info" style="margin-top: 43px">
 	        <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.biaudittit}">
-		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=logs" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
+		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=logs" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
 		         <h:panelGrid  columns="5" cellspacing="4" columnClasses="col1">	
-		         <p:inputMask id="fecha" placeholder="#{msg.biauditFecD}" styleClass="form-control" mask="99/99/9999" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{biAudit.fechadia}"/>        
+		         <p:inputMask id="fecha" placeholder="#{msg.biauditFecD}" styleClass="form-control input" mask="99/99/9999" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{biAudit.fechadia}"/>        
 		         <p:commandButton value="#{msg.biauditir}" style="margin-left:10px" action="#{bd.setFecha(biAudit.fechadia)}" update="tbResult, panel"/>
 		         <p:commandButton icon="fa fa-refresh text-info" style="margin-left:10px" update="panel, tbResult" process="@this" 
                  title="#{msg.htmlr}"   accesskey="l" actionListener="#{biAudit.reset()}">  
@@ -78,25 +78,23 @@
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
 			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{biAudit.rows}"  
-			widgetVar="global">
+			widgetVar="global" reflow="true">
 			
 			<f:facet name="header"> 			
             <p:outputPanel>  
                 <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
                 <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
                 <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
-                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
-                <p:commandButton id="toggler" type="button"  style="float:right" icon="ui-icon-calculator" />
-                <p:columnToggler datasource="tbResult" trigger="toggler" />
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> 
             </p:outputPanel>         
             </f:facet> 
                         
-            <p:column styleClass="wrap" style="width:100px">  
+            <p:column styleClass="wrap" width="150">  
             <f:facet  name="header">#{msg.biauditTbFec}</f:facet>  
             <h:outputLabel  value="#{tb.fechadia}"/>
             </p:column> 
             
-            <p:column  styleClass="wrap" style="width:100px">  
+            <p:column  styleClass="wrap" width="150">  
             <f:facet name="header">#{msg.biauditTbFecH}</f:facet>  
             <h:outputLabel value="#{tb.vfecaacc}"/>
             </p:column> 
@@ -106,12 +104,12 @@
             <h:outputLabel value="#{tb.detfaz}"/>
             </p:column> 
             
-            <p:column styleClass="wrap" style="width:100px">  
+            <p:column styleClass="wrap" width="100">  
             <f:facet name="header">#{msg.bvt007TbResult}</f:facet>  
             <h:outputLabel value="#{tb.estatus}"/>
             </p:column> 
             
-            <p:column  styleClass="wrap" style="width:100px">  
+            <p:column  styleClass="wrap" width="200">  
             <f:facet name="header">#{msg.biauditNegocio}</f:facet>  
             <h:outputLabel value="#{tb.negocio}"/>
             </p:column> 

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ
+     Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -76,10 +76,10 @@
 			     </p:autoComplete>
 			     <p:watermark for="idgrupo" value="&nbsp;&nbsp;#{msg.maillistaGrupo}" />
 			     <p:message for="idgrupo"/>
-			      <p:inputText id="idmail" styleClass="form-control" maxlength="10"  value="#{maillista.idmail}"  converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  	
+			      <p:inputText id="idmail" styleClass="form-control input" maxlength="10"  value="#{maillista.idmail}"  converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  	
 			     <p:watermark for="idmail" value="#{msg.maillistaId}" />
 			     <p:message for="idmail"/>
-			     <p:inputText id="mail" styleClass="form-control" maxlength="50"  value="#{maillista.mail}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('valMail')}">
+			     <p:inputText id="mail" styleClass="form-control input" maxlength="50"  value="#{maillista.mail}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('valMail')}">
 			     <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 	             </p:inputText> 
 	             <p:watermark for="mail" value="#{msg.maillistaDir}" /> 	

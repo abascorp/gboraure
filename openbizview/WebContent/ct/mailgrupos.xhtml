@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ
+     Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Publica General GNU publicada 
@@ -69,10 +69,10 @@
 		         <p:panel id="panel"  header="#{msg.mailgrupotit}">	
 		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=grupos" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>  	         
 		         <h:panelGrid  columns="1" columnClasses="col1" >	         
-			     <p:inputText id="codigo" maxlength="10"  value="#{mailgrupos.idgrupo}" styleClass="form-control" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  	
+			     <p:inputText id="codigo" maxlength="10"  value="#{mailgrupos.idgrupo}" styleClass="form-control input" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  	
 			     <p:watermark for="codigo" value="#{msg.mailgrupoCodigo}" />
 			     <p:message for="codigo"/>
-			     <p:inputText id="descripcion" maxlength="50"  value="#{mailgrupos.desgrupo}"  styleClass="form-control" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  		
+			     <p:inputText id="descripcion" maxlength="50"  value="#{mailgrupos.desgrupo}"  styleClass="form-control input" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  		
 		         <p:watermark for="descripcion" value="#{msg.mailgrupoDescripcion}" />
 		         <p:message for="descripcion"/>
 		         </h:panelGrid>

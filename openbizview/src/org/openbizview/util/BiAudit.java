@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ
+ *  Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -72,6 +72,8 @@ import org.primefaces.model.SortOrder;
 		
 	@PostConstruct	
 	public void init() {
+		if (instancia == null){instancia = "9999999999999999999999";}
+		
 		lazyModel  = new LazyDataModel<BiAudit>(){
 			/**
 			 * 
@@ -402,11 +404,11 @@ import org.primefaces.model.SortOrder;
 	 		
 	 		if (fechadia==null && productName.equals("Oracle")){
 	 			fechadia = "0";
-	 		} else	if (fechadia==null && productName.equals("PostgreSQL")){	 		
+	 		} else	if (fechadia==null || fechadia.equals("0") && productName.equals("PostgreSQL") ){	 		
 	 			busqueda = "0";
 	 			fechadia = "01/01/1900";
 	 		}
-	  		
+	 		//System.out.println("Fechadia:" + fechadia);
 	  		switch ( productName ) {
 	        case "Oracle":
 	        	 query = "SELECT count_biaudit('" + ((String) filterValue).toUpperCase() + "','" + fechadia + "','" + instancia + "') from dual";
@@ -419,7 +421,7 @@ import org.primefaces.model.SortOrder;
 	        
 	        pstmt = con.prepareStatement(query);
 	        //System.out.println(query);
-	        //System.out.println("Bisqueda:" + busqueda);
+	        
 
 	         r =  pstmt.executeQuery();
 	        

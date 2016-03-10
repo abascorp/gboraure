@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ
+ *  Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -70,7 +70,8 @@ import org.primefaces.model.SortOrder;
 	
 	@PostConstruct
 	public void init() {
-				
+		if (instancia == null){instancia = "9999999999999999999999";}
+		
 		lazyModel  = new LazyDataModel<Bvtcat2>(){
 			/**
 			 * 

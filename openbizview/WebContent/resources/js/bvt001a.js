@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+ *  Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -21,6 +21,6 @@ function enviar(vT0,vT1,vT2){
 	  document.getElementById("formBvt001A:codcat").value= rTrim(vT0);
 	  document.getElementById("formBvt001A:descat").value= rTrim(vT1);
 	  document.getElementById("formBvt001A:vop").value= rTrim(vT2);
-	  updateInput('formBvt001A:codcat', ' #F5F6CE');
+	  updateInput('formBvt001A:codcat', '#F5F6CE');
 	}
 

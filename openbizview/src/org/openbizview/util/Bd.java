@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ
+ *  Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -74,9 +74,11 @@ public class Bd  {
     //Para trabajar con quartz properties, por alguna razón no funciona con external context
     static FacesContext ctx = FacesContext.getCurrentInstance();
     protected static final String JNDI = ctx.getExternalContext().getInitParameter("JNDI_BD"); //"jdbc/orabiz"; //Nombre del JNDI
+    protected static final String JNDI_EXTERNAL = ctx.getExternalContext().getInitParameter("JNDI_BD_EXTERNAL"); //"jdbc/orabiz"; //Nombre del JNDI
 	static final String JNDIMAIL = ctx.getExternalContext().getInitParameter("JNDI_MAIL"); //"jdbc/orabiz"; //Nombre del JNDI
     static final String THREADNUMBER = ctx.getExternalContext().getInitParameter("THREAD_NUMBER");
     static final String FECHAFORMAT = ctx.getExternalContext().getInitParameter("FORMAT_DATE");
+    static final String LOGOUT_URL = ctx.getExternalContext().getInitParameter("LOGOUT_URL");//Url logout
     java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat(FECHAFORMAT, locale );
     java.text.SimpleDateFormat sdfDefautl = new java.text.SimpleDateFormat("dd/MM/yyyy");
 

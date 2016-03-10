@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+ *  Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -18,20 +18,13 @@
  */
 
 
-function limpiar()
-{  //Llamado por el boton limpiar
-    document.getElementById("formBvtcat2:vop").value="0";
-    clearUpdateInput('formBvtcat2:bcodcat1_input', 'white');
-    clearUpdateInput('formBvtcat2:codcat2', 'white');
-}
-
 
 function enviar(vT0,vT1,vT2,vT3){
 	  document.getElementById("formBvtcat2:bcodcat1_input").value= rTrim(vT0);
 	  document.getElementById("formBvtcat2:codcat2").value= rTrim(vT1);
 	  document.getElementById("formBvtcat2:descat2").value= rTrim(vT2);
 	  document.getElementById("formBvtcat2:vop").value= rTrim(vT3);
-	  updateInput('formBvtcat2:bcodcat1_input', '#F2F2F2');
-	  updateInput('formBvtcat2:codcat2', '#F2F2F2');
+	  updateInput('formBvtcat2:bcodcat1_input', '#F5F6CE');
+	  updateInput('formBvtcat2:codcat2', '#F5F6CE');
 	}
 

@@ -19,5 +19,6 @@
 			<attribute name="owner.project.facets" value="jst.jsf"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/andres/workspace/git/RepoOpenBizview/openbizview/openbizview/WebContent/WEB-INF/lib/jsf-impl.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

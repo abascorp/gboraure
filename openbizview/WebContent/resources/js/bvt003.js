@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+ *  Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -28,6 +28,6 @@ function enviar(vT0,vT1,vT2){
 	  document.getElementById("formBvt003:codrol").value= rTrim(vT0);
 	  document.getElementById("formBvt003:desrol").value= rTrim(vT1);
 	  document.getElementById("formBvt003:vop").value= rTrim(vT2);
-	  updateInput('formBvt003:codrol', '#F2F2F2');
+	  updateInput('formBvt003:codrol', '#F5F6CE');
 	}
 

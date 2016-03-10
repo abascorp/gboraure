@@ -1,5 +1,5 @@
 	/*
-	 *  Copyright (C) 2011  ANDRES DOMINGUEZ, CHRISTIAN DÍAZ
+	 *  Copyright (C) 2011  DVCONSULTORES
 	
 	    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
 	    bajo los términos de la Licencia Pública General GNU publicada 
@@ -29,7 +29,7 @@
 		  document.getElementById("formBvt001:comrep").value= rTrim(vT2);
 		  document.getElementById("formBvt001:vop").value= rTrim(vT3);
 		  document.getElementById("formBvt001:grupo_input").value= rTrim(vT4);
-		  updateInput('formBvt001:codrep', '#F2F2F2');
+		  updateInput('formBvt001:codrep', '#F5F6CE');
 		}
 	
 	function imprimir(rep, usuario, rol, descripcion, instancia){

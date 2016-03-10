@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  ANDRES DOMINGUEZ
+ *  Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -74,6 +74,7 @@ public class Acccat3 extends Bd implements Serializable {
 	
 	@PostConstruct
 	public void init() {
+		if (instancia == null){instancia = "9999999999999999999999";}
 		
 		lazyModel  = new LazyDataModel<Acccat3>(){
 			/**

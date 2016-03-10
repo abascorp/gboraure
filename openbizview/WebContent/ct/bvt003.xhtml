@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ
+     Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -71,10 +71,10 @@
 		         <p:panel id="panel"  header="#{msg.bvt003tit}">	
 		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=roles" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>  	         
 		         <h:panelGrid columns="1" columnClasses="col1" >	         
-			     <p:inputText id="codrol" maxlength="10" styleClass="form-control" value="#{bvt003.codrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
+			     <p:inputText id="codrol" maxlength="10" styleClass="form-control input" value="#{bvt003.codrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="codrol" value="#{msg.bvt003Cod}" />
 			     <p:message for="codrol"/> 
-			     <p:inputText id="desrol"  maxlength="50" styleClass="form-control" value="#{bvt003.desrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 	
+			     <p:inputText id="desrol"  maxlength="50" styleClass="form-control input" value="#{bvt003.desrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 	
 		         <p:watermark for="desrol" value="#{msg.bvt003Desc}" />
 		         <p:message for="desrol"/> 
 		         </h:panelGrid>

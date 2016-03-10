@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ
+     Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -36,35 +36,39 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content --> 
-             
-     <div class="container-fluid" id="containerF" style="padding-bottom: 10px">
-
+            
+     <div class="container-fluid" id="containerF" style="padding-top: 100px">
 				<h:form id="formAutoext" enctype="multipart/form-data">
-
-					<p:growl id="mensaje" />
-
 					<!-- Panel -->
-					<div id="etiqueta" style="padding-top: 30px">
+					 <div class="panel panel-info">
+	                  <div class="panel-body">
 						<p:panel id="panel" header="#{msg.pntextreptit}">
-						<div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=upload" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
-							<p:commandButton icon="ui-icon-folder-open" update="panel"
+						<div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=upload" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
+							<p:commandButton icon="fa fa-folder-open" update="panel"
 								process="@this" title="#{msg.html30}" value="#{msg.html30}">
 								<p:resetInput target="panel" />
 							</p:commandButton>
-							<br />
-							<div id="upload">
+							<br />		
 								<p:fileUpload
 									fileUploadListener="#{fileUploadController.handleReportUpload}"
-									style="padding-top:10px" mode="advanced" update="mensaje"
+									style="padding-top:10px" mode="advanced" update="growl"
+									auto="true"
 									multiple="true" cancelLabel="#{msg.autos02Cancel}"
 									label="#{msg.autos02Sel}" uploadLabel="#{msg.autos02Up}"
 									allowTypes="/(\.|\/)(rptdesign)$/"
 									invalidFileMessage="#{msg.autos02Rpt}"
 									oncomplete="HideUpload()">
 								</p:fileUpload>
-							</div>
 						</p:panel>
-					</div>
+						</div>
+						</div>
+						
+						<!-- Ajax loader --> 		
+			 <div class="pull-right" style="margin-top: -40px">   			  
+			 <ui:include src="common/loader.xhtml"/>
+			 </div>
+		     <!-- Mensaje -->
+		     <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
 				 </h:form>
    </div>
     

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  ANDRES DOMINGUEZ
+     Copyright (C) 2011  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -51,10 +51,10 @@
 		         <p:panel id="panel"  header="#{msg.bvt002tita}" >	  	
 		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=cambiarclave" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>         
 		         <h:panelGrid  columns="1" columnClasses="col1" >	         
-	             <p:password id="clave"  maxlength="15" styleClass="form-control"  value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+	             <p:password id="clave"  maxlength="15" styleClass="form-control input"  value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
 	             <p:message for="clave"/>
 	             <p:watermark for="clave" value="#{msg.bvt002Cl}" />
-	             <p:password id="clave1"  maxlength="15" styleClass="form-control"  value="#{bvt002.cluser1}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+	             <p:password id="clave1"  maxlength="15" styleClass="form-control input"  value="#{bvt002.cluser1}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
 	             <p:watermark for="clave1" value="#{msg.bvt002Cl1}" />
 	             <p:message for="clave1"/>
 		         </h:panelGrid>

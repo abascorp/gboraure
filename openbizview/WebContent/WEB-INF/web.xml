@@ -50,25 +50,39 @@
     <param-name>JNDI_BD</param-name>
     <param-value>java:comp/env/jdbc/orabiz</param-value>
   </context-param>
+  
   <context-param>
     <param-name>JNDI_MAIL</param-name>
     <param-value>java:comp/env/mail/recibos</param-value>
   </context-param>
+
   <context-param>
+    <param-name>JNDI_BD_EXTERNAL</param-name>
+    <param-value>java:comp/env/jdbc/loginexternal</param-value>
+  </context-param>
   
    <!-- Formato de fechas -->
+   <context-param>
     <param-name>FORMAT_DATE</param-name>
     <param-value>dd/MM/yyyy</param-value>
   </context-param>
-  <context-param>
+  
   
    <!-- Número de hilos a usar -->
+   <context-param>
     <param-name>THREAD_NUMBER</param-name>
     <param-value>100</param-value>
   </context-param>
-  <context-param>
+  
+  <!-- Url LogOut -->
+   <context-param>
+    <param-name>LOGOUT_URL</param-name>
+    <param-value>/openbizview/login.xhtml</param-value>
+  </context-param>
+  
   
    <!-- Tema primefaces -->
+   <context-param>
     <param-name>primefaces.THEME</param-name>
     <param-value>bootstrap</param-value>
   </context-param>

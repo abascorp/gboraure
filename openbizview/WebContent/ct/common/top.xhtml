@@ -1,6 +1,21 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  KREAS TALENTO
+     Copyright (C) 2011  DVCONSULTORES
+
+    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
+    bajo los términos de la Licencia Pública General GNU publicada 
+    por la Fundación para el Software Libre, ya sea la versión 3 
+    de la Licencia, o (a su elección) cualquier versión posterior.
+
+    Este programa se distribuye con la esperanza de que sea útil, pero 
+    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
+    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    una información más detallada. 
+
+    Debería haber recibido una copia de la Licencia Pública General GNU 
+    junto a este programa. 
+    En caso contrario, consulte <http://www.gnu.org/licenses/>.
  -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -27,9 +42,10 @@
         </div>
         
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">           
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opciones del Menú&nbsp;<span class="caret"></span></a>
+          <ul class="nav navbar-nav navbar-right">    
+          <li><a href="#menu-toggle" id="menu-toggle"><span class="glyphicon glyphicon-align-left" title="Menú" style="margin-top: 3px"></span></a></li>         
+            <li class="dropdown">           
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opciones del Menú&nbsp;<span class="caret"></span></a>             
               <ul class="dropdown-menu" role="menu">
                 <li><p:commandLink title="#{msg.globalBasico}" actionListener="#{navigateBean.href('bvtcat1')}" rendered="#{smnubean.opcmnu('M01')}" onclick="mnuBas()" ><i class="fa fa-tasks fa-2x text-info"></i><small>&nbsp;&nbsp;#{msg.globalBasico}</small></p:commandLink></li>
                 <li><p:commandLink title="#{msg.globalAdmin}"  actionListener="#{navigateBean.href('uploadreport')}" rendered="#{smnubean.opcmnu('M06')}" onclick="mnuAdmin()"   ><i class="fa fa-cogs fa-2x text-info"></i><small>&nbsp;&nbsp;#{msg.globalAdmin}</small></p:commandLink></li>
@@ -37,8 +53,7 @@
                 <li><p:commandLink title="#{msg.globalMail}"  actionListener="#{navigateBean.href('mailgrupos')}" rendered="#{smnubean.opcmnu('M22')}" onclick="mnuTask()"><i class="fa fa-clock-o fa-2x text-info"></i><small>&nbsp;&nbsp;&nbsp;&nbsp;#{msg.globalMail}</small></p:commandLink></li>
                 <li><p:commandLink title="#{msg.globalRep}" actionListener="#{navigateBean.href('bvt001')}" rendered="#{smnubean.opcmnu('R01')}" onclick="mnuRep()"><i class="fa fa-print fa-2x text-info"></i><small>&nbsp;&nbsp;&nbsp;#{msg.globalRep}</small></p:commandLink></li>
               </ul>
-            </li>           
-            <li><a href="#menu-toggle" id="menu-toggle"><span class="glyphicon glyphicon-align-left" title="Menú" style="margin-top: 3px"></span></a></li>
+            </li>                    
            <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><strong>&nbsp;&nbsp;#{loginBean.getLogged()}</strong><span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
