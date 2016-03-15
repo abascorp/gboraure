@@ -49,7 +49,7 @@ public class Db extends Bd implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	public void init() {
-		if (instancia == null){instancia = "9999999999999999999999";}
+		if (instancia == null){instancia = "999999999999";}
 		if (login==null) {
 			//rq.getCurrentInstance().execute("PF('yourdialogid').show()");
 			RequestContext.getCurrentInstance().execute("PF('idleDialog').show()");

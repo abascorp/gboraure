@@ -93,18 +93,17 @@
 			     <p:autoComplete id="bcodcat1" placeholder="&#160;&#160;#{msg.bvtcat3Cat1}" value="#{bvtcat3.b_codcat1}" emptyMessage="#{msg.html138}" required="true"   requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat1}"  dropdown="true"  scrollHeight="250">
 		         <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat1(bvtcat3.b_codcat1)}" />
 			     </p:autoComplete>
-			     <p:spacer height="4"/>
 			     <p:message for="bcodcat1"/>
 			     <p:autoComplete id="bcodcat2" placeholder="&#160;&#160;#{msg.bvtcat3Cat2}" value="#{bvtcat3.b_codcat2}" emptyMessage="#{msg.html138}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"    completeMethod="#{autocomplete.completeCat2}"  dropdown="true" scrollHeight="250">    
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat2(bvtcat3.b_codcat2)}" />
 			     </p:autoComplete>
-			     <p:spacer height="4"/>
+			     <p:spacer height="1"/>
 			     <p:message for="bcodcat2"/>
 			     <p:inputText id="codcat3" maxlength="10" placeholder="#{msg.bvtcat3Cod}" styleClass="form-control input" value="#{bvtcat3.codcat3}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" />
-			     <p:spacer height="4"/>
+			     <p:spacer height="1"/>
 			     <p:message for="codcat3"/>
 			     <p:inputText id="descat3"  maxlength="50" placeholder="#{msg.bvtcat3Desc}" styleClass="form-control input" value="#{bvtcat3.descat3}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" />
-		         <p:spacer height="4"/>
+		         <p:spacer height="1"/>
 		         <p:message for="descat3"/>
                   </div>
                   </div>

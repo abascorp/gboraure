@@ -77,7 +77,7 @@ public class LoginBeanExternal extends Bd {
 		//System.out.println("key: " + key);
 		
 		String[] vecKey = key.split("\\|", -1);
-		String vlquery = "Select " + vecKey[4] + " from " + vecKey[5] + " where " + vecKey[4] + " = '" + vecKey[0] + "'";
+		String vlquery = "Select " + vecKey[4] + " from " + vecKey[5] + " where " + vecKey[4] + " = '" + vecKey[0] + "' and " + vecKey[6] + " = '" + vecKey[7] + "'";
 		//System.out.println(vlquery);
 		
 		PntGenerica consulta = new PntGenerica();

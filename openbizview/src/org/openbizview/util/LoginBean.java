@@ -165,10 +165,13 @@ public class LoginBean extends Bd {
     	//Invalida la session
     	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     	//Redirecciona la página
-    	if(logoutEstandart.equals("1")){
+    	//System.out.println("PPPPPPPPPPPPP: " + logoutEstandart);
+    	if(logoutEstandart==null) {
+    	FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/login.xhtml"); 
+    	} else if(logoutEstandart.equals("1")){
     		FacesContext.getCurrentInstance().getExternalContext().redirect(LOGOUT_URL); 	
     	} else {
-    	FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/login.xhtml"); 
+    	FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/login.xhtml"); 	
     	}
  	}
     

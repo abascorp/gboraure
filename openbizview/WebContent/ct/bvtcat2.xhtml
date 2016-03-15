@@ -90,13 +90,12 @@
 			     <p:autoComplete id="bcodcat1" placeholder="&#160;&#160;#{msg.bvtcat2Cat1}" value="#{bvtcat2.b_codcat1}" emptyMessage="#{msg.html138}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeCat1}"  dropdown="true" scrollHeight="250">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setAccCat1(bvtcat2.b_codcat1)}" />
 			     </p:autoComplete>
-			     <p:spacer height="4"/>
 			     <p:message for="bcodcat1"/>
 			     <p:inputText id="codcat2" placeholder="#{msg.bvtcat2Cod}" maxlength="10"  styleClass="form-control input" value="#{bvtcat2.codcat2}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
-			     <p:spacer height="4"/>
+			     <p:spacer height="1"/>
 			     <p:message for="codcat2"/>
 			     <p:inputText id="descat2" placeholder="#{msg.bvtcat2Desc}" maxlength="50" styleClass="form-control input" value="#{bvtcat2.descat2}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
-			     <p:spacer height="4"/>
+			     <p:spacer height="1"/>
 			     <p:message for="descat2"/>
                   </div>
                   </div>

@@ -90,11 +90,11 @@
 		           <div class="col-lg-4 col-md-4 col-sm-4"> 
 			     <p:inputText id="codrol" maxlength="10" styleClass="form-control input" value="#{instancias.instancia}" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="codrol" value="#{msg.bvt003Cod}" />
-			     <p:spacer height="4"/>
+			     <p:spacer height="1"/>
 			     <p:message for="codrol"/> 
 			     <p:inputText id="desrol"  maxlength="50" styleClass="form-control input" value="#{instancias.descripcion}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 	
 		         <p:watermark for="desrol" value="#{msg.bvt003Desc}" />
-		         <p:spacer height="4"/>
+		         <p:spacer height="1"/>
 		         <p:message for="desrol"/> 
                  </div>
                  </div>

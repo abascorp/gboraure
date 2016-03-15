@@ -70,7 +70,7 @@ public class Maillista  extends Bd implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		if (instancia == null){instancia = "9999999999999999999999";}
+		if (instancia == null){instancia = "999999999999";}
 		
 		lazyModel  = new LazyDataModel<Maillista>(){
 			/**

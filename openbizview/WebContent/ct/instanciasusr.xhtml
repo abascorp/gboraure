@@ -89,11 +89,10 @@
 		           <div class="col-lg-4 col-md-4 col-sm-4">  
 			     <p:autoComplete id="instancia" placeholder="#{msg.instanciasusrUsr}" value="#{instanciasusr.instancias}"  completeMethod="#{autocomplete.completeInstancias}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setBcoduser(instanciasusr.instancias)}" />	
-			     </p:autoComplete><br/>
-			     <p:spacer height="4"/>
+			     </p:autoComplete>
+			     <p:spacer height="1"/>
 		         <p:message for="instancia"/>
-		         <p:spacer height="4"/>
-		         <p:spacer height="4"/>
+		         <p:spacer height="1"/>
 		         <p:selectCheckboxMenu  value="#{instanciasusr.selectedUsr}" id="bcodcat1" label="#{msg.instanciaSelectUsr}" filter="true" filterText="Filter" styleClass="filtro" filterMatchMode="contains"  required="true" >  
                  <f:selectItems value="#{instanciasusr.sorted}" />  
                  </p:selectCheckboxMenu>  

@@ -44,40 +44,60 @@
 				
 				<!-- Div para colocar botones -->
 				<div id="botones">              
-                <p:toolbar>  
-                <f:facet name="left"> 
                  <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{bvt003.guardar}"  
                  rendered="#{smnubean.opcbot('1')}" value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
-                 <p:commandButton update="tbResult, growl" accesskey="r" id="btnEl" validateClient="false" immediate="true" action="#{bvt003.delete}" 
-                 rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
-                 <p:separator/>   
+                 <p:commandButton  onclick="modalDelete();"  
+                 rendered="#{smnubean.opcbot('2')}" value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" /> 
                  <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel, growl" process="@this" onclick="limpiar()"
                  title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
                  <p:resetInput target="panel" />  
-                 </p:commandButton>                              
-                </f:facet>   
-               </p:toolbar>  
-                </div><br />
+                 </p:commandButton>                               
+                </div>
      
-		     <!-- Mensaje e imagen --> 		
-		     <div id="encabezados">   
-			  <p:growl globalOnly="true" id="growl" life="30000"/>
-			  <ui:include src="common/loader.xhtml"/>
+	  <!-- Ajax loader --> 		
+	 <div class="pull-right" style="margin-top: -40px">   			  
+	 <ui:include src="common/loader.xhtml"/>
+	 </div>
+     <!-- Mensaje -->
+     <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+     
+      <!-- Modal -->
+			<div class="modal fade" id="myModalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-warning">
+			        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			        <h4 class="modal-title" id="myModalLabel"><b>#{msg.html32}</b></h4>
+			      </div>
+			      <div class="modal-body">
+			       <center style="font-size: 14px">#{msg.html31}</center>
+			      </div>
+			      <div class="modal-footer">
+			        <p:commandLink  action="#{bvt003.delete}"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
+			        <p:spacer height="5"/>
+			        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
+			       </div>
+			    </div>
 			  </div>
+			</div>	
 	
 				<!-- Panel -->
-			<div class="panel panel-info" style="margin-top: 30px">
+			<div class="panel panel-info" >
            <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.bvt003tit}">	
-		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=roles" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>  	         
-		         <h:panelGrid columns="1" columnClasses="col1" >	         
+		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=roles" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>  	         
+		          <div class="row">
+		           <div class="col-lg-4 col-md-4 col-sm-4">  	         
 			     <p:inputText id="codrol" maxlength="10" styleClass="form-control input" value="#{bvt003.codrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="codrol" value="#{msg.bvt003Cod}" />
+			     <p:spacer height="1"/>
 			     <p:message for="codrol"/> 
 			     <p:inputText id="desrol"  maxlength="50" styleClass="form-control input" value="#{bvt003.desrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 	
 		         <p:watermark for="desrol" value="#{msg.bvt003Desc}" />
+		         <p:spacer height="1"/>
 		         <p:message for="desrol"/> 
-		         </h:panelGrid>
+		         </div>
+		          </div>
 		         <h:inputHidden id="vop" value="#{bvt003.validarOperacion}"/>
 	             </p:panel>
 				</div>
@@ -89,27 +109,25 @@
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
 			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvt003.rows}"  
-			 widgetVar="global">
+			 widgetVar="global" reflow="true">
 			
 			<f:facet name="header"> 			
             <p:outputPanel>  
                 <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
                 <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
                 <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
-                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
-                <p:commandButton id="toggler" type="button"  style="float:right" icon="ui-icon-calculator" />
-                <p:columnToggler datasource="tbResult" trigger="toggler" />
+                <p:watermark for="globalFilter" value="#{msg.html29}" />
             </p:outputPanel>         
             </f:facet> 
             
-            <p:column style="width:40px" >  
+            <p:column width="40">  
             <f:facet  name="header">
             <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
             </f:facet>  
             <input type="checkbox" name="toDelete" class="chk" value="#{tb.codrol}"/>
             </p:column>  
             
-            <p:column sortBy="#{tb.codrol}"  styleClass="wrap" style="width:100px">  
+            <p:column sortBy="#{tb.codrol}"  styleClass="wrap" width="200">  
             <f:facet name="header">#{msg.bvt003TbCod}</f:facet> 
             <h:outputLabel value="#{tb.codrol}"  />  
             </p:column>  
@@ -119,7 +137,7 @@
             <h:outputLabel value="#{tb.desrol}"  />
             </p:column> 
             
-            <p:column style="width:60px" >  
+            <p:column width="60" >  
             <f:facet name="header">#{msg.bvt003TbEnviar}</f:facet>  
              <p:commandLink styleClass="edit" onclick="enviar('#{tb.codrol}','#{tb.desrol}','1')" 
             title="Enviar"><i class="fa fa-pencil-square-o fa-2x"></i></p:commandLink>
