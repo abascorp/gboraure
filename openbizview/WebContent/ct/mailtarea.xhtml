@@ -43,8 +43,6 @@
 	<h:form id="formmailconfig">
 				<!-- Div para colocar botones -->
 				<div id="botones">              
-				<p:toolbar>  
-                 <f:facet name="left"> 
                   <p:commandButton icon="ui-icon-play" accesskey="t" title="#{msg.mailacc1}" value="#{msg.mailtareaCrearTarea}"  action="#{programacion.iniciarTarea()}" update="panelParams, panelRuta, panel, growl, tbResult" styleClass="botonera" oncomplete="controlSwitch()"/>  
                   <p:commandButton icon="ui-icon-stop" accesskey="s" title="#{msg.mailacc2}" value="#{msg.mailtareaBorrarTarea}" action="#{programacion.detenerTarea()}" update="panel, growl, tbResult" styleClass="botonera" oncomplete="controlSwitch()"/>
                   <p:commandButton icon="ui-icon-mail-open" accesskey="m" title="#{msg.mailacc3}" value="#{msg.mailtareaEnvío}" action="#{programacion.enviarMailmanual()}" update="panel, growl" styleClass="botonera" oncomplete="controlSwitch()"/>                  
@@ -54,24 +52,24 @@
                  <p:resetInput target="panelRuta" /> 
                   <f:actionListener binding="#{bd.setOpcTareas('1')}"/>
                  </p:commandButton>                            
-                 </f:facet>   
-                </p:toolbar>  
-				</div><br />
+				</div>
      
-		     <!-- Mensaje e imagen --> 		
-		     <div id="encabezados">   
-			  <p:growl globalOnly="true" id="growl" life="30000"/>
-			  <ui:include src="common/loader.xhtml"/>
-			  </div>
+		      <!-- Ajax loader --> 		
+			 <div class="pull-right" style="margin-top: -40px">   			  
+			 <ui:include src="common/loader.xhtml"/>
+			 </div>
+		     <!-- Mensaje -->
+		     <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
 	
 				<!-- Panel -->
-				<div class="panel panel-info" style="margin-top: 30px">
+				<div class="panel panel-info" >
                <div class="panel-body" >
                 <p:panel id="panel" widgetVar="panel"  header="#{msg.maistareaTit}" toggleable="true" >	
                 <p:tabView id="tabView" style="height:auto;" >  
                  <p:tab id="tab1" title="#{msg.tabNombres}">
-                 <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>          
-		         <h:panelGrid columns="1" columnClasses="col1" >	 
+                 <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>          
+		         <div class="row">
+		          <div class="col-lg-4 col-md-4 col-sm-4"> 	 
 		         <h:selectOneMenu id="opciones" value="#{programacion.opctareas}" >
                  <f:selectItems value="#{listBean.opcTareas}"/>
                  <p:ajax update=":formmailconfig:tbResult" listener="#{bd.setOpcTareas(programacion.opctareas)}" oncomplete="inputs();controlSwitch()" />
@@ -81,33 +79,41 @@
                  <f:selectItems value="#{listBean.opcEmiters}"/>
                  </h:selectOneMenu>  
                  <p:tooltip for="emiters" value="#{msg.maltareaoutputFormat}" /> 
-			     <p:inputText id="tarea" maxlength="20"  value="#{programacion.tarea}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
+			     <p:inputText id="tarea" maxlength="20"  styleClass="form-control input" value="#{programacion.tarea}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="tarea" value="#{msg.mailtareaNbrTarea}" />
+			     <p:spacer height="1"/>
 			     <p:message for="tarea"/>
-			     <p:inputText id="prg"  maxlength="20"  value="#{programacion.vltrigger}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 
+			     <p:inputText id="prg"  maxlength="20"  styleClass="form-control input" value="#{programacion.vltrigger}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 
 			     <p:watermark for="prg" value="#{msg.mailtareaPrg}" />
+			     <p:spacer height="1"/>
 			     <p:message for="prg"/>
-			     <p:inputText id="hora"  maxlength="2"  value="#{programacion.hora}" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+			     <p:inputText id="hora"  maxlength="2"  styleClass="form-control input" value="#{programacion.hora}" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:watermark for="hora" value="#{msg.mailtareaHora}" />
+			     <p:spacer height="1"/>
 			     <p:message for="hora"/>
-			     <p:inputText id="minutos"  maxlength="2"  value="#{programacion.minuto}"  converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+			     <p:inputText id="minutos"  maxlength="2"  styleClass="form-control input" value="#{programacion.minuto}"  converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 	             <p:watermark for="minutos" value="#{msg.mailtareaMinutos}" />
+	             <p:spacer height="1"/>
 	             <p:message for="minutos"/>
-	             </h:panelGrid>
+	             </div>
+	             </div>
                  </p:tab> 
                  
                  <p:tab id="tab2" title="#{msg.tabPrograma}"> 
-                 <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>         
-		         <h:panelGrid  columns="1" columnClasses="col1">	         
+                 <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>         
+		         <div class="row">
+		          <div class="col-lg-4 col-md-4 col-sm-4">          
 			     <h:selectOneMenu id="frecuencia" value="#{programacion.frecuencia}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}">
                  <f:selectItems value="#{listBean.frecuencia}"/>
                  </h:selectOneMenu>
                  <p:tooltip for="frecuencia" value="#{msg.mailtareaFrecuencia}" />
+                 <p:spacer height="1"/>
                  <p:message for="frecuencia"/>
 			     <h:selectOneMenu id="dias" value="#{programacion.dias}" >
                  <f:selectItems value="#{listBean.diassemana}"/>
                  </h:selectOneMenu>
                  <p:tooltip for="dias" value="#{msg.mailtareaDias}" />
+                 <p:spacer height="1"/>
                  <p:message for="dias"/>
 			     <h:selectOneMenu id="diames" value="#{programacion.diames}" >
                  <f:selectItems value="#{listBean.diasmes}"/>
@@ -116,38 +122,48 @@
                  <p:message for="diames"/>
 			     <p:calendar pattern="dd/MM/yyyy" id="ini"  locale="es" navigator="true" maxlength="10" value="#{programacion.diainicio}" showOn="button"/>
                  <p:tooltip for="ini" value="#{msg.mailtareaDiaInicio}" />
+                 <p:spacer height="1"/>
                  <p:message for="ini"/>
-			     <p:inputText id="horarep"  maxlength="2"  value="#{programacion.horarepeticion}"  converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}"  />
+			     <p:inputText id="horarep"  maxlength="2"  styleClass="form-control input" value="#{programacion.horarepeticion}"  converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}"  />
 	             <p:tooltip for="horarep" value="#{msg.mailtareaHoraRepF}" />
 	             <p:message for="horarep"/>
-                 </h:panelGrid>
+                 </div>
+                 </div>
                  </p:tab> 
                  
                  <p:tab id="tab3" title="#{msg.tabEnvio}"> 
-                 <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div> 
-                 <h:panelGrid columns="1" columnClasses="col1">
+                 <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div> 
+                 <div class="row">
+		          <div class="col-lg-4 col-md-4 col-sm-4"> 
 		         <p:autoComplete id="reporte" value="#{programacion.reporte}"  completeMethod="#{autocomplete.completeRep}"  dropdown="true" maxResults="250" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
 		         <p:ajax event="itemSelect" listener="#{programacion.ReadParamsBirtReport(programacion.getRutaRepReal())}" update=":formmailconfig:panelParams"/>
 		         </p:autoComplete>         
                  <p:watermark for="reporte" value="#{msg.mailtareaReporte}" />
+                 <p:spacer height="1"/>
                  <p:message for="reporte"/>
 			     <p:autoComplete id="idgrupo" value="#{programacion.idgrupo}"   completeMethod="#{autocomplete.completeMailGrupos}"  dropdown="true" maxResults="250" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>         
                  <p:watermark for="idgrupo" value="#{msg.maillistaGrupo}" />
+                 <p:spacer height="1"/>
                  <p:message for="idgrupo"/>
-		         </h:panelGrid>
+		         </div>
+		         </div>
 		         </p:tab>
 		         
 		         
 		         <p:tab id="tab4" title="Contenido">  
-		         <div id="wiki"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
-                 <h:panelGrid columns="1" columnClasses="col1">
-			     <p:inputText id="asunto"  maxlength="50"  value="#{programacion.asunto}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>			     
+		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=tareas" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
+                 <div class="row">
+		          <div class="col-lg-4 col-md-4 col-sm-4"> 
+			     <p:inputText id="asunto"  maxlength="50"  styleClass="form-control input" value="#{programacion.asunto}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>			     
 			     <p:watermark for="asunto" value="#{msg.mailtareaAsunto}" />
+			     <p:spacer height="1"/>
 			     <p:message for="asunto"/>  
 		         <p:editor id="contenido"  widgetVar="editorWidget" controls="bold italic underline | size style color highlight | alignleft center justify | bullets  numbering | redo undo | source | outdent indent | link  unlink | print" value="#{programacion.contenido}" width="550"  required="true" requiredMessage="#{utils.getMessage('htmlvalidate')}"/>                
 		         <p:watermark for="contenido" value="#{msg.mailtareacontenido}" />
+		         <p:spacer height="1"/>
 		         <p:message for="contenido"/>
-		         </h:panelGrid>
+		         </div>
+		         </div>
 		         </p:tab>		         
 		         </p:tabView>
 	             </p:panel>
@@ -239,16 +255,14 @@
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
 			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{programacion.rows}"  
-			widgetVar="global">
+			widgetVar="global" reflow="true">
 			
 			 <f:facet name="header"> 			
             <p:outputPanel>  
                 <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
                 <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
                 <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
-                <p:watermark for="globalFilter" value="#{msg.html29}" /> &#160;&#160;
-                <p:commandButton id="toggler" type="button"  style="float:right" icon="ui-icon-calculator" />
-                <p:columnToggler datasource="tbResult" trigger="toggler" />
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> 
             </p:outputPanel>         
             </f:facet>            			
 
@@ -277,7 +291,7 @@
             </center>
             </p:column>
                         
-            <p:column style="width:100px" styleClass="wrap">  
+            <p:column width="100" styleClass="wrap">  
             <f:facet name="header">#{msg.mailtareaBorrarTarea}</f:facet>  
             <center>
             <p:commandLink update=":formmailconfig:panel"
@@ -286,7 +300,7 @@
             </center>
             </p:column>
             
-            <p:column style="width:120px" styleClass="wrap" >  
+            <p:column width="120" styleClass="wrap" >  
             <f:facet name="header"><p:commandButton value="#{msg.mailtareaDetenerTarea}" actionListener="#{programacion.activaDesactiva}" immediate="true" update=":formmailconfig:growl,:formmailconfig:tbResult" oncomplete="controlSwitch()"/></f:facet>  
             <center>
             <input type="checkbox" name="activa" class="#{tb.clase}" value="#{tb.vdisparador}" />                
