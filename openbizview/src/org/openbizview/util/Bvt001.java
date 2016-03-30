@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 	/**
@@ -71,7 +72,12 @@ import org.primefaces.model.SortOrder;
 	
 	@PostConstruct
 	public void init() {
-		if (instancia == null){instancia = "999999999999";}
+		if (instancia == null){instancia = "99999";}
+		
+		//Si no tiene acceso al módulo no puede ingresar
+		if (new SeguridadMenuBean().opcmnu("R01")=="false") {
+		 RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+		}
 		
 		lazyModel  = new LazyDataModel<Bvt001>(){
 			/**
@@ -367,10 +373,11 @@ import org.primefaces.model.SortOrder;
                 pstmt.executeUpdate();
                 msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");
                 FacesContext.getCurrentInstance().addMessage(null, msj);
-                codrep = "";
                 desrep = "";
                 codgrup = "";
                 comrep = "";
+                //Acceso automático a reportes
+                insertAccesoReporte();
             } catch (SQLException e)  {
             	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
             	FacesContext.getCurrentInstance().addMessage(null, msj);
@@ -382,6 +389,42 @@ import org.primefaces.model.SortOrder;
     		msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
         	FacesContext.getCurrentInstance().addMessage(null, msj);
     		
+    	}
+    }
+    
+    
+    /**
+     * Inserta el acceso al reporte según el usuario logueado reportes.
+     **/
+    private void insertAccesoReporte() throws  NamingException {
+    	//Valida que los campos no sean nulos
+        try {
+        	Context initContext = new InitialContext();     
+     		DataSource ds = (DataSource) initContext.lookup(JNDI);
+     		//System.out.println("Grupo: " + veccodgrup[0].toUpperCase());
+     		con = ds.getConnection();		
+            //Class.forName(getDriver());
+            //con = DriverManager.getConnection(
+            //      getUrl(), getUsuario(), getClave());
+            String query = "INSERT INTO Bvt007 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, vlRol.toUpperCase());
+            pstmt.setString(2, codrep.toUpperCase());
+            pstmt.setString(3, login);
+            pstmt.setString(4, login);
+            pstmt.setInt(5, Integer.parseInt(instancia));
+            ////System.out.println(query);
+            try {
+                //Avisando
+                pstmt.executeUpdate();
+                codrep = "";
+            } catch (SQLException e)  {
+            	e.printStackTrace();
+            }
+            pstmt.close();
+            con.close();
+    	} catch (Exception e){
+    		e.printStackTrace();  		
     	}
     }
     

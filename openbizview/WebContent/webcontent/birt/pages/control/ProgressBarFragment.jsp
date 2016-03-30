@@ -11,7 +11,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page session="false" buffer="none" %>
 <%@ page import="org.eclipse.birt.report.presentation.aggregation.IFragment" %>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
 <%-----------------------------------------------------------------------------
 	Expected java beans
@@ -23,7 +22,7 @@
 	Progress bar fragment
 -----------------------------------------------------------------------------%>
 <DIV ID="progressBar" STYLE="display:none;position:absolute;z-index:310">
-	<TABLE WIDTH="250px" CLASS="table table-striped table-bordered" CELLSPACING="10px" >
+	<TABLE WIDTH="250px" CLASS="table table-striped table-bordered birtviewer_progressbar" CELLSPACING="10px" >
 		<TR>
 			<TD ALIGN="center">
 				<B>

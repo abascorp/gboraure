@@ -79,6 +79,8 @@ public class Bd  {
     static final String THREADNUMBER = ctx.getExternalContext().getInitParameter("THREAD_NUMBER");
     static final String FECHAFORMAT = ctx.getExternalContext().getInitParameter("FORMAT_DATE");
     static final String LOGOUT_URL = ctx.getExternalContext().getInitParameter("LOGOUT_URL");//Url logout
+    static final String PRINT_REPORT_LOCATION = ctx.getExternalContext().getInitParameter("PRINT_REPORT_LOCATION");//Url logout
+    static final String OPENBIZVIEW_LOCALE = ctx.getExternalContext().getInitParameter("OPENBIZVIEW_PRINT_LOG_LOCALE");//Localización
     java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat(FECHAFORMAT, locale );
     java.text.SimpleDateFormat sdfDefautl = new java.text.SimpleDateFormat("dd/MM/yyyy");
 
@@ -88,16 +90,16 @@ public class Bd  {
     private static final String PARAMINFOA = "dirUploadFiles"; //Uploads
     private static final String PARAMINFOB = "dirUploadRep"; //Uploads
     
-    private int msg = 50000; //Duración de los mensajes
     
     
     
 	/**
-	 * @return the msg
+	 * @return the openbizviewLocale
 	 */
-	public int getMsg() {
-		return msg;
+	public static String getOpenbizviewLocale() {
+		return OPENBIZVIEW_LOCALE;
 	}
+
 
 /**
 	 * @return the paraminfob
@@ -250,6 +252,32 @@ public class Bd  {
 	   if(opc.equals("2")){
 		   RequestContext.getCurrentInstance().execute("PF('dlg3').show()");
 	   }
+	}
+	
+	//Para opciones de mailtarea
+	/**
+	 * Setea una reporte para busqueda
+	 * @param next
+	 */
+	public void setMailReporte(String mailreporte){
+	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mailreporte", mailreporte);
+	}
+	
+	/**
+	 * Setea una reporte para busqueda
+	 * @param next
+	 */
+	public void setMailFrecuencia(String mailfrecuencia){
+	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mailfrecuencia", mailfrecuencia);
+	}
+	
+	
+	/**
+	 * Setea una reporte para busqueda
+	 * @param next
+	 */
+	public void setMailgrupo(String mailgrupo){
+	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mailgrupo", mailgrupo);
 	}
 	
 }

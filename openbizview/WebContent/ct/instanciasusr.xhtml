@@ -72,7 +72,7 @@
 			       <center style="font-size: 14px">#{msg.html31}</center>
 			      </div>
 			      <div class="modal-footer">
-			        <p:commandLink  action="#{instancias.delete}"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
+			        <p:commandLink  action="#{instanciasusr.delete}"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
 			        <p:spacer height="5"/>
 			        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
 			       </div>
@@ -84,7 +84,7 @@
 			<div class="panel panel-info">
            <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.instanciasusrTitulo}">
-		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=instanciasusr" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
+		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=instanciasusr" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>
 		          <div class="row">
 		           <div class="col-lg-4 col-md-4 col-sm-4">  
 			     <p:autoComplete id="instancia" placeholder="#{msg.instanciasusrUsr}" value="#{instanciasusr.instancias}"  completeMethod="#{autocomplete.completeInstancias}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">

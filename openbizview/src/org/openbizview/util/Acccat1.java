@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -75,7 +76,12 @@ import org.primefaces.model.SortOrder;
 
 	@PostConstruct	
 	public void init() {
-		if (instancia == null){instancia = "999999999999";}
+		if (instancia == null){instancia = "99999";}
+		
+		//Si no tiene acceso al módulo no puede ingresar
+		if (new SeguridadMenuBean().opcmnu("M18")=="false") {
+			RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+		}
 		
 		lazyModel  = new LazyDataModel<Acccat1>(){
 			/**
@@ -437,10 +443,10 @@ import org.primefaces.model.SortOrder;
  		
  		String query = "";
  		if(b_codrol==null){
- 			b_codrol = " - ";
+ 			b_codrol = "9999abcd%/@ - ";
  		}
- 		if(b_codrol==""){
- 			b_codrol = " - ";
+ 		if(b_codrol.equals("")){
+ 			b_codrol = "9999abcd%/@ - ";
  		}
  		String[] veccodrol = b_codrol.split("\\ - ", -1);
 
@@ -454,7 +460,7 @@ import org.primefaces.model.SortOrder;
   		       query += " and   a.b_codcat1=c.codcat1 ";
   		       query += " and A.instancia=B.instancia";
   		       query += " and A.instancia=c.instancia";
-  		       query += " and   a.b_codrol like '" + veccodrol[0] + "%'";
+  		       query += " and   a.b_codrol = '" + veccodrol[0] + "'";
         	   query += " AND   a.b_codcat1||c.descat1 like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
@@ -468,7 +474,7 @@ import org.primefaces.model.SortOrder;
 		       query += " and   a.b_codcat1=c.codcat1 ";
 		       query += " and A.instancia=B.instancia";
   		       query += " and A.instancia=c.instancia";
-		       query += " and   a.b_codrol like '" + veccodrol[0] + "%'";
+		       query += " and   a.b_codrol = '" + veccodrol[0] + "'";
       	       query += " AND   a.b_codcat1||c.descat1 like '%" + ((String) filterValue).toUpperCase() + "%'";
       	       query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
@@ -492,7 +498,7 @@ import org.primefaces.model.SortOrder;
 				query += " 	     A.B_CODROL=B.CODROL "; 
 				query += " 	     AND   A.B_CODCAT1=C.CODCAT1) TOT "; 
 				query += " WHERE ";
-				query += " TOT.B_CODROL LIKE '" + veccodrol[0] + "%'";
+				query += " TOT.B_CODROL = '" + veccodrol[0] + "'";
 				query += " AND TOT.B_CODCAT1 + TOT.DESCAT1 LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
 				query += " AND   tot.instancia = '" + instancia + "'";
 				query += " AND TOT.ROW_NUM > " + first;

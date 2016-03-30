@@ -44,6 +44,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openbizview.util.PntGenerica;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -70,7 +71,11 @@ public class Maillista  extends Bd implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		if (instancia == null){instancia = "999999999999";}
+		if (instancia == null){instancia = "99999";}
+		//Si no tiene acceso al módulo no puede ingresar
+		if (new SeguridadMenuBean().opcmnu("M24")=="false") {
+		 RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+		}
 		
 		lazyModel  = new LazyDataModel<Maillista>(){
 			/**
@@ -434,10 +439,10 @@ public void setRows(int rows) {
    		String query = "";
    		
    		if(idgrupo==null){
-   			idgrupo = " - ";
+   			idgrupo = "9991010109 - ";
  		}
- 		if(idgrupo==""){
- 			idgrupo = " - ";
+ 		if(idgrupo.equals("")){
+ 			idgrupo = "9991010109 - ";
  		}
    		
     	String[] vecidgrupo = idgrupo.split("\\ - ", -1);
@@ -451,7 +456,7 @@ public void setRows(int rows) {
         	   query += " WHERE A.IDGRUPO=B.IDGRUPO";
         	   query += " and A.instancia=B.instancia";
         	   query += " and a.idgrupo||b.idmail||b.mail like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and  a.idgrupo like '" + vecidgrupo[0] + "%'";
+        	   query += " and  a.idgrupo = '" + vecidgrupo[0] + "'";
         	   query += " and  b.idmail like '" + idmail + "%'";
         	   query += " AND   b.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
@@ -464,7 +469,7 @@ public void setRows(int rows) {
     	       query += " WHERE A.IDGRUPO=B.IDGRUPO";
     	       query += " and A.instancia=B.instancia";
     	       query += " and cast(a.idgrupo as text)||b.idmail||b.mail like '%" + ((String) filterValue).toUpperCase() + "%'";
-    	       query += " and  cast(a.idgrupo as text) like '" + vecidgrupo[0] + "%'";
+    	       query += " and  cast(a.idgrupo as text) = '" + vecidgrupo[0] + "'";
     	       query += " and  b.idmail like '" + idmail + "%'";
     	       query += " AND   b.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
@@ -487,7 +492,7 @@ public void setRows(int rows) {
         	query += " 		WHERE A.IDGRUPO=B.IDGRUPO) A ";
         	query += " WHERE ";
         	query += " CAST(A.IDGRUPO AS CHAR) + A.IDMAIL + A.MAIL LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-        	query += " AND CAST(A.IDGRUPO AS CHAR) LIKE '" + vecidgrupo[0] + "%'";
+        	query += " AND CAST(A.IDGRUPO AS CHAR) = '" + vecidgrupo[0] + "'";
         	query += " and  a.idmail like '" + idmail + "%'";
         	query += " AND   A.instancia = '" + instancia + "'";
         	query += " AND A.ROW_NUM > " + first;

@@ -53,7 +53,7 @@ public class LogReportesImpresos {
             //pstmt.setString(2, desrep.toUpperCase());
             //pstmt.setString(3, login);
             //pstmt.setInt(4, Integer.parseInt(instancia));
-            System.out.println(query);
+            //System.out.println(query);
             try {
                 //Avisando
             	pstmt.executeUpdate();

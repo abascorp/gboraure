@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- 
+     Copyright (C) 2011  KREASTALENTO
+ -->
+ 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:include src="common/cabeceras.xhtml" />
+<script type="text/javascript">
+            $(window).load(function(){
+                $('#ModalInstancia').modal('show');
+            });
+        </script>
+<h:body >
+
+<!-- Top-->
+<h:form>
+<div id="wrapper">
+
+           <!-- Page Content --> 
+        <div class="container-fluid" >
+
+<!-- Modal Coach -->
+					<div class="modal fade" id="ModalInstancia" tabindex="-1" role="dialog" data-backdrop="static"  data-keyboard="false"
+						aria-labelledby="myModalLabel" aria-hidden="false">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" id="myModalLabel">#{msg.html154}</h4>
+								</div>
+								<div class="modal-body">
+									<div class="list-group">
+										<ui:repeat var="i"  value="#{instancias.selectInstancias()}">
+                                            <p:commandLink styleClass="list-group-item" immediate="true" actionListener="#{loginBean.grupos(i)}" process="@this"  oncomplete="dismissModal();">
+                                              <span class="detalleTarea">#{i}</span>
+                                             <div class="pull-right"><i class="fa fa-chevron-circle-right fa-2x text-success"></i></div>
+											</p:commandLink>
+                                        </ui:repeat>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+      
+   </div>
+</div>
+</h:form>
+</h:body>
+</html>

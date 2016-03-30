@@ -85,7 +85,7 @@
 			<div class="panel panel-info" >
            <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.bvtmenutit}">
-		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=opcionesroles" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
+		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=opcionesroles" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>
 		         <div class="row">
 		           <div class="col-lg-4 col-md-4 col-sm-4">  
 			     <p:autoComplete id="rol" value="#{bvtmenu.b_codrol}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250">
@@ -102,7 +102,7 @@
 			
 
 			<!-- Tabla con el resultado -->
-			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvtmenu.lazyModel}"   lazy="true" sortBy="#{tb.codopc}" 
+			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.resultFind}" var="tb"  value="#{bvtmenu.lazyModel}"   lazy="true" sortBy="#{tb.b_codrol}" 
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
 			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvtmenu.rows}"  

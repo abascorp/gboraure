@@ -109,7 +109,7 @@ html, body {
 
 
 /***Sobrecarga el estilo de primefaces autocomplete************/
-	.ui-autocomplete-input{height:45px;margin-bottom: 3px}
+	.ui-autocomplete-input{height:45px;margin-bottom: 3px; width: 200px;}
 
 	.ui-autocomplete-panel .ui-autocomplete-list-item {
 	  white-space: nowrap;
@@ -308,7 +308,4 @@ html, body {
 	 z-index: 0;
 	color: rgba(0, 0, 0, 0.15);
 	}
-
-
-	
 	

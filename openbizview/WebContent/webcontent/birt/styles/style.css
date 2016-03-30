@@ -208,7 +208,7 @@
 
 .birtviewer_progresspage
 {
-	font-family:Verdana;
+	font-family: 'Ubuntu', serif;
 	font-size:8pt;
 	cursor:default;	
 }
@@ -218,7 +218,7 @@
  *****************************************************************************/
 .birtviewer_dialog
 {
-	font-family:Verdana;
+	font-family: 'Ubuntu', serif;
 	background-color:#dbe4ee;
 	border-width:2px;
 	border-style:outset;
@@ -249,7 +249,7 @@
 .birtviewer_dialog_button
 {
 	width:100px;
-	font-family:verdana;
+	font-family: 'Ubuntu', serif;
 	font-size:8pt;
 	background-color:white;
 	border-style:outset;
@@ -290,7 +290,7 @@
 .body_caption
 {
 	height:0px; /*Modificado para presupuesto*/
-	font-family:Verdana;
+	font-family: 'Ubuntu', serif;
 	font-size:0pt;
     color:white;  /*Modificado para presupuesto*/
     background-color:#003062; /*Modificado para Presupuesto*/
@@ -340,7 +340,7 @@ background: -ms-linear-gradient(top,  #63b6db 0%,#309dcf 100%); /* IE10+ */
 background: linear-gradient(to bottom,  #63b6db 0%,#309dcf 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#63b6db', endColorstr='#309dcf',GradientType=0 ); /* IE6-9 */
 
-	font-family:Verdana;
+	font-family: 'Ubuntu', serif;
 	font-size:8pt;
     color:white; /*Modificado para BizView*/
 	border-left-color:#808080;
@@ -359,7 +359,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#63b6db', end
  ******************************************************************************/
 .birtviewer_progressbar
 {
-	font-family:Verdana;
+	font-family:'Ubuntu', serif;
 	font-size:8pt;
 	background:#FFFFFF;
 	border-width:2px;
@@ -384,7 +384,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#63b6db', end
 	width:100%;
 	height:100%;
 	background-color:#FFFFFF;
-	font-family:Verdana;
+	font-family: 'Ubuntu', serif;
 	font-size:8pt;
 	border-width:1px;
 	border-style:none;

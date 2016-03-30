@@ -85,7 +85,7 @@
            <p:panel id="panel"  header="#{msg.bvt002tit}" toggleable="true">
              <p:tabView id="tabView" style="height:auto;" >            
              <p:tab id="Bas" title="#{msg.bvt002Tab1}">
-             <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=usuarios" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>	         
+             <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=usuarios" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>	         
                <div class="row">
 		           <div class="col-lg-4 col-md-4 col-sm-4">  	         
 			     <p:inputText id="coduser" maxlength="10" styleClass="form-control input" value="#{bvt002.coduser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
@@ -96,7 +96,7 @@
                  <p:watermark for="desuser" value="#{msg.bvt002Desc}" />
                  <p:spacer height="1"/>
                  <p:message for="desuser"/>
-			     <p:password id="cluser" maxlength="10" styleClass="form-control input" value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+			     <p:password id="cluser" maxlength="150" styleClass="form-control input" value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:watermark for="cluser" value="#{msg.bvt002Cl}" />
 			     <p:spacer height="1"/>
 			     <p:message for="cluser"/>
@@ -104,7 +104,7 @@
                 </div>
              </p:tab>
              <p:tab id="Ubic" title="#{msg.bvt002Tab2}">  
-             <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=usuarios" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>	          
+             <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=usuarios" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>	          
                <div class="row">
 		           <div class="col-lg-4 col-md-4 col-sm-4">  	
 			     <p:inputText id="mail" maxlength="150" styleClass="form-control input" value="#{bvt002.mail}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('confmailIngMail')}">  
@@ -117,7 +117,7 @@
 		         <p:watermark for="rol" value="&nbsp;&nbsp;#{msg.bvt002Rol}" />
 		         <p:spacer height="1"/>
 		         <p:message for="rol"/>
-		         <p:autoComplete id="instancia" placeholder="&nbsp;&nbsp;#{msg.bvt002Instancia}" value="#{bvt002.instancia}"  completeMethod="#{autocomplete.completeInstancias}"  dropdown="true" scrollHeight="250" />
+		         <p:autoComplete id="instancia" placeholder="&nbsp;&nbsp;#{msg.bvt002Instancia}" value="#{bvt002.instancia}"  completeMethod="#{autocomplete.completeInstancias}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" dropdown="true" scrollHeight="250" />
 		        </div>
 		        </div>
 		       </p:tab>           
@@ -174,7 +174,7 @@
             <p:column width="60" >  
             <f:facet name="header">#{msg.enviar}</f:facet>   
             <p:commandLink styleClass="edit" onclick="enviar('#{tb.coduser}','#{tb.desuser}','#{tb.cluser}','#{tb.b_codrol}','1', '#{tb.mail}', '#{tb.instancia}')" 
-            title="Enviar"><i class="fa fa-pencil-square-o fa-2x"></i></p:commandLink>
+            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink>
             </p:column> 
             
              </p:dataTable>   

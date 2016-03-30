@@ -9,7 +9,7 @@
     Este programa se distribuye con la esperanza de que sea útil, pero 
     SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
     MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
+    Consulte los detaloles de la Licencia Pública General GNU para obtener 
     una información más detallada. 
 
     Debería haber recibido una copia de la Licencia Pública General GNU 

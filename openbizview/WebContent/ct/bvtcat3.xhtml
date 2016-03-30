@@ -87,7 +87,7 @@
 			 <div class="panel panel-info">
 	        <div class="panel-body">
 		         <p:panel id="panel"  header="#{msg.bvtcat3tit}" toggleable="true" style="white-space: normal;">
-		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=categoria3" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
+		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=categoria3" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>
                   <div class="row">
 		          <div class="col-lg-4 col-md-4 col-sm-4"> 
 			     <p:autoComplete id="bcodcat1" placeholder="&#160;&#160;#{msg.bvtcat3Cat1}" value="#{bvtcat3.b_codcat1}" emptyMessage="#{msg.html138}" required="true"   requiredMessage="#{bd.getMessage('htmlvalidate')}"   completeMethod="#{autocomplete.completeCat1}"  dropdown="true"  scrollHeight="250">
@@ -160,7 +160,7 @@
             <p:column width="60" >  
             <f:facet name="header">#{msg.enviar}</f:facet>   
             <p:commandLink styleClass="edit" onclick="enviar('#{tb.codcatdescat1}', '#{tb.codcatdescat2}' ,'#{tb.codcat3}', '#{tb.descat3}','1') "
-            title="Enviar"><i class="fa fa-pencil-square-o fa-2x"></i></p:commandLink>
+            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink>
             </p:column>
              
            </p:dataTable>   

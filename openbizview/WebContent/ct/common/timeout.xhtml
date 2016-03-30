@@ -28,8 +28,8 @@
 <h:body>
 	<p:idleMonitor timeout="900000" onidle="PF('idleDialog').show()" />
 
-	<p:dialog header="#{msg.sessionCad}" resizable="false" closable="false"
-		widgetVar="idleDialog" modal="true" width="400" fitViewport="true">
+	<p:dialog header="#{msg.sessionCad}" resizable="false" closable="false" responsive="true"
+		widgetVar="idleDialog" modal="true" fitViewport="true">
 		<h:outputText value="#{msg.sessionMsj}" />
 		<br />
 		<br />
@@ -39,6 +39,13 @@
 					action="#{loginBean.logout}" />
 			</center>
 		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="#{msg.sessionCadNP}!!" resizable="false" closable="false" responsive="true"
+		widgetVar="idleDialogNP" modal="true"  fitViewport="true">	
+		<center><h:outputText value="#{msg.sessionMsjNP}."/><br /><br />
+				<i class="fa fa-exclamation-triangle fa-3x text-danger"></i>
+		</center>		
 	</p:dialog>
 	
 </h:body>

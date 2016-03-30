@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -71,7 +72,11 @@ public class Bvtcat4 extends Bd implements Serializable{
 
 	@PostConstruct
 	public void init() {
-		if (instancia == null){instancia = "999999999999";}
+		if (instancia == null){instancia = "99999";}
+		//Si no tiene acceso al módulo no puede ingresar
+		if (new SeguridadMenuBean().opcmnu("M04")=="false") {
+			RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+		}
 		
 		lazyModel  = new LazyDataModel<Bvtcat4>(){
 			/**

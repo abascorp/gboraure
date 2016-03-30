@@ -120,9 +120,7 @@ public class RunReport implements Serializable {
         //System.out.println(format.toUpperCase());
             options.setOutputFormat(format);
             options.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
-            task.setRenderOption(options);
-		
-        
+            task.setRenderOption(options);  
        
         
         

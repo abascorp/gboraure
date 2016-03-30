@@ -32,14 +32,15 @@
 		  updateInput('formBvt001:codrep', '#F5F6CE');
 		}
 	
-	function imprimir(rep, usuario, rol, descripcion, instancia){
+	function imprimir(rep, usuario, rol, descripcion, instancia, locale){
+		//alert(locale);
 	  // Si el mensaje que retorna es acceso
 	    window.open('../ct/reportes.jsp?reporte='+rep+'.rptdesign'
 				+ "&usuario=" + usuario 
 				+ "&rol=" + rol
 				+ "&replog=" + rep
 				+ "&descripcion=" + descripcion
-				+ "&hora=" + displayTime()
+				+ "&hora=" + displayTime(locale)
 				+ "&instancia=" + instancia);
 	   //alert(displayTime());
 	}
@@ -47,7 +48,7 @@
 	
 
 	//Muestra la hora del lado del cliente
-	function displayTime()
+	function displayTime(vT0)
 	   {
 	       var localTime = new Date();
 	       var month= localTime.getMonth()+1; 
@@ -56,6 +57,11 @@
 	       var minutos = localTime.getMinutes();
 		   //var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 		   var monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+		   if(vT0=='es'){
+			   monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+		   } else {
+			   monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		   }
 		   var mes = monthNames[localTime.getMonth()];
 	      
 	       if(cadena.length==1){

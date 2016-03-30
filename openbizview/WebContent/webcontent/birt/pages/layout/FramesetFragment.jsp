@@ -14,7 +14,6 @@
 				 org.eclipse.birt.report.context.BaseAttributeBean,
 				 org.eclipse.birt.report.resource.ResourceConstants,
 				 org.eclipse.birt.report.utility.ParameterAccessor" %>
-				 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <%-------------------------------------------------------------------------------------------
   Define variables de session.
 --------------------------------------------------------------------------------------------%>
@@ -58,9 +57,9 @@ out.print("<script> top.location.href ='/openbizview/login.xhtml'; </script>");
 	<HEAD>
 		<TITLE>OPEN-BIZVIEW</TITLE>
 		<BASE href="<%= baseHref %>" >
-		<link rel="shortcut icon"  href="/openbizview/resources/img/favicon.ico"/>
+		<link rel="shortcut icon"  href="../resources/img/favicon.ico"/>
 		<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8">
-		<LINK REL="stylesheet" HREF="/openbizview/resources/ccs/btnStyles.css" TYPE="text/css">
+		<LINK REL="stylesheet" HREF="/resources/ccs/btnStyles.css" TYPE="text/css">
 		<LINK REL="stylesheet" HREF="birt/styles/style.css" TYPE="text/css">
 		<%
 		if( attributeBean.isRtl() )

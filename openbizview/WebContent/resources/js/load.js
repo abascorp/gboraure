@@ -185,3 +185,10 @@
 	function modalHide(){
 		$("#myModalDelete").modal('hide');
 	}
+	
+	function chpassSuccess(vT0){
+		alert(vT0);
+		if(vT0=='1'){
+			PF('idleDialog').show();
+		}
+	}

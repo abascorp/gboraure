@@ -143,11 +143,17 @@ public class LoginBean extends Bd {
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rol", tabla[0][2].toString());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("desuser", tabla[0][3].toString());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", sessionId);
-			//Instancia
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", tabla[0][5].toString());
+			
 			//Se genera opción de logout
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("logoutEstandart", "0");
+			//Verifica si el usuario tiene mas de una instancia seleccionada y pide seleccionar una
+			if(seg.cuentaInstanciasUsr(usuario)>1){
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/instanciaSelect.xhtml"); 
+			} else {
+			//Instancia
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", tabla[0][5].toString());
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml"); 
+			}
 			new Programacion().recuperarTriggers("0");
 		} 
 		
@@ -155,6 +161,20 @@ public class LoginBean extends Bd {
 	}
 	
 
+	/**
+     * Define la instancia seleccionada y redirecciona
+     */
+     public void grupos(String grupo){
+    	 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", grupo.split(" - ")[0]);
+    	 //System.out.println("Grupo de usuario: " + grupo.split(" - ")[0]);
+    	 try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+     }
+     
     
     /**
      * Invalida la session y sale de la aplicación

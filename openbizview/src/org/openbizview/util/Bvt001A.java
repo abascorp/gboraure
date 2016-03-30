@@ -44,6 +44,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openbizview.util.PntGenerica;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -73,7 +74,11 @@ import org.primefaces.model.SortOrder;
 	
 		@PostConstruct
 		public void init() {
-			if (instancia == null){instancia = "999999999999";}
+			if (instancia == null){instancia = "99999";}
+			//Si no tiene acceso al módulo no puede ingresar
+			if (new SeguridadMenuBean().opcmnu("R01")=="false") {
+				RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+			}
 			
 			lazyModel  = new LazyDataModel<Bvt001A>(){
 				/**
@@ -104,23 +109,7 @@ import org.primefaces.model.SortOrder;
 	            } 
 	            
 	            
-	            //Arregla bug de primefaces
-	            @Override
-	            /**
-				 * Arregla el Issue 1544 de primefaces lazy loading porge generaba un error
-				 * de divisor equal a cero, es solamente un override
-				 */
-	            public void setRowIndex(int rowIndex) {
-	                /*
-	                 * The following is in ancestor (LazyDataModel):
-	                 * this.rowIndex = rowIndex == -1 ? rowIndex : (rowIndex % pageSize);
-	                 */
-	                if (rowIndex == -1 || getPageSize() == 0) {
-	                    super.setRowIndex(-1);
-	                }
-	                else
-	                    super.setRowIndex(rowIndex % getPageSize());
-	            }
+	            
 	            
 			};
 		}

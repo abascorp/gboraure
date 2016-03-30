@@ -36,37 +36,39 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content --> 
-            
+     <f:event listener="#{fileUploadController.init}" type="preRenderView" /> 
      <div class="container-fluid" id="containerF" style="padding-top: 100px">
 				<h:form id="formAutoext" enctype="multipart/form-data">
 					<!-- Panel -->
 					 <div class="panel panel-info">
 	                  <div class="panel-body">
 						<p:panel id="panel" header="#{msg.pntextreptit}">
-						<div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=upload" target="_new" title="Wiki"><i class="fa fa-file-text"></i></a></div>
+						<div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=upload" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>
 							<p:commandButton icon="fa fa-folder-open" update="panel"
 								process="@this" title="#{msg.html30}" value="#{msg.html30}">
 								<p:resetInput target="panel" />
 							</p:commandButton>
-							<br />		
+							<br />
+							<div id="upload">		
 								<p:fileUpload
 									fileUploadListener="#{fileUploadController.handleReportUpload}"
-									style="padding-top:10px" mode="advanced" update="growl"
+									style="padding-top:10px" 
+									mode="advanced" 
+									update="growl"
 									auto="true"
-									multiple="true" cancelLabel="#{msg.autos02Cancel}"
-									label="#{msg.autos02Sel}" uploadLabel="#{msg.autos02Up}"
-									allowTypes="/(\.|\/)(rptdesign)$/"
+									multiple="true" 
+									cancelLabel="#{msg.autos02Cancel}"
+									label="#{msg.autos02Sel}" 
+									uploadLabel="#{msg.autos02Up}"
+									allowTypes="/(\.|\/)(rptdesign|png|jpg)$/"
 									invalidFileMessage="#{msg.autos02Rpt}"
 									oncomplete="HideUpload()">
 								</p:fileUpload>
+								</div>
 						</p:panel>
 						</div>
 						</div>
 						
-						<!-- Ajax loader --> 		
-			 <div class="pull-right" style="margin-top: -40px">   			  
-			 <ui:include src="common/loader.xhtml"/>
-			 </div>
 		     <!-- Mensaje -->
 		     <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
 				 </h:form>

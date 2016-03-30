@@ -54,7 +54,7 @@
 						<h3 class="panel-title">#{msg.entrar}</h3>
 					</div>
 					<center>
-						<h:graphicImage value="resources/img/user_login.png" height="60" />
+						<h:graphicImage value="resources/img/OpenLogo.png" alt="img" style="height:60px;"/>
 					</center>
 					<div class="panel-body">
 						<h:form id="loginform">
@@ -79,21 +79,23 @@
 								</div>
 								<p:ajaxStatus id="ajaxStatusPanel">
 									<f:facet name="default">
-										<p:commandLink value="#{msg.login}"
+										<p:commandButton value="#{msg.login}"
 											styleClass="btn btn-lg btn-success btn-block"
-											action="#{loginBean.login}" update="loginform" />
+											action="#{loginBean.login}" update="loginform, growl" />
 									</f:facet>
 									<f:facet name="start">
 										<center><i class="fa fa-cog fa-spin fa-4x"></i></center>
 									</f:facet>
 									<f:facet name="complete">
-										<p:commandLink value="#{msg.login}"
+										<p:commandButton value="#{msg.login}"
 											styleClass="btn btn-lg btn-success btn-block"
-											action="#{loginBean.login}" update="loginform" />
+											action="#{loginBean.login}" update="loginform, growl" />
 									</f:facet>
 								</p:ajaxStatus>
 							</fieldset>
-							<br/><center><a href="chgpass.xhtml" class="link" title="#{msg.olvidocl}">#{msg.olvidocl}</a></center>
+							<!-- Mensaje -->
+                            <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+							<br/><center><b><a href="chgpass.xhtml" class="link" title="#{msg.olvidocl}">#{msg.olvidocl}</a></b></center>
 						</h:form>
 					</div>
 				</div>

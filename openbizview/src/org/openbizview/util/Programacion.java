@@ -120,6 +120,11 @@ public class Programacion extends Bd implements Serializable {
 	//Constructor
 
 	public Programacion() throws SchedulerException {
+		if (instancia == null){instancia = "99999";}
+		//Si no tiene acceso al módulo no puede ingresar
+		if (new SeguridadMenuBean().opcmnu("M25")=="false") {
+		 RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+		}
 		//System.out.println("Estatus TRIGGER1: " + schd.checkExists(triggerKey("TRIGGER1", "unico")));
 		//System.out.println("Estatus TRIGGER2: " + schd.checkExists(triggerKey("TRIGGER2", "unico")));
 		//System.out.println("Estatus TRIGGER3: " + schd.checkExists(triggerKey("TRIGGER3", "unico")));	
@@ -179,7 +184,9 @@ public class Programacion extends Bd implements Serializable {
 	}
 	
 	public void reset() {
-		setOpcTareas("1");
+		mailreporteFiltro = null;
+		mailfrecuenciaFiltro = null;
+		mailgrupoFiltro = null;
     }
 	
 	//public void init() throws SchedulerException, NamingException{
@@ -249,10 +256,57 @@ public class Programacion extends Bd implements Serializable {
     private String formato;
     private String vformato;
     
+    //Filtros de búsqueda
+    private String mailreporteFiltro = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mailreporte"); 
+    private String mailfrecuenciaFiltro = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mailfrecuencia");
+    private String mailgrupoFiltro = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mailgrupo");
     
     
     
     
+    
+	/**
+	 * @return the mailreporteFiltro
+	 */
+	public String getMailreporteFiltro() {
+		return mailreporteFiltro;
+	}
+
+	/**
+	 * @param mailreporteFiltro the mailreporteFiltro to set
+	 */
+	public void setMailreporteFiltro(String mailreporteFiltro) {
+		this.mailreporteFiltro = mailreporteFiltro;
+	}
+
+	/**
+	 * @return the mailfrecuenciaFiltro
+	 */
+	public String getMailfrecuenciaFiltro() {
+		return mailfrecuenciaFiltro;
+	}
+
+	/**
+	 * @param mailfrecuenciaFiltro the mailfrecuenciaFiltro to set
+	 */
+	public void setMailfrecuenciaFiltro(String mailfrecuenciaFiltro) {
+		this.mailfrecuenciaFiltro = mailfrecuenciaFiltro;
+	}
+
+	/**
+	 * @return the mailgrupoFiltro
+	 */
+	public String getMailgrupoFiltro() {
+		return mailgrupoFiltro;
+	}
+
+	/**
+	 * @param mailgrupoFiltro the mailgrupoFiltro to set
+	 */
+	public void setMailgrupoFiltro(String mailgrupoFiltro) {
+		this.mailgrupoFiltro = mailgrupoFiltro;
+	}
+
 	/**
 	 * @return the formato
 	 */
@@ -1309,6 +1363,22 @@ public class Programacion extends Bd implements Serializable {
      		opctareas = "1";
      	}
      	
+     	if(mailreporteFiltro==null){
+     		mailreporteFiltro = " - ";
+     	}
+     	
+     	if(mailfrecuenciaFiltro==null){
+     		mailfrecuenciaFiltro = " - ";
+     	}
+     	
+        if(mailgrupoFiltro==null){
+        	mailgrupoFiltro = " - ";
+        }
+        
+        String[] vecrepf = mailreporteFiltro.split("\\ - ", -1);
+ 		String[] veccfrecf = mailfrecuenciaFiltro.split("\\ - ", -1);
+ 		String[] vecgrupf = mailgrupoFiltro.split("\\ - ", -1);
+     	
      	switch ( productName ) {
         case "Oracle":
         	query += "  select * from ";
@@ -1318,8 +1388,10 @@ public class Programacion extends Bd implements Serializable {
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and A.instancia=B.instancia";
-            query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
-            query += " and a.opctareas like '" + opctareas + "%'";
+            query += " and a.job||a.codrep||trim(a.idgrupo)||trim(to_char(substr(a.hora,1,2),'00'))||trim(to_char(substr(a.hora,4,2),'00')) like '%" + ((String) filterValue).toUpperCase() + "%'";
+            query += " and a.codrep like '" + vecrepf[0] + "%'";
+            query += " and a.frecuencia like '" + veccfrecf[0] + "%'";
+            query += " and a.idgrupo like '" + vecgrupf[0] + "%'";
             query += " AND   a.instancia = '" + instancia + "'";
             query += " order by " + sortField.replace("v", "") + ") query";
 	        query += " ) where rownum <= " + pageSize ;
@@ -1331,8 +1403,10 @@ public class Programacion extends Bd implements Serializable {
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and A.instancia=B.instancia";
-            query += " and a.job||a.disparador||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
-            query += " and a.opctareas like '" + opctareas + "%'";
+            query += " and a.job||a.codrep||trim(cast(a.idgrupo as text))||trim(cast(substr(a.hora,1,2) as text))||trim(cast(substr(a.hora,4,2) as text)) like '%" + ((String) filterValue).toUpperCase() + "%'";
+            query += " and a.codrep like '" + vecrepf[0] + "%'";
+            query += " and a.frecuencia like '" + veccfrecf[0] + "%'";
+            query += " and cast(a.idgrupo as text) like '" + vecgrupf[0] + "%'";
             query += " AND   a.instancia = '" + instancia + "'";
             query += " order by " + sortField.replace("v", "") ;
 	        query += " LIMIT " + pageSize;
@@ -1399,19 +1473,35 @@ public class Programacion extends Bd implements Serializable {
    	      		
  		String query = "";
  		
+ 		if(mailreporteFiltro==null){
+     		mailreporteFiltro = " - ";
+     	}
+     	
+     	if(mailfrecuenciaFiltro==null){
+     		mailfrecuenciaFiltro = " - ";
+     	}
+     	
+        if(mailgrupoFiltro==null){
+        	mailgrupoFiltro = " - ";
+        }
+        
+        String[] vecrepf = mailreporteFiltro.split("\\ - ", -1);
+ 		String[] veccfrecf = mailfrecuenciaFiltro.split("\\ - ", -1);
+ 		String[] vecgrupf = mailgrupoFiltro.split("\\ - ", -1);
+ 		
  		
  		switch ( productName ) {
         case "Oracle":
-        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "','" + instancia + "') from dual";
+        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" +  instancia + "','" + vecrepf[0] + "','" + veccfrecf[0] + "','" + vecgrupf[0] + "') from dual";
              break;
         case "PostgreSQL":
-        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" + opctareas + "','" + instancia + "')";
+        	 query = "SELECT count_programacion('" + ((String) filterValue).toUpperCase() + "','" +  instancia + "','" + vecrepf[0] + "','" + veccfrecf[0] + "','" + vecgrupf[0] + "')";
              break;
         }
 
-        
+ 		//System.out.println(query);
         pstmt = con.prepareStatement(query);
-        //System.out.println(query);
+        
 
          r =  pstmt.executeQuery();
         
@@ -1615,7 +1705,8 @@ public class Programacion extends Bd implements Serializable {
 	 * del reporte parra programar la tarea
 	 */
 	 public String getRutaRepReal(){
-		 String ruta = extContext.getRealPath(RUTA_REPORTE) + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
+		 //String ruta = extContext.getRealPath(RUTA_REPORTE) + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
+		 String ruta = PRINT_REPORT_LOCATION + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
 		 return ruta;
 	 }
   		

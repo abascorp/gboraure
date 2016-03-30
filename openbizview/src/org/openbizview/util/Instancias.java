@@ -44,6 +44,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openbizview.util.PntGenerica;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -73,7 +74,12 @@ import org.primefaces.model.SortOrder;
 	
 		@PostConstruct
 		public void init() {
-			if (instancia == null){instancia = "999999999999";}
+			if (instancia == null){instancia = "99999";}
+			
+			//Si no tiene acceso al módulo no puede ingresar
+			if (new SeguridadMenuBean().opcmnu("M11")=="false") {
+				RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+			}
 			
 			lazyModel  = new LazyDataModel<Instancias>(){
 				/**
@@ -464,6 +470,37 @@ import org.primefaces.model.SortOrder;
   		validarOperacion = 0;
 	}
 
+  	/*
+	 * Listar instancias al momento del login
+	 * si el usuario no tiene alguna instancia predefinida
+	 * muestra el modal para seleccionar la instancia,
+	 * lee de las instancias asociadas al usuario
+	 */
+     public List<String> selectInstancias() throws NamingException, SQLException   {
+  		
+  		Context initContext = new InitialContext();     
+ 		DataSource ds = (DataSource) initContext.lookup(JNDI);
+ 		con = ds.getConnection();
+ 		List<String> values = new ArrayList<String>();
+ 		
+ 		String query = "select a.instancia||' - '||b.descripcion";
+	       query += " from instancias_usr a, instancias b";
+	       query += " where a.instancia = b.instancia";
+  		  		
+  		pstmt = con.prepareStatement(query);
+       // System.out.println(query);
+  		
+        r =  pstmt.executeQuery();
+        		
+        while (r.next()){
+ 
+        values.add(r.getString(1));
 
+        }
+        //Cierra las conecciones
+        pstmt.close();
+        con.close();
+        return values;
+    }
 
 }

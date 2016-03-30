@@ -51,7 +51,7 @@ public class SeguridadMenuBean extends Bd {
 	 * @return true o false
 	 * @throws IOException 
 	 */
-	public String opcmnu(String opc) throws NamingException {
+	public String opcmnu(String opc)  {
 		String rendered = "true";
 		if (!rq.isRequestedSessionIdValid()) {
 			RequestContext.getCurrentInstance().execute("PF('idleDialog').show()");
@@ -67,7 +67,12 @@ public class SeguridadMenuBean extends Bd {
 		String vlquery = "select codvis " + "from bvtmenu "
 				+ " where codopc ='" + opc.toUpperCase()
 				+ "' and b_codrol in (select b_codrol " + " from bvt002  where coduser = '" + login.toUpperCase() + "')";
-		consulta.selectPntGenerica(vlquery, JNDI);
+		try {
+			consulta.selectPntGenerica(vlquery, JNDI);
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//System.out.println(vlquery);
 		String[][] tabla = consulta.getArray();
 		int rows = consulta.getRows();

@@ -49,7 +49,7 @@ public class Db extends Bd implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	public void init() {
-		if (instancia == null){instancia = "999999999999";}
+		if (instancia == null){instancia = "99999";}
 		if (login==null) {
 			//rq.getCurrentInstance().execute("PF('yourdialogid').show()");
 			RequestContext.getCurrentInstance().execute("PF('idleDialog').show()");
@@ -58,7 +58,7 @@ public class Db extends Bd implements Serializable  {
 		String[][] vlini = null;
 	 //Lee cuantos reportes impresos
 	   try {
-		q1 = "select count(*) from bvt001 where instancia =  '" + instancia + "'";
+		q1 = "select count(*) from bvt001 where instancia =  '" + instancia + "' and codrep in (select b_codrep from bvt007 where b_codrol = '" + rol + "')";
 		consulta.selectPntGenerica(q1, JNDI);	
 		r1 = consulta.getRows();
 		if (r1>0){
@@ -102,6 +102,7 @@ public class Db extends Bd implements Serializable  {
 	
 	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia");
 	private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("login"); //Usuario logeado
+	private String rol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rol"); //Usuario logeado
 	private List<Db> list = new ArrayList<Db>();
 	
 	//Coneccion a base de datos

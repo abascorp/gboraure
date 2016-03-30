@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -76,7 +77,12 @@ import org.primefaces.model.SortOrder;
 		
 		@PostConstruct
 		public void init() {	
-			if (instancia == null){instancia = "999999999999";}
+			if (instancia == null){instancia = "99999";}
+			
+			//Si no tiene acceso al módulo no puede ingresar
+			if (new SeguridadMenuBean().opcmnu("M19")=="false") {
+				RequestContext.getCurrentInstance().execute("PF('idleDialogNP').show()");
+			}
 			
 			lazyModel  = new LazyDataModel<Acccat2>(){
 				/**
@@ -447,10 +453,10 @@ import org.primefaces.model.SortOrder;
  		
  		String query = "";
  		if(b_codrol==null){
- 			b_codrol = " - ";
+ 			b_codrol = "9999abcd%/@ - ";
  		}
- 		if(b_codrol==""){
- 			b_codrol = " - ";
+ 		if(b_codrol.equals("")){
+ 			b_codrol = "9999abcd%/@ - ";
  		}
  		if(b_codcat1==null){
  			b_codcat1 = " - ";
@@ -472,7 +478,7 @@ import org.primefaces.model.SortOrder;
   		       query += " and   a.b_codcat2=c.codcat2 ";
   		       query += " and A.instancia=B.instancia";
 		       query += " and A.instancia=c.instancia";
-  		       query += " and  a.b_codrol like '" + veccodrol[0] + "%'";
+  		       query += " and  a.b_codrol = '" + veccodrol[0] + "'";
   		       query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
         	   query += " AND   a.b_codcat1||b.descat1||a.b_codcat2||c.descat2 like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " AND   a.instancia = '" + instancia + "'";
@@ -488,7 +494,7 @@ import org.primefaces.model.SortOrder;
 		       query += " and   a.b_codcat2=c.codcat2 ";
 		       query += " and A.instancia=B.instancia";
   		       query += " and A.instancia=c.instancia";
-		       query += " and  a.b_codrol like '" + veccodrol[0] + "%'";
+		       query += " and  a.b_codrol = '" + veccodrol[0] + "'";
 		       query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
      	       query += " AND  a.b_codcat1||b.descat1||a.b_codcat2||c.descat2 like '%" + ((String) filterValue).toUpperCase() + "%'";
      	       query += " AND   a.instancia = '" + instancia + "'";

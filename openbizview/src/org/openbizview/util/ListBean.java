@@ -40,9 +40,9 @@ package org.openbizview.util;
 	new SelectItem("1", getMessage("mailtareaSemanal")),
 	new SelectItem("2", getMessage("mailtareaPersonalizada")),
 	new SelectItem("3", getMessage("mailtareaHoraRep")),
-	//new SelectItem("3", getMessage("mailimes1")),
+	new SelectItem("4", getMessage("mailimes1")),
 	//new SelectItem("4", getMessage("mailimes2")),
-	new SelectItem("4", getMessage("mailimes1"))};
+	new SelectItem("5", getMessage("maillidiasSelect"))};
 	
 	/**
 	 * @return the frecuencia
