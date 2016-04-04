@@ -158,22 +158,22 @@ public class TareaInvocar extends Bd implements Job {
 			" from t_programacion" +
 			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
 			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
-	        " where job =trim('" + job + "')";
+	        " where disparador =trim('" + job + "')";
 	String vlquerymailPG = "select distinct trim(disparador), trim(rutatemp), trim(codrep), trim(asunto), trim(contenido), trim(formato)" +
 			" from t_programacion" +
 			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
 			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
-	        " where job =trim('" + job + "')";
+	        " where disparador =trim('" + job + "')";
 	String vlquerymailSQL = "select distinct trim(disparador), trim(rutatemp), trim(codrep), trim(asunto), trim(contenido), trim(formato)" +
 			" from t_programacion" +
 			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
 			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
-	        " where job =trim('" + job + "')";
+	        " where disparador =trim('" + job + "')";
 	
 	consulta.selectPntGenericaMDB(vlquerymailORA, vlquerymailPG, vlquerymailSQL, JNDI);	
 	
 	
-	//System.out.println(vlquerymailORA);
+	//System.out.println(vlquerymailPG);
 			
 	
 	rowsmail = consulta.getRows();
@@ -182,15 +182,13 @@ public class TareaInvocar extends Bd implements Job {
 		counter = 1+x; //Contador para renombrar reportes
 	if (rowsmail>0 && !vltablarep[x][3].equals("2")){//Si la consulta es mayor a cero devuelve registros envía el correo
 		                                             //Envía correo siempre y cuando la opción no sea 2 (Envíar a URL)
-		for(int i=0;i<rowsmail;i++){
-			
-		 new Sendmail().mailthread(vltablamail[i][0], vltablamail[i][1], vltablamail[i][2]+"_"+counter, vltablamail[i][3], vltablamail[i][4], vltablamail[i][5]);
+		for(int i=0;i<rowsmail;i++){			
+		 new Sendmail().mailthread(vltablamail[i][0], vltablamail[i][1], vltablamail[i][2], vltablamail[i][3], vltablamail[i][4], vltablamail[i][5]);
 			
 		}
 	}
 	}
-	
-	
+
 	} catch (NamingException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

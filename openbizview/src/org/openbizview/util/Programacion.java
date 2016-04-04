@@ -241,6 +241,7 @@ public class Programacion extends Bd implements Serializable {
     //Para detener las tareas
     private String activa;
     private String clase;
+    private String statusIncon;
     
     
     //Variables para tomar los nombres de parámetros y pasarlos a la tabla
@@ -262,9 +263,22 @@ public class Programacion extends Bd implements Serializable {
     private String mailgrupoFiltro = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mailgrupo");
     
     
+       
     
-    
-    
+	/**
+	 * @return the statusIncon
+	 */
+	public String getStatusIncon() {
+		return statusIncon;
+	}
+
+	/**
+	 * @param statusIncon the statusIncon to set
+	 */
+	public void setStatusIncon(String statusIncon) {
+		this.statusIncon = statusIncon;
+	}
+
 	/**
 	 * @return the mailreporteFiltro
 	 */
@@ -1385,6 +1399,7 @@ public class Programacion extends Bd implements Serializable {
      	    query += " ( select query.*, rownum as rn from";
         	query += " ( select trim(a.job), trim(a.disparador), trim(to_char(substr(a.hora,1,2),'00')), trim(to_char(substr(a.hora,4,2),'00')), decode(a.frecuencia,'0', '" + getMessage("mailintervalo1") + "','1','" + getMessage("mailintervalo2") + "','2','" + getMessage("mailintervalo3") + "','3','" + getMessage("mailintervalo4") + "','4','" + getMessage("mailintervalo5") + "','" + getMessage("mailintervalo6") + "'), a.diasem";
       		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"'), trim(a.formato)";
+      		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and A.instancia=B.instancia";
@@ -1400,6 +1415,7 @@ public class Programacion extends Bd implements Serializable {
         case "PostgreSQL":
         	query = "select trim(a.job), trim(a.disparador), trim(cast(substr(a.hora,1,2) as text)), trim(cast(substr(a.hora,4,2) as text)),  case when a.frecuencia = '0' then '" + getMessage("mailintervalo1") + "' when a.frecuencia = '1' then '" + getMessage("mailintervalo2") + "' when a.frecuencia = '2' then'" + getMessage("mailintervalo3") + "' when a.frecuencia = '3' then '" + getMessage("mailintervalo4") + "' when a.frecuencia = '4' then '" + getMessage("mailintervalo5") + "' else '" + getMessage("mailintervalo6") + "' end, a.diasem";
       		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end, trim(a.formato)";
+      		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and A.instancia=B.instancia";
@@ -1442,6 +1458,7 @@ public class Programacion extends Bd implements Serializable {
             select.setActiva(r.getString(16));
             select.setVactivadetalletb(r.getString(17));
             select.setVformato(r.getString(18).toUpperCase());
+            select.setStatusIncon(r.getString(19));
         	//Agrega la lista
         	list.add(select);
         	rows = list.size();
@@ -1529,47 +1546,51 @@ public class Programacion extends Bd implements Serializable {
   	public void enviarMailmanual() throws IOException{
 
   	    java.sql.Date sqlDate = new java.sql.Date(fechadia.getTime());
-  	    int rows;
-  		String[][] vltabla;
-  		
-  		
-  	    //Envía reporte
-  	    //Selecciona nombre del reporte y id del grupo según hora programada
-  	  
+  	//Para reportes
+  	    int rowsrep;
+  	   	String[][] vltablarep;
+  	   	
+  	   	//Para mail
+  	   	int rowsmail;
+  	   	String[][] vltablamail;
+  
   		try {
-  			consulta.selectPntGenerica("select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), hora, trim(paramnames), trim(paramvalues) from t_programacion where disparador='" + vltrigger.toUpperCase() + "'", JNDI);
+  		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), hora, trim(paramnames), trim(paramvalues)";
+  	    vlqueryRep += " from t_programacion" ;
+  	    vlqueryRep += " where disparador='" + vltrigger.toUpperCase() + "'";
+  	  		
+  		consulta.selectPntGenerica(vlqueryRep, JNDI);
   		
   		////System.out.println("select nombrereporte, idgrupo, trim(rutareporte), trim(rutatemp) from mailtarea where hora='" + formato.format(new Date()) + "'");
   		   
-  	    rows = consulta.getRows();
-  		vltabla = consulta.getArray();
+  		rowsrep = consulta.getRows();
+  		vltablarep = consulta.getArray();
   		
   		//Imprime reporte
-  		if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo
-  		 new RunReport().outReporteRecibo(vltabla[0][0].toString(), vltabla[0][4].toString(), vltabla[0][1].toString(), vltabla[0][2].toString(), vltabla[0][0].toString(), sqlDate, vltabla[0][3].toString(), vltabla[0][5].toString(), vltabla[0][6].toString(), vltabla[0][7].toString());
-
-  		}
+  		if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo
+  		 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][4].toString(), vltablarep[0][1].toString(), vltablarep[0][2].toString(), vltablarep[0][0].toString(), sqlDate, vltablarep[0][3].toString(), vltablarep[0][5].toString(), vltablarep[0][6].toString(), vltablarep[0][7].toString());
+  		
+  		
   		//Consulta lista de correos
-  		consulta.selectPntGenerica("select trim(a.mail), trim(b.rutatemp), trim(b.codrep), trim(b.asunto), trim(b.contenido), trim(formato)" +
-  				" from maillista a, t_programacion b" +
-  				" where a.idgrupo=b.idgrupo  " +
-  				" and disparador='" + vltrigger.toUpperCase() + "'", JNDI);
+  		String vlqueryMail = "select distinct trim(disparador), trim(rutatemp), trim(codrep), trim(asunto), trim(contenido), trim(formato)";
+        vlqueryMail += " from t_programacion" ;
+  		vlqueryMail += " where disparador='" + vltrigger.toUpperCase() + "'";
   		
-  		rows = consulta.getRows();
-  		vltabla = consulta.getArray();
-  		if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  		
-  			for(int i=0;i<rows;i++){	
-
-  			 new Sendmail().mailthread(vltrigger.toUpperCase(), vltabla[i][1], vltabla[i][2], vltabla[i][3], vltabla[i][4], vltabla[i][5]);
-  				
+  		//System.out.println(vlqueryMail);
+  		consulta.selectPntGenerica(vlqueryMail,JNDI);
+  		
+  		rowsmail = consulta.getRows();
+  		vltablamail = consulta.getArray();
+  		//System.out.println(rowsmail);
+  		//System.out.println(rowsmail);
+  		if (rowsmail>0){//Si la consulta es mayor a cero devuelve registros envía el correo  		
+  			for(int i=0;i<rowsmail;i++){
+  			 new Sendmail().mailthread(vltrigger.toUpperCase(), vltablamail[i][1], vltablamail[i][2], vltablamail[i][3], vltablamail[i][4], vltablamail[i][5]); 				
   			}
-  			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIN DEL BLOQUE", "");
-			FacesContext.getCurrentInstance().addMessage(null, msj);
+  		} 
+  		
   		}
-  		
-  		
   		} catch (NamingException e) {
-  			// TODO Auto-generated catch block
   			e.printStackTrace();
   		}
   	}

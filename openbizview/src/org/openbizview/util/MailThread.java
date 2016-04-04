@@ -23,6 +23,7 @@ import java.io.File;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.faces.application.FacesMessage;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -47,7 +48,8 @@ public class MailThread extends Thread {
 	String contenido;
 	String formato;
 	PntGenerica consulta = new PntGenerica();
-
+	MimeMessage mm;
+	FacesMessage msj = null;
 
 	public MailThread(String trigger, String ruta, String file, String asunto,
 			String contenido, String formato) {
@@ -58,8 +60,8 @@ public class MailThread extends Thread {
 		this.contenido = contenido;
 		this.formato = formato;
 	}
-
-	public void run() {
+	
+	private void mail(String trigger, String ruta, String file, String asunto, String contenido, String formato, String to){
 		try {
 			// //System.out.println("Registros :" + rows);
 			Context initContext = new InitialContext();
@@ -74,22 +76,7 @@ public class MailThread extends Thread {
 			// oculta)
 			// mm.setFrom(new
 			// InternetAddress("opennomina@dvconsultores.com"));
-            String vlquery = "select trim(a.mail)";
-            	   vlquery += " from maillista a, t_programacion b";
-            	   vlquery += " where a.idgrupo=b.idgrupo  ";
-            	   vlquery += " and disparador='" + trigger.toUpperCase() + "'";
-			//Consulta lista de correos
-		  	consulta.selectPntGenerica(vlquery,  Bd.JNDI);
-		  	System.out.println(vlquery);	
-		  	int rows = consulta.getRows();
-		  	String[][] vltabla = consulta.getArray();
-		  	if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  
-		  	//Recorre la lista de correos	
-		  	for(int i=0;i<rows;i++){	
-  				mm.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(vltabla[i][0]));		  				
-  			}
-		  	}
+			mm.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
 			// Establecer el contenido del mensaje
 			mm.setSubject(asunto);
@@ -109,10 +96,10 @@ public class MailThread extends Thread {
 
 			// Part two is attachment
 			messageBodyPart = new MimeBodyPart();
-			String filename = ruta + File.separator + file + "." + formato;
+			String filename = ruta + File.separator + file + ".pdf";
 			javax.activation.DataSource source = new FileDataSource(filename);
 			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(file + "." + formato);
+			messageBodyPart.setFileName(file + ".pdf");
 			multipart.addBodyPart(messageBodyPart);
 
 			// Send the complete message parts
@@ -123,8 +110,37 @@ public class MailThread extends Thread {
 			//System.out.println("Correo enviado exitosamente a :" + to + ". Reporte:" + file);
 
 		} catch (MessagingException|NamingException e) {
-            e.printStackTrace();
+			throw new RuntimeException(e);
+
 		}
+	}
+
+	public void run()  {
+		String vlquery = "select trim(a.mail)";
+        vlquery += " from maillista a, t_programacion b" ;
+        vlquery += " where a.idgrupo=b.idgrupo  ";
+        vlquery += " and a.instancia=b.instancia  ";
+        vlquery += " and disparador='" + trigger.toUpperCase() + "'";
+        //System.out.println(vlquery);
+        try {
+			consulta.selectPntGenerica(vlquery, Bd.JNDI);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+    		  		
+    	int rows = consulta.getRows();
+    	String[][] vlmail = consulta.getArray();
+    	 //System.out.println(rows);
+    	if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  
+    	//Recorre la lista de correos	
+    	for(int i=0;i<rows;i++){	
+    		//System.out.println(vlmail[i][0]);
+    		//mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
+    		mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
+    		
+      	}
+    	//System.out.println("Correo enviado exitosamente");
+	 	}
 	}
 
 }

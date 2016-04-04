@@ -24,6 +24,7 @@ function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6,vT7,vT8,vT9,vT10,vT11){
 	  if(vT10=='0'){
 		  vT10='1';
 	  }
+	  
 	  document.getElementById("formmailconfig:tabView:tarea").value= rTrim(vT0);
 	  document.getElementById("formmailconfig:tabView:prg").value= rTrim(vT1);
 	  document.getElementById("formmailconfig:tabView:hora").value= rTrim(vT2);
@@ -37,6 +38,7 @@ function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6,vT7,vT8,vT9,vT10,vT11){
 	  document.getElementById("formmailconfig:tabView:diames").value= rTrim(vT10);
 	  document.getElementById("formmailconfig:tabView:ini_input").value= rTrim(vT11);	
 	  document.getElementById("formmailconfig:ruta").value = "NA";
+	  
 	}
 
     function detalle(vT0,vT1,vT2,vT3,vT4,vT5,vT6,vT7){

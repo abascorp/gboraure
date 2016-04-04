@@ -26,8 +26,10 @@ import java.util.concurrent.Executors;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -53,84 +55,107 @@ public class Sendmail extends Bd {
 	}
 
 	PntGenerica consulta = new PntGenerica();
+	MimeMessage mm;
+	FacesMessage msj = null;
 
 	/**
 	 * Método que envía por correo reporte generado por Birt Report en PDF
 	 * @throws NamingException 
 	 * **/
 	public void mail(String trigger, String ruta, String file, String asunto, String contenido, String formato) throws NamingException{
-		////System.out.println("Registros :" + rows);
-				Context initContext = new InitialContext();     
-		    	Session session = (Session) initContext.lookup(JNDIMAIL);
+	   
+		   String vlquery = "select trim(a.mail)";
+	         vlquery += " from maillista a, t_programacion b" ;
+	         vlquery += " where a.idgrupo=b.idgrupo  ";
+	         vlquery += " and a.instancia=b.instancia  ";
+	         vlquery += " and disparador='" + trigger.toUpperCase() + "'";
+	         //System.out.println(vlquery);
+	         consulta.selectPntGenerica(vlquery, JNDI);
+	     		  		
+	     	int rows = consulta.getRows();
+	     	String[][] vlmail = consulta.getArray();
+	     	 //System.out.println(rows);
+	     	if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  
+	     	//Recorre la lista de correos	
+	     	for(int i=0;i<rows;i++){	
+	     		System.out.println(vlmail[i][0]);
+	     		//mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
+	     		mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
+	     		
+	       	}
+	     	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIN DEL BLOQUE", "");
+			FacesContext.getCurrentInstance().addMessage(null, msj);
+	     	//System.out.println("Correo enviado exitosamente");
+	 	 	}
 		        
-		        MimeMessage mm = new MimeMessage(session);      
-		        
-		    try {
-        	
-        	// Crear el mensaje a enviar
+		    
+	}
+	
+	private void mail(String trigger, String ruta, String file, String asunto, String contenido, String formato, String to){
+		try {
+			// //System.out.println("Registros :" + rows);
+			Context initContext = new InitialContext();
+			Session session = (Session) initContext.lookup(Bd.JNDIMAIL);
+			
+			MimeMessage mm = new MimeMessage(session);
 
+			// Crear el mensaje a enviar
 
 			// Establecer las direcciones a las que será enviado
 			// el mensaje (test2@gmail.com y test3@gmail.com en copia
 			// oculta)
 			// mm.setFrom(new
 			// InternetAddress("opennomina@dvconsultores.com"));
-		    //Consulta lista de correos
-		  	consulta.selectPntGenerica("select trim(a.mail)" +
-		  	" from maillista a, t_programacion b" +
-		  	" where a.idgrupo=b.idgrupo  " +
-		  	" and disparador='" + trigger.toUpperCase() + "'", JNDI);
-		  		
-		  	int rows = consulta.getRows();
-		  	String[][] vltabla = consulta.getArray();
-		  	if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  
-		  	//Recorre la lista de correos	
-		  	for(int i=0;i<rows;i++){	
-  				mm.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(vltabla[i][0]));		  				
-  			}
-		  	}
+			mm.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
 			// Establecer el contenido del mensaje
 			mm.setSubject(asunto);
-			//mm.setText(getMessage("mailContent"));
-			
-			// Create the message part 
-	         BodyPart messageBodyPart = new MimeBodyPart();
-	         
-	      // Fill the message
-	         messageBodyPart.setContent(contenido, "text/html; charset=utf-8");
-	         
-			// Create a multipar message
-	         Multipart multipart = new MimeMultipart();
-	         
-	        // Set text message part
-	         multipart.addBodyPart(messageBodyPart);
-	         
-	        // Part two is attachment
-	         messageBodyPart = new MimeBodyPart();
-	         String filename = ruta + File.separator + file + "." + formato;
-	         javax.activation.DataSource source = new FileDataSource(filename);
-	         messageBodyPart.setDataHandler(new DataHandler(source));
-	         messageBodyPart.setFileName(file + "." + formato);
-	         multipart.addBodyPart(messageBodyPart);
-	         
-	         // Send the complete message parts
-	         mm.setContent(multipart );
+			// mm.setText(getMessage("mailContent"));
 
+			// Create the message part
+			BodyPart messageBodyPart = new MimeBodyPart();
+
+			// Fill the message
+			messageBodyPart.setContent(contenido, "text/html; charset=utf-8");
+
+			// Create a multipar message
+			Multipart multipart = new MimeMultipart();
+
+			// Set text message part
+			multipart.addBodyPart(messageBodyPart);
+
+			// Part two is attachment
+			messageBodyPart = new MimeBodyPart();
+			String filename = ruta + File.separator + file + ".pdf";
+			javax.activation.DataSource source = new FileDataSource(filename);
+			messageBodyPart.setDataHandler(new DataHandler(source));
+			messageBodyPart.setFileName(file + ".pdf");
+			multipart.addBodyPart(messageBodyPart);
+
+			// Send the complete message parts
+			mm.setContent(multipart);
 
 			// Enviar el correo electrónico
 			Transport.send(mm);
 			//System.out.println("Correo enviado exitosamente a :" + to + ". Reporte:" + file);
 
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);      
-      }	    
+		} catch (MessagingException|NamingException e) {
+			throw new RuntimeException(e);
+
+		}
 	}
 	
 	public void mailthread(String trigger, String ruta, String file, String asunto, String contenido, String formato) {
-		ExecutorService ex = Executors.newFixedThreadPool(50);   //Número de hilos a usar para el insert
+		ExecutorService ex = Executors.newFixedThreadPool(Integer.parseInt(THREADNUMBER));   //Número de hilos a usar para el insert
 		MailThread th = new MailThread(trigger, ruta, file, asunto, contenido, formato); //Insert Generic
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+			FacesContext.getCurrentInstance().addMessage(null, msj);
+			ex.shutdown();
+			e.printStackTrace();
+		}
         ex.execute(th);
         ex.shutdown();
 	}
