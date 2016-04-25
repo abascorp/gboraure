@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -23,8 +23,6 @@ package org.openbizview.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -65,137 +63,54 @@ public class TareaInvocar extends Bd implements Job {
   */
   //Metodo que se ejecutara cada cierto tiempo que lo programemos despues
   public void execute(JobExecutionContext jec) throws JobExecutionException {
+	// System.out.println("Fuego.......!!!!");
+	
     //Aca pueden poner la tarea o el job que desean automatizar
     //Por ejemplo enviar correo, revisar ciertos datos, etc
-    SimpleDateFormat formato = new SimpleDateFormat("HH:mm");
+    //SimpleDateFormat formato = new SimpleDateFormat("HH:mm");
    
     //System.out.println( "Tarea invocada a la hora: " + formato.format(new Date()));
-    JobKey key = jec.getJobDetail().getKey();
-    String job = key.toString().replace("unico.", "");
-    //System.out.println("Trigger orden: " + job);
-    
-    java.sql.Date sqlDate = new java.sql.Date(fechadia.getTime());
-    //Para reportes
-    int rowsrep;
-   	String[][] vltablarep;
+    JobKey key = jec.getJobDetail().getKey(); //Trae el key de la tarea
+    String job = key.toString().replace("unico.", "");//Reemplaza el nombre unico por nada, para que traiga solo el disparador
+    //System.out.println(job);
+    //Momento en que se ejecuta el reporte
+    java.sql.Date sqlDate = new java.sql.Date(fechadia.getTime());  	
+    //Selecciona las tareas por hora de ejecución y nombre del disparadr
+   	String vlqueryORA = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador), trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido), 'R'||ROUND(dbms_random.value(1,9999)) from t_programacion where job=trim('" + job + "') order by job";
+   	String vlqueryPG = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador),  trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido), 'R'||round(random()*9999) from t_programacion where job=trim('" + job + "')  order by job";
+   	String vlquerySQL = "select codrep, rutarep, rutatemp, opctareas, ruta_salida, formato from t_programacion where  job = '" + job + "' order by job";
+   	//System.out.println(vlqueryPG);
    	
-   	//Para mail
-   	int rowsmail;
-   	String[][] vltablamail;
-   	
-   	int counter = 0;
-   	
-   	
-   	
-   	try {
-   	//Consulta registros por jobs	
-   	consulta.selectPntGenerica("select count(*) from t_programacion where hora=trim('" + formato.format(new Date()) + "')", JNDI);
-  //Para saber si se repite tarea
-   	String[][] vltablajobs = consulta.getArray();
-   	
-	int numberOfjobs = Integer.parseInt(vltablajobs[0][0]);
-	String vlqueryORA;
-   	String vlqueryPG ;
-   	String vlquerySQL;
+   	try {  	
+      //System.out.println(vlqueryPG);
+  	consulta.selectPntGenericaMDB(vlqueryORA, vlqueryPG, vlquerySQL, JNDI);
+  	int rowsrep = consulta.getRows(); //Toma la cantidad de líneas
+  	String[][] vltablarep = consulta.getArray();
+
 	
 	//Envía reporte
     //Selecciona nombre del reporte y id del grupo según hora programada
    	
-	  if(numberOfjobs > 1){//Si el número de tarea el mayor a uno entonces las recorre
-		                   //Esto se debe a que se puede generar el mismo reporte con diferentes parámetros a la misma hora
-		                   //También el reporte debe tener un contador para que se llame distinto y se genere sin borrar el anterior
-		                   //Modificaciones para que funcionen los reportes con parámetros
-		                   //17/08/2015 DvConsultores/Andrés Dominguez
-		//Select solo por hora 
-		vlqueryORA = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador), trim(paramnames), trim(paramvalues) from t_programacion where hora=trim('" + formato.format(new Date()) + "') order by job";
-	   	vlqueryPG = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador),  trim(paramnames), trim(paramvalues) from t_programacion where hora=trim('" + formato.format(new Date()) + "') order by job";
-	   	vlquerySQL = "select codrep, rutarep, rutatemp, opctareas, ruta_salida, formato from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job";
-	
-		consulta.selectPntGenericaMDB(vlqueryORA, vlqueryPG, vlquerySQL, JNDI);
-	   	rowsrep = consulta.getRows();
-		vltablarep = consulta.getArray();
-	   	
-	  //Imprime reporte
-		if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo
-		 for (int i = 0; i < numberOfjobs; i++){//Número de tareas a generar,pase de parámetros en el reporte
-			 counter = 1+i;
-		 if(!vltablarep[i][3].equals("2")){//Si no es igual a 2, es para envío de correo
-		 new RunReport().outReporteRecibo(vltablarep[i][0].toString(), vltablarep[i][5].toString(), vltablarep[i][1].toString(), vltablarep[i][2].toString(), vltablarep[i][0].toString()+"_"+counter, sqlDate, vltablarep[i][6].toString(), formato.format(new Date()), vltablarep[i][7], vltablarep[i][8]);
+  	if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo y genera reportes 
+		 for (int nj = 0; nj < rowsrep; nj++){//Número de tareas a generar,pase de parámetros en el reporte
+		 if(!vltablarep[nj][3].equals("2")){//Si no es igual a 2, es para envío de correo
+		//Generar reporte	 
+		 new RunReport().outReporteRecibo(vltablarep[nj][0].toString(), vltablarep[nj][5].toString(), vltablarep[nj][1].toString(), vltablarep[nj][2].toString(), vltablarep[nj][0].toString()+"_"+vltablarep[nj][11], sqlDate, vltablarep[nj][6].toString(), vltablarep[nj][7], vltablarep[nj][8]);	 
+		 //Se envía por correo
+		 new Sendmail().mailthread(vltablarep[nj][6], vltablarep[nj][2], vltablarep[nj][0].toString()+"_"+vltablarep[nj][11], vltablarep[nj][9], vltablarep[nj][10], vltablarep[nj][5]);					
+		 //Borra archivos
+		 
+		 //
 		 } else { //Se envia a URL particular, no se evía por correo
-		 new RunReport().outReporteRecibo(vltablarep[i][0].toString(), vltablarep[i][5].toString(), vltablarep[i][1].toString(), vltablarep[i][4].toString(), vltablarep[i][0].toString()+"_"+counter, sqlDate, vltablarep[i][6].toString(), formato.format(new Date()), vltablarep[i][7], vltablarep[i][8]);	 
+			 //System.out.println("Invocando");
+		 new RunReport().outReporteRecibo(vltablarep[nj][0].toString(), vltablarep[nj][5].toString(), vltablarep[nj][1].toString(), vltablarep[nj][4].toString(), vltablarep[nj][0].toString()+"_"+vltablarep[nj][11], sqlDate, vltablarep[nj][6].toString(), vltablarep[nj][7], vltablarep[nj][8]);	 
 		 }
-		 }
-		}
-		
-	} else { //Si es una tarea por cada hora hace su recorrido normal como en un principio se desarrolló
-   	    vlqueryORA = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador), trim(paramnames), trim(paramvalues), case when  LENGTH(trim(paramvalues)) is null then 0 else LENGTH(trim(paramvalues)) end from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job";
-   	    vlqueryPG = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador),  trim(paramnames), trim(paramvalues), case when  LENGTH(trim(paramvalues)) is null then 0 else LENGTH(trim(paramvalues)) end from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job";
-   	    vlquerySQL = "select codrep, rutarep, rutatemp, opctareas, ruta_salida, formato from t_programacion where hora=trim('" + formato.format(new Date()) + "') and job = trim('" + job + "') order by job";
-	
-   	    consulta.selectPntGenericaMDB(vlqueryORA, vlqueryPG, vlquerySQL, JNDI);
-   	    rowsrep = consulta.getRows();
-		vltablarep = consulta.getArray();
-	   	
-	  //Imprime reporte
-		if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo
-		 if(!vltablarep[0][3].equals("2")){//Si no es igual a 2, es para envío de correo
-		 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][5].toString(), vltablarep[0][1].toString(), vltablarep[0][2].toString(), vltablarep[0][0].toString(), sqlDate, vltablarep[0][6].toString(), formato.format(new Date()), vltablarep[0][7], vltablarep[0][8]);
-		 } else { //Se envia a URL particular, no se evía por correo
-		 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][5].toString(), vltablarep[0][1].toString(), vltablarep[0][4].toString(), vltablarep[0][0].toString(), sqlDate, vltablarep[0][6].toString(), formato.format(new Date()), vltablarep[0][7], vltablarep[0][8]);	 
-
-		 }
-		}
-		
-	
-	}
-  
-	
-	   
-	//System.out.println(vlqueryORA);
-	
-	//Consulta tareas
-	String vlquerymailORA = "select distinct trim(disparador), trim(rutatemp), trim(codrep), trim(asunto), trim(contenido), trim(formato)" +
-			" from t_programacion" +
-			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
-			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
-	        " where disparador =trim('" + job + "')";
-	String vlquerymailPG = "select distinct trim(disparador), trim(rutatemp), trim(codrep), trim(asunto), trim(contenido), trim(formato)" +
-			" from t_programacion" +
-			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
-			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
-	        " where disparador =trim('" + job + "')";
-	String vlquerymailSQL = "select distinct trim(disparador), trim(rutatemp), trim(codrep), trim(asunto), trim(contenido), trim(formato)" +
-			" from t_programacion" +
-			//" and hora=trim('" + formato.format(new Date()) + "') and job =trim('" + job + "') order by a.mail", JNDI);
-			//Modificación del 24/08/2014, si la conección es muy lenta ó el reporte es lago la tarea se ejecuta minutos después
-	        " where disparador =trim('" + job + "')";
-	
-	consulta.selectPntGenericaMDB(vlquerymailORA, vlquerymailPG, vlquerymailSQL, JNDI);	
-	
-	
-	//System.out.println(vlquerymailPG);
-			
-	
-	rowsmail = consulta.getRows();
-	vltablamail = consulta.getArray();
-	for (int x = 0; x < numberOfjobs; x++){//Busca nombre de reporte por jobs, recorre la cantidad de jobs
-		counter = 1+x; //Contador para renombrar reportes
-	if (rowsmail>0 && !vltablarep[x][3].equals("2")){//Si la consulta es mayor a cero devuelve registros envía el correo
-		                                             //Envía correo siempre y cuando la opción no sea 2 (Envíar a URL)
-		for(int i=0;i<rowsmail;i++){			
-		 new Sendmail().mailthread(vltablamail[i][0], vltablamail[i][1], vltablamail[i][2], vltablamail[i][3], vltablamail[i][4], vltablamail[i][5]);
-			
-		}
-	}
-	}
-
+		 } //Termina el recorrido
+  	}	 
 	} catch (NamingException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
- 
-  }
-  
-  
+	
+  } 
 
 }

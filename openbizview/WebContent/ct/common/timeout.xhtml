@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  DVCONSULTORES
+     Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -26,7 +26,7 @@
 
 
 <h:body>
-	<p:idleMonitor timeout="900000" onidle="PF('idleDialog').show()" />
+	<p:idleMonitor timeout="5400000" onidle="PF('idleDialog').show()" />
 
 	<p:dialog header="#{msg.sessionCad}" resizable="false" closable="false" responsive="true"
 		widgetVar="idleDialog" modal="true" fitViewport="true">

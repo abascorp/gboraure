@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -53,7 +53,7 @@ public class LogReportesImpresos {
             //pstmt.setString(2, desrep.toUpperCase());
             //pstmt.setString(3, login);
             //pstmt.setInt(4, Integer.parseInt(instancia));
-            //System.out.println(query);
+            System.out.println(query);
             try {
                 //Avisando
             	pstmt.executeUpdate();

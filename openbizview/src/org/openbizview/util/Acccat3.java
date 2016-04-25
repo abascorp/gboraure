@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -506,7 +506,7 @@ public class Acccat3 extends Bd implements Serializable {
     		   query += " and A.instancia=B.instancia";
   		       query += " and A.instancia=c.instancia";
   		       query += " and A.instancia=d.instancia";
-    		   query += " and  a.b_codrol = '" + veccodrol[0] + "%'";
+    		   query += " and  a.b_codrol = '" + veccodrol[0] + "'";
     		   query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
                query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
         	   query += " AND   a.b_codcat1||b.descat1||a.b_codcat2||c.descat2||a.b_codcat3||d.descat3 like '%" + ((String) filterValue).toUpperCase() + "%'";

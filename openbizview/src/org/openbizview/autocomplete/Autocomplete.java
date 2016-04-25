@@ -633,5 +633,42 @@ public class Autocomplete extends Bd {
 		}
 		return results;
 	}
+	
+	
+	/**
+	 * Lista frecuencia de repetición.
+	 * 
+	 * @throws NamingException
+	 * @return List String
+	 * @throws IOException
+	 **/
+	public List<String> completeFrecuenciaRepeticion(String query)
+			throws NamingException, IOException {
+		List<String> results = new ArrayList<String>();
+
+		String queryora = "Select distinct frecuencia||' - '||case frecuencia when '0' then '" + getMessage("mailtareaDiario").toUpperCase() + "' when  '1' then '" + getMessage("mailtareaSemanal").toUpperCase() + "' when '2' then'" + getMessage("mailtareaPersonalizada").toUpperCase() + "' when '3' then '" + getMessage("mailtareaHoraRep").toUpperCase() + "' when '4' then '" + getMessage("mailimes1").toUpperCase() + "' when '5' then '" + getMessage("maillidiasSelect").toUpperCase() + "'  else '" + getMessage("maillidiasSelect1").toUpperCase() + "' end "
+				+ " from t_programacion " + " where frecuencia like '%"
+				+ query.toUpperCase() + "%' and instancia = '" + instancia
+				+ "'";
+		String querypg = "Select distinct frecuencia||' - '||case frecuencia when '0' then '" + getMessage("mailtareaDiario").toUpperCase() + "' when  '1' then '" + getMessage("mailtareaSemanal").toUpperCase() + "' when '2' then'" + getMessage("mailtareaPersonalizada").toUpperCase() + "' when '3' then '" + getMessage("mailtareaHoraRep").toUpperCase() + "' when '4' then '" + getMessage("mailimes1").toUpperCase() + "' when '5' then '" + getMessage("maillidiasSelect").toUpperCase() + "'  else '" + getMessage("maillidiasSelect1").toUpperCase() + "' end "
+				+ " from t_programacion " + " where frecuencia like '%"
+				+ query.toUpperCase() + "%' and instancia = '" + instancia
+				+ "'";
+		String querysql = "Select LTRIM(RTRIM(CAST(IDGRUPO AS CHAR)))+' - '+DESGRUPO "
+				+ " from mailgrupos "
+				+ " where LTRIM(RTRIM(cast(IDGRUPO as char)))+DESGRUPO like '%"
+				+ query.toUpperCase()
+				+ "%' and instancia = '"
+				+ instancia
+				+ "' order by IDGRUPO";
+		consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+		//System.out.println(querypg);
+		rows = consulta.getRows();
+		tabla = consulta.getArray();
+		for (int i = 0; i < rows; i++) {
+			results.add(tabla[i][0]);
+		}
+		return results;
+	}
 
 }

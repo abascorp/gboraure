@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -40,15 +40,12 @@ public class RunReport implements Serializable {
 	public RunReport(){
 
 	}
-	
-	PntGenerica consulta = new PntGenerica();
-
 
 	/**
      * Este método utiliza el BIRT engine para generar reportes
 	 * desde el API utilizando POJO.
      * @param reporte: Nombre del reporte que esá leyendo, debe ser .rptdesing
-	 * @parama format: Formato de salida: HTML, PDF, DOC
+	 * @parama format: Formato de salida: html, pdf, doc
 	 * @param ubicacionrep: Ubicación del reporte
 	 * @param rutasalida: Salida del reporte ubicación en disco
 	 * @param nbrreporte: nombre del reporte al momento de la salida
@@ -56,7 +53,7 @@ public class RunReport implements Serializable {
 	 * @param feccon
      **/ 
 	public void outReporteRecibo(String reporte, String format, String ubicacionrep
-			, String rutasalida, String nbrreporte, Date feccon, String job, String hora
+			, String rutasalida, String nbrreporte, Date feccon, String job
 			, String paramnames, String paramvalues){
 		
 	  //Variables used to control BIRT Engine instance

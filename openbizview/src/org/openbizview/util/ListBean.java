@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -41,7 +41,6 @@ package org.openbizview.util;
 	new SelectItem("2", getMessage("mailtareaPersonalizada")),
 	new SelectItem("3", getMessage("mailtareaHoraRep")),
 	new SelectItem("4", getMessage("mailimes1")),
-	//new SelectItem("4", getMessage("mailimes2")),
 	new SelectItem("5", getMessage("maillidiasSelect"))};
 	
 	/**

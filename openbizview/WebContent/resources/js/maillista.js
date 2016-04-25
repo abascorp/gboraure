@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES,
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES,
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -47,6 +47,5 @@ function enviar(vT0,vT1,vT2,vT3){
 	  updateInput('formmaillista:idgrupo_input', '#F2F2F2');
 	  updateInput('formmaillista:idmail', '#F2F2F2');
 	}
-
 
 

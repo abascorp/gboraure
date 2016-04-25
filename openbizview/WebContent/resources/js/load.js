@@ -3,7 +3,7 @@
 	 * 
 	 */
 	/*
-	 *  Copyright (C) 2011  DVCONSULTORES
+	 *  Copyright (C) 2011 - 2016  DVCONSULTORES
 	
 	    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
 	    bajo los términos de la Licencia Pública General GNU publicada 

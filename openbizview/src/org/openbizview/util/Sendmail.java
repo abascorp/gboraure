@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -91,7 +91,7 @@ public class Sendmail extends Bd {
 		    
 	}
 	
-	private void mail(String trigger, String ruta, String file, String asunto, String contenido, String formato, String to){
+	protected void mail(String trigger, String ruta, String file, String asunto, String contenido, String formato, String to){
 		try {
 			// //System.out.println("Registros :" + rows);
 			Context initContext = new InitialContext();

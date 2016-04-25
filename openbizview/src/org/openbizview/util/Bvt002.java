@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -399,7 +399,7 @@ import org.primefaces.model.SortOrder;
             //Solo proagro
             //String query = "INSERT INTO Bvt002 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?,'','')";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, coduser.toUpperCase());
+            pstmt.setString(1, coduser.toUpperCase().trim());
             pstmt.setString(2, desuser.toUpperCase());
             pstmt.setString(3, md.getStringMessageDigest(cluser.toUpperCase(), StringMD.SHA256));
             pstmt.setString(4, veccodrol[0].toUpperCase());

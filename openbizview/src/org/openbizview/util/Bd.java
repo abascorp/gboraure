@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -81,6 +81,7 @@ public class Bd  {
     static final String LOGOUT_URL = ctx.getExternalContext().getInitParameter("LOGOUT_URL");//Url logout
     static final String PRINT_REPORT_LOCATION = ctx.getExternalContext().getInitParameter("PRINT_REPORT_LOCATION");//Url logout
     static final String OPENBIZVIEW_LOCALE = ctx.getExternalContext().getInitParameter("OPENBIZVIEW_PRINT_LOG_LOCALE");//Localización
+    static final String CHECK_UPDATE = ctx.getExternalContext().getInitParameter("CHECK_UPDATE");//Chequea actualizaciones
     java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat(FECHAFORMAT, locale );
     java.text.SimpleDateFormat sdfDefautl = new java.text.SimpleDateFormat("dd/MM/yyyy");
 

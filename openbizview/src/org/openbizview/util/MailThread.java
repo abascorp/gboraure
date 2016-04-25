@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -108,7 +108,10 @@ public class MailThread extends Thread {
 			// Enviar el correo electrónico
 			Transport.send(mm);
 			//System.out.println("Correo enviado exitosamente a :" + to + ". Reporte:" + file);
-
+			//Después del envío lo borra
+			File f = new File(filename);
+			f.delete();
+			
 		} catch (MessagingException|NamingException e) {
 			throw new RuntimeException(e);
 

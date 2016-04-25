@@ -5,7 +5,7 @@
     <welcome-file>login.xhtml</welcome-file>
   </welcome-file-list>
   <session-config>
-    <session-timeout>35</session-timeout>
+    <session-timeout>120</session-timeout>
   </session-config>
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
@@ -91,6 +91,12 @@
     <param-name>PRINT_REPORT_LOCATION</param-name>
     <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
   </context-param>
+  
+  <!-- Configura si desea notificar cambios de versión -->
+   <context-param>
+    <param-name>CHECK_UPDATE</param-name>
+    <param-value>off</param-value>
+  </context-param>
  
   
    <!-- Tema primefaces -->
@@ -98,9 +104,10 @@
     <param-name>primefaces.THEME</param-name>
     <param-value>bootstrap</param-value>
   </context-param>
-  <servlet>
+
   
    <!-- Quartz -->
+     <servlet>
     <servlet-name>QuartzInitializer</servlet-name>
     <servlet-class>org.quartz.ee.servlet.QuartzInitializerServlet</servlet-class>
     <init-param>

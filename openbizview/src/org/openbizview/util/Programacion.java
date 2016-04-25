@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -19,27 +19,6 @@
 
 package org.openbizview.util;
 
-/*
- *  Copyright (C) 2011  DVCONSULTORES
-
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
-    
-    Clase para programar tareas de envio
- */
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -56,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -89,8 +69,8 @@ import static org.quartz.JobBuilder.*;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.CronScheduleBuilder.*;
 import static org.quartz.CalendarIntervalScheduleBuilder.*;
+import static org.quartz.SimpleScheduleBuilder.*;
 import static org.quartz.TriggerKey.*;
-import static org.quartz.DateBuilder.*;
 import static org.quartz.JobKey.*;
 
 
@@ -104,6 +84,7 @@ public class Programacion extends Bd implements Serializable {
 	/**
 	 * 
 	 */
+	 
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -117,8 +98,13 @@ public class Programacion extends Bd implements Serializable {
 		return lazyModel;
 	}	
 	
-	//Constructor
+	@PostConstruct
+	public void init(){
+		selectDiasSemana();
+	}
 
+	
+	//Constructor
 	public Programacion() throws SchedulerException {
 		if (instancia == null){instancia = "99999";}
 		//Si no tiene acceso al módulo no puede ingresar
@@ -160,6 +146,8 @@ public class Programacion extends Bd implements Serializable {
             } 
             
             
+           
+            
             //Arregla bug de primefaces
             @Override
             /**
@@ -197,8 +185,6 @@ public class Programacion extends Bd implements Serializable {
 	private String tarea = ""; //Nombre de la tarea
     private String vltrigger = ""; //Nombre del disparador
     private String diasemana = ""; //Día de la semana
-    private String hora = ""; //Hora de la semana
-    private String minuto = ""; //Minuto de la semana
     private String frecuencia = ""; //Fercuencia de repetición
     private String dias = ""; // Días de repetición del reporte
     private String diames = "1"; //Día del mes personalizado
@@ -214,7 +200,6 @@ public class Programacion extends Bd implements Serializable {
     private String idgrupo = "";
     private String reporte = "";
     ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext(); //Toma ruta real de la aplicación
-	private String RUTA_REPORTE = File.separator + "reportes";
 	private String RUTA_LOGS = File.separator + "logs";
 	SchedulerFactory schdFact = new StdSchedulerFactory();
     Scheduler schd = schdFact.getScheduler();
@@ -224,8 +209,6 @@ public class Programacion extends Bd implements Serializable {
   	private String vdisparador;
   	private String vgrupo;
   	private String vdiasem;
-  	private String vhora;
-  	private String vminuto;
   	private String vfrecuencia;
   	private String vfrecuenciades;
   	private String vasunto;
@@ -237,6 +220,8 @@ public class Programacion extends Bd implements Serializable {
   	private String vdiames;
     private String vdiainicio;
     private String vactivadetalletb;
+    private String vparamvalues;
+    private String vintervalo;
     
     //Para detener las tareas
     private String activa;
@@ -251,7 +236,7 @@ public class Programacion extends Bd implements Serializable {
     
     //Opciones de envío
     private String opctareas = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("opc"); 
-    private String ruta_salida; //Directorio de envío
+    private String ruta_salida = "URL"; //Directorio de envío
     
     //Formatos
     private String formato;
@@ -261,10 +246,8 @@ public class Programacion extends Bd implements Serializable {
     private String mailreporteFiltro = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mailreporte"); 
     private String mailfrecuenciaFiltro = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mailfrecuencia");
     private String mailgrupoFiltro = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mailgrupo");
-    
-    
-       
-    
+
+
 	/**
 	 * @return the statusIncon
 	 */
@@ -463,33 +446,6 @@ public class Programacion extends Bd implements Serializable {
 		this.vdiasem = vdiasem;
 	}
 
-	/**
-	 * @return the vhora
-	 */
-	public String getVhora() {
-		return vhora;
-	}
-
-	/**
-	 * @param vhora the vhora to set
-	 */
-	public void setVhora(String vhora) {
-		this.vhora = vhora;
-	}
-
-	/**
-	 * @return the vminuto
-	 */
-	public String getVminuto() {
-		return vminuto;
-	}
-
-	/**
-	 * @param vminuto the vminuto to set
-	 */
-	public void setVminuto(String vminuto) {
-		this.vminuto = vminuto;
-	}
 
 	/**
 	 * @return the vfrecuencia
@@ -730,36 +686,7 @@ public class Programacion extends Bd implements Serializable {
 		this.diasemana = diasemana;
 	}
 
-	/**
-	 * @return the hora
-	 */
-	public String getHora() {
-		return hora;
-	}
-
-	/**
-	 * @param hora the hora to set
-	 */
-	public void setHora(String hora) {
-		this.hora = hora;
-	}
-
-	/**
-	 * @return the minuto
-	 */
-	public String getMinuto() {
-		return minuto;
-	}
-
-	/**
-	 * @param minuto the minuto to set
-	 */
-	public void setMinuto(String minuto) {
-		this.minuto = minuto;
-	}
 	
-	
-
 	/**
 	 * @return the frecuencia
 	 */
@@ -922,6 +849,37 @@ public class Programacion extends Bd implements Serializable {
 	public void setVlTabla(String[][] vlTabla) {
 		this.vlTabla = vlTabla;
 	}
+	
+	
+
+	/**
+	 * @return the vparamvalues
+	 */
+	public String getVparamvalues() {
+		return vparamvalues;
+	}
+
+	/**
+	 * @param vparamvalues the vparamvalues to set
+	 */
+	public void setVparamvalues(String vparamvalues) {
+		this.vparamvalues = vparamvalues;
+	}
+	
+	
+	/**
+	 * @return the vintervalo
+	 */
+	public String getVintervalo() {
+		return vintervalo;
+	}
+
+	/**
+	 * @param vintervalo the vintervalo to set
+	 */
+	public void setVintervalo(String vintervalo) {
+		this.vintervalo = vintervalo;
+	}
 
 	/**
 	* Metodo que da la informacion mas detallada sobre el horario, como hora de inicio de la tarea y cada
@@ -929,26 +887,38 @@ public class Programacion extends Bd implements Serializable {
     */
     public void iniciarTarea() throws NamingException {
     	//
-    	if(hora.length()==1){
- 			hora = "0"+hora;
- 		}
- 		if(minuto.length()==1){
- 			minuto = "0"+minuto;
- 		}	
  		String[] vecreporte = reporte.split("\\ - ", -1);
  		arregloParametros =  StringUtils.join(inputs, "|").toUpperCase();
  		
+ 		//Creamos la instancia calendario para separar en dia, mes y año la fecha seleccionada
+	   	 Calendar cal = Calendar.getInstance();
+	   	 cal.setTime(diainicio);
+	   	 int hora = cal.get(Calendar.HOUR_OF_DAY);
+	   	 int minutos = cal.get(Calendar.MINUTE); //Para iniciar meses comenzando desde enero = 0
+ 		
     	 if(frecuencia.equals("0")){    		 
-    	   iniciarTareaDiaria(tarea.toUpperCase(), vltrigger.toUpperCase(), hora, minuto, arregloParametros, "0", arregloParamNames(vecreporte[0]));
+    	   iniciarTareaDiaria(tarea.toUpperCase(), vltrigger.toUpperCase(), arregloParametros, "0", arregloParamNames(vecreporte[0]), hora, minutos);
     	 } else if (frecuencia.equals("1")){
-    	   iniciarTareaSemanal(tarea.toUpperCase(), vltrigger.toUpperCase(), dias, hora, minuto, arregloParametros, "0", arregloParamNames(vecreporte[0]));
+    	   iniciarTareaSemanal(tarea.toUpperCase(), vltrigger.toUpperCase(), dias, arregloParametros, "0", arregloParamNames(vecreporte[0]), hora, minutos);
     	 } else if (frecuencia.equals("2")){
-    	   iniciarTareaDiaMes(tarea.toUpperCase(), vltrigger.toUpperCase(), diames, hora, minuto, arregloParametros, "0", arregloParamNames(vecreporte[0]));	
+    	   iniciarTareaDiaMes(tarea.toUpperCase(), vltrigger.toUpperCase(), diames, arregloParametros, "0", arregloParamNames(vecreporte[0]), hora, minutos);	
     	 } else if (frecuencia.equals("3")){
-    	   iniciarTareaIntervaloHora(tarea.toUpperCase(), vltrigger.toUpperCase(), diames, hora, minuto, horarepeticion, arregloParametros, "0", arregloParamNames(vecreporte[0]));	
+    	   iniciarTareaIntervaloMinutos(tarea.toUpperCase(), vltrigger.toUpperCase(), horarepeticion, arregloParametros, "0", arregloParamNames(vecreporte[0]));	
+    	 } else if (frecuencia.equals("4")){
+    	   iniciarTareaIntervaloMensual(tarea.toUpperCase(), vltrigger.toUpperCase(),  arregloParametros, "0", arregloParamNames(vecreporte[0]));	 
     	 } else {
-    	   iniciarTareaIntervaloMensual(tarea.toUpperCase(), vltrigger.toUpperCase(), frecuencia, hora, minuto, arregloParametros, "0", arregloParamNames(vecreporte[0]));	 
-    	 }
+    		////System.out.println("Iniciando tarea diaria");
+             //Definir la instancia del job
+    		String pparam; 
+    		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        	String[] chkbox = request.getParameterValues("toDelete");
+         	if (chkbox==null){
+         		pparam = "";
+         	} else {
+         		pparam = StringUtils.join(chkbox, ",").replace(" ", "");
+         	}
+    	   iniciarTareaRepeticion(tarea.toUpperCase(), vltrigger.toUpperCase(), arregloParametros, "0", arregloParamNames(vecreporte[0]), pparam, hora, minutos);
+      	 }
     //	}
     }
     
@@ -956,7 +926,7 @@ public class Programacion extends Bd implements Serializable {
     
     /**Programa tarea diaria
      * @throws NamingException */
-    private void iniciarTareaDiaria(String ptarea, String ptrigger, String phora, String pminuto, String paramvalues, String isrecupera, String paramnames) throws NamingException {
+    private void iniciarTareaDiaria(String ptarea, String ptrigger, String paramvalues, String isrecupera, String paramnames, int phora, int pminutos)  {
     	////System.out.println("Iniciando tarea diaria");
         //Definir la instancia del job
     	JobDetail job = newJob(TareaInvocar.class)
@@ -965,14 +935,14 @@ public class Programacion extends Bd implements Serializable {
     	//Define el Trigger y la frecuencia en que se va a ejecutar
     	Trigger trigger = newTrigger()
     		    .withIdentity(ptrigger.toUpperCase(), "unico")
-    		    .startNow()
-    		    .withSchedule(dailyAtHourAndMinute(Integer.parseInt(phora), Integer.parseInt(pminuto)))
+    		    .startAt(diainicio) //Año de inicio,Get a Date object that represents the given time, on the  given date.
+    		    .withSchedule(dailyAtHourAndMinute(phora, pminutos))
     		    .build();
   		
     	try {
-    		//Inicia el cronograma
-			schd.start();
+    		//Inicia el cronograma			
 			schd.scheduleJob(job, trigger);
+			schd.start();
 			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexito") + " " + ptrigger.toUpperCase(), "");
 			if(isrecupera=="0"){
 			insert("0", "0", paramvalues, "0", paramnames);
@@ -980,7 +950,7 @@ public class Programacion extends Bd implements Serializable {
 			deleteTemps(session, "bvtparams_temp");
 			deleteTemps(session, "bvtparams_number_temp");
 			limpiar();
-    	} catch (SchedulerException e) {
+    	} catch (SchedulerException | NamingException e) {
 			e.printStackTrace();
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
 		}
@@ -992,8 +962,8 @@ public class Programacion extends Bd implements Serializable {
     
     /**Programa tarea semanal
      * @throws NamingException */
-    private void iniciarTareaSemanal(String ptarea, String ptrigger, String pdias, String phora, String pminuto, String paramvalues, String isrecupera, String paramnames) throws NamingException {
-
+    private void iniciarTareaSemanal(String ptarea, String ptrigger, String pdias, String paramvalues, String isrecupera, String paramnames, int phora, int pminutos)  { 	 
+	   	 
         //Definir la instancia del job
     	JobDetail job = newJob(TareaInvocar.class)
     			.withIdentity(ptarea.toUpperCase(), "unico")
@@ -1001,14 +971,14 @@ public class Programacion extends Bd implements Serializable {
     	//Define el Trigger y la frecuencia en que se va a ejecutar
     	Trigger trigger = newTrigger()
     		    .withIdentity(ptrigger.toUpperCase(), "unico")
-    		    .startNow()
-    		    .withSchedule(weeklyOnDayAndHourAndMinute(Integer.parseInt(pdias), Integer.parseInt(phora), Integer.parseInt(pminuto)))
+    		    .startAt(diainicio) //Año de inicio,Get a Date object that represents the given time, on the  given date.
+    		    .withSchedule(weeklyOnDayAndHourAndMinute(Integer.parseInt(pdias), phora, pminutos))
     		    .build();
   		
     	try {
     		//Inicia el cronograma
-			schd.start();
 			schd.scheduleJob(job, trigger);
+			schd.start();
 			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexitosemanal") + " " + ptrigger.toUpperCase(), "");
 			if(isrecupera=="0"){
 			insert(dias, "0", paramvalues, "0", paramnames);
@@ -1016,7 +986,7 @@ public class Programacion extends Bd implements Serializable {
 			deleteTemps(session, "bvtparams_temp");
 			deleteTemps(session, "bvtparams_number_temp");
 			limpiar();
-    	} catch (SchedulerException e) {
+    	} catch (SchedulerException | NamingException e) {
 			e.printStackTrace();
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
 		}
@@ -1026,8 +996,8 @@ public class Programacion extends Bd implements Serializable {
     
     /**Programa tarea diaria usando un cron, un día del mes especifico con repeticion
      * @throws NamingException */
-    private void iniciarTareaDiaMes(String ptarea, String ptrigger, String pdiames, String phora, String pminuto, String paramvalues, String isrecupera, String paramnames) throws NamingException {
-
+    private void iniciarTareaDiaMes(String ptarea, String ptrigger, String pdiames, String paramvalues, String isrecupera, String paramnames, int phora, int pminutos)  {
+	   	int diames =  Integer.parseInt(pdiames);
         //Definir la instancia del job
     	JobDetail job = newJob(TareaInvocar.class)
     			.withIdentity(ptarea.toUpperCase(), "unico")
@@ -1035,7 +1005,8 @@ public class Programacion extends Bd implements Serializable {
     	//Define el Trigger y la frecuencia en que se va a ejecutar
     	CronTrigger trigger = newTrigger()
     		    .withIdentity(ptrigger.toUpperCase(), "unico")
-    		    .withSchedule(cronSchedule("0 " + pminuto + " " + phora + " "+ pdiames + " * ?"))
+    		    .startAt(diainicio) //Año de inicio,Get a Date object that represents the given time, on the  given date.
+    		    .withSchedule(monthlyOnDayAndHourAndMinute(diames, phora, pminutos))
     		    .build();
   		
     	try {
@@ -1049,7 +1020,7 @@ public class Programacion extends Bd implements Serializable {
 			deleteTemps(session, "bvtparams_temp");
 			deleteTemps(session, "bvtparams_number_temp");
 			limpiar();
-    	} catch (SchedulerException e) {
+    	} catch (SchedulerException | NamingException e) {
 			e.printStackTrace();
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
 		}
@@ -1059,15 +1030,7 @@ public class Programacion extends Bd implements Serializable {
 
     /**Programa tarea por intervalo mensual puede ser , Mensual, Bimensual o trimestral
      * @throws NamingException */
-    private void iniciarTareaIntervaloMensual(String ptarea, String ptrigger, String pfrecuencia, String phora, String pminuto, String paramvalues, String isrecupera, String paramnames) throws NamingException {
-    		
-    	
-    	 //Creamos la instancia calendario para separar en dia, mes y año la fecha seleccionada
-    	 Calendar cal = Calendar.getInstance();
-    	 cal.setTime(diainicio);
-    	 int anio = cal.get(Calendar.YEAR);
-    	 int vmes = cal.get(Calendar.MONTH); //Para iniciar meses comenzando desde enero = 0
-    	 int dia = cal.get(Calendar.DAY_OF_MONTH);
+    private void iniciarTareaIntervaloMensual(String ptarea, String ptrigger, String paramvalues, String isrecupera, String paramnames)  {
     	 
         //Definir la instancia del job
     	JobDetail job = newJob(TareaInvocar.class)
@@ -1076,20 +1039,14 @@ public class Programacion extends Bd implements Serializable {
     	//Define el Trigger y la frecuencia en que se va a ejecutar
     	Trigger trigger = newTrigger()
     		    .withIdentity(ptrigger.toUpperCase(), "unico")
-    		     .startAt(dateOf(Integer.parseInt(phora), //Hora de inicio
-    		    	       Integer.parseInt(pminuto), //Minutos de inicio
-    		    	       00, //Segundos de inicio
-    		    	       dia, //Dia de inicio
-    		    	       vmes, //Mes de Inicio
-    		    	       anio)) //Año de inicio,Get a Date object that represents the given time, on the  given date.
-    		    .withSchedule(calendarIntervalSchedule()
-    		            .withIntervalInMonths(1)) // interval is set in calendar months
+    		     .startAt(diainicio) //Año de inicio,Get a Date object that represents the given time, on the  given date.
+    		    .withSchedule(calendarIntervalSchedule().withIntervalInMonths(1)) // interval is set in calendar months
     		    .build();
   		
     	try {
     		//Inicia el cronograma
-			schd.start();
 			schd.scheduleJob(job, trigger);
+			schd.start();
 			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexitoMesIntervalo") + " " + ptrigger.toUpperCase(), "");
 			if(isrecupera=="0"){
 			insert(dias, "0", paramvalues, "0", paramnames);
@@ -1097,7 +1054,7 @@ public class Programacion extends Bd implements Serializable {
 			deleteTemps(session, "bvtparams_temp");
 			deleteTemps(session, "bvtparams_number_temp");
 			limpiar();
-    	} catch (SchedulerException e) {
+    	} catch (SchedulerException | NamingException e) {
 			e.printStackTrace();
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
 		}
@@ -1108,16 +1065,10 @@ public class Programacion extends Bd implements Serializable {
     
     /**Programa tarea por intervalo por hora puede ser , Mensual, Bimensual o trimestral
      * @throws NamingException */
-    private void iniciarTareaIntervaloHora(String ptarea, String ptrigger, String pfrecuencia, String phora, String pminuto, String phorarepeticion, String paramvalues, String isrecupera, String paramnames) throws NamingException {
-    		
-    	
-    	 //Creamos la instancia calendario para separar en dia, mes y año la fecha seleccionada
-    	 Calendar cal = Calendar.getInstance();
-    	 cal.setTime(diainicio);
-    	 int anio = cal.get(Calendar.YEAR);
-    	 int vmes = cal.get(Calendar.MONTH); //Para iniciar meses comenzando desde enero = 0
-    	 int dia = cal.get(Calendar.DAY_OF_MONTH);
-    	 
+    private void iniciarTareaIntervaloMinutos(String ptarea, String ptrigger,  String phorarepeticion, String paramvalues, String isrecupera, String paramnames)  {
+  	    int multiplo = 60;
+    	int minutos = Integer.parseInt(phorarepeticion) * multiplo;
+  	    //System.out.println(minutos);
         //Definir la instancia del job
     	JobDetail job = newJob(TareaInvocar.class)
     			.withIdentity(ptarea.toUpperCase(), "unico")
@@ -1125,27 +1076,22 @@ public class Programacion extends Bd implements Serializable {
     	//Define el Trigger y la frecuencia en que se va a ejecutar
     	Trigger trigger = newTrigger()
     		    .withIdentity(ptrigger.toUpperCase(), "unico")
-    		     .startAt(dateOf(Integer.parseInt(phora), //Hora de inicio
-    		    	       Integer.parseInt(pminuto), //Minutos de inicio
-    		    	       00, //Segundos de inicio
-    		    	       dia, //Dia de inicio
-    		    	       vmes, //Mes de Inicio
-    		    	       anio)) //Año de inicio,Get a Date object that represents the given time, on the  given date.
-    		    .withSchedule(calendarIntervalSchedule().withIntervalInHours(Integer.parseInt(phorarepeticion))) // interval is set in calendar months
+    		    .startAt(diainicio)
+    		    .withSchedule(simpleSchedule().withIntervalInSeconds(minutos).repeatForever())
     		    .build();
   		
     	try {
     		//Inicia el cronograma
-			schd.start();
 			schd.scheduleJob(job, trigger);
+			schd.start();
 			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexitoMesIntervalo") + " " + ptrigger.toUpperCase(), "");
-			insert("0", "0", paramvalues, phorarepeticion, paramnames);
 			if(isrecupera=="0"){
-			deleteTemps(session, "bvtparams_temp");
+			insert("0", "0", paramvalues, phorarepeticion, paramnames);
 			}
+			deleteTemps(session, "bvtparams_temp");
 			deleteTemps(session, "bvtparams_number_temp");
 			limpiar();
-    	} catch (SchedulerException e) {
+    	} catch (SchedulerException | NamingException e) {
 			e.printStackTrace();
 			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
 		}
@@ -1153,10 +1099,125 @@ public class Programacion extends Bd implements Serializable {
     	
     }	
     
-  
+    /**Programa tarea repeticion
+     * @throws NamingException */
+    private void iniciarTareaRepeticion(String ptarea, String ptrigger, String paramvalues, String isrecupera, String paramnames, String pparam, int phora, int pminutos){
+    	
+    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    	String[] chkbox = request.getParameterValues("toDelete");
+    	  	 
+    	
+    	////System.out.println("Iniciando tarea diaria");
+        //Definir la instancia del job
+    	if (chkbox==null){
+    		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("mailtareaAlert"), "");
+    	} else {
+    	String param = StringUtils.join(chkbox, ",").replace(" ", "");
+    	JobDetail job = newJob(TareaInvocar.class)
+    			.withIdentity(ptarea.toUpperCase(), "unico")
+    			.build();
+    	CronTrigger trigger;
+    	//Define el Trigger y la frecuencia en que se va a ejecutar
+    	if(isrecupera=="0"){
+    	     trigger = newTrigger()
+    		    .withIdentity(ptrigger.toUpperCase(), "unico")
+    		    .startAt(diainicio) //Año de inicio,Get a Date object that represents the given time, on the  given date.
+    		    .withSchedule(cronSchedule("0 " + pminutos + " " + phora + " "+ " ? * " + param + " *"))
+    		    .build();
+    	} else {
+    		 trigger = newTrigger()
+        		    .withIdentity(ptrigger.toUpperCase(), "unico")
+        		    .startAt(diainicio) //Año de inicio,Get a Date object that represents the given time, on the  given date.
+        		    .withSchedule(cronSchedule("0 " + pminutos + " " + phora + " "+ " ? * " + pparam + " *"))
+        		    .build();	
+    	}
+  		//System.out.println("0 " + pminutos + " " + phora + " "+ " ? * " + pparam + " *");
+    	try {
+    		//Inicia el cronograma
+			schd.scheduleJob(job, trigger);
+			schd.start();
+			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexito") + " " + ptrigger.toUpperCase(), "");
+			if(isrecupera=="0"){
+			insert("0", "0", paramvalues, "0", paramnames);
+			}
+			deleteTemps(session, "bvtparams_temp");
+			deleteTemps(session, "bvtparams_number_temp");
+			//limpiar();
+    	} catch (SchedulerException | NamingException e) {
+			e.printStackTrace();
+			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
+		}
+    	}
+    	FacesContext.getCurrentInstance().addMessage(null, msj);
+    }	
     
+    /*
+    /**Programa tarea repeticion por hora
+     * @throws NamingException 
+    private void iniciarTareaRepeticionHora(String ptarea, String ptrigger, String phora, String pminuto, String phorarepeticion, String paramvalues, String isrecupera, String paramnames, String pparam){
+    	
+    	//Creamos la instancia calendario para separar en dia, mes y año la fecha seleccionada
+	   	 Calendar cal = Calendar.getInstance();
+	   	 cal.setTime(diainicio);
+	   	 int anio = cal.get(Calendar.YEAR);
+	   	 int vmes = cal.get(Calendar.MONTH); //Para iniciar meses comenzando desde enero = 0
+	   	 int dia = cal.get(Calendar.DAY_OF_MONTH);
+	   	 
+    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    	String[] chkbox = request.getParameterValues("toDelete");
+    	
+    	//System.out.println(param);
+    	
+    	////System.out.println("Iniciando tarea diaria");
+        //Definir la instancia del job
+    	if (chkbox==null){
+    		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("mailtareaAlert"), "");
+    	} else {
+    	String param = StringUtils.join(chkbox, ",").replace(" ", "");
+    	JobDetail job = newJob(TareaInvocar.class)
+    			.withIdentity(ptarea.toUpperCase(), "unico")
+    			.build();
+    	CronTrigger trigger;
+    	//Define el Trigger y la frecuencia en que se va a ejecutar
+    	if(isrecupera=="0"){
+    	      trigger = newTrigger()
+    		    .withIdentity(ptrigger.toUpperCase(), "unico")
+    		    .startAt(dateOf(Integer.parseInt(phora), //Hora de inicio
+    		    	       Integer.parseInt(pminuto), //Minutos de inicio
+    		    	       00, //Segundos de inicio
+    		    	       dia, //Dia de inicio
+    		    	       vmes, //Mes de Inicio
+    		    	       anio)) //Año de inicio,Get a Date object that represents the given time, on the  given date.
+    		    .withSchedule(cronSchedule("0 0/"+Integer.parseInt(phorarepeticion)*60 +"  0 "+ " ? * " + param + ""))
+    		    .build();
+    	} else {
+    		  trigger = newTrigger()
+        		    .withIdentity(ptrigger.toUpperCase(), "unico")
+        		    .startNow()
+        		    .withSchedule(cronSchedule("0 0/"+Integer.parseInt(phorarepeticion)*60 +"  0 "+ " ? * " + param + ""))
+        		    .build();	
+    	}
+  		//System.out.println("0 " + pminuto + " " + phora + " "+ " * * " + param + "");
+    	try {
+    		//Inicia el cronograma
+			schd.start();
+			schd.scheduleJob(job, trigger);
+			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexito") + " " + ptrigger.toUpperCase(), "");
+			if(isrecupera=="0"){
+			insert("0", "0", paramvalues, "0", paramnames);
+			}
+			deleteTemps(session, "bvtparams_temp");
+			deleteTemps(session, "bvtparams_number_temp");
+			limpiar();
+    	} catch (SchedulerException | NamingException e) {
+			e.printStackTrace();
+			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
+		}
+    	}
+    	FacesContext.getCurrentInstance().addMessage(null, msj);
+    }*/
     
-    /**Detiene la tarea
+    /**Borra la tarea
      * @throws NamingException */ 
    public void detenerTarea() throws NamingException  {
 	   try {
@@ -1172,6 +1233,53 @@ public class Programacion extends Bd implements Serializable {
     	FacesContext.getCurrentInstance().addMessage(null, msj);
 	} 	
    }
+   
+   /**Detiene la tarea
+    * @throws NamingException */ 
+  public void pararTarea() throws NamingException  {
+	   try {
+		   schd.deleteJob(jobKey(vltrigger.toUpperCase(), "unico"));
+		updateJobStatusBd(vltrigger.toUpperCase(), "1");
+		msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareadetenida"), "");
+		FacesContext.getCurrentInstance().addMessage(null, msj);
+	} catch (SchedulerException e) {
+		e.printStackTrace();
+		msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
+   	FacesContext.getCurrentInstance().addMessage(null, msj);
+	} 	
+  }
+  
+	  /**Reinicia la tarea
+	   * @throws NamingException */ 
+	 public void reiniciarTarea() throws NamingException  { 
+
+	 		String[] vecreporte = reporte.split("\\ - ", -1);
+	 		arregloParametros =  StringUtils.join(inputs, "|").toUpperCase();
+	 		
+	 		//Actualiza el estatus
+			updateJobStatusBd(vltrigger.toUpperCase(), "0");	
+			
+			//Creamos la instancia calendario para separar en dia, mes y año la fecha seleccionada
+		   	 Calendar cal = Calendar.getInstance();
+		   	 cal.setTime(diainicio);
+		   	 int hora = cal.get(Calendar.HOUR_OF_DAY);
+		   	 int minutos = cal.get(Calendar.MINUTE); //Para iniciar meses comenzando desde enero = 0
+	 		
+			if(frecuencia.equals("0")){    		 
+		    	   iniciarTareaDiaria(tarea.toUpperCase(), vltrigger.toUpperCase(),  arregloParametros, "1", arregloParamNames(vecreporte[0]), hora, minutos);
+		    	 } else if (frecuencia.equals("1")){
+		    	   iniciarTareaSemanal(tarea.toUpperCase(), vltrigger.toUpperCase(), dias,  arregloParametros, "1", arregloParamNames(vecreporte[0]), hora, minutos);
+		    	 } else if (frecuencia.equals("2")){
+		    	   iniciarTareaDiaMes(tarea.toUpperCase(), vltrigger.toUpperCase(), diames, arregloParametros, "1", arregloParamNames(vecreporte[0]), hora, minutos);	
+		    	 } else if (frecuencia.equals("3")){
+		    	   iniciarTareaIntervaloMinutos(tarea.toUpperCase(), vltrigger.toUpperCase(),  horarepeticion, arregloParametros, "1", arregloParamNames(vecreporte[0]));	
+		    	 } else if (frecuencia.equals("4")){
+		    	   iniciarTareaIntervaloMensual(tarea.toUpperCase(), vltrigger.toUpperCase(),   arregloParametros, "1", arregloParamNames(vecreporte[0]));	 
+		    	 } else {
+		    	   iniciarTareaRepeticion(tarea.toUpperCase(), vltrigger.toUpperCase(),  arregloParametros, "1", arregloParamNames(vecreporte[0]), "0", hora, minutos);
+		      	 }
+		  
+	 }
    
    /**Detiene la tarea para recargarla
     * Usada en el método iniar tarea
@@ -1199,7 +1307,7 @@ public class Programacion extends Bd implements Serializable {
  * @throws NamingException 
  * @throws IOException **/
    protected void recuperarTriggers(String estatus) throws SchedulerException, NamingException{
-	   consulta.selectPntGenerica("select job, disparador, grupo, diasem, substr(hora,1,2), substr(hora,4,2), frecuencia, diames, PARAMVALUES, intervalo, paramnames from t_programacion where activa = '" + estatus + "' order by disparador", JNDI);
+	   consulta.selectPntGenerica("select job, disparador, grupo, diasem,  frecuencia, diames, PARAMVALUES, paramnames, intervalo, dias_semana, to_char(diainicio,'HH24'), to_char(diainicio,'mi') from t_programacion where activa = '" + estatus + "' order by disparador", JNDI);
 	   int rows = consulta.getRows();
 	   String[][] vltabla = consulta.getArray();
 	   
@@ -1210,20 +1318,23 @@ public class Programacion extends Bd implements Serializable {
 				   //Opción para generar la tarea diaria
 				   if(vltabla[i][6].toString().equals("0")){
 					   //Tarea diaria
-					   iniciarTareaDiaria(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][4],vltabla[i][5], vltabla[i][8], "1", vltabla[i][9]);				    	
+					   iniciarTareaDiaria(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][6],"1", vltabla[i][7], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));				    	
 				   } else if(vltabla[i][6].toString().equals("1")){//Fin valida que sea diaria, de lo contrario es semanal
 					   //Tarea semanal
-					   iniciarTareaSemanal(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][3], vltabla[i][4],vltabla[i][5], vltabla[i][8], "1", vltabla[i][9]);					   
+					   iniciarTareaSemanal(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][3], vltabla[i][6],"1", vltabla[i][7], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));					   
 				   } else if(vltabla[i][6].toString().equals("2")){
 					   //Tarea dia mes
-					   iniciarTareaDiaMes(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][7], vltabla[i][4],vltabla[i][5], vltabla[i][8], "1", vltabla[i][9]);
+					   iniciarTareaDiaMes(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][5], vltabla[i][6],"1", vltabla[i][7], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));
 				   } else if(vltabla[i][6].toString().equals("3")){
 					   //Tarea dia hora
-					   iniciarTareaIntervaloHora(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][3], vltabla[i][4], vltabla[i][5], vltabla[i][9], vltabla[i][8], "1", vltabla[i][9]);	   
-				   } else {
-					   //Intervalos mensuales
-					   iniciarTareaIntervaloMensual(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][6].toString(), vltabla[i][4],vltabla[i][5], vltabla[i][8], "1", vltabla[i][9]);
-				   }
+					   iniciarTareaIntervaloMinutos(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][8], vltabla[i][6], "1", vltabla[i][7]);	   
+				   } else if (vltabla[i][6].toString().equals("4")){
+			    	   //Intervalos mensuales
+					   iniciarTareaIntervaloMensual(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(),  vltabla[i][6],"1", vltabla[i][7]);
+			       } else {
+			    	   //Reptición
+			    	   iniciarTareaRepeticion(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][6], "1", vltabla[i][7], vltabla[i][10], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));
+			       }
 			   }//Fin de chequeo de tarea en ram
 		   }//Fin del recorrido
 	   }
@@ -1235,8 +1346,6 @@ public class Programacion extends Bd implements Serializable {
     	tarea = ""; //Nombre de la tarea
         vltrigger = ""; //Nombre del disparador
         diasemana = ""; //Día de la semana
-        hora = ""; //Hora de la semana
-        minuto = ""; //Minuto de la semana
         frecuencia = "0"; //Fercuencia de repetición
         dias = "2"; // Días de repetición del reporte
         idgrupo = "";
@@ -1245,7 +1354,7 @@ public class Programacion extends Bd implements Serializable {
         diames = "1";
         diainicio = new Date();
         inputs = null;
-        ruta_salida = "";
+        //ruta_salida = "URL";
     }
   //Coneccion a base de datos
   	//Pool de conecciones JNDIFARM
@@ -1265,17 +1374,10 @@ public class Programacion extends Bd implements Serializable {
         	 Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
      		
-     		if(hora.length()==1){
-     			hora = "0"+hora;
-     		}
-     		if(minuto.length()==1){
-     			minuto = "0"+minuto;
-     		}
-
      		con = ds.getConnection();
      		
-            String query = "DELETE  from T_PROGRAMACION WHERE HORA ='" + hora +":" + minuto + "' and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
-            ////System.out.println(query);
+            String query = "DELETE  from T_PROGRAMACION WHERE diainicio ='" + diainicio + "' and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
+            //System.out.println(query);
             pstmt = con.prepareStatement(query);
           
             try {
@@ -1297,7 +1399,7 @@ public class Programacion extends Bd implements Serializable {
      * 
   	 * @throws NamingException 
      **/
-    private void insert(String pdias, String pdiames, String paramvalues, String intervalo, String paramnames) throws NamingException {
+    private void insert(String pdias, String pdiames, String paramvalues, String intervalo, String paramnames)  {
         try {
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
@@ -1306,39 +1408,45 @@ public class Programacion extends Bd implements Serializable {
      		
      		String[] vecidgrupo = idgrupo.split("\\ - ", -1);
      		
-     		if(hora.length()==1){
-     			hora = "0"+hora;
-     		}
-     		if(minuto.length()==1){
-     			minuto = "0"+minuto;
-     		}
-     		
+     		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        	String[] chkbox = request.getParameterValues("toDelete");
+        	String param = "";
+        	//System.out.println(param);
+        	
+        	////System.out.println("Iniciando tarea diaria");
+            //Definir la instancia del job
+        	if (chkbox==null){
+        		param = "";
+        	} else {
+        	    param = StringUtils.join(chkbox, ",").replace(" ", "");
+        	}
+        	//System.out.println(param);
      		String[] vecreporte = reporte.split("\\ - ", -1);
      		
-     		String query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'" + sdfecha.format(diainicio) + "',?,?,?,?,?,?,?,?)";
+     		String query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'" + diainicio + "',?,?,?,?,?,?,?,?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, vltrigger.toUpperCase());
             pstmt.setString(2, "unico");
-            pstmt.setInt(3, Integer.parseInt(pdias));
-            pstmt.setString(4, hora +":" + minuto);            
-            pstmt.setString(5, frecuencia);
-            pstmt.setString(6, asunto);
-            pstmt.setString(7, contenido);
-            pstmt.setString(8, vecreporte[0].toUpperCase());
-            pstmt.setString(9, extContext.getRealPath(RUTA_REPORTE));
-            pstmt.setString(10, extContext.getRealPath(RUTA_LOGS)); 
-            pstmt.setInt(11, Integer.parseInt(vecidgrupo[0]));
-            pstmt.setString(12, tarea.toUpperCase());
-            pstmt.setString(13, pdiames);
-            pstmt.setString(14, "0");
-            pstmt.setString(15, paramvalues);
-            pstmt.setInt(16, Integer.parseInt(intervalo));
-            pstmt.setString(17, paramnames);
-            pstmt.setString(18, ruta_salida);
-            pstmt.setString(19, opctareas);
-            pstmt.setString(20, formato);
-            pstmt.setInt(21, Integer.parseInt(instancia));
-
+            pstmt.setInt(3, Integer.parseInt(pdias));       
+            pstmt.setString(4, frecuencia);
+            pstmt.setString(5, asunto);
+            pstmt.setString(6, contenido);
+            pstmt.setString(7, vecreporte[0].toUpperCase());
+            pstmt.setString(8, PRINT_REPORT_LOCATION);
+            pstmt.setString(9, extContext.getRealPath(RUTA_LOGS)); 
+            pstmt.setInt(10, Integer.parseInt(vecidgrupo[0]));
+            pstmt.setString(11, tarea.toUpperCase());
+            pstmt.setString(12, pdiames);
+            pstmt.setString(13, "0");
+            pstmt.setString(14, paramvalues);
+            pstmt.setInt(15, Integer.parseInt(intervalo));
+            pstmt.setString(16, paramnames);
+            pstmt.setString(17, ruta_salida);
+            pstmt.setString(18, opctareas);
+            pstmt.setString(19, formato);
+            pstmt.setInt(20, Integer.parseInt(instancia));
+            pstmt.setString(21, param);
+            //System.out.println(PRINT_REPORT_LOCATION);
             try {
                 pstmt.executeUpdate();
                 limpiar();
@@ -1397,13 +1505,13 @@ public class Programacion extends Bd implements Serializable {
         case "Oracle":
         	query += "  select * from ";
      	    query += " ( select query.*, rownum as rn from";
-        	query += " ( select trim(a.job), trim(a.disparador), trim(to_char(substr(a.hora,1,2),'00')), trim(to_char(substr(a.hora,4,2),'00')), decode(a.frecuencia,'0', '" + getMessage("mailintervalo1") + "','1','" + getMessage("mailintervalo2") + "','2','" + getMessage("mailintervalo3") + "','3','" + getMessage("mailintervalo4") + "','4','" + getMessage("mailintervalo5") + "','" + getMessage("mailintervalo6") + "'), a.diasem";
+        	query += " ( select trim(a.job), trim(a.disparador),  case a.frecuencia when '0' then '" + getMessage("mailtareaDiario").toUpperCase() + "' when  '1' then '" + getMessage("mailtareaSemanal").toUpperCase() + "' when '2' then'" + getMessage("mailtareaPersonalizada").toUpperCase() + "' when '3' then '" + getMessage("mailtareaHoraRep").toUpperCase() + "' when '4' then '" + getMessage("mailimes1").toUpperCase() + "' when '5' then '" + getMessage("maillidiasSelect").toUpperCase() + "'  else '" + getMessage("maillidiasSelect1").toUpperCase() + "' end , a.diasem";
       		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"'), trim(a.formato)";
-      		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end";
+      		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end, trim(paramvalues), intervalo";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and A.instancia=B.instancia";
-            query += " and a.job||a.codrep||trim(a.idgrupo)||trim(to_char(substr(a.hora,1,2),'00'))||trim(to_char(substr(a.hora,4,2),'00')) like '%" + ((String) filterValue).toUpperCase() + "%'";
+            query += " and a.job||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
             query += " and a.codrep like '" + vecrepf[0] + "%'";
             query += " and a.frecuencia like '" + veccfrecf[0] + "%'";
             query += " and a.idgrupo like '" + vecgrupf[0] + "%'";
@@ -1413,16 +1521,17 @@ public class Programacion extends Bd implements Serializable {
 	        query += " and rn > (" + first + ")";
              break;
         case "PostgreSQL":
-        	query = "select trim(a.job), trim(a.disparador), trim(cast(substr(a.hora,1,2) as text)), trim(cast(substr(a.hora,4,2) as text)),  case when a.frecuencia = '0' then '" + getMessage("mailintervalo1") + "' when a.frecuencia = '1' then '" + getMessage("mailintervalo2") + "' when a.frecuencia = '2' then'" + getMessage("mailintervalo3") + "' when a.frecuencia = '3' then '" + getMessage("mailintervalo4") + "' when a.frecuencia = '4' then '" + getMessage("mailintervalo5") + "' else '" + getMessage("mailintervalo6") + "' end, a.diasem";
-      		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end, trim(a.formato)";
-      		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end";
+        	query = "select trim(a.job), trim(a.disparador),   case a.frecuencia when '0' then '" + getMessage("mailtareaDiario").toUpperCase() + "' when  '1' then '" + getMessage("mailtareaSemanal").toUpperCase() + "' when '2' then'" + getMessage("mailtareaPersonalizada").toUpperCase() + "' when '3' then '" + getMessage("mailtareaHoraRep").toUpperCase() + "' when '4' then '" + getMessage("mailimes1").toUpperCase() + "' when '5' then '" + getMessage("maillidiasSelect").toUpperCase() + "'  else '" + getMessage("maillidiasSelect1").toUpperCase() + "' end , a.diasem";
+      		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy hh24:mi:ss')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end, trim(a.formato)";
+      		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end, trim(paramvalues), intervalo";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
             query += " and A.instancia=B.instancia";
-            query += " and a.job||a.codrep||trim(cast(a.idgrupo as text))||trim(cast(substr(a.hora,1,2) as text))||trim(cast(substr(a.hora,4,2) as text)) like '%" + ((String) filterValue).toUpperCase() + "%'";
+            query += " and a.job||a.codrep like '%" + ((String) filterValue).toUpperCase() + "%'";
             query += " and a.codrep like '" + vecrepf[0] + "%'";
             query += " and a.frecuencia like '" + veccfrecf[0] + "%'";
             query += " and cast(a.idgrupo as text) like '" + vecgrupf[0] + "%'";
+            query += " and a.disparador like '" + vltrigger + "%'";
             query += " AND   a.instancia = '" + instancia + "'";
             query += " order by " + sortField.replace("v", "") ;
 	        query += " LIMIT " + pageSize;
@@ -1442,26 +1551,27 @@ public class Programacion extends Bd implements Serializable {
         	Programacion select = new Programacion();
             select.setVjob(r.getString(1));
             select.setVdisparador(r.getString(2));
-            select.setVhora(r.getString(3));
-            select.setVminuto(r.getString(4));
-            select.setVfrecuenciades(r.getString(5));
-            select.setVdiasem(r.getString(6));
-            select.setVcodrep(r.getString(7));
-            select.setVidgrupo(r.getString(8));
-            select.setVasunto(r.getString(9));
-            select.setVcontenido(r.getString(10));
-            select.setViddesidgrupo(r.getString(11));
-            select.setVfrecuencia(r.getString(12));
-            select.setVdiames(r.getString(13));
-            select.setVdiainicio(r.getString(14));
-            select.setClase(r.getString(15));
-            select.setActiva(r.getString(16));
-            select.setVactivadetalletb(r.getString(17));
-            select.setVformato(r.getString(18).toUpperCase());
-            select.setStatusIncon(r.getString(19));
+            select.setVfrecuenciades(r.getString(3));
+            select.setVdiasem(r.getString(4));
+            select.setVcodrep(r.getString(5));
+            select.setVidgrupo(r.getString(6));
+            select.setVasunto(r.getString(7));
+            select.setVcontenido(r.getString(8));
+            select.setViddesidgrupo(r.getString(9));
+            select.setVfrecuencia(r.getString(10));
+            select.setVdiames(r.getString(11));
+            select.setVdiainicio(r.getString(12));
+            select.setClase(r.getString(13));
+            select.setActiva(r.getString(14));
+            select.setVactivadetalletb(r.getString(15));
+            select.setVformato(r.getString(16).toUpperCase());
+            select.setStatusIncon(r.getString(17));
+            select.setVparamvalues(r.getString(18));
+            select.setVintervalo(r.getString(19));
         	//Agrega la lista
         	list.add(select);
         	rows = list.size();
+        	
         }
      } catch (SQLException | SchedulerException e){
          e.printStackTrace();    
@@ -1472,6 +1582,8 @@ public class Programacion extends Bd implements Serializable {
         r.close();
 
   	}
+  	
+  	
   	
   	/**
      * Leer registros en la tabla
@@ -1546,16 +1658,12 @@ public class Programacion extends Bd implements Serializable {
   	public void enviarMailmanual() throws IOException{
 
   	    java.sql.Date sqlDate = new java.sql.Date(fechadia.getTime());
-  	//Para reportes
+  	    //Para reportes
   	    int rowsrep;
   	   	String[][] vltablarep;
-  	   	
-  	   	//Para mail
-  	   	int rowsmail;
-  	   	String[][] vltablamail;
   
   		try {
-  		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), hora, trim(paramnames), trim(paramvalues)";
+  		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), hora, trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido)";
   	    vlqueryRep += " from t_programacion" ;
   	    vlqueryRep += " where disparador='" + vltrigger.toUpperCase() + "'";
   	  		
@@ -1568,28 +1676,14 @@ public class Programacion extends Bd implements Serializable {
   		
   		//Imprime reporte
   		if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo
-  		 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][4].toString(), vltablarep[0][1].toString(), vltablarep[0][2].toString(), vltablarep[0][0].toString(), sqlDate, vltablarep[0][3].toString(), vltablarep[0][5].toString(), vltablarep[0][6].toString(), vltablarep[0][7].toString());
-  		
-  		
-  		//Consulta lista de correos
-  		String vlqueryMail = "select distinct trim(disparador), trim(rutatemp), trim(codrep), trim(asunto), trim(contenido), trim(formato)";
-        vlqueryMail += " from t_programacion" ;
-  		vlqueryMail += " where disparador='" + vltrigger.toUpperCase() + "'";
-  		
-  		//System.out.println(vlqueryMail);
-  		consulta.selectPntGenerica(vlqueryMail,JNDI);
-  		
-  		rowsmail = consulta.getRows();
-  		vltablamail = consulta.getArray();
-  		//System.out.println(rowsmail);
-  		//System.out.println(rowsmail);
-  		if (rowsmail>0){//Si la consulta es mayor a cero devuelve registros envía el correo  		
-  			for(int i=0;i<rowsmail;i++){
-  			 new Sendmail().mailthread(vltrigger.toUpperCase(), vltablamail[i][1], vltablamail[i][2], vltablamail[i][3], vltablamail[i][4], vltablamail[i][5]); 				
+  		 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][4].toString(), vltablarep[0][1].toString(), vltablarep[0][2].toString(), vltablarep[0][0].toString(), sqlDate, vltablarep[0][3].toString(),  vltablarep[0][6].toString(), vltablarep[0][7].toString());
+ 		
+  			for(int i=0;i<rowsrep;i++){
+  			 new Sendmail().mailthread(vltrigger.toUpperCase(), vltablarep[i][2], vltablarep[i][0], vltablarep[i][8], vltablarep[i][9], vltablarep[i][4]);
   			}
   		} 
-  		
-  		}
+  		msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareaEnvío1"), "");
+  		FacesContext.getCurrentInstance().addMessage(null, msj);
   		} catch (NamingException e) {
   			e.printStackTrace();
   		}
@@ -1601,7 +1695,7 @@ public class Programacion extends Bd implements Serializable {
   	
   	/**Cambia estatus en la base de datos a la tarea como inactiva
      * @throws NamingException */
-  	private void updateJobStatusBd(String job, String estatus){
+  	private void updateJobStatusBd(String ptrigger, String estatus){
   		 try {
         	Context initContext = new InitialContext();     
       		DataSource ds = (DataSource) initContext.lookup(JNDI);
@@ -1610,8 +1704,9 @@ public class Programacion extends Bd implements Serializable {
       		
              String query = "UPDATE t_programacion";
              query += " SET activa = '" + estatus + "'";
-             query += " WHERE disparador = '" + job.toUpperCase() + "'";
-           // //System.out.println(query);
+             query += " WHERE disparador = '" + ptrigger.toUpperCase() + "'";
+             query += " AND   instancia = '" + instancia + "'";
+           //System.out.println(query);
             pstmt = con.prepareStatement(query);
             // Antes de ejecutar valida si existe el registro en la base de Datos.
                 pstmt.executeUpdate();
@@ -1624,62 +1719,89 @@ public class Programacion extends Bd implements Serializable {
   	}
   	
   	
-  	
-  	/**Activa o desactiva temporalmente las tareas seleccionadas
-     * @throws NamingException 
-  	 * @throws SchedulerException */
-	public void activaDesactiva() throws NamingException, SchedulerException{
-		//Tomando los valores de checkbox
-  		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    	String[] chkbox = request.getParameterValues("activa");
-    	//
-    	//Convierte para el query con string utils
-    	String param = "'" + StringUtils.join(chkbox, "','") + "'";
-    	String query = "select trim(disparador) from t_programacion where disparador not in (" + param + ") and activa = '0'";
-    	//System.out.println(query);
-    	
-    	//Consultando las tareas
-    	consulta.selectPntGenerica(query, JNDI);//Consultando en la base de datos
-    	int vlrows = consulta.getRows();//Toma registros de la consulta
-    	String[][] vltabla = consulta.getArray();
-    	//System.out.println("Registros: " + vlrows);
-    	
-    	if(vlrows>0){//Valida si la consulta devuelve registros
-    	for(int i = 0; i < vlrows; i++){  		
+  	/**Actualiza job existente
+  	 * Elimina y vuelve a crear
+     * @throws NamingException */
+  	public void updateExistingJob() throws NamingException{
+  	//Vuelve a crear la tarea
+ 		if(ruta_salida==null){
+ 			ruta_salida = "";
+ 		}
+ 		String[] vecreporte = reporte.split("\\ - ", -1);
+ 		String[] vecidgrupo = idgrupo.split("\\ - ", -1);
+ 		
+  		//Elimina lo existente
+  		try {
+  			//schd.unscheduleJob(triggerKey(vltrigger.toUpperCase(), "unico")); 
+  			schd.deleteJob(jobKey(vltrigger.toUpperCase(), "unico"));//Reimplementación, anteriormente solo la quitaba de la tarea no la borraba
+  			                                         //Nuevo cambio 20/09/2014
+  			//System.out.println("Detiene a: " + vltrigger.toUpperCase());
+  			//Modifica los valores
+  			Context initContext = new InitialContext();     
+      		DataSource ds = (DataSource) initContext.lookup(JNDI);
+
+      		con = ds.getConnection();	
+      		
+      		arregloParametros =  StringUtils.join(inputs, "|").toUpperCase();
+
+      		
+             String query = "UPDATE t_programacion";
+             query += " SET diasem = '" + dias + "'";
+             query += " , frecuencia = '" + frecuencia + "'";
+             query += " , asunto = '" + asunto + "'";
+             query += " , contenido = '" + contenido + "'";
+             query += " , codrep = '" + vecreporte[0].toUpperCase() + "'";
+             query += " , idgrupo = '" + Integer.parseInt(vecidgrupo[0]) + "'";
+             query += " , diames = '" + diames + "'";
+             query += " , diainicio = '" + diainicio + "'";
+             query += " , paramvalues = '" + arregloParametros + "'";
+             query += " , intervalo = '" + horarepeticion + "'";
+             query += " , paramnames = '" + arregloParamNames(vecreporte[0]) + "'";
+             query += " , ruta_salida = '" + ruta_salida + "'";
+             query += " , opctareas = '" + opctareas + "'";
+             query += " , formato = '" + formato + "'";
+             query += " WHERE disparador = '" + vltrigger.toUpperCase() + "'";
+             query += " AND   instancia = '" + instancia + "'";
+          // System.out.println(query);
+            pstmt = con.prepareStatement(query);
+            // Antes de ejecutar valida si existe el registro en la base de Datos.
+            pstmt.executeUpdate();
+            //Cierra conecciones
   
-    			//Si está inactiva no hace nada y dispara un mensaje
-                if(schd.interrupt(vltabla[i][0])){
-                	//System.out.println("La tarea está inactiva, no hay programación que detener");
-                	msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("mailtareNoActivas"), "");
-                	FacesContext.getCurrentInstance().addMessage(null, msj);
-                } else {
-                	//System.out.println("Desactivando al disparador: " + vltabla[i][0]);
-                	
-                	schd.unscheduleJob(triggerKey(vltabla[i][0], "unico"));//Unschedule
-                	updateJobStatusBd(vltabla[i][0],"1");//Actualiza estatus en la BD
-                	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareadetenida") + " : " + vltabla[i][0], "");
-                	FacesContext.getCurrentInstance().addMessage(null, msj);
-                }
-    			//Desactiva las tareas seleccionadas
-    		}
-    	
-    	} else {
-    		//Los activa a todos
-    		//System.out.println("Todos activos");
-    		query = "select trim(disparador) from t_programacion where disparador in (" + param + ")";
-    		consulta.selectPntGenerica(query, JNDI);//Consultando en la base de datos
-    		vlrows = consulta.getRows();
-    		vltabla = consulta.getArray();
-    		if(vlrows>0){//Valida si la consulta devuelve registros
-    			for(int i = 0; i < vlrows; i++){  
-    				updateJobStatusBd(vltabla[i][0],"0");//Actualiza estatus en la BD
-    				recuperarTriggers("0");
-    			}  			
-    		}
-    		//FacesContext.getCurrentInstance().addMessage(null, msj);
-    	}
-      }
+             pstmt.close();
+             con.close(); 	 			 			
+  		} catch (SchedulerException | SQLException e) {
+  			e.printStackTrace();
+  			msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
+  	    	FacesContext.getCurrentInstance().addMessage(null, msj);
+  		} 		
+  		
+  	//Creamos la instancia calendario para separar en dia, mes y año la fecha seleccionada
+	   	 Calendar cal = Calendar.getInstance();
+	   	 cal.setTime(diainicio);
+	   	 int hora = cal.get(Calendar.HOUR_OF_DAY);
+	   	 int minutos = cal.get(Calendar.MINUTE); //Para iniciar meses comenzando desde enero = 0
 	
+  		 //Incia tarea
+  		if(frecuencia.equals("0")){    		 
+     	   iniciarTareaDiaria(tarea.toUpperCase(), vltrigger.toUpperCase(), arregloParametros, "1", arregloParamNames(vecreporte[0]), hora, minutos);
+     	 } else if (frecuencia.equals("1")){
+     	   iniciarTareaSemanal(tarea.toUpperCase(), vltrigger.toUpperCase(), dias, arregloParametros, "1", arregloParamNames(vecreporte[0]), hora, minutos);
+     	 } else if (frecuencia.equals("2")){
+     	   iniciarTareaDiaMes(tarea.toUpperCase(), vltrigger.toUpperCase(), diames, arregloParametros, "1", arregloParamNames(vecreporte[0]), hora, minutos);	
+     	 } else if (frecuencia.equals("3")){
+     	   iniciarTareaIntervaloMinutos(tarea.toUpperCase(), vltrigger.toUpperCase(), horarepeticion, arregloParametros, "1", arregloParamNames(vecreporte[0]));	
+     	 } else if (frecuencia.equals("4")){
+     	   iniciarTareaIntervaloMensual(tarea.toUpperCase(), vltrigger.toUpperCase(), arregloParametros, "1", arregloParamNames(vecreporte[0]));	 
+     	 } else {
+     	   iniciarTareaRepeticion(tarea.toUpperCase(), vltrigger.toUpperCase(),  arregloParametros, "1", arregloParamNames(vecreporte[0]), "0", hora, minutos);
+       	 } 
+  		//System.out.println("fin");
+  	}
+  	
+  	
+  	
+  		
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////PARAMETROS DEL REPORTE///////////////////////////////////////////////////////////////
@@ -1687,6 +1809,8 @@ public class Programacion extends Bd implements Serializable {
 	private List<String> listR = new ArrayList<String>();//Guarda el nombre que se va a mostrar en la pantalla
 	private List<String> listPN = new ArrayList<String>();//Guarda el nombre del parámetro
 	private List<Integer> listPT = new ArrayList<Integer>();//Guarda el tipo del parámetro
+	private List<Boolean> listPH= new ArrayList<Boolean>();//Guarda si el parametro es hidden
+	private List<Boolean> listPR= new ArrayList<Boolean>();//Guarda si el parametro es requerido
 	private String[] inputs;
 	private int rowsParam;
 	
@@ -1728,6 +1852,7 @@ public class Programacion extends Bd implements Serializable {
 	 public String getRutaRepReal(){
 		 //String ruta = extContext.getRealPath(RUTA_REPORTE) + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
 		 String ruta = PRINT_REPORT_LOCATION + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
+		 //System.out.println(ruta);
 		 return ruta;
 	 }
   		
@@ -1744,7 +1869,7 @@ public class Programacion extends Bd implements Serializable {
 				deleteTemps(session, "bvtparams_temp");
 				deleteTemps(session, "bvtparams_number_temp");
 			} catch (NamingException e1) {
-				// TODO Auto-generated catch block
+
 				e1.printStackTrace();
 			}
 			
@@ -1770,9 +1895,10 @@ public class Programacion extends Bd implements Serializable {
 			while ( iter.hasNext( ) )
 			{			
 			IParameterDefn param = (IParameterDefn) iter.next( );		
-	          if (!param.isHidden() && param.isRequired()){
 	        	  listPN.add(param.getName());//Guarda el nombre del parámetro
 	        	  listPT.add(param.getDataType());//Guarda el tipo de parámetro
+                  listPH.add(param.isHidden());//Indica si es hidden
+                  listPR.add(param.isRequired());
 				{
 					if(param.getPromptText()==null){
 						listR.add(param.getName());
@@ -1780,24 +1906,24 @@ public class Programacion extends Bd implements Serializable {
 						listR.add(param.getPromptText());
 					}
 					rowsParam = params.size();
-					inputs = new String[rowsParam];//Asigna el tamaño a los inputs
+					
 				}
-	          }
 			}
 			//Una vez obtenido los parámetros los guardamos en una tabla temporal
 			//Esto permite hace un mejor manejo en el for each loop al momento de insertar los valores
 			//Recorre la lista y va insertando, blanquea la tabla antes de cargarla
 			//
-			for(int i = 0; i < rowsParam; i++){				
+			for(int i = 0; i < rowsParam; i++){	
+				//System.out.println(listPH.get(i));
 		         try {
 		        	//Inserta parámetros 
 					deleteParam(reporte.split(" - ")[0].toUpperCase(), listPN.get(i), listPT.get(i), session);//Borra temporal
-					insertParam(reporte.split(" - ")[0].toUpperCase(), listPN.get(i), listPT.get(i), session, listR.get(i));//CArga temporal
+					insertParam(reporte.split(" - ")[0].toUpperCase(), listPN.get(i), listPT.get(i), session, listR.get(i), listPH.get(i).toString(), listPR.get(i).toString());//CArga temporal
 					//Inserta el número de parámetros
 					deleteParamNumber(reporte.split(" - ")[0].toUpperCase(), session);
 					insertParamNumber(reporte.split(" - ")[0].toUpperCase(), session, rowsParam);
 				} catch (NamingException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 		    }			
@@ -1806,7 +1932,7 @@ public class Programacion extends Bd implements Serializable {
 		   //Lectura de datos en la tabla posteriormente recorre el arreglo para impimir en pantalla
 		   //
 		   String[] vecreporte = reporte.split("\\ - ", -1);
-		   String vlquery = "select promptext from bvtparams_temp where sessionid = '" + session + "' and codrep = '" + vecreporte[0].toUpperCase() + "'";
+		   String vlquery = "select promptext from bvtparams_temp where sessionid = '" + session + "' and codrep = '" + vecreporte[0].toUpperCase() + "' and paramhidden = 'false' and paramrequired = 'true'";
 		   try {
 			consulta.selectPntGenerica(vlquery, JNDI);
 			rowsParam = consulta.getRows();
@@ -1814,7 +1940,8 @@ public class Programacion extends Bd implements Serializable {
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		   
+		}		
+		   inputs = new String[rowsParam];//Asigna el tamaño a los inputs
 		   //Si hay registros en la temporal recorre la tabla 
 		   if(rowsParam>0){//Si hay registros muestra los parámetros				     
 			     vlTabla = consulta.getArray();
@@ -1827,20 +1954,21 @@ public class Programacion extends Bd implements Serializable {
 	     * Inserta Temporal de parametros.
 	     * <p>
 	     **/
-	    private void insertParam(String codrep, String paramName, Integer paramType, String sessionId, String promptext) throws  NamingException {
+	    private void insertParam(String codrep, String paramName, Integer paramType, String sessionId, String promptext, String phidden, String prequired) throws  NamingException {
 	        try {
 	        	Context initContext = new InitialContext();     
 	     		DataSource ds = (DataSource) initContext.lookup(JNDI);
 	            con = ds.getConnection();
 	            
-	            String query = "INSERT INTO bvtparams_temp VALUES (?,?,?,?,?)";
+	            String query = "INSERT INTO bvtparams_temp VALUES (?,?,?,?,?,?,?)";
 	            pstmt = con.prepareStatement(query);
 	            pstmt.setString(1, codrep.toUpperCase());
 	            pstmt.setString(2, paramName);
 	            pstmt.setInt(3, paramType);
 	            pstmt.setString(4, sessionId);
 	            pstmt.setString(5, promptext.toUpperCase());
-
+	            pstmt.setString(6, phidden);
+	            pstmt.setString(7, prequired);
 	            ////System.out.println(query);
 	            try {
 	                //Avisando
@@ -2024,5 +2152,167 @@ public class Programacion extends Bd implements Serializable {
 			return paramNames;
 	    }
 	    
+	    
+	    
+	    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ////////////////////////////////////OPCIONES PARA MOSTRAR LOS DÍAS DE LA SEMANA////////////////////////////////
+	    ///////////////////////SE HACE UN MANEJO DE ESTA FORMA PARA PODER TRASPONER DE FILAS A COLUMNAS////////////////
+	    ///////////////////////APACHE STRING UTILS/////////////////////////////////////////////////////////////////////
+	    ///////////////////////ABRIL 2017 DVCONSULTORES AD//////////////////////////////////////////////////////////////
+	    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    
+	    /**
+	     * Abre opciones de dias dependiendo del valor
+	     * @throws NamingException 
+	     * @throws SQLException 
+	     */
+	    public void showDays() {
+	    	//System.out.println("frecuencia: " + frecuencia);
+	    	if(frecuencia.equals("5")){
+	    		RequestContext.getCurrentInstance().execute("PF('dlg4').show()");
+	    	}
+	    }
+	    
+	    /**
+	     * Abre opciones de dias dependiendo del valor
+	     * @throws NamingException 
+	     * @throws SQLException 
+	     */
+	    public void showUrl() {
+	    	//System.out.println("frecuencia: " + frecuencia);
+	    	if(opctareas.equals("2")){
+	    		RequestContext.getCurrentInstance().execute("PF('dlg3').show()");
+	    	}
+	    }
+	    
+	    
+	    
+	  //Dias de la semana
+		private List<Programacion> list1 = new ArrayList<Programacion>();
+	    private String vdiasSemana;
+	    private String vdiasSemanaDesc;
+
+
+		/**
+		 * @return the list1
+		 */
+		public List<Programacion> getList1() {
+			return list1;
+		}
+
+
+		/**
+		 * @param list1 the list1 to set
+		 */
+		public void setList1(List<Programacion> list1) {
+			this.list1 = list1;
+		}
+
+
+
+		/**
+		 * @return the vdiasSemana
+		 */
+		public String getVdiasSemana() {
+			return vdiasSemana;
+		}
+
+
+		/**
+		 * @param vdiasSemana the vdiasSemana to set
+		 */
+		public void setVdiasSemana(String vdiasSemana) {
+			this.vdiasSemana = vdiasSemana;
+		}
+
+			      	
+	  	
+	  	 /**
+		 * @return the vdiasSemanaDesc
+		 */
+		public String getVdiasSemanaDesc() {
+			return vdiasSemanaDesc;
+		}
+
+		/**
+		 * @param vdiasSemanaDesc the vdiasSemanaDesc to set
+		 */
+		public void setVdiasSemanaDesc(String vdiasSemanaDesc) {
+			this.vdiasSemanaDesc = vdiasSemanaDesc;
+		}
+
+		/**
+	     * Leer Datos dias de la semana
+		 * @throws SQLException 
+	     * @throws NamingException 
+	     * @throws IOException 
+	     **/ 	
+	  	public void selectDiasSemana()  {
+	     try {	
+
+	    	 Context initContext = new InitialContext();     
+	         DataSource ds = (DataSource) initContext.lookup(JNDI);
+	    	 con = ds.getConnection();
+	    		
+	    	//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+	     	 DatabaseMetaData databaseMetaData = con.getMetaData();
+	     	 String productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección	
+	   		
+	     	String query = "";
+	     	
+	        	
+	     	switch ( productName ) {
+	        case "Oracle":
+	        	query += "  SELECT ";
+	        	query += " case rownum when 1 then 'MON'";
+	        	query += " when 2 then 'TUE'";
+	        	query += " when 3 then 'WED'";
+	      		query += " when 4 then 'THU'";
+	      		query += " when 5 then 'FRI'";
+	      		query += " when 6 then 'SAT'";
+	      		query += " when 7 then 'SUN' end days";
+	     	    query += " case rownum when 1 then 'Lunes'";
+	        	query += " when 2 then 'Martes'";
+	        	query += " when 3 then 'Miércoles'";
+	      		query += " when 4 then 'Jueves'";
+	      		query += " when 5 then 'Viernes'";
+	      		query += " when 6 then 'Sábado'";
+	      		query += " when 7 then 'Domingo' end dias";
+	      		query += " FROM dual CONNECT BY LEVEL <= 7  ORDER BY 1";
+	             break;
+	        case "PostgreSQL":
+	        	query = "WITH RECURSIVE t(n) AS (";
+	      		query += " SELECT 1";
+	      		query += " UNION ALL";
+	      		query += " SELECT n+1 FROM t";
+	            query += " )";
+	            query += " SELECT case n when 1 then 'MON' when 2 then 'TUE' when 3 then 'WED' when 4 then 'THU' when 5 then 'FRI' when 6 then 'SAT' else 'SUN' end , case n when 1 then 'Lunes' when 2 then 'Martes' when 3 then 'Miercoles' when 4 then 'Jueves' when 5 then 'Viernes' when 6 then 'Sábado' else 'Domingo' end ";
+	            query += " FROM t  LIMIT 7";
+	            break;
+	        }
+
+	        pstmt = con.prepareStatement(query);
+	        //System.out.println(query);
+
+	         r =  pstmt.executeQuery();
+	              
+	        while (r.next()){
+	        	Programacion select = new Programacion();
+	            select.setVdiasSemana(r.getString(1));
+	            select.setVdiasSemanaDesc(r.getString(2));
+	        	//Agrega la lista
+	        	list1.add(select);
+	        }
+	        
+	        //Cierra las conecciones
+	        pstmt.close();
+	        con.close();
+	        r.close();
+	        
+	     } catch (SQLException | SchedulerException | NamingException e){
+	         e.printStackTrace();    
+	     }
+
+	  	}
 }
 

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  DVCONSULTORES
+     Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -87,7 +87,7 @@
 		         <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=acccat1" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>          
 		         <div class="row">
 		          <div class="col-lg-4 col-md-4 col-sm-4"> 	 
-			     <p:autoComplete id="rol" value="#{acccat1.b_codrol}"  completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
+			     <p:autoComplete id="rol" value="#{acccat1.b_codrol}"   completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
 			     <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setRol(acccat1.b_codrol)}" />	
 			     </p:autoComplete>
 			     <p:watermark for="rol" value="#{msg.acccat1rol}" />

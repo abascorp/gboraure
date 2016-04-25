@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los terminos de la Licencia Pública General GNU publicada 
@@ -37,6 +37,8 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.primefaces.context.RequestContext;
+
+import org.versiones.util.*;
 
 
 @ManagedBean
@@ -133,6 +135,8 @@ public class Db extends Bd implements Serializable  {
 	private int r3 = 0;
 	private int r4 = 0;
 	PntGenerica consulta = new PntGenerica();
+	ControlVersionApp controlv = new ControlVersionApp();
+	
 	/**
 	 * @return the r1
 	 */
@@ -371,7 +375,7 @@ public class Db extends Bd implements Serializable  {
 	
 	
 	
-	/*
+	/**
 	 * Listar instancias al momento del login
 	 * si el usuario no tiene alguna instancia predefinida
 	 * muestra el modal para seleccionar la instancia,
@@ -406,7 +410,7 @@ public class Db extends Bd implements Serializable  {
         return values;
     }
 	
-	/*
+	/**
 	 * Indica si retorna muestra el modal o no
 	 */
     public String modal(){
@@ -417,10 +421,38 @@ public class Db extends Bd implements Serializable  {
     	return modal;
     }
     
-    /*
+    /**
      * Define la instancia seleccionada
      */
      public void instancia(String instancia){
     	 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", instancia.split(" - ")[0]);
+     }
+     
+     /**
+      * Chequeo de versiones
+      */
+     public String ControlV(){
+    	 String version = "";
+    	 //Si parametriza a cero selecciona
+    	 if(CHECK_UPDATE.equals("on")){    	 
+    	 version = controlv.selectVersion();
+    	 }
+    	 return version;
+     }
+     
+     /**
+      * Chequeo de versiones
+      */
+     public String isShow(){
+    	 String display = "";
+    	 double version = 6.0;
+    	 if(CHECK_UPDATE.equals("on")){    	 
+        	if(controlv.version()==version){
+        		display = "none";
+        	} 
+    	 } else {
+    		 display = "none";
+    	 }
+    	 return display;
      }
 }

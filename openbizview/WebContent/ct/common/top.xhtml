@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!-- 
-     Copyright (C) 2011  DVCONSULTORES
+     Copyright (C) 2011 - 2016  DVCONSULTORES
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
@@ -58,7 +58,7 @@
               <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><strong>&nbsp;&nbsp;#{loginBean.getLogged()}</strong><span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><p:commandLink title="#{msg.html20}" actionListener="#{navigateBean.href('chgpwd')}"><i class="fa fa-lock fa-1" style="margin-top: -3px"></i><small>&nbsp;&nbsp;#{msg.html20}</small></p:commandLink></li>
-                <li><p:commandLink title="#{msg.salir}" actionListener="#{loginBean.logout}" ><i class="fa fa-sign-out fa-1" style="margin-top: -3px"></i><small>&nbsp;&nbsp;#{msg.salir}</small></p:commandLink></li>                            
+                <li><p:commandLink title="#{msg.salir}" actionListener="#{loginBean.logout}" ><i class="fa fa-sign-out fa-1 text-danger" style="margin-top: -3px"></i><small>&nbsp;&nbsp;#{msg.salir}</small></p:commandLink></li>                            
               </ul>
             </li>
            </ul>

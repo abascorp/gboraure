@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES, CHRISTIAN DÍAZ
+ *  Copyright (C) 2011 - 2016  DVCONSULTORES, CHRISTIAN DÍAZ
 
     Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
     bajo los términos de la Licencia Pública General GNU publicada 
