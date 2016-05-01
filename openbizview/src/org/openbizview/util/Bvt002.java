@@ -108,6 +108,8 @@ import org.primefaces.model.SortOrder;
             	try { 
             		//Consulta
 					select(first, pageSize,sortField, filterValue);
+					//
+					selectRoles();
 					//Counter
 					counter(filterValue);
 					//Contador lazy
@@ -138,6 +140,9 @@ import org.primefaces.model.SortOrder;
             }
             
 		};
+		if(vusuario==null){
+			vusuario = "";
+		}
 	}
 	
 	private String coduser = "";
@@ -152,12 +157,22 @@ import org.primefaces.model.SortOrder;
 	private String[][] arr;
 	private Object filterValue = "";
 	private List<Bvt002> list = new ArrayList<Bvt002>();
+	List<Bvt002> listRoles = new ArrayList<Bvt002>();
+	@SuppressWarnings("unchecked")
+	List<Bvt002> listRolesSession = (List<Bvt002>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listRolesSession");
+	
 	private int validarOperacion = 0;
 	private String instancia = "";
 	private String instancia_insert = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia"); //Usuario logeado
 	//Cambio de password
 	StringMD md = new StringMD();
 	private String randomKey;
+	
+	
+	//Roles adicionales
+	private String vcodrol;
+	private String vdesrol;
+	private String isRol;
 
 
 	/**
@@ -324,6 +339,115 @@ import org.primefaces.model.SortOrder;
 		this.instancia = instancia;
 	}
 
+	
+
+	/**
+	 * @return the vcodrol
+	 */
+	public String getVcodrol() {
+		return vcodrol;
+	}
+
+
+
+	/**
+	 * @param vcodrol the vcodrol to set
+	 */
+	public void setVcodrol(String vcodrol) {
+		this.vcodrol = vcodrol;
+	}
+
+
+
+	/**
+	 * @return the vdesrol
+	 */
+	public String getVdesrol() {
+		return vdesrol;
+	}
+
+
+
+	/**
+	 * @param vdesrol the vdesrol to set
+	 */
+	public void setVdesrol(String vdesrol) {
+		this.vdesrol = vdesrol;
+	}
+
+
+
+	/**
+	 * @return the isRol
+	 */
+	public String getIsRol() {
+		return isRol;
+	}
+
+
+
+	/**
+	 * @param isRol the isRol to set
+	 */
+	public void setIsRol(String isRol) {
+		this.isRol = isRol;
+	}
+	
+	
+
+	/**
+	 * @return the listRoles
+	 */
+	public List<Bvt002> getListRoles() {
+		return listRoles;
+	}
+
+
+
+
+	/**
+	 * @return the listRolesSession
+	 */
+	public List<Bvt002> getListRolesSession() {
+		return listRolesSession;
+	}
+
+
+
+	/**
+	 * @param listRolesSession the listRolesSession to set
+	 */
+	public void setListRolesSession(List<Bvt002> listRolesSession) {
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listRolesSession", listRolesSession);
+	}
+
+
+
+	/**
+	 * @param listRoles the listRoles to set
+	 */
+	public void setListRoles(List<Bvt002> listRoles) {
+		this.listRoles = listRoles;
+	}
+	
+	
+
+	/**
+	 * @return the vusuario
+	 */
+	public String getVusuario() {
+		return vusuario;
+	}
+
+
+
+	/**
+	 * @param vusuario the vusuario to set
+	 */
+	public void setVusuario(String vusuario) {
+		this.vusuario = vusuario;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Variables seran utilizadas para capturar mensajes de errores de Oracle y parametros de metodos
 	FacesMessage msj = null;
@@ -331,6 +455,7 @@ import org.primefaces.model.SortOrder;
 	boolean vGacc; //Validador de opciones del menó
 	private int rows; //Registros de tabla
 	private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario"); //Usuario logeado
+	private String vusuario = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bcoduser"); //Usuario logeado
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
@@ -401,7 +526,7 @@ import org.primefaces.model.SortOrder;
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, coduser.toUpperCase().trim());
             pstmt.setString(2, desuser.toUpperCase());
-            pstmt.setString(3, md.getStringMessageDigest(cluser.toUpperCase(), StringMD.SHA256));
+            pstmt.setString(3, md.getStringMessageDigest(cluser, StringMD.SHA256));
             pstmt.setString(4, veccodrol[0].toUpperCase());
             pstmt.setString(5, login);
             pstmt.setString(6, login);
@@ -554,7 +679,7 @@ import org.primefaces.model.SortOrder;
              query += " SET CLUSER = ?";
              query += " WHERE CODUSER = ?";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, md.getStringMessageDigest(cluser.toUpperCase(), StringMD.SHA256));
+            pstmt.setString(1, md.getStringMessageDigest(cluser, StringMD.SHA256));
             pstmt.setString(2, login.toUpperCase());
             try {
             	if(!cluser.equals(cluser1)){
@@ -978,4 +1103,167 @@ import org.primefaces.model.SortOrder;
   		//System.out.println(rows);
   		return rows;
   	}
+  	
+  	
+  	/**
+  	 * Retorna si el usuario tiene asignado algún rolList<Bvt002> listRoles = new ArrayList<Bvt002>(); adicional
+  	 */
+  	public String isRol(String pcodrol){
+  		String valor = "fa fa-circle fa-2x text-danger";
+  		String query = "select b_codrol from bvt008 where coduser = '" + vusuario.trim().toUpperCase() + "' and instancia = '" + instancia_insert + "' and b_codrol = '" + pcodrol.toUpperCase() + "'";
+  		//System.out.println(query);
+  		try {
+			consulta.selectPntGenerica(query, JNDI);
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  		int rows = consulta.getRows();
+  		if(rows>0){
+  			valor = "fa fa-circle fa-2x text-success";
+  		}
+  		return valor;
+  	}
+  	
+
+  	
+  	/**
+     * Selección de roles
+     * @throws NamingException 
+  	 * @throws SQLException 
+     * @throws IOException 
+     **/ 	
+  	public void selectRoles() throws NamingException, SQLException {
+  	//Para mostrar en lista los roles
+  		
+  		Context initContext = new InitialContext();     
+ 		DataSource ds = (DataSource) initContext.lookup(JNDI);
+ 		con = ds.getConnection();		
+ 		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+ 		DatabaseMetaData databaseMetaData = con.getMetaData();
+ 		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+ 		
+ 		
+ 		String query = "";
+
+  		switch ( productName ) {
+        case "Oracle":
+        	   query += " select codrol, desrol ";
+         	   query += " FROM bvt003" ;
+        	   query += " where instancia = '" + instancia_insert + "' order by 1";
+
+             break;
+        case "PostgreSQL":
+        	query += " select codrol, desrol";
+      	    query += " FROM bvt003" ;
+     	    query += " where instancia = '" + instancia_insert + "' order by 1";
+             break;
+        case "Microsoft SQL Server":
+        	query += " select codrol, desrol ";
+      	    query += " FROM Bvt008" ;
+     	    query += " where instancia = '" + instancia_insert + "' order by 1";       		
+        }
+
+        
+        pstmt = con.prepareStatement(query);
+        //System.out.println(query);
+  		
+        r =  pstmt.executeQuery();
+        
+        while (r.next()){
+        Bvt002 select = new Bvt002();
+     	select.setVcodrol(r.getString(1));
+     	select.setVdesrol(r.getString(2));
+        	//Agrega la lista
+        	listRoles.add(select);
+        }
+        
+        setListRolesSession(listRoles);
+        
+        //Cierra las conecciones
+        pstmt.close();
+        con.close();
+  	}
+  	
+  	
+  	/**
+     * Inserta roles adicionales.
+     * <p>
+     * Parámetros del Mátodo: String rol
+     **/
+    public void insert(String prol) throws  NamingException {
+    		
+        try {
+        	Context initContext = new InitialContext();     
+     		DataSource ds = (DataSource) initContext.lookup(JNDI);
+            con = ds.getConnection();
+
+            String query = "INSERT INTO Bvt008 VALUES (?,?,?,'" + getFecha() + "',?)";
+            //System.out.println(query);
+            //System.out.println("instancia: " + instancia_insert);
+            //System.out.println("usuario: " + vusuario);
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, vusuario.trim().toUpperCase());
+            pstmt.setString(2, prol.toUpperCase());
+            pstmt.setString(3, login);
+            pstmt.setInt(4, Integer.parseInt(instancia_insert));
+
+            
+            try {
+                //Avisando
+            	pstmt.executeUpdate();
+            	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");
+             } catch (SQLException e)  {
+            	 msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+            }
+            
+            pstmt.close();
+            con.close();
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }	       
+        FacesContext.getCurrentInstance().addMessage(null, msj); 
+    }
+    
+    
+    /**
+     * Elimina roles adicionales.
+     * <p>
+     * Parámetros del Mátodo: String rol
+     **/
+    public void delete(String prol) throws NamingException  {  
+	        try {
+	       	
+	        	Context initContext = new InitialContext();     
+	     		DataSource ds = (DataSource) initContext.lookup(JNDI);
+
+	     		con = ds.getConnection();		
+
+	        	String query = "DELETE from Bvt008 WHERE b_codrol = '" + prol + "' and instancia = '" + instancia_insert + "' and coduser = '" + vusuario.trim().toUpperCase() + "'";
+	        		        	
+	            pstmt = con.prepareStatement(query);
+	            ////System.out.println(query);
+	
+	            try {
+	                //Avisando
+	                pstmt.executeUpdate();
+	                msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnDelete"), "");
+
+	                limpiarValores();	
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	                msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+	            }
+	
+	            pstmt.close();
+	            con.close();
+	
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        
+    	}
+    	FacesContext.getCurrentInstance().addMessage(null, msj); 
+    }
+    
+
 }

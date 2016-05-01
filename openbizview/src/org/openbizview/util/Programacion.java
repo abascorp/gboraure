@@ -1307,6 +1307,7 @@ public class Programacion extends Bd implements Serializable {
  * @throws NamingException 
  * @throws IOException **/
    protected void recuperarTriggers(String estatus) throws SchedulerException, NamingException{
+	   //System.out.println("Recuperando Tareas");
 	   consulta.selectPntGenerica("select job, disparador, grupo, diasem,  frecuencia, diames, PARAMVALUES, paramnames, intervalo, dias_semana, to_char(diainicio,'HH24'), to_char(diainicio,'mi') from t_programacion where activa = '" + estatus + "' order by disparador", JNDI);
 	   int rows = consulta.getRows();
 	   String[][] vltabla = consulta.getArray();
@@ -1316,19 +1317,19 @@ public class Programacion extends Bd implements Serializable {
 		   for(int i=0; i<rows; i++){//Recorre los triggers almacenados y verifica por cada uno
 			   if(schd.checkExists(triggerKey(vltabla[i][1].toUpperCase(), "unico"))==false){//Si la tarea no existe la crea
 				   //Opción para generar la tarea diaria
-				   if(vltabla[i][6].toString().equals("0")){
+				   if(vltabla[i][4].toString().equals("0")){
 					   //Tarea diaria
 					   iniciarTareaDiaria(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][6],"1", vltabla[i][7], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));				    	
-				   } else if(vltabla[i][6].toString().equals("1")){//Fin valida que sea diaria, de lo contrario es semanal
+				   } else if(vltabla[i][4].toString().equals("1")){//Fin valida que sea diaria, de lo contrario es semanal
 					   //Tarea semanal
 					   iniciarTareaSemanal(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][3], vltabla[i][6],"1", vltabla[i][7], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));					   
-				   } else if(vltabla[i][6].toString().equals("2")){
+				   } else if(vltabla[i][4].toString().equals("2")){
 					   //Tarea dia mes
 					   iniciarTareaDiaMes(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][5], vltabla[i][6],"1", vltabla[i][7], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));
-				   } else if(vltabla[i][6].toString().equals("3")){
+				   } else if(vltabla[i][4].toString().equals("3")){
 					   //Tarea dia hora
 					   iniciarTareaIntervaloMinutos(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][8], vltabla[i][6], "1", vltabla[i][7]);	   
-				   } else if (vltabla[i][6].toString().equals("4")){
+				   } else if (vltabla[i][4].toString().equals("4")){
 			    	   //Intervalos mensuales
 					   iniciarTareaIntervaloMensual(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(),  vltabla[i][6],"1", vltabla[i][7]);
 			       } else {
@@ -1376,7 +1377,19 @@ public class Programacion extends Bd implements Serializable {
      		
      		con = ds.getConnection();
      		
-            String query = "DELETE  from T_PROGRAMACION WHERE diainicio ='" + diainicio + "' and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
+     		String vlfecha;
+     		java.text.SimpleDateFormat sdfecha_es = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", locale );
+        	java.text.SimpleDateFormat sdfecha_en = new java.text.SimpleDateFormat("dd/MMM/yyyy HH:mm", locale );
+        	String to_date;
+        	if(OPENBIZVIEW_BD_LANG.equals("es")){
+        		vlfecha = sdfecha_es.format(diainicio);
+        		to_date = "to_date('" + vlfecha + "', 'dd/mm/yyyy hh24:mi')";
+        	} else {
+        		vlfecha = sdfecha_en.format(diainicio);
+        		to_date = "to_date('" + vlfecha + "', 'dd/mmm/yyyy hh24:mi')";
+        	}
+     		
+            String query = "DELETE  from T_PROGRAMACION WHERE diainicio = " + to_date + " and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
             //System.out.println(query);
             pstmt = con.prepareStatement(query);
           
@@ -1403,8 +1416,11 @@ public class Programacion extends Bd implements Serializable {
         try {
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
-
      		con = ds.getConnection();
+     		
+     		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+        	 DatabaseMetaData databaseMetaData = con.getMetaData();
+        	 String productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
      		
      		String[] vecidgrupo = idgrupo.split("\\ - ", -1);
      		
@@ -1422,9 +1438,32 @@ public class Programacion extends Bd implements Serializable {
         	}
         	//System.out.println(param);
      		String[] vecreporte = reporte.split("\\ - ", -1);
+     		String vlfecha;
+     		java.text.SimpleDateFormat sdfecha_es = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", locale );
+        	java.text.SimpleDateFormat sdfecha_en = new java.text.SimpleDateFormat("dd/MMM/yyyy HH:mm", locale );
+        	String to_date;
+        	if(OPENBIZVIEW_BD_LANG.equals("es")){
+        		vlfecha = sdfecha_es.format(diainicio);
+        		to_date = "to_date('" + vlfecha + "', 'dd/mm/yyyy hh24:mi')";
+        	} else {
+        		vlfecha = sdfecha_en.format(diainicio);
+        		to_date = "to_date('" + vlfecha + "', 'dd/mmm/yyyy hh24:mi')";
+        	}
      		
-     		String query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'" + diainicio + "',?,?,?,?,?,?,?,?,?)";
-            pstmt = con.prepareStatement(query);
+           	String query = "";
+           	
+           	switch ( productName ) {
+            case "Oracle":
+            	query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?," + to_date + ",?,?,?,?,?,?,?,?,?)";
+                 break;
+            case "PostgreSQL":
+            	query = "INSERT INTO T_PROGRAMACION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'" + diainicio + "',?,?,?,?,?,?,?,?,?)";
+                 break;
+            }
+
+
+     		//System.out.println(query);
+     		pstmt = con.prepareStatement(query);
             pstmt.setString(1, vltrigger.toUpperCase());
             pstmt.setString(2, "unico");
             pstmt.setInt(3, Integer.parseInt(pdias));       
@@ -1446,12 +1485,14 @@ public class Programacion extends Bd implements Serializable {
             pstmt.setString(19, formato);
             pstmt.setInt(20, Integer.parseInt(instancia));
             pstmt.setString(21, param);
-            //System.out.println(PRINT_REPORT_LOCATION);
+            
             try {
                 pstmt.executeUpdate();
                 limpiar();
             } catch (SQLException e)  {
                  e.printStackTrace();
+                 msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
+       	    	 FacesContext.getCurrentInstance().addMessage(null, msj);
             }
             
             pstmt.close();
@@ -1506,7 +1547,7 @@ public class Programacion extends Bd implements Serializable {
         	query += "  select * from ";
      	    query += " ( select query.*, rownum as rn from";
         	query += " ( select trim(a.job), trim(a.disparador),  case a.frecuencia when '0' then '" + getMessage("mailtareaDiario").toUpperCase() + "' when  '1' then '" + getMessage("mailtareaSemanal").toUpperCase() + "' when '2' then'" + getMessage("mailtareaPersonalizada").toUpperCase() + "' when '3' then '" + getMessage("mailtareaHoraRep").toUpperCase() + "' when '4' then '" + getMessage("mailimes1").toUpperCase() + "' when '5' then '" + getMessage("maillidiasSelect").toUpperCase() + "'  else '" + getMessage("maillidiasSelect1").toUpperCase() + "' end , a.diasem";
-      		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"'), trim(a.formato)";
+      		query += " , trim(a.codrep),  trim(a.idgrupo), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy HH24:mi')), decode(trim(activa),'0','chkActiva','chkInactiva'), trim(activa), decode(trim(activa),'0','"+getMessage("mailtarea0")+"','"+ getMessage("mailtarea1")+"'), trim(a.formato)";
       		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end, trim(paramvalues), intervalo";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
@@ -1522,7 +1563,7 @@ public class Programacion extends Bd implements Serializable {
              break;
         case "PostgreSQL":
         	query = "select trim(a.job), trim(a.disparador),   case a.frecuencia when '0' then '" + getMessage("mailtareaDiario").toUpperCase() + "' when  '1' then '" + getMessage("mailtareaSemanal").toUpperCase() + "' when '2' then'" + getMessage("mailtareaPersonalizada").toUpperCase() + "' when '3' then '" + getMessage("mailtareaHoraRep").toUpperCase() + "' when '4' then '" + getMessage("mailimes1").toUpperCase() + "' when '5' then '" + getMessage("maillidiasSelect").toUpperCase() + "'  else '" + getMessage("maillidiasSelect1").toUpperCase() + "' end , a.diasem";
-      		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy hh24:mi:ss')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end, trim(a.formato)";
+      		query += " , trim(a.codrep),  trim(cast(a.idgrupo as text)), trim(a.asunto), trim(a.contenido), trim(b.desgrupo) , trim(a.frecuencia), trim(a.diames), trim(to_char(a.diainicio, 'dd/mm/yyyy hh24:mi')),  case when trim(activa) = '0' then 'chkActiva' else 'chkInactiva' end, trim(activa), case when trim(activa) = '0' then '"+ getMessage("mailtarea0")+"' else '"+ getMessage("mailtarea1")+"' end, trim(a.formato)";
       		query += " , case when activa = '0' then 'fa fa-circle fa-2x text-success' else 'fa fa-circle fa-2x text-danger' end, trim(paramvalues), intervalo";
       		query += " from t_programacion a, mailgrupos b";
             query += " where a.idgrupo=b.idgrupo";
@@ -1663,10 +1704,10 @@ public class Programacion extends Bd implements Serializable {
   	   	String[][] vltablarep;
   
   		try {
-  		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), hora, trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido)";
+  		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), to_char(diainicio,'HH24:mi'), trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido), trim(dias_semana)";
   	    vlqueryRep += " from t_programacion" ;
   	    vlqueryRep += " where disparador='" + vltrigger.toUpperCase() + "'";
-  	  		
+  	    //System.out.println(vlqueryRep);	
   		consulta.selectPntGenerica(vlqueryRep, JNDI);
   		
   		////System.out.println("select nombrereporte, idgrupo, trim(rutareporte), trim(rutatemp) from mailtarea where hora='" + formato.format(new Date()) + "'");
@@ -1739,29 +1780,71 @@ public class Programacion extends Bd implements Serializable {
   			//Modifica los valores
   			Context initContext = new InitialContext();     
       		DataSource ds = (DataSource) initContext.lookup(JNDI);
-
+      		
       		con = ds.getConnection();	
       		
-      		arregloParametros =  StringUtils.join(inputs, "|").toUpperCase();
-
+      	   //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+       	   DatabaseMetaData databaseMetaData = con.getMetaData();
+       	   String productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
       		
-             String query = "UPDATE t_programacion";
-             query += " SET diasem = '" + dias + "'";
-             query += " , frecuencia = '" + frecuencia + "'";
-             query += " , asunto = '" + asunto + "'";
-             query += " , contenido = '" + contenido + "'";
-             query += " , codrep = '" + vecreporte[0].toUpperCase() + "'";
-             query += " , idgrupo = '" + Integer.parseInt(vecidgrupo[0]) + "'";
-             query += " , diames = '" + diames + "'";
-             query += " , diainicio = '" + diainicio + "'";
-             query += " , paramvalues = '" + arregloParametros + "'";
-             query += " , intervalo = '" + horarepeticion + "'";
-             query += " , paramnames = '" + arregloParamNames(vecreporte[0]) + "'";
-             query += " , ruta_salida = '" + ruta_salida + "'";
-             query += " , opctareas = '" + opctareas + "'";
-             query += " , formato = '" + formato + "'";
-             query += " WHERE disparador = '" + vltrigger.toUpperCase() + "'";
-             query += " AND   instancia = '" + instancia + "'";
+      		
+      		arregloParametros =  StringUtils.join(inputs, "|").toUpperCase();
+      		
+      		String vlfecha;
+     		java.text.SimpleDateFormat sdfecha_es = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", locale );
+        	java.text.SimpleDateFormat sdfecha_en = new java.text.SimpleDateFormat("dd/MMM/yyyy HH:mm", locale );
+        	String to_date;
+        	if(OPENBIZVIEW_BD_LANG.equals("es")){
+        		vlfecha = sdfecha_es.format(diainicio);
+        		to_date = "to_date('" + vlfecha + "', 'dd/mm/yyyy hh24:mi')";
+        	} else {
+        		vlfecha = sdfecha_en.format(diainicio);
+        		to_date = "to_date('" + vlfecha + "', 'dd/mmm/yyyy hh24:mi')";
+        	}
+     		
+           	String query = "";
+           	
+           	switch ( productName ) {
+            case "Oracle":
+            	query = "UPDATE t_programacion";
+                query += " SET diasem = '" + dias + "'";
+                query += " , frecuencia = '" + frecuencia + "'";
+                query += " , asunto = '" + asunto + "'";
+                query += " , contenido = '" + contenido + "'";
+                query += " , codrep = '" + vecreporte[0].toUpperCase() + "'";
+                query += " , idgrupo = '" + Integer.parseInt(vecidgrupo[0]) + "'";
+                query += " , diames = '" + diames + "'";
+                query += " , diainicio = " + to_date ;
+                query += " , paramvalues = '" + arregloParametros + "'";
+                query += " , intervalo = '" + horarepeticion + "'";
+                query += " , paramnames = '" + arregloParamNames(vecreporte[0]) + "'";
+                query += " , ruta_salida = '" + ruta_salida + "'";
+                query += " , opctareas = '" + opctareas + "'";
+                query += " , formato = '" + formato + "'";
+                query += " WHERE disparador = '" + vltrigger.toUpperCase() + "'";
+                query += " AND   instancia = '" + instancia + "'";
+                 break;
+            case "PostgreSQL":
+            	query = "UPDATE t_programacion";
+                query += " SET diasem = '" + dias + "'";
+                query += " , frecuencia = '" + frecuencia + "'";
+                query += " , asunto = '" + asunto + "'";
+                query += " , contenido = '" + contenido + "'";
+                query += " , codrep = '" + vecreporte[0].toUpperCase() + "'";
+                query += " , idgrupo = '" + Integer.parseInt(vecidgrupo[0]) + "'";
+                query += " , diames = '" + diames + "'";
+                query += " , diainicio = '" + diainicio + "'";
+                query += " , paramvalues = '" + arregloParametros + "'";
+                query += " , intervalo = '" + horarepeticion + "'";
+                query += " , paramnames = '" + arregloParamNames(vecreporte[0]) + "'";
+                query += " , ruta_salida = '" + ruta_salida + "'";
+                query += " , opctareas = '" + opctareas + "'";
+                query += " , formato = '" + formato + "'";
+                query += " WHERE disparador = '" + vltrigger.toUpperCase() + "'";
+                query += " AND   instancia = '" + instancia + "'";
+                 break;
+            }
+             
           // System.out.println(query);
             pstmt = con.prepareStatement(query);
             // Antes de ejecutar valida si existe el registro en la base de Datos.
@@ -2271,14 +2354,14 @@ public class Programacion extends Bd implements Serializable {
 	      		query += " when 5 then 'FRI'";
 	      		query += " when 6 then 'SAT'";
 	      		query += " when 7 then 'SUN' end days";
-	     	    query += " case rownum when 1 then 'Lunes'";
+	     	    query += " , case rownum when 1 then 'Lunes'";
 	        	query += " when 2 then 'Martes'";
 	        	query += " when 3 then 'Miércoles'";
 	      		query += " when 4 then 'Jueves'";
 	      		query += " when 5 then 'Viernes'";
 	      		query += " when 6 then 'Sábado'";
 	      		query += " when 7 then 'Domingo' end dias";
-	      		query += " FROM dual CONNECT BY LEVEL <= 7  ORDER BY 1";
+	      		query += " FROM dual CONNECT BY LEVEL <= 7";
 	             break;
 	        case "PostgreSQL":
 	        	query = "WITH RECURSIVE t(n) AS (";

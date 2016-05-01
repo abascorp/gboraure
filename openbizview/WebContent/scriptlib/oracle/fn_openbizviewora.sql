@@ -1,25 +1,6 @@
 --------------------------------------------------------
--- Archivo creado  - viernes-diciembre-26-2014   
+-- Archivo creado  - sábado-abril-30-2016   
 --------------------------------------------------------
---------------------------------------------------------
---  DDL for Function COUNT_BVT007
---------------------------------------------------------
-
-  CREATE OR REPLACE FUNCTION "COUNT_BVT007" (pbusqueda varchar2, prol varchar2, pinstancia varchar2)
-  RETURN number AS
-vcount number;
-begin
-select count(*) into vcount 
-FROM Bvt007 a, bvt003 b, bvt001 c
-WHERE a.b_codrol=b.codrol
-and   a.b_codrep=c.codrep
-and a.b_codrol||b.desrol||a.b_codrep||c.desrep like  '%'||pbusqueda||'%'
-and a.b_codrol like prol||'%'
-and a.instancia = pinstancia;
-return vcount;
-end;
-
-/
 --------------------------------------------------------
 --  DDL for Function COUNT_ACCCAT1
 --------------------------------------------------------
@@ -215,32 +196,15 @@ end;
 --  DDL for Function COUNT_BVT005
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "COUNT_BVT005" (pbusqueda varchar2, prol varchar2)
+  CREATE OR REPLACE FUNCTION "COUNT_BVT005" (pbusqueda varchar2, prol varchar2, pinstancia varchar2)
   RETURN number AS
 vcount number;
 begin
 select count(*) into vcount 
 FROM Bvt005
 WHERE b_codrol||codopc||desopc like  '%'||pbusqueda||'%'
-and b_codrol like prol||'%';
-return vcount;
-end;
-
-/
---------------------------------------------------------
---  DDL for Function COUNT_BVT003A
---------------------------------------------------------
-
-  CREATE OR REPLACE FUNCTION "COUNT_BVT003A" (pbusqueda varchar2, pusuario varchar2, pinstancia varchar2)
-  RETURN number AS
-vcount number;
-begin
-select count(*) into vcount 
-from bvt003a a, bvt003 b
-where a.codrol = b.codrol
-and  a.coduser||b.desrol  like '%'||pbusqueda||'%'
-and a.coduser like pusuario||'%'
-and a.instancia = pinstancia;
+and b_codrol like prol||'%'
+and instancia = pinstancia;
 return vcount;
 end;
 
@@ -258,6 +222,25 @@ from bvt006
 where b_codrep||b_desrep  like '%'||pbusqueda||'%'
 AND  B_CODUSER like pcoduser||'%'
 and instancia = pinstancia;
+return vcount;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Function COUNT_BVT007
+--------------------------------------------------------
+
+  CREATE OR REPLACE FUNCTION "COUNT_BVT007" (pbusqueda varchar2, prol varchar2, pinstancia varchar2)
+  RETURN number AS
+vcount number;
+begin
+select count(*) into vcount 
+FROM Bvt007 a, bvt003 b, bvt001 c
+WHERE a.b_codrol=b.codrol
+and   a.b_codrep=c.codrep
+and a.b_codrol||b.desrol||a.b_codrep||c.desrep like  '%'||pbusqueda||'%'
+and a.b_codrol like prol||'%'
+and a.instancia = pinstancia;
 return vcount;
 end;
 
@@ -408,7 +391,8 @@ begin
 select count(*) into vcount 
 FROM  MAILGRUPOS A, MAILLISTA B
 WHERE A.IDGRUPO=B.IDGRUPO
-and a.idgrupo||b.idmail||b.mail like  '%'||pbusqueda||'%'
+and a.instancia = b.instancia
+and a.idgrupo||b.idmail||upper(b.mail) like  '%'||pbusqueda||'%'
 and  a.idgrupo like pidgrupo||'%'
 and b.instancia = pinstancia;
 return vcount;
@@ -419,16 +403,49 @@ end;
 --  DDL for Function COUNT_PROGRAMACION
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "COUNT_PROGRAMACION" (pbusqueda varchar2, popctareas varchar2, pinstancia varchar2)
+  CREATE OR REPLACE FUNCTION "COUNT_PROGRAMACION" (pbusqueda varchar2, pinstancia varchar2, preporte varchar2, pfrecuencia varchar2, pgrupo varchar2)
   RETURN number AS
 vcount number;
 begin
 select count(*) into vcount 
 FROM  t_programacion
-WHERE job||disparador||codrep like  '%'||pbusqueda||'%'
-and opctareas like popctareas||'%'
+WHERE job||codrep like  '%'||pbusqueda||'%'
+and codrep like preporte||'%'
+and frecuencia like pfrecuencia||'%'
+and idgrupo like pgrupo||'%'
 and instancia = pinstancia;
 return vcount;
 end;
+
+/
+--------------------------------------------------------
+--  DDL for Function SPLITCAD
+--------------------------------------------------------
+
+  CREATE OR REPLACE FUNCTION "SPLITCAD" (CADENA   VARCHAR2,
+                   POSICION NUMBER,
+                   DELIM    VARCHAR2 := '|')
+ RETURN    VARCHAR2
+ IS
+    START_POS NUMBER;
+    END_POS   NUMBER;
+ BEGIN
+    IF POSICION = 1 THEN
+        START_POS := 1;
+    ELSE
+        START_POS := INSTR(CADENA, DELIM, 1, POSICION - 1);
+        IF START_POS = 0 THEN
+            RETURN NULL;
+        ELSE
+            START_POS := START_POS + LENGTH(DELIM);
+        END IF;
+    END IF;
+    END_POS := INSTR(CADENA, DELIM, START_POS, 1);
+    IF END_POS = 0 THEN
+        RETURN SUBSTR(CADENA, START_POS);
+    ELSE
+        RETURN SUBSTR(CADENA, START_POS, END_POS - START_POS);
+    END IF;
+ END SPLITCAD;
 
 /

@@ -443,10 +443,10 @@ import org.primefaces.model.SortOrder;
  		
  		String query = "";
  		if(b_codrol==null){
- 			b_codrol = "9999abcd%/@ - ";
+ 			b_codrol = " - ";
  		}
  		if(b_codrol.equals("")){
- 			b_codrol = "9999abcd%/@ - ";
+ 			b_codrol = " - ";
  		}
  		String[] veccodrol = b_codrol.split("\\ - ", -1);
 
@@ -460,7 +460,7 @@ import org.primefaces.model.SortOrder;
   		       query += " and   a.b_codcat1=c.codcat1 ";
   		       query += " and A.instancia=B.instancia";
   		       query += " and A.instancia=c.instancia";
-  		       query += " and   a.b_codrol = '" + veccodrol[0] + "'";
+  		       query += " and   a.b_codrol like '" + veccodrol[0] + "%'";
         	   query += " AND   a.b_codcat1||c.descat1 like '%" + ((String) filterValue).toUpperCase() + "%'";
         	   query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
@@ -474,7 +474,7 @@ import org.primefaces.model.SortOrder;
 		       query += " and   a.b_codcat1=c.codcat1 ";
 		       query += " and A.instancia=B.instancia";
   		       query += " and A.instancia=c.instancia";
-		       query += " and   a.b_codrol = '" + veccodrol[0] + "'";
+		       query += " and   a.b_codrol like '" + veccodrol[0] + "%'";
       	       query += " AND   a.b_codcat1||c.descat1 like '%" + ((String) filterValue).toUpperCase() + "%'";
       	       query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;

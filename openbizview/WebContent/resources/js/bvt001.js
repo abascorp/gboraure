@@ -56,9 +56,9 @@
 	       var hora = localTime.getHours();
 	       var minutos = localTime.getMinutes();
 		   //var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-		   var monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+		   var monthNames = ["01", "02", "03", "04", "05", "06",  "07", "08", "09", "10", "11", "12"];
 		   if(vT0=='es'){
-			   monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+			   monthNames = ["01", "02", "03", "04", "05", "06",  "07", "08", "09", "10", "11", "12"];
 		   } else {
 			   monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 		   }

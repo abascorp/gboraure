@@ -114,12 +114,10 @@ public class RunReport implements Serializable {
 
         //This will set the output file location, the format to render to, and
         //apply to the task
-        //System.out.println(format.toUpperCase());
+        //System.out.println(format);
             options.setOutputFormat(format);
             options.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
             task.setRenderOption(options);  
-       
-        
         
         try
         {

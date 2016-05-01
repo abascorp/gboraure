@@ -77,32 +77,27 @@ public class Bd  {
     protected static final String JNDI_EXTERNAL = ctx.getExternalContext().getInitParameter("JNDI_BD_EXTERNAL"); //"jdbc/orabiz"; //Nombre del JNDI
 	static final String JNDIMAIL = ctx.getExternalContext().getInitParameter("JNDI_MAIL"); //"jdbc/orabiz"; //Nombre del JNDI
     static final String THREADNUMBER = ctx.getExternalContext().getInitParameter("THREAD_NUMBER");
-    static final String FECHAFORMAT = ctx.getExternalContext().getInitParameter("FORMAT_DATE");
     static final String LOGOUT_URL = ctx.getExternalContext().getInitParameter("LOGOUT_URL");//Url logout
     static final String PRINT_REPORT_LOCATION = ctx.getExternalContext().getInitParameter("PRINT_REPORT_LOCATION");//Url logout
-    static final String OPENBIZVIEW_LOCALE = ctx.getExternalContext().getInitParameter("OPENBIZVIEW_PRINT_LOG_LOCALE");//Localización
+    static final String OPENBIZVIEW_BD_LANG = ctx.getExternalContext().getInitParameter("OPENBIZVIEW_BD_LANG");//Localización
     static final String CHECK_UPDATE = ctx.getExternalContext().getInitParameter("CHECK_UPDATE");//Chequea actualizaciones
-    java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat(FECHAFORMAT, locale );
-    java.text.SimpleDateFormat sdfDefautl = new java.text.SimpleDateFormat("dd/MM/yyyy");
-
+    java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat("dd/MM/yyyy", locale );
     String fecha = sdfecha.format(fecact); //Fecha formateada para insertar en tablas
     
     //Variables para uso internos de servlet
     private static final String PARAMINFOA = "dirUploadFiles"; //Uploads
     private static final String PARAMINFOB = "dirUploadRep"; //Uploads
     
+   
     
-    
-    
-	/**
-	 * @return the openbizviewLocale
+	
+    /**
+	 * @return the openbizviewBdLang
 	 */
-	public static String getOpenbizviewLocale() {
-		return OPENBIZVIEW_LOCALE;
+	public static String getOpenbizviewBdLang() {
+		return OPENBIZVIEW_BD_LANG;
 	}
-
-
-/**
+    /**
 	 * @return the paraminfob
 	 */
 	public static String getPARAMINFOB() {
@@ -114,19 +109,44 @@ public class Bd  {
 	public static String getPARAMINFOA() {
 		return PARAMINFOA;
 	}
+	
+	/**
+	 * @return the openbizviewLocale
+	 */
+	public static String getOpenbizviewLocale() {
+		return OPENBIZVIEW_BD_LANG;
+	}
 
 
     /**
-     * Obtiene la fecha del dia, ya que se va a utilizar en todas la tablas
+     * Obtiene la fecha del dia formateada, ya que se va a utilizar en todas la tablas
      * se crea el metodo.
- * @throws IOException 
+     * @throws IOException 
      */
     public String getFecha(){
-    	FacesContext ctx = FacesContext.getCurrentInstance();
-        String ff =
-                ctx.getExternalContext().getInitParameter("FORMAT_DATE");
-    	java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat(ff, locale );
-    	fecha = sdfecha.format(fecact);
+    	java.text.SimpleDateFormat sdfecha_es = new java.text.SimpleDateFormat("dd/MM/yyyy", locale );
+    	java.text.SimpleDateFormat sdfecha_en = new java.text.SimpleDateFormat("dd/MMM/yyyy", locale );
+    	if(OPENBIZVIEW_BD_LANG=="es"){
+    		fecha = sdfecha_es.format(fecact);
+    	} else {
+    		fecha = sdfecha_en.format(fecact);
+    	}
+        return fecha;
+    }
+    
+    /**
+     * Obtiene la fecha del dia formateada con hora y minutos, ya que se va a utilizar en todas la tablas
+     * se crea el metodo.
+     * @throws IOException 
+     */
+    public String getFechaHora(){
+    	java.text.SimpleDateFormat sdfecha_es = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", locale );
+    	java.text.SimpleDateFormat sdfecha_en = new java.text.SimpleDateFormat("dd/MMM/yyyy HH:mm", locale );
+    	if(OPENBIZVIEW_BD_LANG.equals("es")){
+    		fecha = sdfecha_es.format(fecact);
+    	} else {
+    		fecha = sdfecha_en.format(fecact);
+    	}
         return fecha;
     }
       
@@ -233,6 +253,7 @@ public class Bd  {
 	 * @param next
 	 */
 	public void setBcoduser(String bcoduser){
+		//System.out.println("bcoduser: " + bcoduser);
 	   	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bcoduser", bcoduser);
 	}
 	

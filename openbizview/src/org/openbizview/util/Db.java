@@ -60,7 +60,7 @@ public class Db extends Bd implements Serializable  {
 		String[][] vlini = null;
 	 //Lee cuantos reportes impresos
 	   try {
-		q1 = "select count(*) from bvt001 where instancia =  '" + instancia + "' and codrep in (select b_codrep from bvt007 where b_codrol = '" + rol + "')";
+		q1 = "select count(*) from bvt001 where instancia =  '" + instancia + "' and codrep IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL IN (SELECT B_CODROL FROM BVT002 WHERE CODUSER = '" + login + "' UNION ALL SELECT B_CODrol FROM BVT008 WHERE CODUSER = '" + login + "'))";
 		consulta.selectPntGenerica(q1, JNDI);	
 		r1 = consulta.getRows();
 		if (r1>0){
@@ -104,7 +104,7 @@ public class Db extends Bd implements Serializable  {
 	
 	private String instancia = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("instancia");
 	private String login = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("login"); //Usuario logeado
-	private String rol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rol"); //Usuario logeado
+	//private String rol = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rol"); //Usuario logeado
 	private List<Db> list = new ArrayList<Db>();
 	
 	//Coneccion a base de datos

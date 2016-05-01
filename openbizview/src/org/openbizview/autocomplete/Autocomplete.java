@@ -530,6 +530,43 @@ public class Autocomplete extends Bd {
 		}
 		return results;
 	}
+	
+	/**
+	 * Lista Usuario.
+	 * 
+	 * @throws NamingException
+	 * @return List String
+	 * @throws IOException
+	 **/
+
+	public List<String> completeUserCod(String query) throws NamingException,
+			IOException {
+
+		String queryora = "Select coduser " + " from bvt002 "
+				+ " where coduser like '%"
+				+ query.toUpperCase() + "%' and instancia = '" + instancia
+				+ "' order by coduser";
+		String querypg = "Select coduser " + " from bvt002 "
+				+ " where coduser  like '%"
+				+ query.toUpperCase() + "%' and instancia = '" + instancia
+				+ "' order by coduser";
+		String querysql = "Select coduser" + " from bvt002 "
+				+ " where coduser  like '%"
+				+ query.toUpperCase() + "%' and instancia = '" + instancia
+				+ "' order by coduser";
+
+		List<String> results = new ArrayList<String>();
+		//System.out.println(querypg);
+
+		consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+
+		rows = consulta.getRows();
+		tabla = consulta.getArray();
+		for (int i = 0; i < rows; i++) {
+			results.add(tabla[i][0]);
+		}
+		return results;
+	}
 
 	/**
 	 * Lista rol.

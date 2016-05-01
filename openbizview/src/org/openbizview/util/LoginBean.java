@@ -68,7 +68,7 @@ public class LoginBean extends Bd {
 
     public void setClave (final String clave)
     {
-        this.clave = clave.toUpperCase();
+        this.clave = clave;
     }
 	
 

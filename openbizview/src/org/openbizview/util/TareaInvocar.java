@@ -97,6 +97,7 @@ public class TareaInvocar extends Bd implements Job {
 		//Generar reporte	 
 		 new RunReport().outReporteRecibo(vltablarep[nj][0].toString(), vltablarep[nj][5].toString(), vltablarep[nj][1].toString(), vltablarep[nj][2].toString(), vltablarep[nj][0].toString()+"_"+vltablarep[nj][11], sqlDate, vltablarep[nj][6].toString(), vltablarep[nj][7], vltablarep[nj][8]);	 
 		 //Se envía por correo
+		 //System.out.println("Mandé correo");
 		 new Sendmail().mailthread(vltablarep[nj][6], vltablarep[nj][2], vltablarep[nj][0].toString()+"_"+vltablarep[nj][11], vltablarep[nj][9], vltablarep[nj][10], vltablarep[nj][5]);					
 		 //Borra archivos
 		 

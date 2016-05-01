@@ -102,7 +102,7 @@
 			
 
 			<!-- Tabla con el resultado -->
-			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.resultFind}" var="tb"  value="#{bvtmenu.lazyModel}"   lazy="true" sortBy="#{tb.b_codrol}" 
+			<p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb"  value="#{bvtmenu.lazyModel}"   lazy="true" sortBy="#{tb.b_codrol}" 
 			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
 			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{bvtmenu.rows}"  

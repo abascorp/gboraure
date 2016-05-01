@@ -439,10 +439,10 @@ public void setRows(int rows) {
    		String query = "";
    		
    		if(idgrupo==null){
-   			idgrupo = "9991010109 - ";
+   			idgrupo = " - ";
  		}
  		if(idgrupo.equals("")){
- 			idgrupo = "9991010109 - ";
+ 			idgrupo = " - ";
  		}
    		
     	String[] vecidgrupo = idgrupo.split("\\ - ", -1);
@@ -456,7 +456,7 @@ public void setRows(int rows) {
         	   query += " WHERE A.IDGRUPO=B.IDGRUPO";
         	   query += " and A.instancia=B.instancia";
         	   query += " and a.idgrupo||b.idmail||upper(b.mail) like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and  a.idgrupo = '" + vecidgrupo[0] + "'";
+        	   query += " and  a.idgrupo like '" + vecidgrupo[0] + "%'";
         	   query += " and  b.idmail like '" + idmail + "%'";
         	   query += " AND   b.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
@@ -469,7 +469,7 @@ public void setRows(int rows) {
     	       query += " WHERE A.IDGRUPO=B.IDGRUPO";
     	       query += " and A.instancia=B.instancia";
     	       query += " and cast(a.idgrupo as text)||b.idmail||upper(b.mail) like '%" + ((String) filterValue).toUpperCase() + "%'";
-    	       query += " and  cast(a.idgrupo as text) = '" + vecidgrupo[0] + "'";
+    	       query += " and  cast(a.idgrupo as text) like '" + vecidgrupo[0] + "%'";
     	       query += " and  b.idmail like '" + idmail + "%'";
     	       query += " AND   b.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;

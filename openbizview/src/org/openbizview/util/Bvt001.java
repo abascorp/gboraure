@@ -583,7 +583,7 @@ import org.primefaces.model.SortOrder;
 		       query += " FROM BVT001 A, BVT001A B";
 		       query += " WHERE A.CODGRUP=B.CODGRUP(+)";
 		       query += " AND A.CODREP||A.DESREP LIKE trim('%" + ((String) filterValue).toUpperCase() +  "%') ";
-		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL = '" + vlRol + "')";
+		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL IN (SELECT B_CODROL FROM BVT002 WHERE CODUSER = '" + login + "' UNION ALL SELECT B_CODrol FROM BVT008 WHERE CODUSER = '" + login + "'))";
 		       query += " AND   A.instancia = '" + instancia + "'";
 		       query += " AND   A.codrep like '" + codrep + "%'";
 	  		   if(!veccodgrup[0].equals("")){
@@ -597,7 +597,7 @@ import org.primefaces.model.SortOrder;
         	   query += " SELECT trim(A.CODREP), trim(A.DESREP), trim(A.COMREP), trim(A.CODGRUP), trim(fn_desgrup(A.CODGRUP)), a.instancia ";
 		       query += " FROM BVT001 A ";
 		       query += " where A.CODREP||A.DESREP LIKE trim('%" + ((String) filterValue).toUpperCase() +  "%') ";
-		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL = '" + vlRol + "')";
+		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL IN (SELECT B_CODROL FROM BVT002 WHERE CODUSER = '" + login + "' UNION ALL SELECT B_CODrol FROM BVT008 WHERE CODUSER = '" + login + "'))";
 		       query += " AND   A.instancia = '" + instancia + "'";
 		       query += " AND   A.codrep like '" + codrep + "%'";
 	  		   if(!veccodgrup[0].equals("")){

@@ -78,7 +78,7 @@ public class Sendmail extends Bd {
 	     	if (rows>0){//Si la consulta es mayor a cero devuelve registros envía el correo  
 	     	//Recorre la lista de correos	
 	     	for(int i=0;i<rows;i++){	
-	     		System.out.println(vlmail[i][0]);
+	     		//System.out.println(vlmail[i][0]);
 	     		//mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
 	     		mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
 	     		
@@ -126,10 +126,10 @@ public class Sendmail extends Bd {
 
 			// Part two is attachment
 			messageBodyPart = new MimeBodyPart();
-			String filename = ruta + File.separator + file + ".pdf";
+			String filename = ruta + File.separator + file + "." + formato;
 			javax.activation.DataSource source = new FileDataSource(filename);
 			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(file + ".pdf");
+			messageBodyPart.setFileName(file + "." + formato);
 			multipart.addBodyPart(messageBodyPart);
 
 			// Send the complete message parts

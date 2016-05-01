@@ -430,10 +430,10 @@ import org.primefaces.model.SortOrder;
  		String query = "";
  		//System.out.println("b_codrol = "+b_codrol);
  		if(b_codrol==null){
- 			b_codrol = "9999abcd%/@ - ";
+ 			b_codrol = " - ";
  		}
  		if(b_codrol.equals("")){
- 			b_codrol = "9999abcd%/@ - ";
+ 			b_codrol = " - ";
  		}
  		
  		String[] veccodrol = b_codrol.split("\\ - ", -1);  	
@@ -448,7 +448,7 @@ import org.primefaces.model.SortOrder;
         	   query += " and   a.b_codrep=c.codrep ";
         	   query += " and A.instancia=B.instancia";
         	   query += " and a.b_codrol||b.desrol||a.b_codrep||c.desrep like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and  a.b_codrol = '" + veccodrol[0] + "'";
+        	   query += " and  a.b_codrol like '" + veccodrol[0] + "%'";
         	   query += " AND   a.instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;

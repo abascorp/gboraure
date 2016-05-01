@@ -96,10 +96,10 @@ public class MailThread extends Thread {
 
 			// Part two is attachment
 			messageBodyPart = new MimeBodyPart();
-			String filename = ruta + File.separator + file + ".pdf";
+			String filename = ruta + File.separator + file + "." + formato;
 			javax.activation.DataSource source = new FileDataSource(filename);
 			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(file + ".pdf");
+			messageBodyPart.setFileName(file + "." + formato);
 			multipart.addBodyPart(messageBodyPart);
 
 			// Send the complete message parts

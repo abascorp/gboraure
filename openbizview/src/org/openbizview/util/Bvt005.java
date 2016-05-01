@@ -465,10 +465,10 @@ import org.primefaces.model.SortOrder;
         String query = "";
  		
         if(b_codrol==null){
- 			b_codrol = "9999abcd%/@ - ";
+ 			b_codrol = " - ";
  		}
  		if(b_codrol.equals("")){
- 			b_codrol = "9999abcd%/@ - ";
+ 			b_codrol = " - ";
  		}
  		
  		String[] veccodrol = b_codrol.split("\\ - ", -1);  	
@@ -480,7 +480,7 @@ import org.primefaces.model.SortOrder;
         	   query += " (SELECT  trim(codopc), trim(desopc), decode(codvis,'0','ACCESO','SIN ACCESO'), trim(b_codrol)";
         	   query += " FROM Bvt005";
         	   query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
-        	   query += " and  b_codrol = '" + veccodrol[0] + "'";
+        	   query += " and  b_codrol like '" + veccodrol[0] + "%'";
         	   query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField + ") query";
 	           query += " ) where rownum <= " + pageSize ;
@@ -490,7 +490,7 @@ import org.primefaces.model.SortOrder;
         	   query += "  SELECT  trim(codopc), trim(desopc), case when codvis = '0' then 'ACCESO' else 'SIN ACCESO' end, trim(b_codrol)";
        	       query += " FROM Bvt005";
        	       query += " WHERE b_codrol||codopc||desopc like '%" + ((String) filterValue).toUpperCase() + "%'";
-       	       query += " and  b_codrol = '" + veccodrol[0] + "'";
+       	       query += " and  b_codrol like '" + veccodrol[0] + "%'";
        	       query += " AND   instancia = '" + instancia + "'";
 	  		   query += " order by " + sortField ;
 	           query += " LIMIT " + pageSize;
