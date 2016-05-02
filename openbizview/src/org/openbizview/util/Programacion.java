@@ -1377,6 +1377,10 @@ public class Programacion extends Bd implements Serializable {
      		
      		con = ds.getConnection();
      		
+     		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+	       	 DatabaseMetaData databaseMetaData = con.getMetaData();
+	       	 String productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+     		
      		String vlfecha;
      		java.text.SimpleDateFormat sdfecha_es = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", locale );
         	java.text.SimpleDateFormat sdfecha_en = new java.text.SimpleDateFormat("dd/MMM/yyyy HH:mm", locale );
@@ -1388,8 +1392,18 @@ public class Programacion extends Bd implements Serializable {
         		vlfecha = sdfecha_en.format(diainicio);
         		to_date = "to_date('" + vlfecha + "', 'dd/mmm/yyyy hh24:mi')";
         	}
+        	
+            String query = "";
+           	
+           	switch ( productName ) {
+            case "Oracle":
+            	 query = "DELETE  from T_PROGRAMACION WHERE diainicio = " + to_date + " and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
+                 break;
+            case "PostgreSQL":
+            	query = "DELETE  from T_PROGRAMACION WHERE diainicio = '" + diainicio + "' and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
+                 break;
+            }
      		
-            String query = "DELETE  from T_PROGRAMACION WHERE diainicio = " + to_date + " and disparador = '" + vltrigger.toUpperCase() + "' and instancia = '" + instancia + "'";
             //System.out.println(query);
             pstmt = con.prepareStatement(query);
           

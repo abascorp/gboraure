@@ -88,7 +88,7 @@
   <!-- Configura si desea notificar cambios de versión -->
    <context-param>
     <param-name>CHECK_UPDATE</param-name>
-    <param-value>on</param-value>
+    <param-value>off</param-value>
   </context-param>
  
   
@@ -135,6 +135,7 @@
     <param-name>primefaces.FONT_AWESOME</param-name>
     <param-value>true</param-value>
   </context-param>
+  
   
    <!-- Birt report, por eliminar ya que no se va a usar el runtime -->
   <context-param>
