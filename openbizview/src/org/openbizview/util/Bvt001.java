@@ -446,16 +446,16 @@ import org.primefaces.model.SortOrder;
 	        	
 	        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 	
-	        	String query = "DELETE from Bvt007 WHERE b_codrep in (" + param + ") and instancia = '" + instancia + "'";
+	        	//String query = "DELETE from Bvt007 WHERE b_codrep in (" + param + ") and instancia = '" + instancia + "'";
 	        	String query1 = "DELETE from Bvt001 WHERE codrep in (" + param + ") and instancia = '" + instancia + "'";
 	        		        	
-	            pstmt = con.prepareStatement(query);
+	           // pstmt = con.prepareStatement(query);
 	            pstmt1 = con.prepareStatement(query1);
 	            //System.out.println(query);
 	
 	            try {
 	                //Avisando
-	                pstmt.executeUpdate();
+	               // pstmt.executeUpdate();
 	                pstmt1.executeUpdate();
 	                msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnDelete"), "");
 	                limpiarValores();	
@@ -643,7 +643,7 @@ import org.primefaces.model.SortOrder;
   		}
   		
   		pstmt = con.prepareStatement(query);
-        //System.out.println(query);
+        System.out.println(query);
   		
         r =  pstmt.executeQuery();
         		
