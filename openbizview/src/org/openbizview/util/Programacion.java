@@ -1083,7 +1083,7 @@ public class Programacion extends Bd implements Serializable {
     		//Inicia el cronograma
 			schd.scheduleJob(job, trigger);
 			schd.start();
-			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexitoMesIntervalo") + " " + ptrigger.toUpperCase(), "");
+			msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("mailtareamsgexitoMinutosIntervalo") + " " + ptrigger.toUpperCase(), "");
 			if(isrecupera=="0"){
 			insert("0", "0", paramvalues, phorarepeticion, paramnames);
 			}
@@ -1390,7 +1390,7 @@ public class Programacion extends Bd implements Serializable {
         		to_date = "to_date('" + vlfecha + "', 'dd/mm/yyyy hh24:mi')";
         	} else {
         		vlfecha = sdfecha_en.format(diainicio);
-        		to_date = "to_date('" + vlfecha + "', 'dd/mmm/yyyy hh24:mi')";
+        		to_date = "to_date('" + vlfecha + "', 'dd/mon/yyyy hh24:mi')";
         	}
         	
             String query = "";

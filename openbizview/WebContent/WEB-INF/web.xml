@@ -48,17 +48,17 @@
   <!-- JNDI base datos -->
   <context-param>
     <param-name>JNDI_BD</param-name>
-    <param-value>java:comp/env/jdbc/orabiz</param-value>
+    <param-value>jdbc/orabiz</param-value>
   </context-param>
   
   <context-param>
     <param-name>JNDI_MAIL</param-name>
-    <param-value>java:comp/env/mail/recibos</param-value>
+    <param-value>mail/recibos</param-value>
   </context-param>
 
   <context-param>
     <param-name>JNDI_BD_EXTERNAL</param-name>
-    <param-value>java:comp/env/jdbc/loginexternal</param-value>
+    <param-value>jdbc/loginexternal</param-value>
   </context-param>
   
     <!-- Configuración de idioma de base de datos valores pueden ser es o en-->
@@ -83,7 +83,7 @@
   <!-- Configura si desea notificar cambios de versión -->
    <context-param>
     <param-name>CHECK_UPDATE</param-name>
-    <param-value>off</param-value>
+    <param-value>on</param-value>
   </context-param>
  
   
@@ -143,11 +143,11 @@
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_WORKING_FOLDER</param-name>
-    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
+    <param-value>/opt/reportes</param-value>
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_DOCUMENT_FOLDER</param-name>
-    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
+    <param-value>/opt/reportes</param-value>
   </context-param>
   <context-param>
     <param-name>WORKING_FOLDER_ACCESS_ONLY</param-name>
@@ -159,11 +159,11 @@
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_IMAGE_DIR</param-name>
-    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
+    <param-value>/opt/reportes</param-value>
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_LOG_DIR</param-name>
-    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
+    <param-value>/opt/reportes</param-value>
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_LOG_LEVEL</param-name>
@@ -171,7 +171,7 @@
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_SCRIPTLIB_DIR</param-name>
-    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
+    <param-value>/opt/reportes</param-value>
   </context-param>
   <context-param>
     <param-name>BIRT_RESOURCE_PATH</param-name>
@@ -179,7 +179,7 @@
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_MAX_ROWS</param-name>
-    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
+    <param-value>/opt/reportes</param-value>
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_MAX_CUBE_ROWLEVELS</param-name>
