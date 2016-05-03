@@ -200,7 +200,6 @@ public class Programacion extends Bd implements Serializable {
     private String idgrupo = "";
     private String reporte = "";
     ExternalContext extContext = FacesContext.getCurrentInstance().getExternalContext(); //Toma ruta real de la aplicación
-	private String RUTA_LOGS = File.separator + "logs";
 	SchedulerFactory schdFact = new StdSchedulerFactory();
     Scheduler schd = schdFact.getScheduler();
     java.util.Date fechadia = new java.util.Date();
@@ -1328,6 +1327,7 @@ public class Programacion extends Bd implements Serializable {
 					   iniciarTareaDiaMes(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][5], vltabla[i][6],"1", vltabla[i][7], Integer.parseInt(vltabla[i][10]), Integer.parseInt(vltabla[i][11]));
 				   } else if(vltabla[i][4].toString().equals("3")){
 					   //Tarea dia hora
+					   //System.out.println("Recuperando Tareas minutos");
 					   iniciarTareaIntervaloMinutos(vltabla[i][0].toUpperCase(), vltabla[i][1].toUpperCase(), vltabla[i][8], vltabla[i][6], "1", vltabla[i][7]);	   
 				   } else if (vltabla[i][4].toString().equals("4")){
 			    	   //Intervalos mensuales
@@ -1485,8 +1485,8 @@ public class Programacion extends Bd implements Serializable {
             pstmt.setString(5, asunto);
             pstmt.setString(6, contenido);
             pstmt.setString(7, vecreporte[0].toUpperCase());
-            pstmt.setString(8, PRINT_REPORT_LOCATION);
-            pstmt.setString(9, extContext.getRealPath(RUTA_LOGS)); 
+            pstmt.setString(8, BIRT_VIEWER_WORKING_FOLDER);
+            pstmt.setString(9, BIRT_VIEWER_LOG_DIR); 
             pstmt.setInt(10, Integer.parseInt(vecidgrupo[0]));
             pstmt.setString(11, tarea.toUpperCase());
             pstmt.setString(12, pdiames);
@@ -1948,7 +1948,7 @@ public class Programacion extends Bd implements Serializable {
 	 */
 	 public String getRutaRepReal(){
 		 //String ruta = extContext.getRealPath(RUTA_REPORTE) + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
-		 String ruta = PRINT_REPORT_LOCATION + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
+		 String ruta = BIRT_VIEWER_WORKING_FOLDER + File.separator + reporte.split(" - ")[0].toUpperCase() + ".rptdesign";
 		 //System.out.println(ruta);
 		 return ruta;
 	 }

@@ -79,11 +79,6 @@
     <param-value>/openbizview/login.xhtml</param-value>
   </context-param>
   
-  <!-- Ruta reportes -->
-   <context-param>
-    <param-name>PRINT_REPORT_LOCATION</param-name>
-    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
-  </context-param>
   
   <!-- Configura si desea notificar cambios de versión -->
    <context-param>
@@ -168,7 +163,7 @@
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_LOG_DIR</param-name>
-    <param-value>/logs</param-value>
+    <param-value>/home/andres/Documentos/OpenBizview/reportes</param-value>
   </context-param>
   <context-param>
     <param-name>BIRT_VIEWER_LOG_LEVEL</param-name>

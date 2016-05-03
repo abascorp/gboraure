@@ -20,6 +20,7 @@
 package org.openbizview.util;
 
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -98,7 +99,7 @@ public class RunReport implements Serializable {
         //With our new engine, lets try to open the report design
         try
         {
-      	  report = engine.openReportDesign( ubicacionrep + "/" + reporte + ".rptdesign"); 
+      	  report = engine.openReportDesign( ubicacionrep + File.separator + reporte + ".rptdesign"); 
         }
         catch (Exception e)
         {
@@ -116,7 +117,7 @@ public class RunReport implements Serializable {
         //apply to the task
         //System.out.println(format);
             options.setOutputFormat(format);
-            options.setOutputFileName( rutasalida + "/" + nbrreporte + "." + format);
+            options.setOutputFileName( rutasalida + File.separator + nbrreporte + "." + format);
             task.setRenderOption(options);  
         
         try

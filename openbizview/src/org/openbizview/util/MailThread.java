@@ -108,9 +108,7 @@ public class MailThread extends Thread {
 			// Enviar el correo electrónico
 			Transport.send(mm);
 			//System.out.println("Correo enviado exitosamente a :" + to + ". Reporte:" + file);
-			//Después del envío lo borra
-			File f = new File(filename);
-			f.delete();
+			
 			
 		} catch (MessagingException|NamingException e) {
 			throw new RuntimeException(e);
@@ -142,6 +140,11 @@ public class MailThread extends Thread {
     		mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
     		
       	}
+    	//Después del envío lo borra
+    	String filename = ruta + File.separator + file + "." + formato;
+    	//System.out.println(filename);
+		File f = new File(filename);
+		f.delete();
     	//System.out.println("Correo enviado exitosamente");
 	 	}
 	}

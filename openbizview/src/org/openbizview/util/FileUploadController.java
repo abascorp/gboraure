@@ -62,7 +62,7 @@ public class FileUploadController extends Bd {
 	public void handleReportUpload(FileUploadEvent event)  {
 		
 		     //System.out.println("Thread is running");
-			 File ruta = new File(PRINT_REPORT_LOCATION + File.separator +  event.getFile().getFileName());
+			 File ruta = new File(BIRT_VIEWER_WORKING_FOLDER + File.separator +  event.getFile().getFileName());
 				try {
 					FileOutputStream fileOutputStream = new FileOutputStream(ruta);
 					byte[] buffer = new byte[BUFFER_SIZE];

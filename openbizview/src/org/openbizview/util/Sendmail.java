@@ -83,8 +83,8 @@ public class Sendmail extends Bd {
 	     		mail(trigger, ruta, file, asunto, contenido, formato, vlmail[i][0]);
 	     		
 	       	}
-	     	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIN DEL BLOQUE", "");
-			FacesContext.getCurrentInstance().addMessage(null, msj);
+	     	//msj = new FacesMessage(FacesMessage.SEVERITY_INFO, "FIN DEL BLOQUE", "");
+			//FacesContext.getCurrentInstance().addMessage(null, msj);
 	     	//System.out.println("Correo enviado exitosamente");
 	 	 	}
 		        

@@ -82,7 +82,7 @@ public class TareaInvocar extends Bd implements Job {
    	//System.out.println(vlqueryPG);
    	
    	try {  	
-      //System.out.println(vlqueryPG);
+    // System.out.println(vlqueryORA);
   	consulta.selectPntGenericaMDB(vlqueryORA, vlqueryPG, vlquerySQL, JNDI);
   	int rowsrep = consulta.getRows(); //Toma la cantidad de líneas
   	String[][] vltablarep = consulta.getArray();
@@ -107,7 +107,9 @@ public class TareaInvocar extends Bd implements Job {
 		 new RunReport().outReporteRecibo(vltablarep[nj][0].toString(), vltablarep[nj][5].toString(), vltablarep[nj][1].toString(), vltablarep[nj][4].toString(), vltablarep[nj][0].toString()+"_"+vltablarep[nj][11], sqlDate, vltablarep[nj][6].toString(), vltablarep[nj][7], vltablarep[nj][8]);	 
 		 }
 		 } //Termina el recorrido
-  	}	 
+		//Después del envío lo borra
+  	}	
+
 	} catch (NamingException e) {
 		e.printStackTrace();
 	}

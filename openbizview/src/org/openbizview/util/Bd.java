@@ -78,7 +78,8 @@ public class Bd  {
 	static final String JNDIMAIL = ctx.getExternalContext().getInitParameter("JNDI_MAIL"); //"jdbc/orabiz"; //Nombre del JNDI
     static final String THREADNUMBER = ctx.getExternalContext().getInitParameter("THREAD_NUMBER");
     static final String LOGOUT_URL = ctx.getExternalContext().getInitParameter("LOGOUT_URL");//Url logout
-    static final String PRINT_REPORT_LOCATION = ctx.getExternalContext().getInitParameter("PRINT_REPORT_LOCATION");//Url logout
+    static final String BIRT_VIEWER_WORKING_FOLDER = ctx.getExternalContext().getInitParameter("BIRT_VIEWER_WORKING_FOLDER");//Url logout
+    static final String BIRT_VIEWER_LOG_DIR = ctx.getExternalContext().getInitParameter("BIRT_VIEWER_LOG_DIR");//Url logout
     static final String OPENBIZVIEW_BD_LANG = ctx.getExternalContext().getInitParameter("OPENBIZVIEW_BD_LANG");//Localización
     static final String CHECK_UPDATE = ctx.getExternalContext().getInitParameter("CHECK_UPDATE");//Chequea actualizaciones
     java.text.SimpleDateFormat sdfecha = new java.text.SimpleDateFormat("dd/MM/yyyy", locale );

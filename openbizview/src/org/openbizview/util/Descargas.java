@@ -41,7 +41,7 @@ public class Descargas extends Bd {
 	
 	public void link2(){
 		try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("https://drive.google.com/open?id=0B6OjSSfHmS_icTRKTzk2SnROZEU");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("https://drive.google.com/open?id=0B6OjSSfHmS_iVXJOUHV4ZDM3SHc");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
