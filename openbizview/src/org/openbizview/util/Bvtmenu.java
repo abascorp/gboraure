@@ -318,21 +318,20 @@ import org.primefaces.model.SortOrder;
        //Seguridad
        insertBvTMENU(veccodrol[0], "M10|"+getMessage("seg").toUpperCase()+"|0", JNDI, login);
        insertBvTMENU(veccodrol[0], "M11|"+getMessage("instancias")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M12|"+getMessage("instanciasUsr")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M13|"+getMessage("seg01")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M14|"+getMessage("seg02")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M15|"+getMessage("seg03")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M16|"+getMessage("seg08")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M17|"+getMessage("seg09")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M18|"+getMessage("seg04")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M19|"+getMessage("seg05")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M20|"+getMessage("seg06")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M21|"+getMessage("seg07")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M12|"+getMessage("seg01")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M13|"+getMessage("seg02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M14|"+getMessage("seg03")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M15|"+getMessage("seg08")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M16|"+getMessage("seg09")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M17|"+getMessage("seg04")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M18|"+getMessage("seg05")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M19|"+getMessage("seg06")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M20|"+getMessage("seg07")+"|0", JNDI, login);
        //Tareas
-       insertBvTMENU(veccodrol[0], "M22|"+getMessage("mail").toUpperCase()+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M23|"+getMessage("mail02")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M24|"+getMessage("mail03")+"|0", JNDI, login);
-       insertBvTMENU(veccodrol[0], "M25|"+getMessage("mail04")+"|0", JNDI, login); 
+       insertBvTMENU(veccodrol[0], "M21|"+getMessage("mail").toUpperCase()+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M22|"+getMessage("mail02")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M23|"+getMessage("mail03")+"|0", JNDI, login);
+       insertBvTMENU(veccodrol[0], "M24|"+getMessage("mail04")+"|0", JNDI, login); 
        //Reportes
        insertBvTMENU(veccodrol[0], "R01|"+getMessage("rep").toUpperCase()+"|0", JNDI, login);       
        

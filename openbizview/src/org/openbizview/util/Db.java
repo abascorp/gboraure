@@ -421,12 +421,6 @@ public class Db extends Bd implements Serializable  {
     	return modal;
     }
     
-    /**
-     * Define la instancia seleccionada
-     */
-     public void instancia(String instancia){
-    	 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", instancia.split(" - ")[0]);
-     }
      
      /**
       * Chequeo de versiones

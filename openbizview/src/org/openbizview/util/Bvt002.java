@@ -1085,24 +1085,6 @@ import org.primefaces.model.SortOrder;
   	}
 
 
-  	/**
-  	 * Retorna registros de la instancias asociada a usuarios
-  	 * @param pcoduser
-  	 * @return
-  	 */
-  	public int cuentaInstanciasUsr(String pcoduser){
-  		PntGenerica select = new PntGenerica();
-  		String vlquery = "select * from instancias_usr where coduser = '" + pcoduser + "'"; 
-  		//System.out.println(vlquery);
-  		try {
-			select.selectPntGenerica(vlquery, JNDI);
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-  		int rows = select.getRows();
-  		//System.out.println(rows);
-  		return rows;
-  	}
   	
   	
   	/**

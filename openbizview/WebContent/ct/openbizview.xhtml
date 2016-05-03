@@ -187,27 +187,7 @@
 						</div>
 					</div>
 
-					<!-- Modal  -->
-					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="static"  data-keyboard="false"
-						aria-labelledby="myModalLabel" aria-hidden="false">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4 class="modal-title" id="myModalLabel">#{msg.sessionInst}</h4>
-								</div>
-								<div class="modal-body">
-									<div class="list-group">
-										<ui:repeat var="i"  value="#{db.select()}">
-                                            <p:commandLink styleClass="list-group-item" actionListener="#{db.instancia(i)}"  oncomplete="dismissModal();">
-                                              <span class="detalleTarea">#{i}</span>
-                                             <span class="badge"><h:graphicImage value="../resources/img/seleccionar.png"  alt="Menu"  styleClass="imagenIndex"  /></span>
-											</p:commandLink>
-                                        </ui:repeat>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</h:form>
 			</div>
 

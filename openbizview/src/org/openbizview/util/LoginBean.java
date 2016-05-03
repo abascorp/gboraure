@@ -146,14 +146,9 @@ public class LoginBean extends Bd {
 			
 			//Se genera opción de logout
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("logoutEstandart", "0");
-			//Verifica si el usuario tiene mas de una instancia seleccionada y pide seleccionar una
-			if(seg.cuentaInstanciasUsr(usuario)>1){
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/instanciaSelect.xhtml"); 
-			} else {
-			//Instancia
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", tabla[0][5].toString());
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml"); 
-			}
+			
 			new Programacion().recuperarTriggers("0");
 		} 
 		
