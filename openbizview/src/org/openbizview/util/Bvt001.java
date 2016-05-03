@@ -641,7 +641,7 @@ import org.primefaces.model.SortOrder;
         	query += " ORDER BY " + sortField.replace("v", "");
 	         break;            		   
   		}
-  		 System.out.println(query);
+  		//System.out.println(query);
   		pstmt = con.prepareStatement(query);
        
   		

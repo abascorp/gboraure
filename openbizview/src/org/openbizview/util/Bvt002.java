@@ -615,7 +615,7 @@ import org.primefaces.model.SortOrder;
      		if(instancia==""){
      			instancia = "0 - ";
      		}
-     		String[] vecinst = instancia_insert.split("\\ - ", -1);
+     		String[] vecinst = instancia.split("\\ - ", -1);
      		
             String query = "UPDATE Bvt002";
              query += " SET DESUSER = '" + desuser.toUpperCase() + "'";
