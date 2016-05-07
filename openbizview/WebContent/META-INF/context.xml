@@ -70,8 +70,8 @@
 		    mail.smtp.host="smtp.gmail.com"
 		    mail.smtp.port="465"
 		    mail.smtp.auth="true"
-		    mail.smtp.user="info@dvconsultores.com"
-		    password="v12959363"
+		    mail.smtp.user="info@dinfo.com"
+		    password="123"
 		    mail.smtp.starttls.enable="true"
 		    mail.smtp.socketFactory.class="javax.net.ssl.SSLSocketFactory"
 		  />

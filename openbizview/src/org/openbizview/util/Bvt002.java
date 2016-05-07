@@ -1174,7 +1174,7 @@ import org.primefaces.model.SortOrder;
      * Parámetros del Mátodo: String rol
      **/
     public void insert(String prol) throws  NamingException {
-    		
+    	//System.out.println("INSTANCIA........................:" + instancia_insert);
         try {
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
