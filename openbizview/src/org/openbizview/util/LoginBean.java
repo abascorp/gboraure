@@ -147,7 +147,7 @@ public class LoginBean extends Bd {
 			//Se genera opción de logout
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("logoutEstandart", "0");
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", tabla[0][5].toString());
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/ct/openbizview.xhtml"); 
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml"); 
 			
 			new Programacion().recuperarTriggers("0");
 		} 
@@ -163,7 +163,7 @@ public class LoginBean extends Bd {
     	 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("instancia", grupo.split(" - ")[0]);
     	 //System.out.println("Grupo de usuario: " + grupo.split(" - ")[0]);
     	 try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/ct/openbizview.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -182,11 +182,11 @@ public class LoginBean extends Bd {
     	//Redirecciona la página
     	//System.out.println("PPPPPPPPPPPPP: " + logoutEstandart);
     	if(logoutEstandart==null) {
-    	FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml"); 
+    	FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/login.xhtml"); 
     	} else if(logoutEstandart.equals("1")){
     		FacesContext.getCurrentInstance().getExternalContext().redirect(LOGOUT_URL); 	
     	} else {
-    	FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml"); 	
+    	FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/login.xhtml"); 	
     	}
  	}
     
@@ -228,7 +228,7 @@ public class LoginBean extends Bd {
     	//Redirecciona la página
     	//System.out.println("Epa: " + logged);
     	if (logged!=null) {
-    		FacesContext.getCurrentInstance().getExternalContext().redirect("/ct/openbizview.xhtml"); 
+    		FacesContext.getCurrentInstance().getExternalContext().redirect("/openbizview/ct/openbizview.xhtml"); 
     		//System.out.println("Ya se logeó, redireccionar");
 	    }
     	//FacesContext.getCurrentInstance().getExternalContext().redirect("/ri/faces/jsf/index.xhtml"); 
