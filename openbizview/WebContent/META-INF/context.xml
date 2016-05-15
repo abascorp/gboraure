@@ -32,20 +32,20 @@
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
     
      --> 
-  <!--      -->   
+  <!--      
       <Resource name="jdbc/orabiz" auth="Container"
               type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
               url="jdbc:oracle:thin:@localhost:1521:xe"
               username="openbizview" password="openbizview" maxActive="20" maxIdle="10"
               maxWait="-1"/>  
-    
+  -->     
        
-<!--   
+<!--   -->    
     <Resource name="jdbc/orabiz" auth="Container"
           type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
           url="jdbc:postgresql://127.0.0.1:5432/openbizview"
           username="openbizview" password="openbizview" maxActive="20" maxIdle="10" maxWait="-1"/> 
-    -->    
+    
          
       <Resource name="jdbc/loginexternal" auth="Container"
               type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"

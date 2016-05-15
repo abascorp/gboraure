@@ -1461,7 +1461,7 @@ public class Programacion extends Bd implements Serializable {
         		to_date = "to_date('" + vlfecha + "', 'dd/mm/yyyy hh24:mi')";
         	} else {
         		vlfecha = sdfecha_en.format(diainicio);
-        		to_date = "to_date('" + vlfecha + "', 'dd/mmm/yyyy hh24:mi')";
+        		to_date = "to_date('" + vlfecha + "', 'dd/mon/yyyy hh24:mi')";
         	}
      		
            	String query = "";
@@ -1813,7 +1813,7 @@ public class Programacion extends Bd implements Serializable {
         		to_date = "to_date('" + vlfecha + "', 'dd/mm/yyyy hh24:mi')";
         	} else {
         		vlfecha = sdfecha_en.format(diainicio);
-        		to_date = "to_date('" + vlfecha + "', 'dd/mmm/yyyy hh24:mi')";
+        		to_date = "to_date('" + vlfecha + "', 'dd/mon/yyyy hh24:mi')";
         	}
      		
            	String query = "";
