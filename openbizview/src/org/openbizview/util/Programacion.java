@@ -1491,9 +1491,9 @@ public class Programacion extends Bd implements Serializable {
             pstmt.setString(11, tarea.toUpperCase());
             pstmt.setString(12, pdiames);
             pstmt.setString(13, "0");
-            pstmt.setString(14, paramvalues.replace(null, ""));
+            pstmt.setString(14, paramvalues);
             pstmt.setInt(15, Integer.parseInt(intervalo));
-            pstmt.setString(16, paramnames.replace(null, ""));
+            pstmt.setString(16, paramnames);
             pstmt.setString(17, ruta_salida);
             pstmt.setString(18, opctareas);
             pstmt.setString(19, formato);
@@ -1504,7 +1504,7 @@ public class Programacion extends Bd implements Serializable {
                 pstmt.executeUpdate();
                 limpiar();
             } catch (SQLException e)  {
-                 e.printStackTrace();
+                 //e.printStackTrace();
                  msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), "");
        	    	 FacesContext.getCurrentInstance().addMessage(null, msj);
             }
@@ -1512,7 +1512,7 @@ public class Programacion extends Bd implements Serializable {
             pstmt.close();
             con.close();           
         } catch (Exception e) {
-            //e.printStackTrace();
+           //e.printStackTrace();
         }
     }
     
@@ -1721,7 +1721,7 @@ public class Programacion extends Bd implements Serializable {
   		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(disparador), trim(formato), to_char(diainicio,'HH24:mi'), case when trim(paramnames) is null then '0' else trim(paramnames) end, case when trim(paramvalues) is null then '0' else trim(paramvalues) end, trim(asunto), trim(contenido), trim(dias_semana)";
   	    vlqueryRep += " from t_programacion" ;
   	    vlqueryRep += " where disparador='" + vltrigger.toUpperCase() + "'";
-  	    System.out.println(vlqueryRep);	
+  	    //System.out.println(vlqueryRep);	
   	    
   		consulta.selectPntGenerica(vlqueryRep, JNDI);
   		
@@ -1729,7 +1729,7 @@ public class Programacion extends Bd implements Serializable {
   		   
   		rowsrep = consulta.getRows();
   		vltablarep = consulta.getArray();
-  		System.out.println("PPPPPPPPPP"+vltablarep[0][6].toString());
+
   		//Imprime reporte
   		if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo
   			
