@@ -57,6 +57,7 @@ public class RunReport implements Serializable {
 			, String rutasalida, String nbrreporte, Date feccon, String job
 			, String paramnames, String paramvalues){
 		
+		 
 	  //Variables used to control BIRT Engine instance
   	  //Now, setup the BIRT engine configuration. The Engine Home is hardcoded
   	  EngineConfig config = new EngineConfig( );
@@ -81,10 +82,10 @@ public class RunReport implements Serializable {
       //Se va pasando al reporte cada parametro
       //DVConsultores Andrés Dominguez 18/08/2015
       String[] arraySplitSrtings = StringUtils.splitByWholeSeparator(paramvalues, "|");
-      
+     
       //Si la longitud de los valores de parámetros es diferente de cero
       //Procede a leer y pasar parámetros
-      if(arraySplitSrtings.length>0){
+      if(arraySplitSrtings.length>0 ){
     	  String[] arr1 = paramnames.split("\\|", -1);//Toma la lista de parametros de la tabla y hace un split, trabaja el arreglo y lo recorre
     	  String[] arr2 = paramvalues.split("\\|", -1);//Toma la lista de parametros de la tabla y hace un split, trabaja el arreglo y lo recorre
     	  for(int i = 0; i < arraySplitSrtings.length; i++){

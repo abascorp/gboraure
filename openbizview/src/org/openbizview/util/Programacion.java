@@ -1491,9 +1491,9 @@ public class Programacion extends Bd implements Serializable {
             pstmt.setString(11, tarea.toUpperCase());
             pstmt.setString(12, pdiames);
             pstmt.setString(13, "0");
-            pstmt.setString(14, paramvalues);
+            pstmt.setString(14, paramvalues.replace(null, ""));
             pstmt.setInt(15, Integer.parseInt(intervalo));
-            pstmt.setString(16, paramnames);
+            pstmt.setString(16, paramnames.replace(null, ""));
             pstmt.setString(17, ruta_salida);
             pstmt.setString(18, opctareas);
             pstmt.setString(19, formato);
@@ -1718,19 +1718,21 @@ public class Programacion extends Bd implements Serializable {
   	   	String[][] vltablarep;
   
   		try {
-  		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(job), trim(formato), to_char(diainicio,'HH24:mi'), trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido), trim(dias_semana)";
+  		String vlqueryRep = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(disparador), trim(formato), to_char(diainicio,'HH24:mi'), case when trim(paramnames) is null then '0' else trim(paramnames) end, case when trim(paramvalues) is null then '0' else trim(paramvalues) end, trim(asunto), trim(contenido), trim(dias_semana)";
   	    vlqueryRep += " from t_programacion" ;
   	    vlqueryRep += " where disparador='" + vltrigger.toUpperCase() + "'";
-  	    //System.out.println(vlqueryRep);	
+  	    System.out.println(vlqueryRep);	
+  	    
   		consulta.selectPntGenerica(vlqueryRep, JNDI);
   		
   		////System.out.println("select nombrereporte, idgrupo, trim(rutareporte), trim(rutatemp) from mailtarea where hora='" + formato.format(new Date()) + "'");
   		   
   		rowsrep = consulta.getRows();
   		vltablarep = consulta.getArray();
-  		
+  		System.out.println("PPPPPPPPPP"+vltablarep[0][6].toString());
   		//Imprime reporte
   		if (rowsrep>0){//Si la consulta es mayor a cero devuelve registros envía el correo
+  			
   		 new RunReport().outReporteRecibo(vltablarep[0][0].toString(), vltablarep[0][4].toString(), vltablarep[0][1].toString(), vltablarep[0][2].toString(), vltablarep[0][0].toString(), sqlDate, vltablarep[0][3].toString(),  vltablarep[0][6].toString(), vltablarep[0][7].toString());
  		
   			for(int i=0;i<rowsrep;i++){
