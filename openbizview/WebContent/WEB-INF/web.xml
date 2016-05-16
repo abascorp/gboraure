@@ -83,7 +83,7 @@
   <!-- Configura si desea notificar cambios de versión -->
    <context-param>
     <param-name>CHECK_UPDATE</param-name>
-    <param-value>off</param-value>
+    <param-value>on</param-value>
   </context-param>
  
   

@@ -76,7 +76,7 @@ public class TareaInvocar extends Bd implements Job {
     //Momento en que se ejecuta el reporte
     java.sql.Date sqlDate = new java.sql.Date(fechadia.getTime());  	
     //Selecciona las tareas por hora de ejecución y nombre del disparadr
-   	String vlqueryORA = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador), trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido), 'R'||ROUND(dbms_random.value(1,9999)) from t_programacion where job=trim('" + job + "') order by job";
+   	String vlqueryORA = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador), case when trim(paramnames) is null then '0' else trim(paramnames) end, case when trim(paramvalues) is null then '0' else trim(paramvalues) end, trim(asunto), trim(contenido), 'R'||ROUND(dbms_random.value(1,9999)) from t_programacion where job=trim('" + job + "') order by job";
    	String vlqueryPG = "select trim(codrep), trim(rutarep), trim(rutatemp), trim(opctareas), trim(ruta_salida), trim(formato), trim(disparador),  trim(paramnames), trim(paramvalues), trim(asunto), trim(contenido), 'R'||round(random()*9999) from t_programacion where job=trim('" + job + "')  order by job";
    	String vlquerySQL = "select codrep, rutarep, rutatemp, opctareas, ruta_salida, formato from t_programacion where  job = '" + job + "' order by job";
    	//System.out.println(vlqueryPG);
