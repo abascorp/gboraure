@@ -3,20 +3,17 @@
 <!-- 
      Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los términos de la Licencia Pública General GNU publicada 
-    por la Fundación para el Software Libre, ya sea la versión 3 
-    de la Licencia, o (a su elección) cualquier versión posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
-    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una información más detallada. 
-
-    Debería haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+   Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -65,31 +62,7 @@
 					<!-- /.row -->
 
 					<div class="row">
-						<div class="col-lg-3 col-md-6">
-						
-							<div class="panel bg-aqua">
-								<div class="panel-heading" style="color: white;">
-									<div class="row">
-										<div class="col-xs-3 icon">           
-											<i class="fa fa-bar-chart fa-5x"></i>
-										</div>
-										<div class="col-xs-9 text-right">
-											<div style="font-size: 30px; font-weight: bold;">#{db.r1}</div>
-											<div>#{msg.dashRep}</div>
-										</div>
-									</div>
-								</div>
-								<div class="panel-footer">
-								<h:outputLink rendered="#{smnubean.opcmnu('R01')}" value="bvt001">																	
-										<span class="pull-left">#{msg.dashVerDetalle}</span> </h:outputLink><span
-											class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-										<div class="clearfix"></div>								
-								
-								</div>
-							</div>
-
-						</div>
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-4 col-md-6">
 						
 							<div class="panel bg-green">
 								<div class="panel-heading" style="color: white;">
@@ -112,7 +85,7 @@
 							</div>
 
 						</div>
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-4 col-md-6">
 									
 							<div class="panel bg-yellow">
 								<div class="panel-heading" style="color: white;">
@@ -135,7 +108,7 @@
 							</div>
 
 						</div>
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-4 col-md-6">
 							<div class="panel bg-red">
 								<div class="panel-heading" style="color: white;">
 									<div class="row">
@@ -161,7 +134,33 @@
 
 					<!-- /.row -->
 					<div class="row">
-						<div class="col-lg-6">
+					<div class="col-md-5">						
+							<div class="panel bg-aqua">
+								<div class="panel-heading" style="color: white;">
+									<div class="row">
+										<div class="col-xs-3 icon">           
+											<i class="fa fa-bar-chart fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">										   
+										   <ui:repeat value="#{db.table10}" var="item" varStatus="loop">
+										   <div >#{db.vlArraytb10[loop.index][1]} - <span style="font-weight: bold; font-size: 16px;">#{db.vlArraytb10[loop.index][0]}</span><br/></div>								            
+								           </ui:repeat> 	
+								           <div style="font-size: 30px; font-weight: bold;">#{db.r1}</div>
+										   <div>#{msg.dashRep}</div>										
+										</div>
+									</div>
+								</div>
+								<div class="panel-footer">
+								<h:outputLink rendered="#{smnubean.opcmnu('R01')}" value="bvt001">																	
+										<span class="pull-left">#{msg.dashVerDetalle}</span> </h:outputLink><span
+											class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+										<div class="clearfix"></div>								
+								
+								</div>
+							</div>
+						</div>
+									
+						<div class="col-md-7">
 							<div class="panel panel-primary">
 								<div class="panel-heading">
 									<h3 class="panel-title">
@@ -173,6 +172,9 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					
+					<div class="row">
 						<div class="col-lg-6">
 							<div class="panel panel-danger" style="display: #{db.isShow()}">
 								<div class="panel-heading">

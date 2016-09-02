@@ -2,20 +2,17 @@
 <!-- 
      Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los términos de la Licencia Pública General GNU publicada 
-    por la Fundación para el Software Libre, ya sea la versión 3 
-    de la Licencia, o (a su elección) cualquier versión posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
-    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una información más detallada. 
-
-    Debería haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -72,17 +69,17 @@
 		         <p:ajax event="itemSelect"   update=":formmailconfig:tbResult" listener="#{bd.setMailReporte(programacion.mailreporteFiltro)}"/>
 		         </p:autoComplete> 
 		         <p:watermark for="reporte" value="#{msg.mailFiltroRep}" />
-                 <p:spacer height="1"/><br/>
+                 <br/>
                  <p:autoComplete id="frecuencia" value="#{programacion.mailfrecuenciaFiltro}"  completeMethod="#{autocomplete.completeFrecuenciaRepeticion}"  dropdown="true" scrollHeight="250" >
 		         <p:ajax event="itemSelect"  update=":formmailconfig:tbResult" listener="#{bd.setMailFrecuencia(programacion.mailfrecuenciaFiltro)}"/>
 		         </p:autoComplete> 
 		         <p:watermark for="frecuencia" value="#{msg.mailFiltroIntervalo}" />         
-                 <p:spacer height="1"/><br/>
+                 <br/>
                  <p:autoComplete id="grupo" value="#{programacion.mailgrupoFiltro}"  completeMethod="#{autocomplete.completeMailGrupos}"  dropdown="true" scrollHeight="250" >
 		         <p:ajax event="itemSelect"  update=":formmailconfig:tbResult" listener="#{bd.setMailgrupo(programacion.mailgrupoFiltro)}"/>
 		         </p:autoComplete> 
 		         <p:watermark for="grupo" value="#{msg.mailFiltroGrupo}" />
-                 <p:spacer height="1"/>
+                 
                  </div>
                  </div>
 	             </p:panel>
@@ -108,11 +105,11 @@
                  <p:tooltip for="emiters" value="#{msg.maltareaoutputFormat}" /> 
 			     <p:inputText id="tarea" maxlength="20"  styleClass="form-control input" value="#{programacion.tarea}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  
 			     <p:watermark for="tarea" value="#{msg.mailtareaNbrTarea}" />
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="tarea"/>
 			     <p:inputText id="prg"  maxlength="20"  styleClass="form-control input" value="#{programacion.vltrigger}"  required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 
 			     <p:watermark for="prg" value="#{msg.mailtareaPrg}" />
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="prg"/>
 	             </div>
 	             </div>
@@ -126,13 +123,13 @@
                  <p:ajax event="change"  listener="#{programacion.showDays()}" />
                  </h:selectOneMenu><p:commandButton title="#{msg.html40}" onclick="PF('dlg4').show()"   immediate="true" icon="fa fa-folder-open text-info"/>
                  <p:tooltip for="frecuencia" value="#{msg.mailtareaFrecuencia}" />
-                 <p:spacer height="1"/>
+                 
                  <p:message for="frecuencia"/>
 			     <h:selectOneMenu id="dias" value="#{programacion.dias}">
                  <f:selectItems value="#{listBean.diassemana}"/>
                  </h:selectOneMenu>
                  <p:tooltip for="dias" value="#{msg.mailtareaDias}" />
-                 <p:spacer height="1"/>
+                 
                  <p:message for="dias"/>
 			     <h:selectOneMenu id="diames" value="#{programacion.diames}" >
                  <f:selectItems value="#{listBean.diasmes}"/>
@@ -141,7 +138,7 @@
                  <p:message for="diames"/>
 			     <p:calendar pattern="dd/MM/yyyy HH:mm" id="ini"  locale="es" navigator="true" maxlength="10" value="#{programacion.diainicio}" showOn="button"/>
                  <p:tooltip for="ini" value="#{msg.mailtareaDiaInicio}" />
-                 <p:spacer height="1"/>
+                 
                  <p:message for="ini"/>
 			     <p:inputText id="horarep"  maxlength="2"  styleClass="form-control input" value="#{programacion.horarepeticion}"  converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}"  />
 	             <p:tooltip for="horarep" value="#{msg.mailtareaHoraRepF}" />
@@ -157,11 +154,11 @@
 		         <p:ajax event="itemSelect" listener="#{programacion.ReadParamsBirtReport(programacion.getRutaRepReal())}" update=":formmailconfig:panelParams"/>
 		         </p:autoComplete>         
                  <p:watermark for="reporte" value="#{msg.mailtareaReporte}" />
-                 <p:spacer height="1"/>
+                 
                  <p:message for="reporte"/>
 			     <p:autoComplete id="idgrupo" value="#{programacion.idgrupo}"   completeMethod="#{autocomplete.completeMailGrupos}"  dropdown="true" maxResults="250" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>         
                  <p:watermark for="idgrupo" value="#{msg.maillistaGrupo}" />
-                 <p:spacer height="1"/>
+                 
                  <p:message for="idgrupo"/>
 		         </div>
 		         </div>
@@ -171,14 +168,14 @@
 		         <p:tab id="tab4" title="Contenido">  
 		         <div class="row">
 		          <div class="col-lg-6 col-md-4 col-sm-4"> 
-			     <p:inputText id="asunto"  maxlength="50"  styleClass="form-control input" value="#{programacion.asunto}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>			     
+			     <p:inputText id="asunto"  maxlength="50" style="margin-bottom:5px;" styleClass="form-control input" value="#{programacion.asunto}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>			     
 			     <p:watermark for="asunto" value="#{msg.mailtareaAsunto}" />
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="asunto"/>
-			     <p:spacer height="2"/>  
+			
 		         <p:editor id="contenido"  widgetVar="editorWidget" controls="bold italic underline | size style color highlight | alignleft center justify | bullets  numbering | redo undo | source | outdent indent | link  unlink | print" value="#{programacion.contenido}" width="550"  required="true" requiredMessage="#{utils.getMessage('htmlvalidate')}"/>                
 		         <p:watermark for="contenido" value="#{msg.mailtareacontenido}" />
-		         <p:spacer height="1"/>
+		         
 		         <p:message for="contenido"/>
 		         </div>
 		         </div>
@@ -222,7 +219,7 @@
 			      </div>
 			      <div class="modal-footer">
 			        <p:commandLink  action="#{programacion.detenerTarea()}" update="tbResult, panel, growl, panelTarea"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}"  accesskey="r" onclick="modalHide()"/>
-			        <p:spacer height="5"/>
+
 			        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
 			       </div>
 			    </div>
@@ -239,7 +236,7 @@
 		<div class="col-lg-12 col-md-6 col-sm-4">   
         <h:outputText   value="#{programacion.vlTabla[loop.index][0]}: *"/>
         <p:inputText  required="true" styleClass="form-control input" maxlength="500" value="#{programacion.inputs[loop.index]}" />
-        <p:spacer height="3"/>
+   
         </div>
         </div>
         </c:if>

@@ -1,20 +1,17 @@
 /*
  *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 
@@ -58,9 +55,16 @@ public class Db extends Bd implements Serializable  {
 		} else {
       // ..
 		String[][] vlini = null;
+		
+		//Listar reportes
+		selectInputs10();
+		table10 = new String[inputnumber10];
+
 	 //Lee cuantos reportes impresos
 	   try {
+		   
 		q1 = "select count(*) from bvt001 where instancia =  '" + instancia + "' and codrep IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL IN (SELECT B_CODROL FROM BVT002 WHERE CODUSER = '" + login + "' UNION ALL SELECT B_CODrol FROM BVT008 WHERE CODUSER = '" + login + "'))";
+		//System.out.println(q1);
 		consulta.selectPntGenerica(q1, JNDI);	
 		r1 = consulta.getRows();
 		if (r1>0){
@@ -223,7 +227,7 @@ public class Db extends Bd implements Serializable  {
 
 		chart1 = "select * from ( select query.*, rownum as rn from ( select count(b_codrep), b_codrep from bvt006 where instancia = '" + instancia + "' group by b_codrep order by 1 desc) query ) where rownum <= 5 and rn > (0) ";
 		chart2 = "select count(b_codrep), b_codrep from bvt006 where instancia = '" + instancia + "' group by b_codrep order by 1 desc LIMIT 5 OFFSET 0";
-		chart3 = "SELECT ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) AS ROW_NUM, B_CODREP FROM BVT006 where instancia = '" + instancia + "' HAVING ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) <= 5 AND ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) > 0 ORDER BY 1 DESC";
+		chart3 = "select top 5 count(b_codrep), b_codrep from bvt006 where instancia = '" + instancia + "' group by b_codrep order by 1";
 		try {
 			consulta.selectPntGenericaMDB(chart1, chart2, chart3, JNDI);		
 			rowschart = consulta.getRows();
@@ -449,4 +453,56 @@ public class Db extends Bd implements Serializable  {
     	 }
     	 return display;
      }
+     
+     
+     ////Dashboard de reportes disponibles por grupos/////////////
+
+     private int inputnumber10 = 0; //El número de inputs que tendrá el forulario dependiendo de la cantidad de registros que tenga la tabla reflexion
+     private String[][] vlArraytb10; //El arreglo que imprime los nombres
+     private String[] table10; //Tabla para imprimir inputs en el formularios 
+     
+     
+	public int getInputnumber10() {
+		return inputnumber10;
+	}
+	public void setInputnumber10(int inputnumber10) {
+		this.inputnumber10 = inputnumber10;
+	}
+	public String[][] getVlArraytb10() {
+		return vlArraytb10;
+	}
+	public void setVlArraytb10(String[][] vlArraytb10) {
+		this.vlArraytb10 = vlArraytb10;
+	}
+	
+	public String[] getTable10() {
+		return table10;
+	}
+	public void setTable10(String[] table10) {
+		this.table10 = table10;
+	}
+	
+	/**
+      * Genera la descripción de los reportes disponibles por grupos
+      */
+     	private void selectInputs10() {  
+            try {
+     		String query = "select count(*), b.DESGRUP from bvt001 a, bvt001a b where a.CODGRUP = b.CODGRUP  and a.instancia =  '" + instancia + "' and codrep IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL IN (SELECT B_CODROL FROM BVT002 WHERE CODUSER = '" + login + "' UNION ALL SELECT B_CODrol FROM BVT008 WHERE CODUSER = '" + login + "')) group by b.DESGRUP";
+     		
+     		consulta.selectPntGenerica(query, JNDI);	
+     		} catch (NamingException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		}
+     	    inputnumber10 = consulta.getRows();
+     	   	   if(inputnumber10>0){
+     	   		vlArraytb10 = consulta.getArray();
+     	   	}
+     	
+     	    }
+
+     	
+     	
 }
+
+ 

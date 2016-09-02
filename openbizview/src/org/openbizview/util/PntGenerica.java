@@ -1,25 +1,24 @@
 /*
  *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.util;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -36,10 +35,47 @@ import javax.sql.DataSource;
 public class PntGenerica extends Bd {
 //Variables serán utilizadas para capturar mensajes de errores de Oracle
 
-//Variables para select
-private int columns;
-private String[][] arr;
-private int rows;
+	//Variables para select
+	private int columns;
+	private String[][] arr;
+	private int rows;
+	List<List<String>> data = new ArrayList<List<String>>();
+	
+	
+	/**
+	* @return Retorna el arreglo
+	**/
+	public String[][] getArray(){
+		return arr;
+	}
+	
+	/**
+	* @return Retorna número de filas
+	**/
+	public int getRows(){
+		return rows;
+	}
+	/**
+	* @return Retorna número de columnas
+	**/
+	public int getColumns(){
+		return columns;
+	}
+					
+	
+	/**
+	* @return the data
+	*/
+	public List<List<String>> getData() {
+		return data;
+	}
+	
+	/**
+	* @param data the data to set
+	*/
+	public void setData(List<List<String>> data) {
+		this.data = data;
+	}
 
 	 /**
 	 * Leer datos de cualquier tabla pasada por parametro
@@ -162,28 +198,138 @@ private int rows;
        
        
 
-
-
- /**
- * @return Retorna el arreglo
- **/
-public String[][] getArray(){
-	return arr;
-}
-
-/**
- * @return Retorna número de filas
- **/
-public int getRows(){
-	return rows;
-}
-/**
- * @return Retorna número de columnas
- **/
-public int getColumns(){
-	return columns;
-}
-
-
+		/**
+		 * Leer datos de cualquier tabla pasando el query por parametro
+		 * Nueva versión Agosto 2016
+		 * Se reemplaza la clase anterior (PntGenerica) utlizando como métodos
+		 * listas por ser mas eficientes y remplazando a la smatrices
+		 * @param La cadena de consulta
+		 * @param La conexión JNDI
+		 * @return void
+		 **/
+	    public void selectGenerica(String strCadena, String pool) {
+	    	
+	    	PreparedStatement pstmt = null;
+	    	Connection con;
+			try {
+				//Pool de conexión a base de datos
+				Context initContext = new InitialContext();
+				DataSource ds = (DataSource) initContext.lookup(pool);
+		 		con = ds.getConnection();		
+		 		
+		 		ResultSet r;
+		 		
+		 		pstmt = con.prepareStatement(strCadena);
+		 		
+		 		
+		 		//System.out.println(strCadena);
+		 		r =  pstmt.executeQuery();
+		 		
+		 		//Resulset metadata para conocer la cantidad de columnas
+		 		ResultSetMetaData rsmd = r.getMetaData();
+		 		
+		 		//Se define la cantidad de columnas
+		 		int col = rsmd.getColumnCount();
+		 		
+		 		for (int i = 0; i < col; i++){
+		 			//Se agrega la lista para defrinir la cantidad de columnas
+	 				data.add(new ArrayList<String>());
+	 			}
+		
+		 		while (r.next()){
+		 			//Dependiendo la cantidad de columnas y filas se define
+		 			//la lista get(i) para columnas "add" para el número de filas
+		 			for (int i = 0; i < col; i++){
+		 			data.get(i).add(r.getString(i+1));
+		 			}                                 
+		 		}
+		 	 
+		 		//Cierra las conecciones
+		        pstmt.close();
+		        con.close();
+		 		
+			} catch (NamingException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}     
+	        
+	    }
+	    
+	    
+	    /**
+		 * Leer datos de cualquier tabla pasando el query por parametro
+		 * Nueva versión Agosto 2016
+		 * Se reemplaza la clase anterior (PntGenerica) utlizando como métodos
+		 * listas por ser mas eficientes y remplazando a la smatrices
+		 * @param La cadena de consulta para oracle
+		 * @param La cadena de consulta para postgres
+		 * @param La cadena de consulta para sqlserver
+		 * @param La conexión JNDI
+		 * @return void
+		 **/
+	    public void selectGenericaMDB(String strOra, String strPg, String strSqlSrv, String pool) {
+	    	
+	    	PreparedStatement pstmt = null;
+	    	Connection con;
+			try {
+				//Pool de conexión a base de datos
+				Context initContext = new InitialContext();
+				DataSource ds = (DataSource) initContext.lookup(pool);
+		 		con = ds.getConnection();	
+		 		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+        		DatabaseMetaData databaseMetaData = con.getMetaData();
+        		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+		 		
+		 		ResultSet r;
+		 		
+		 		
+		 		switch ( productName ) {
+                case "Oracle":
+                	pstmt = con.prepareStatement(strOra);
+                     break;
+                case "PostgreSQL":
+                	pstmt = con.prepareStatement(strPg);
+                     break;
+                case "Microsoft SQL Server":
+                	pstmt = con.prepareStatement(strSqlSrv);
+                     break;     
+                }
+		 		
+		 		
+		 		//System.out.println(strCadena);
+		 		r =  pstmt.executeQuery();
+		 		
+		 		//Resulset metadata para conocer la cantidad de columnas
+		 		ResultSetMetaData rsmd = r.getMetaData();
+		 		
+		 		//Se define la cantidad de columnas
+		 		int col = rsmd.getColumnCount();
+		 		
+		 		for (int i = 0; i < col; i++){
+		 			//Se agrega la lista para defrinir la cantidad de columnas
+	 				data.add(new ArrayList<String>());
+	 			}
+		
+		 		while (r.next()){
+		 			//Dependiendo la cantidad de columnas y filas se define
+		 			//la lista get(i) para columnas "add" para el número de filas
+		 			for (int i = 0; i < col; i++){
+		 			data.get(i).add(r.getString(i+1));
+		 			}                                 
+		 		}
+		 	 
+		 		//Cierra las conecciones
+		        pstmt.close();
+		        con.close();
+		 		
+			} catch (NamingException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}     
+	        
+	    }
+	    
+	    
+	 
 
 }

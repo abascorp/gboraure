@@ -1,20 +1,17 @@
 /*
  *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.util;
@@ -367,7 +364,19 @@ import org.primefaces.model.SortOrder;
     	           query += " LIMIT " + pageSize;
     	           query += " OFFSET " + first;
                  break;
-            }
+            case "Microsoft SQL Server":
+            	   query += " select convert(varchar(10),fechadia, 10), substring(fecacc,12,22), detfaz, result, negocio ";
+         	       query += " FROM biaudit";
+         	       query += " WHERE substring(fecacc,12,22)+detfaz+negocio like '%" + ((String) filterValue).toUpperCase() + "%'";
+         	       query += " AND   instancia = '" + instancia + "'";
+         	       if(fechadia != null && !fechadia.equals("0") && !fechadia.equals(getMessage("biauditFecD"))){
+         	       query += " and fechadia = '" + fechadia + "'";
+         	       }
+         	       query += " order by fechadia desc";
+         	       query += " OFFSET " + first + " ROWS";
+	               query += " FETCH NEXT " + pageSize + " ROWS ONLY";
+           break;
+           }
 	        
 	        pstmt = con.prepareStatement(query);
 	        //System.out.println(query);
@@ -421,6 +430,9 @@ import org.primefaces.model.SortOrder;
 	             break;
 	        case "PostgreSQL":
 	        	 query = "SELECT count_biaudit('" + ((String) filterValue).toUpperCase() + "','" + fechadia + "','" + busqueda  + "','" + instancia + "')";
+	             break;
+	        case "Microsoft SQL Server":
+	        	 query = "SELECT dbo.count_biaudit('" + ((String) filterValue).toUpperCase() + "','" + fechadia + "','" + busqueda  + "','" + instancia + "')";
 	             break;
 	        }
 

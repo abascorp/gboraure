@@ -1,20 +1,17 @@
 /*
  *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.util;
@@ -52,7 +49,7 @@ public class Bd  {
     private Locale  localidad = new Locale(lenguaje, pais);
     ResourceBundle recursos =  ResourceBundle.getBundle("org.openbizview.util.MessagesBundle",localidad);
     private String Message = "";
-    String productName; //Manejador de base de datos
+    protected String productName; //Manejador de base de datos
     @SuppressWarnings("unused")
 	private Locale OsLang = Locale.getDefault();
 
@@ -133,6 +130,27 @@ public class Bd  {
     		fecha = sdfecha_en.format(fecact);
     	}
         return fecha;
+    }
+    
+    
+    /**
+     * Obtiene la fecha según el tipo de base de datos
+     * @throws IOException
+     */
+    public String getFecha(String productName){  
+    	String fechabd = null;
+    	switch ( productName ) {
+        case "Oracle":
+        	fechabd = "sysdate";
+        break;
+        case "PostgreSQL":
+        	fechabd = "now()";
+             break;
+        case "Microsoft SQL Server":
+        	fechabd = "getdate()";
+        break;
+        }
+        return fechabd;
     }
     
     /**

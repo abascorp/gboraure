@@ -3,20 +3,17 @@
 <!-- 
      Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los términos de la Licencia Pública General GNU publicada 
-    por la Fundación para el Software Libre, ya sea la versión 3 
-    de la Licencia, o (a su elección) cualquier versión posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
-    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una información más detallada. 
-
-    Debería haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+   Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -76,7 +73,7 @@
 			      </div>
 			      <div class="modal-footer">
 			        <p:commandLink  action="#{bvt001.delete}"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
-			        <p:spacer height="5"/>
+			       
 			        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
 			       </div>
 			    </div>
@@ -96,19 +93,15 @@
 	    <p:ajax event="itemSelect" update="tbResult" listener="#{bd.setCodgrup(bvt001.codgrup)}" />	     
 	    </p:autoComplete> 
 	    <p:watermark for="grupo" value="&#160;&#160;#{msg.bvt001Grp}" />
-	    <p:spacer height="1"/>
 	    <p:message for="grupo"/>        
 	    <p:inputText id="codrep" styleClass="form-control input" maxlength="15" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{bvt001.codrep}"/>
 	    <p:watermark for="codrep" value="#{msg.bvt001Cod}" />
-	    <p:spacer height="1"/>
-	    <p:message for="codrep"/>  
+	    <p:message for="codrep"/> 
 	    <p:inputText id="desrep"  styleClass="form-control input" maxlength="50" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{bvt001.desrep}" />
 	    <p:watermark for="desrep" value="#{msg.bvt001Desc}" />
-	    <p:spacer height="1"/>
 	    <p:message for="desrep"/> 
 	    <p:inputText id="comrep"  styleClass="form-control input" maxlength="50" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{bvt001.comrep}" /> 	
 	    <p:watermark for="comrep" value="#{msg.bvt001Com}" />
-	    <p:spacer height="1"/>
 	    <p:message for="comrep"/>  
 	    </div>
 	    </div>

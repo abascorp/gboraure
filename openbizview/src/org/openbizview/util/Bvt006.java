@@ -1,20 +1,17 @@
 /*
  *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+   Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.util;
@@ -325,23 +322,14 @@ import org.primefaces.model.SortOrder;
 	           query += " OFFSET " + first;
              break;
         case "Microsoft SQL Server":
-	        	query += " SELECT * "; 
-	        	query += " FROM (SELECT ";
-	        	query += "	     ROW_NUMBER() OVER (ORDER BY B_CODREP ASC) AS ROW_NUM, "; 
-	        	query += "	     B_CODREP, ";
-	        	query += "	     B_DESREP, ";
-	        	query += "	     B_CODUSER, ";
-	        	query += "	     CONVERT(VARCHAR(10), FECACC, 103) + ' ' + CONVERT(VARCHAR(8), FECACC, 14) FECACC ";
-	        	query += "	     FROM BVT006) TOT ";
-	        	query += " WHERE "; 
-	        	query += " TOT.B_CODUSER LIKE '" + vlcoduser[0] + "%'";
-	        	query += " AND TOT.B_CODREP + TOT.B_DESREP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-	        	query += " AND  tot.instancia = '" + instancia + "'";
-	        	query += " AND TOT.ROW_NUM <= " + pageSize;
-	        	query += " AND TOT.ROW_NUM > " + first;
-	        	query += " ORDER BY  ";
-	        	query += " TOT.B_CODUSER,  ";
-	        	query += " TOT.FECACC DESC ";
+        	   query += " SELECT ltrim(rtrim(B_CODREP)), ltrim(rtrim(B_DESREP)), ltrim(rtrim(B_CODUSER)), convert(varchar(24),FECACC, 113) ";
+     	       query += " FROM BVT006";
+     	       query += " WHERE B_CODUSER LIKE '" + vlcoduser[0] + "%'";
+     	       query += " and b_codrep+b_desrep like '%" + ((String) filterValue).toUpperCase() + "%'";
+     	       query += " AND   instancia = '" + instancia + "'";
+     	       query += " order by  B_CODUSER, FECACC desc";
+     	       query += " OFFSET " + first + " ROWS";
+	           query += " FETCH NEXT " + pageSize + " ROWS ONLY";
           break;
           }
 

@@ -1,20 +1,17 @@
 /*
 o *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.util;
@@ -345,6 +342,7 @@ import org.primefaces.model.SortOrder;
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
      		
+       		
      		String[] veccodgrup = codgrup.split("\\ - ", -1);
      		
      		if(codgrup==null){
@@ -355,10 +353,12 @@ import org.primefaces.model.SortOrder;
      		}
      		//System.out.println("Grupo: " + veccodgrup[0].toUpperCase());
      		con = ds.getConnection();		
-            //Class.forName(getDriver());
-            //con = DriverManager.getConnection(
-            //      getUrl(), getUsuario(), getClave());
-            String query = "INSERT INTO Bvt001 VALUES (?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?,?)";
+           
+       		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+     		DatabaseMetaData databaseMetaData = con.getMetaData();
+     		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+     		
+            String query = "INSERT INTO Bvt001 VALUES (?,?,?,?," + getFecha(productName) + ",?," + getFecha(productName) + ",?,?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, codrep.toUpperCase());
             pstmt.setString(2, desrep.toUpperCase());
@@ -379,6 +379,7 @@ import org.primefaces.model.SortOrder;
                 //Acceso automático a reportes
                 insertAccesoReporte();
             } catch (SQLException e)  {
+            	e.printStackTrace();
             	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
             	FacesContext.getCurrentInstance().addMessage(null, msj);
             }
@@ -386,6 +387,7 @@ import org.primefaces.model.SortOrder;
             pstmt.close();
             con.close();
     	} catch (Exception e){
+    		e.printStackTrace();
     		msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
         	FacesContext.getCurrentInstance().addMessage(null, msj);
     		
@@ -403,10 +405,12 @@ import org.primefaces.model.SortOrder;
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
      		//System.out.println("Grupo: " + veccodgrup[0].toUpperCase());
      		con = ds.getConnection();		
-            //Class.forName(getDriver());
-            //con = DriverManager.getConnection(
-            //      getUrl(), getUsuario(), getClave());
-            String query = "INSERT INTO Bvt007 VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+     		
+     		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+     		DatabaseMetaData databaseMetaData = con.getMetaData();
+     		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+
+            String query = "INSERT INTO Bvt007 VALUES (?,?,?," + getFecha(productName) + ",?," + getFecha(productName) + ",?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, vlRol.toUpperCase());
             pstmt.setString(2, codrep.toUpperCase());
@@ -510,11 +514,16 @@ import org.primefaces.model.SortOrder;
      		String[] veccodgrup = codgrup.split("\\ - ", -1);
 
      		con = ds.getConnection();		
+     		
+     		//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+     		DatabaseMetaData databaseMetaData = con.getMetaData();
+     		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+     		
             //Class.forName(getDriver());
             //con = DriverManager.getConnection(
             //      getUrl(), getUsuario(), getClave());
             String query = "UPDATE Bvt001";
-             query += " SET desrep = ?, comrep= ?, usract = ?, fecact='" + getFecha() + "', codgrup = '" + veccodgrup[0].toUpperCase() + "'";
+             query += " SET desrep = ?, comrep= ?, usract = ?, fecact=" + getFecha(productName) + ", codgrup = '" + veccodgrup[0].toUpperCase() + "'";
              query += " WHERE codrep = ? and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
@@ -608,37 +617,18 @@ import org.primefaces.model.SortOrder;
 	           query += " OFFSET " + first;
              break;
         case "Microsoft SQL Server":
-        	query += " SELECT TOP " + pageSize;
-        	query += " TOT.CODREP, "; 
-        	query += " TOT.DESREP, "; 
-        	query += " TOT.COMREP, "; 
-        	query += " TOT.CODGRUP, "; 
-        	query += " TOT.DESGRUP ";
-        	query += " TOT.instancia ";
-        	query += " FROM (SELECT "; 
-        	query += " 	  ROW_NUMBER() OVER (ORDER BY A.CODREP ASC) AS ROW_NUM ";
-        	query += " 	  ,A.CODREP AS CODREP ";
-        	query += " 	  ,A.DESREP AS DESREP ";
-        	query += " 	  ,A.COMREP AS COMREP ";
-        	query += " 	  ,A.CODGRUP AS CODGRUP ";
-        	query += " 	  ,B.DESGRUP AS DESGRUP ";
-        	query += " 	  FROM BVT001 A LEFT OUTER JOIN BVT001A B ON A.CODGRUP = B.CODGRUP "; 
-        	query += " 	  WHERE "; 
-        	query += " 	  A.CODREP + A.DESREP LIKE ('" + ((String) filterValue).toUpperCase() +  "%') ";
-        	query += " AND   A.instancia = '" + instancia + "'";
-        	query += " AND   A.codrep like '" + codrep + "%'";
+        	query += " SELECT ltrim(rtrim(A.CODREP)), ltrim(rtrim(A.DESREP)), ltrim(rtrim(A.COMREP)), ltrim(rtrim(A.CODGRUP)), ltrim(rtrim(dbo.fn_desgrup(A.CODGRUP))), a.instancia ";
+		       query += " FROM BVT001 A ";
+		       query += " where A.CODREP+A.DESREP LIKE ltrim(rtrim('%" + ((String) filterValue).toUpperCase() +  "%')) ";
+		       query += " AND   A.CODREP  IN (SELECT B_CODREP FROM BVT007 WHERE B_CODROL IN (SELECT B_CODROL FROM BVT002 WHERE CODUSER = '" + login + "' and instancia ='" + instancia + "' UNION ALL SELECT B_CODrol FROM BVT008 WHERE CODUSER = '" + login + "' and instancia = '" +  instancia + "'))";
+		       query += " AND   A.instancia = '" + instancia + "'";
+		       query += " AND   A.codrep like '" + codrep + "%'";
 	  		   if(!veccodgrup[0].equals("")){
-		  	   query += " AND A.CODGRUP LIKE '" + veccodgrup[0].toUpperCase() +  "%'";
-		  	 	}        	
-        	query += " 	  AND A.CODREP IN (SELECT ";
-        	query += " 					   B_CODREP "; 
-        	query += " 					   FROM  ";
-        	query += " 					   BVT007 ";  
-        	query += " 					   WHERE "; 
-        	query += " 					   B_CODROL = '" + vlRol + "')) TOT "; 
-        	query += " WHERE "; 
-        	query += " TOT.ROW_NUM > " + first;
-        	query += " ORDER BY " + sortField.replace("v", "");
+		  	   query += " AND   A.CODGRUP  LIKE ltrim(rtrim('" + veccodgrup[0].toUpperCase() +  "%'))";
+		  	 	}
+	  		   query += " order by " + sortField.replace("v", "") ;
+	  		   query += " OFFSET " + first + " ROWS";
+	           query += " FETCH NEXT " + pageSize + " ROWS ONLY";
 	         break;            		   
   		}
   		//System.out.println(query);

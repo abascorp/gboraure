@@ -1,20 +1,17 @@
 /*
  *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.util;
@@ -211,8 +208,10 @@ import org.primefaces.model.SortOrder;
         	Context initContext = new InitialContext();     
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
+            DatabaseMetaData databaseMetaData = con.getMetaData();
+     		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
             
-            String query = "INSERT INTO Bvt001A VALUES (?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+            String query = "INSERT INTO Bvt001A VALUES (?,?,?," + getFecha(productName) + ",?," + getFecha(productName) + ",?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, codgrup.toUpperCase());
             pstmt.setString(2, desgrup.toUpperCase());
@@ -291,10 +290,12 @@ import org.primefaces.model.SortOrder;
         	 Context initContext = new InitialContext();     
       		DataSource ds = (DataSource) initContext.lookup(JNDI);
 
-      		con = ds.getConnection();		
+      		con = ds.getConnection();
+      		DatabaseMetaData databaseMetaData = con.getMetaData();
+     		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
       		
             String query = "UPDATE Bvt001A";
-             query += " SET desgrup = ?, usract = ?, fecact='" + getFecha() + "'";
+             query += " SET desgrup = ?, usract = ?, fecact=" + getFecha(productName) + "";
              query += " WHERE codgrup = ? and instancia = '" + instancia + "'";
            // //System.out.println(query);
             pstmt = con.prepareStatement(query);
@@ -371,18 +372,14 @@ import org.primefaces.model.SortOrder;
 	           query += " OFFSET " + first;
              break;
         case "Microsoft SQL Server":
-			   query += " SELECT TOP " + pageSize + " TOT.CODGRUP, TOT.DESGRUP,  TOT.ROW_NUM ";
-			   query += " FROM (SELECT ";
-			   query += "       ROW_NUMBER() OVER (ORDER BY A.CODGRUP ASC) AS ROW_NUM, ";
-			   query += "       A.CODGRUP, ";
-			   query += "       A.DESGRUP ";
-			   query += "       FROM BVT001A A) TOT ";
-			   query += " WHERE ";
-			   query += " TOT.CODGRUP + TOT.DESGRUP LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-			   query += " AND   tot.codgrup like '" + codgrup + "%'";
-			   query += " AND   tot.instancia = '" + instancia + "'";
-			   query += " AND TOT.ROW_NUM > " + first;
-			   query += " ORDER BY " + sortField ;
+	           query += " SELECT ltrim(rtrim(codgrup)), ltrim(rtrim(desgrup))";
+	           query += " FROM BVT001A";
+	           query += " WHERE CODGRUP+desgrup like '%" + ((String) filterValue).toUpperCase() + "%'";
+	           query += " AND   codgrup like '" + codgrup + "%'";
+	           query += " AND   instancia = '" + instancia + "'";
+               query += " order by " + sortField ;
+	           query += " OFFSET " + first + " ROWS";
+	           query += " FETCH NEXT " + pageSize + " ROWS ONLY";
         break;
         }
  		

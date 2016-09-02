@@ -2,20 +2,17 @@
 <!-- 
      Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los términos de la Licencia Pública General GNU publicada 
-    por la Fundación para el Software Libre, ya sea la versión 3 
-    de la Licencia, o (a su elección) cualquier versión posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
-    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una información más detallada. 
-
-    Debería haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -73,7 +70,7 @@
 			      </div>
 			      <div class="modal-footer">
 			        <p:commandLink  action="#{bvtcat2.delete}"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
-			        <p:spacer height="5"/>
+			       
 			        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
 			       </div>
 			    </div>
@@ -92,10 +89,10 @@
 			     </p:autoComplete>
 			     <p:message for="bcodcat1"/>
 			     <p:inputText id="codcat2" placeholder="#{msg.bvtcat2Cod}" maxlength="10"  styleClass="form-control input" value="#{bvtcat2.codcat2}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="codcat2"/>
 			     <p:inputText id="descat2" placeholder="#{msg.bvtcat2Desc}" maxlength="50" styleClass="form-control input" value="#{bvtcat2.descat2}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="descat2"/>
                   </div>
                   </div>

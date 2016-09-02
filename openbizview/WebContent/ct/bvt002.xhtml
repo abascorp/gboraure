@@ -2,20 +2,17 @@
 <!-- 
      Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los términos de la Licencia Pública General GNU publicada 
-    por la Fundación para el Software Libre, ya sea la versión 3 
-    de la Licencia, o (a su elección) cualquier versión posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita 
-    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una información más detallada. 
-
-    Debería haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -76,7 +73,7 @@
 			      </div>
 			      <div class="modal-footer">
 			        <p:commandLink  action="#{bvt002.delete}"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
-			        <p:spacer height="5"/>
+			      
 			        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
 			       </div>
 			    </div>
@@ -94,16 +91,16 @@
 		           <div class="col-lg-4 col-md-4 col-sm-4">  	         
 			     <p:inputText id="coduser" maxlength="10" styleClass="form-control input" value="#{bvt002.coduser}"  required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:watermark for="coduser" value="#{msg.bvt002Cod}" />
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="coduser"/>
 			     <p:inputText id="desuser"  maxlength="50" styleClass="form-control input" value="#{bvt002.desuser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/> 
                  <p:watermark for="desuser" value="#{msg.bvt002Desc}" />
-                 <p:spacer height="1"/>
+                 
                  <p:message for="desuser"/>
 			     <p:password id="cluser" maxlength="150" feedback="true" promptLabel="#{msg.html52}" weakLabel="#{msg.html53}"
                     goodLabel="#{msg.html54}" strongLabel="#{msg.html55}" validatorMessage="#{msg.html56}" styleClass="form-control input" value="#{bvt002.cluser}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 			     <p:watermark for="cluser" value="#{msg.bvt002Cl}" />
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="cluser"/>
                </div>
                 </div>
@@ -112,15 +109,15 @@
              <div class="pull-right"><a HREF="http://www.openbizview.com/wiki/doku.php?id=usuarios" target="_new" title="Wiki"><i class="fa fa-file-text text-info"></i></a></div>	                      
                <div class="row">
 		         <div class="col-lg-4 col-md-4 col-sm-4">  	
-			     <p:inputText id="mail" maxlength="150" styleClass="form-control input" value="#{bvt002.mail}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('confmailIngMail')}">  
+			     <p:inputText id="mail" maxlength="150" style="margin-bottom:5px" styleClass="form-control input" value="#{bvt002.mail}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" validatorMessage="#{bd.getMessage('confmailIngMail')}">  
 			     <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 			     </p:inputText>
 			     <p:watermark for="mail" value="#{msg.bvt002mail}" />
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="mail"/>
 			     <p:autoComplete id="rol" value="#{bvt002.b_codrol}" completeMethod="#{autocomplete.completeRol}"  dropdown="true" scrollHeight="250" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
 		         <p:watermark for="rol" value="&nbsp;&nbsp;#{msg.bvt002Rol}" />
-		         <p:spacer height="1"/>
+		         
 		         <p:message for="rol"/>		         
 		         <p:autoComplete id="instancia" placeholder="&nbsp;&nbsp;#{msg.bvt002Instancia}" value="#{bvt002.instancia}"  completeMethod="#{autocomplete.completeInstancias}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" dropdown="true" scrollHeight="250" />
 		        </div>

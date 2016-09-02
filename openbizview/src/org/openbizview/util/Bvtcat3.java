@@ -1,20 +1,17 @@
 /*
  *  Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+    Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.util;
@@ -288,7 +285,11 @@ public class Bvtcat3 extends Bd implements Serializable {
      		DataSource ds = (DataSource) initContext.lookup(JNDI);
             con = ds.getConnection();
             
-            String query = "INSERT INTO Bvtcat3 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "',?)";
+            //Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+     		DatabaseMetaData databaseMetaData = con.getMetaData();
+     		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
+            
+            String query = "INSERT INTO Bvtcat3 VALUES (?,?,?,?,?," + getFecha(productName) + ",?," + getFecha(productName) + ",?)";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, veccodcat1[0].toUpperCase());
             pstmt.setString(2, veccodcat2[0].toUpperCase());
@@ -374,9 +375,13 @@ public class Bvtcat3 extends Bd implements Serializable {
         	DataSource ds = (DataSource) initContext.lookup(JNDI);
 
         	con = ds.getConnection();		
+        	
+        	//Reconoce la base de datos de conección para ejecutar el query correspondiente a cada uno
+     		DatabaseMetaData databaseMetaData = con.getMetaData();
+     		productName    = databaseMetaData.getDatabaseProductName();//Identifica la base de datos de conección
         		
             String query = "UPDATE Bvtcat3";
-             query += " SET descat3 = ?, usract = ?, fecact='" + getFecha() + "'";
+             query += " SET descat3 = ?, usract = ?, fecact=" + getFecha(productName) + "";
              query += " WHERE b_codcat1 = ? and b_codcat2 = ? and codcat3 = ? and instancia = '" + instancia + "'";
             ////System.out.println(query);
             pstmt = con.prepareStatement(query);
@@ -486,27 +491,20 @@ public class Bvtcat3 extends Bd implements Serializable {
 	           query += " OFFSET " + first;
              break;
         case "Microsoft SQL Server":
-	        	query += " SELECT * ";
-	        	query += " FROM (SELECT ";
-	        	query += " 	     ROW_NUMBER() OVER (ORDER BY A.CODCAT3 ASC) AS ROW_NUM, ";
-	        	query += " 	     A.CODCAT3, ";
-	        	query += " 	     A.DESCAT3, ";
-	        	query += " 	     A.B_CODCAT1, ";
-	        	query += " 	     B.DESCAT1, ";
-	        	query += " 	     A.B_CODCAT2, ";
-	        	query += " 	     C.DESCAT2 ";
-	        	query += " 	     FROM BVTCAT3 A, BVTCAT1 B, BVTCAT2 C ";
-	        	query += " 	     WHERE A.B_CODCAT1=B.CODCAT1 ";
-	        	query += " 	     AND A.B_CODCAT1=C.B_CODCAT1 ";
-	        	query += " 	     AND A.B_CODCAT2=C.CODCAT2) TOT ";
-	        	query += " WHERE ";
-	        	query += " TOT.B_CODCAT1 LIKE '" + veccodcat1[0].toUpperCase() + "%'";
-	        	query += " AND TOT.B_CODCAT2 LIKE '" + veccodcat2[0].toUpperCase() + "%'";
-	        	query += " AND TOT.CODCAT3 + TOT.DESCAT3 LIKE  '%" + ((String) filterValue).toUpperCase() + "%'";
-	        	query += " AND   tot.instancia = '" + instancia + "'";
-	        	query += " AND TOT.ROW_NUM <= " + pageSize;
-	        	query += " AND TOT.ROW_NUM > " + first;
-	        	query += " ORDER BY " + sortField ;
+        	   query += " SELECT ltrim(rtrim(A.codcat3)), ltrim(rtrim(A.descat3)), ltrim(rtrim(A.B_CODCAT1)), ltrim(rtrim(B.DESCAT1)), ltrim(rtrim(A.B_CODCAT2)), ltrim(rtrim(C.DESCAT2)) ";
+	     	   query +=  " FROM BVTCAT3 A, BVTCAT1 B, BVTCAT2 C";
+	           query += " WHERE A.B_CODCAT1=B.CODCAT1";
+	           query += " AND A.B_CODCAT1=C.B_CODCAT1";
+	           query += " AND A.B_CODCAT2=C.CODCAT2";
+	           query += " and A.instancia=B.instancia";
+	           query += " and A.instancia=c.instancia";
+	           query += " and  A.b_codcat1 like '" + veccodcat1[0].toUpperCase() + "%'";
+	           query += " and  A.b_codcat2 like '" + veccodcat2[0].toUpperCase() + "%'";
+	           query += " AND   a.instancia = '" + instancia + "'";
+	           query += " and  A.codcat3+a.descat3 like  '%" + ((String) filterValue).toUpperCase() + "%'";
+	           query += " order by a." + sortField ;
+	           query += " OFFSET " + first + " ROWS";
+	           query += " FETCH NEXT " + pageSize + " ROWS ONLY";
           break;        }
        
        pstmt = con.prepareStatement(query);

@@ -2,20 +2,17 @@
 <!-- 
      Copyright (C) 2011 - 2016  DVCONSULTORES
 
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los términos de la Licencia Publica General GNU publicada 
-    por la Fundación para el Software Libre, ya sea la versión 3 
-    de la Licencia, o (a su elección) cualquier versión posterior.
-
-    Este programa se distribuye con la esperanza de que sea util, pero 
-    SIN GARANTIA ALGUNA; ni siquiera la garantia implícita 
-    MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una información más detallada. 
-
-    Debería haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+   Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -72,7 +69,7 @@
 			      </div>
 			      <div class="modal-footer">
 			        <p:commandLink  action="#{mailgrupos.delete}"  styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
-			        <p:spacer height="5"/>
+			        
 			        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
 			       </div>
 			    </div>
@@ -88,7 +85,7 @@
 		          <div class="col-lg-4 col-md-4 col-sm-4">  	         
 			     <p:inputText id="codigo" maxlength="10"  value="#{mailgrupos.idgrupo}" styleClass="form-control input" converter="javax.faces.Integer" converterMessage="#{bd.getMessage('isInt')}" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  	
 			     <p:watermark for="codigo" value="#{msg.mailgrupoCodigo}" />
-			     <p:spacer height="1"/>
+			     
 			     <p:message for="codigo"/>
 			     <p:inputText id="descripcion" maxlength="50"  value="#{mailgrupos.desgrupo}"  styleClass="form-control input" required="true"  requiredMessage="#{bd.getMessage('htmlvalidate')}"/>  		
 		         <p:watermark for="descripcion" value="#{msg.mailgrupoDescripcion}" />

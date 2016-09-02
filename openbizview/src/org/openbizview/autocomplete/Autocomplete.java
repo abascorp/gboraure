@@ -1,27 +1,29 @@
 /*
- *  Copyright (C) 2011  DVCONSULTORES
-
-    Este programa es software libre: usted puede redistribuirlo y/o modificarlo 
-    bajo los terminos de la Licencia Pública General GNU publicada 
-    por la Fundacion para el Software Libre, ya sea la version 3 
-    de la Licencia, o (a su eleccion) cualquier version posterior.
-
-    Este programa se distribuye con la esperanza de que sea útil, pero 
-    SIN GARANTiA ALGUNA; ni siquiera la garantia implicita 
-    MERCANTIL o de APTITUD PARA UN PROPoSITO DETERMINADO. 
-    Consulte los detalles de la Licencia Pública General GNU para obtener 
-    una informacion mas detallada. 
-
-    Deberia haber recibido una copia de la Licencia Pública General GNU 
-    junto a este programa. 
-    En caso contrario, consulte <http://www.gnu.org/licenses/>.
+ * Copyright 2011 DvConsultores
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	    http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
  */
 
 package org.openbizview.autocomplete;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -45,6 +47,38 @@ public class Autocomplete extends Bd {
 	private String instancia = (String) FacesContext.getCurrentInstance()
 			.getExternalContext().getSessionMap().get("instancia"); // Usuario
 																	// logeado
+	List<String> results = new ArrayList<String>();
+	
+	
+	//Coneccion a base de datos
+	//Pool de conecciones JNDI
+	Connection con;
+	PreparedStatement pstmt = null;
+	ResultSet r;
+	
+		
+	/**
+	 * Lista grupo de reportes.
+	 * 
+	 * @throws NamingException
+	 * @return List String
+	 * @throws IOException
+	 **/
+	public List<String> prueba(String query)  {
+
+		String queryora = "Select codgrup||' - '||desgrup " + " from bvt001a "
+				+ " where codgrup||desgrup like '%" + query.toUpperCase() + "%' and instancia = '"
+				+ instancia + "' order by codgrup";
+
+		consulta.selectGenerica(queryora, JNDI);
+		//System.out.println(consulta.getData());
+		
+		IntStream.range(0, consulta.getData().get(0).size())
+		     .forEach(i -> 
+		       results.add(consulta.getData().get(0).get(i))
+		       );			
+		return results;
+	}
 
 	/**
 	 * Lista grupo de reportes.
@@ -63,7 +97,7 @@ public class Autocomplete extends Bd {
 				+ " where codgrup||desgrup like '%" + query.toUpperCase() + "%'  and instancia = '"
 				+ instancia	+ "' order by codgrup";
 		String querysql = "Select codgrup + ' - ' + desgrup "
-				+ " from bvt001a " + " where codgrup||desgrup like '%" + query.toUpperCase() + "%' and instancia = '"
+				+ " from bvt001a " + " where codgrup+desgrup like '%" + query.toUpperCase() + "%' and instancia = '"
 				+ instancia
 				+ "' order by codgrup";
 
@@ -95,8 +129,8 @@ public class Autocomplete extends Bd {
 		String querypg = "Select instancia||' - '||descripcion "
 				+ " from instancias  where cast(instancia as text)||descripcion like '%" + query.toUpperCase()
 				+ "%' order by instancia";
-		String querysql = "Select instancia||' - '||descripcion "
-				+ " from instancias  where cast(instancia instancias as text)||descripcion like '%" + query.toUpperCase()
+		String querysql = "Select instancia+' - '+descripcion "
+				+ " from instancias  where cast(instancia as varchar)+descripcion like '%" + query.toUpperCase()
 				+ "%' order by instancia";
 
 		List<String> results = new ArrayList<String>();
@@ -116,39 +150,22 @@ public class Autocomplete extends Bd {
 	 * 
 	 * @throws NamingException
 	 * @return List String
+	 * @throws SQLException 
 	 * @throws IOException
 	 **/
-	public List<String> completeCat1(String query) throws NamingException,
-			IOException {
+	public List<String> completeCat1(String query)  {
 
-		String vlqueryOra = "Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%"
-				+ query.toUpperCase()
-				+ "%'  and instancia = '"
-				+ instancia
-				+ "' order by codcat1";
+       	String strOra    = " Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%" + query.toUpperCase() + "%'  and instancia = '" + instancia + "' order by codcat1";
+       	String strPg     = " Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%" + query.toUpperCase() + "%'  and instancia = '" + instancia + "' order by codcat1";
+       	String strSqlSrv = " Select codcat1+' - '+descat1 from bvtcat1 where codcat1+descat1 like '%" + query.toUpperCase() + "%'  and instancia = '" + instancia + "' order by codcat1";        		
 
-		String vlqueryPg = "Select codcat1||' - '||descat1 from bvtcat1 where codcat1||descat1 like '%"
-				+ query.toUpperCase()
-				+ "%' and instancia = '"
-				+ instancia
-				+ "' order by codcat1";
-
-		String vlquerySql = "Select codcat1 + ' - ' + descat1 from bvtcat1 where codcat1 + descat1 like '%"
-				+ query.toUpperCase()
-				+ "%' and instancia = '"
-				+ instancia
-				+ "' order by codcat1";
-
-		List<String> results = new ArrayList<String>();
-
-		consulta.selectPntGenericaMDB(vlqueryOra, vlqueryPg, vlquerySql, JNDI);
-
-		rows = consulta.getRows();
-
-		tabla = consulta.getArray();
-		for (int i = 0; i < rows; i++) {
-			results.add(tabla[i][0]);
-		}
+ 		consulta.selectGenericaMDB(strOra, strPg, strSqlSrv, JNDI);
+		//System.out.println(consulta.getData());
+		
+		IntStream.range(0, consulta.getData().get(0).size())
+		     .forEach(i -> 
+		       results.add(consulta.getData().get(0).get(i))
+		       );			
 		return results;
 	}
 
@@ -159,8 +176,7 @@ public class Autocomplete extends Bd {
 	 * @return List String
 	 * @throws IOException
 	 **/
-	public List<String> completeCat1AccCat2(String query)
-			throws NamingException, IOException {
+	public List<String> completeCat1AccCat2(String query) {
 		String segrol = (String) FacesContext.getCurrentInstance()
 				.getExternalContext().getSessionMap().get("segrol"); // Usuario
 																		// logeado
@@ -197,15 +213,12 @@ public class Autocomplete extends Bd {
 
 		List<String> results = new ArrayList<String>();
 
-		consulta.selectPntGenericaMDB(queryora, querypg, querysql, JNDI);
+		consulta.selectGenericaMDB(queryora, querypg, querysql, JNDI);
 
-		rows = consulta.getRows();
-
-		tabla = consulta.getArray();
-
-		for (int i = 0; i < rows; i++) {
-			results.add(tabla[i][0]);
-		}
+		IntStream.range(0, consulta.getData().get(0).size())
+	     .forEach(i -> 
+	       results.add(consulta.getData().get(0).get(i))
+	       );	
 		return results;
 	}
 
@@ -238,7 +251,7 @@ public class Autocomplete extends Bd {
 				+ "%' and b_codcat1 = '"
 				+ veccat1[0]
 				+ "' and instancia = '" + instancia + "' order by codcat2";
-		String vlquerySql = "Select codcat2 + ' - ' + descat2 from bvtcat2 where codcat2 + descat2 like '%"
+		String vlquerySql = "Select codcat2+' - '+descat2 from bvtcat2 where codcat2+descat2 like '%"
 				+ query.toUpperCase()
 				+ "%' and b_codcat1 = '"
 				+ veccat1[0]
@@ -514,7 +527,7 @@ public class Autocomplete extends Bd {
 				+ query.toUpperCase() + "%' and instancia = '" + instancia
 				+ "' order by coduser";
 		String querysql = "Select coduser + ' - ' + desuser " + " from bvt002 "
-				+ " where coduser||desuser  like '%"
+				+ " where coduser+desuser  like '%"
 				+ query.toUpperCase() + "%' and instancia = '" + instancia
 				+ "' order by coduser";
 
@@ -619,7 +632,7 @@ public class Autocomplete extends Bd {
 				+ "%' and instancia = '" + instancia + "' order by codrep";
 
 		String querysql = "Select codrep+' - '+desrep " + " from bvt001 "
-				+ " where codrep||desrep like '%" + query.toUpperCase()
+				+ " where codrep+desrep like '%" + query.toUpperCase()
 				+ "%' and instancia = '" + instancia + "' order by codrep";
 		
 		//System.out.println(querypg);
@@ -707,5 +720,6 @@ public class Autocomplete extends Bd {
 		}
 		return results;
 	}
-
+	
+	
 }
