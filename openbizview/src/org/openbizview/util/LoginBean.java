@@ -33,6 +33,9 @@ import org.quartz.SchedulerException;
 @ManagedBean
 @SessionScoped
 public class LoginBean extends Bd {
+	
+	
+	
 
 	private String usuario;
     private String clave;

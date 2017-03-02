@@ -55,7 +55,7 @@ out.print("<script> top.location.href ='/openbizview/login.xhtml'; </script>");
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 <HTML>
 	<HEAD>
-		<TITLE>OPEN-BIZVIEW</TITLE>
+		<TITLE>Open-Bizview</TITLE>
 		<BASE href="<%= baseHref %>" >
 		<link rel="shortcut icon"  href="../resources/img/favicon.ico"/>
 		<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=utf-8">

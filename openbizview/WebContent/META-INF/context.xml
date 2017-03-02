@@ -64,6 +64,7 @@
 		    password="v12959363"
 		    mail.smtp.starttls.enable="true"
 		    mail.smtp.socketFactory.class="javax.net.ssl.SSLSocketFactory"
-		  />
+		  />  
+
 
 </Context>

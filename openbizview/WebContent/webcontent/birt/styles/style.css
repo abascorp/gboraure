@@ -48,7 +48,7 @@
 	font:Verdana;
 	font-size:9pt;
 	width:250px;
-	height: 32px;
+	height: auto;/**Se cambia para estanrazidar versión 6 de openbizview, no respetaba el tamaño cuando el select era multiple**/
 }
 
 .birtviewer_parameter_dialog_Label
