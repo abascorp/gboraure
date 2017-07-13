@@ -71,16 +71,16 @@ public class LoginBean
             String vLclave = tabla[0][1];
             //this.md.getStringMessageDigest(this.clave, "SHA-256").equals(vLclave) clave encryptada
             //this.clave.equals(vLclave)  clave sin encriptar
-            if (this.usuario.equals(vLusuario) && !this.clave.equals(vLclave)) {
-            	System.out.println("entre al IF");
-            	System.out.println("USUARIO: " + vLusuario);
-            	System.out.println("CLAVE: " + vLclave);
+            if (this.usuario.equals(vLusuario) && !this.md.getStringMessageDigest(this.clave, "SHA-256").equals(vLclave)) {
+            	//System.out.println("entre al IF");
+            	//System.out.println("USUARIO: " + vLusuario);
+            	//System.out.println("CLAVE: " + vLclave);
             	//System.out.println(this.md.getStringMessageDigest(this.clave, "SHA-256").equals(vLclave));
             	//System.out.println(this.md.getStringMessageDigest(this.clave, "SHA-256"));
             	//System.out.println(clave);
                 this.msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getMessage("logCl"), "");
                 FacesContext.getCurrentInstance().addMessage(null, this.msj);
-            } else if (this.usuario.equals(vLusuario) && this.clave.equals(vLclave)) {
+            } else if (this.usuario.equals(vLusuario) && this.md.getStringMessageDigest(this.clave, "SHA-256").equals(vLclave)) {
             	//System.out.println("entre al else");
             	//System.out.println("USUARIO: " + vLusuario);
             	//System.out.println("CLAVE: " + vLclave);

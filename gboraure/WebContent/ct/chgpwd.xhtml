@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    
+    <ui:define name="title">Cambiar Contraseña</ui:define>
+    
+     <ui:define name="content">
+    
+	  <div class="container-fluid" id="containerF">
+		<h:form id="formChgpwd">
+			<f:view>
+			
+   	              <!-- Mensaje -->
+	              <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+	            
+	            <div style="margin-top:15px">  
+	            <p:commandButton value="#{msg.chgpwdButtonCL}" action="#{usuarios.updatea()}" 
+	            update="growl, panel"  icon="fa fa-floppy-o text-info" styleClass="botonera"/>&#160;&#160;
+	            <p:commandButton value="#{msg.chgpwdButtonL}" update="panel, growl" process="@this" icon="fa fa-refresh text-info" styleClass="botonera">
+	            <p:resetInput target="panel" /> 
+	            </p:commandButton>
+	            </div> 
+	              
+				<!-- Panel -->     
+			     <div class="panel panel-info" style="margin-top:15px">
+			     <div class="panel-body">
+			       
+			         <p:panel id="panel" header="#{msg.bvt002tita}" >	  	
+	                  
+	                  <div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-4"> 
+			             <p:password id="clave" feedback="true" promptLabel="#{msg.html52}" weakLabel="#{msg.html53}" goodLabel="#{msg.html54}" strongLabel="#{msg.html55}" validatorMessage="#{msg.html56}"
+		                   maxlength="15" styleClass="spacing"  value="#{usuarios.cluser}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+			             <p:spacer height="1"/>
+			             <p:message for="clave"/>
+			             <p:watermark for="clave" value="#{msg.bvt002Cl}" />
+			             <p:password id="clave1" feedback="true" promptLabel="#{msg.html52}" weakLabel="#{msg.html53}" goodLabel="#{msg.html54}" strongLabel="#{msg.html55}" validatorMessage="#{msg.html56}"
+		                  maxlength="15"  styleClass="spacing"  value="#{usuarios.cluser1}" required="true" requiredMessage="#{bd.getMessage('bvt002IngCl')}"/>
+			             <p:watermark for="clave1" value="#{msg.bvt002Cl1}" >	             
+			             </p:watermark>
+			             <p:spacer height="1"/>
+			             <p:message for="clave1"/>
+		             	</div>
+		              </div>
+		            
+		             </p:panel>
+	             
+	              </div>
+	              </div>
+			
+			</f:view>
+		
+		</h:form>
+	  
+	   </div>
+    
+   	 </ui:define>
+
+</ui:composition>

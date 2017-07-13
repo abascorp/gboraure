@@ -148,6 +148,7 @@ public void init() {
 	private String coduser = "";
 	private String desuser = "";
 	private String cluser = "";
+	private String cluser1 = "";
 	private String randomKey;
 	private String mail = "";
 	private String id = "";
@@ -159,13 +160,30 @@ public void init() {
 	private String zcoduser = "";
 	private String zdesuser = "";
 	private String zcluser = "";
+	private String zcluser1 = "";
 	private String zmail = "";
 	private String zdelete = "";
 	private String zid = "";
     private int columns;
     private String[][] arr;
 
-    public String getCluser() {
+    public String getCluser1() {
+		return cluser1;
+	}
+
+	public void setCluser1(String cluser1) {
+		this.cluser1 = cluser1;
+	}
+
+	public String getZcluser1() {
+		return zcluser1;
+	}
+
+	public void setZcluser1(String zcluser1) {
+		this.zcluser1 = zcluser1;
+	}
+
+	public String getCluser() {
 		return cluser;
 	}
 
@@ -651,7 +669,7 @@ public void update() throws  NamingException {
      * @throws IOException 
      **/ 
   	public void reqChgpass() throws NamingException, SQLException, ClassNotFoundException{
-  			System.out.println("Entre al request chgpass");
+  			//System.out.println("Entre al request chgpass");
   			try {
   	        	Context initContext = new InitialContext();     
   	        	DataSource ds = (DataSource) initContext.lookup(JNDI);
@@ -663,14 +681,14 @@ public void update() throws  NamingException {
   			       query+= " set cluser = '" + md.getStringMessageDigest(randomKey.toUpperCase(), StringMD.SHA256) + "'";
   			       query+= " where coduser = '" +  coduser.toUpperCase() + "'";
   			pstmt = con.prepareStatement(query); 
-  			System.out.println(query);
+  			//System.out.println(query);
   			Usuarios seg = new Usuarios(); // Crea objeto para el login
   			int rows = 0;
   			// LLama al método que retorna el usuario y la contraseña
   			seg.selectLogin(coduser.toUpperCase(), JNDI);
   			rows = seg.getRows();
   			String[][] vltabla = seg.getArray();
-  			System.out.println("Mail: " + vltabla[0][3].toLowerCase());
+  			//System.out.println("Mail: " + vltabla[0][3].toLowerCase());
         	System.out.println("RandomKey: " + randomKey);
             //Valida que exista el usuario
   			if (rows == 0) {
@@ -699,11 +717,11 @@ public void update() throws  NamingException {
      * Envía notificación a usuario al cambiar la contraseña
     **/
     private void ChangePassNotification2(String mail, String clave) {
-    	System.out.println("Llame a la notification2");
+    	//System.out.println("Llame a la notification2");
     	try {
     		Context initContext = new InitialContext();     
         	Session session = (Session) initContext.lookup(JNDIMAIL);
-        	System.out.println(JNDIMAIL);
+        	//System.out.println(JNDIMAIL);
     			// Crear el mensaje a enviar
     			MimeMessage mm = new MimeMessage(session);
     			// Establecer las direcciones a las que será enviado
@@ -713,24 +731,64 @@ public void update() throws  NamingException {
     			// InternetAddress("opennomina@dvconsultores.com"));
     			mm.addRecipient(Message.RecipientType.TO,
     					new InternetAddress(mail));
-    			System.out.println("Direccion de envio establecida");
+    			//System.out.println("Direccion de envio establecida");
     			// Establecer el contenido del mensaje
     			mm.setSubject(getMessage("mailUserUserChgPass"));
     			mm.setText(getMessage("mailNewUserMsj2"));
-    			System.out.println(getMessage("mailNewUserMsj2"));
+    			//System.out.println(getMessage("mailNewUserMsj2"));
     			// use this is if you want to send html based message
-                mm.setContent("esto es una prueba", "text/html; charset=utf-8");
+                mm.setContent(getMessage("mailNewUserMsj6") + " " + coduser.toUpperCase() + " / " + clave + "<br/><br/> " + getMessage("mailNewUserMsj2"), "text/html; charset=utf-8");
                 //System.out.println(getMessage("mailNewUserMsj6") + " " + coduser.toUpperCase() + " / " + clave + "<br/><br/> " + getMessage("mailNewUserMsj2"));
     			// Enviar el correo electrónico
                 	
     			Transport.send(mm);
-    			System.out.println("pase el transport");
+    			//System.out.println("pase el transport");
     			//System.out.println("Correo enviado exitosamente");
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-    	System.out.println("Fin");
+    	//System.out.println("Fin");
      }
    	
+    /**
+     * Actualiza Contrase;as
+     * <p> Parámetros del Método: String coduser, String desuser, String cluser, String p_codrol.
+     **/
+    public void updatea() throws  NamingException {
+        try {
+        	Context initContext = new InitialContext();     
+     		DataSource ds = (DataSource) initContext.lookup(JNDI);
+
+     		con = ds.getConnection();	
+            //Class.forName(getDriver());
+            //con = DriverManager.getConnection(
+            //        getUrl(), getUsuario(), getClave());
+            String query = "UPDATE Bvt002";
+             query += " SET CLUSER = ?";
+             query += " WHERE CODUSER = ?";
+             //System.out.println(query);
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, md.getStringMessageDigest(cluser, StringMD.SHA256));
+            pstmt.setString(2, login.toUpperCase());
+            try {
+            	if(!cluser.equals(cluser1)){
+            		 msj = new FacesMessage(FacesMessage.SEVERITY_ERROR,  getMessage("bvt002Cl1Msj"), "");
+            	} else {
+                //Avisando
+                pstmt.executeUpdate();
+                msj = new FacesMessage(FacesMessage.SEVERITY_INFO,  getMessage("bvt002up"), "");
+               
+            	}
+            } catch (SQLException e) {
+                e.printStackTrace();
+                msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+            }
+            pstmt.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	FacesContext.getCurrentInstance().addMessage(null, msj); 
+    }
   	
 }

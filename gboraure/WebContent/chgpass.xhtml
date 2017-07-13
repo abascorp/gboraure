@@ -20,6 +20,10 @@
         <div id="login-wrapper">
              <section class="demo">
                 <h:form id="login-form" class="login-form">
+                           
+             <!-- Mensaje -->
+             <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+                    
             <p:graphicImage name="images/login-logo.png" library="omega-layout" />
                        
             <div id="login-container">
@@ -51,8 +55,6 @@
                        		 <a href="login.xhtml" class="link" title="#{msg.LogRegresar}">#{msg.LogRegresar}</a>
                    		</div>
                     </div>
-                    <!-- Mensaje -->
-                    <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
                 </div>
             </div>
            	 	</h:form>

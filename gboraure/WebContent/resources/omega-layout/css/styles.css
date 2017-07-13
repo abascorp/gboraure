@@ -1,0 +1,26 @@
+/*
+    Document   : styles
+    Created on : 12/04/2009, 09:01:08 PM
+    Author     : Mauricio Albanese
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+    /*Estilos propios*/
+    .botonera{
+		height: 38px;	
+	}
+
+ 	.spacing {
+    margin-bottom:3px !important;
+    margin-top:3px !important;
+	width: 200px !important;
+	height: 45px !important;
+	}
+	
+	

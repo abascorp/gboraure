@@ -20,6 +20,10 @@
         <div id="login-wrapper">
              <section class="demo">
                 <h:form id="login-form" class="login-form">
+                
+            <!-- Mensaje -->
+            <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+                
             <p:graphicImage name="images/login-logo.png" library="omega-layout" />
                        
             <div id="login-container">
@@ -45,7 +49,7 @@
                     <div class="ui-g-12" >
                         <p:ajaxStatus id="ajaxStatusPanel">
                             <f:facet name="default">
-                                <p:commandButton value="#{msg.entrar1}" update="grid" id="btnLogin" action="#{loginBean.login}"/>
+                                <p:commandButton value="#{msg.entrar1}" update="grid, growl" id="btnLogin" action="#{loginBean.login}"/>
                             </f:facet>
                             <f:facet name="start">
                                 <center>

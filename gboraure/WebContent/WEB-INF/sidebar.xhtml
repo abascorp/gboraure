@@ -9,6 +9,7 @@
     <div class="sidebar">
         <div class="nano">
             <div class="nano-content sidebar-scroll-content">
+                       
                 <div class="logo">
                     <p:graphicImage name="images/logo.png" library="omega-layout" width="113"/>
                 </div>
@@ -22,14 +23,15 @@
                     <ul>
                        <li>
                      	<p:commandLink actionListener="#{navigateBean.href('chgpwd')}">
-                     	 <i class="fa fa-lock"></i><small>#{msg.html20}</small>
+                     	 <i class="fa fa-lock"></i>
+                     	  <span>&#xA0;#{msg.html20}</span>
                      	</p:commandLink>
 					   </li>
                        <li>
-	                       <p:commandLink title="#{msg.salir}" actionListener="#{loginBean.logout}">
-	                        <i class="fa fa-sign-out"></i>
-	                         <span>Salir</span>
-	                       </p:commandLink>
+	                    <p:commandLink title="#{msg.salir}" actionListener="#{loginBean.logout}">
+	                     <i class="fa fa-sign-out"></i>
+	                      <span>Salir</span>
+	                    </p:commandLink>
                        </li>
                     </ul>
                 </div>

@@ -11,10 +11,17 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
+		    <!-- Bootstrap -->
+		    <f:loadBundle basename="gboraure.MessagesBundle_es_VEN" var="msg"/> 
+		    <link href="http://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" type="text/css" />
         </f:facet>
-        <title>PrimeFaces Omega</title>
+        <title>Granja Boraure</title>
+        
+        <!-- Scripts -->
         <h:outputScript name="js/nanoscroller.js" library="omega-layout" />
         <h:outputScript name="js/layout.js" library="omega-layout" />
+        <h:outputScript name="js/load.js" library="omega-layout" />
+        <h:outputScript name="js/bootstrap.min.js" library="omega-layout" />
 
         <ui:insert name="head"/>
     </h:head>
@@ -25,6 +32,8 @@
             <ui:include src="topbar.xhtml" />
             
             <ui:include src="sidebar.xhtml" />
+            
+            <ui:include src="timeout.xhtml" />
             
             <div class="main">
                 <ui:insert name="content"/>
@@ -42,10 +51,14 @@
                 <h:outputText value="" />
             </f:facet>
         </p:ajaxStatus>
-        
+
+		<!-- CSS y otros estilos -->
         <h:outputStylesheet name="css/animate.css" library="omega-layout" />
         <h:outputStylesheet name="css/nanoscroller.css" library="omega-layout" />
         <h:outputStylesheet name="css/layout.css" library="omega-layout" />
+        <h:outputStylesheet name="css/styles.css" library="omega-layout" />
+        <h:outputStylesheet name="css/bootstrap.min.css" library="omega-layout" />
+        <h:outputStylesheet name="css/font-awesome.min.css" library="font-awesome-4.6.0" />
     </h:body>
 
 </html>
