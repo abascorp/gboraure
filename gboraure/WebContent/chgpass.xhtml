@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Granja Boraure</title>
+    </h:head>
+
+    <h:body styleClass="login-body">
+    	<f:loadBundle basename="gboraure.MessagesBundle_es_VEN" var="msg"/>
+        <div id="login-wrapper">
+             <section class="demo">
+                <h:form id="login-form" class="login-form">
+            <p:graphicImage name="images/login-logo.png" library="omega-layout" />
+                       
+            <div id="login-container">
+                <span class="title">Gboraure</span>
+                
+                <div class="ui-g ui-fluid">
+                 <h:panelGrid id="grid" columns="2" cellpadding="5" class="ui-g-12">
+                        <p:inputText id="usuario" required="true" value="#{usuarios.coduser}"
+                         requiredMessage="Usuario inválido" placeholder="Usuario" />
+ 						<p:message for="usuario" display="text"/>
+                  </h:panelGrid>
+                    
+                    <div class="ui-g-12" >
+                        <p:ajaxStatus id="ajaxStatusPanel">
+                            <f:facet name="default">
+                                <p:commandButton value="#{msg.chgpass3}" update="grid, growl" id="chgpass" action="#{usuarios.reqChgpass}"/>
+                            </f:facet>
+                            <f:facet name="start">
+                                <center>
+                                    <i class="fa fa-refresh fa-spin fa-2x"></i>
+                                </center>
+                            </f:facet>
+                            <f:facet name="complete">
+                                <p:commandButton value="#{msg.chgpass3}" action="#{usuarios.reqChgpass}"/>
+                            </f:facet>
+                        </p:ajaxStatus>
+                        
+                        <div class="ui-g-12">
+                       		 <a href="login.xhtml" class="link" title="#{msg.LogRegresar}">#{msg.LogRegresar}</a>
+                   		</div>
+                    </div>
+                    <!-- Mensaje -->
+                    <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+                </div>
+            </div>
+           	 	</h:form>
+            </section> 
+            <div class="login-footer">Versión - 1.0</div>
+        </div>
+        
+        <h:outputStylesheet name="css/layout.css" library="omega-layout" />
+    </h:body>
+
+</html>

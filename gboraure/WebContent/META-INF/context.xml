@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/purolomo">
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+                        
+         <!--  Conexion de oracle local --> 
+     	  <Resource name="jdbc/orabiz" auth="Container"
+           type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
+           url="jdbc:oracle:thin:@localhost:1521:xe"
+           username="openbizview" password="openbizview" maxActive="20" maxIdle="10"
+           maxWait="-1"/>  
+    
+    <!--local casa 
+    <Resource auth="Container" 
+              driverClassName="oracle.jdbc.OracleDriver" 
+              maxActive="20" maxIdle="10" maxWait="-1" 
+              name="jdbc/orabiz" 
+              password="Ambyte2016" 
+              type="javax.sql.DataSource" 
+              url="jdbc:oracle:thin:@ambyte.dyndns.org:1521:ambyte" 
+              username="system"/> -->
+
+	  <Resource name="mail/recibos"
+		    auth="Container"
+		    type="javax.mail.Session"
+		    mail.smtp.host="smtp.gmail.com"
+		    mail.smtp.port="465"
+		    mail.smtp.auth="true"
+		    mail.smtp.user="misanuan@gmail.com"
+		    password="abas1987"
+		    mail.smtp.starttls.enable="true"
+		    mail.smtp.socketFactory.class="javax.net.ssl.SSLSocketFactory"
+		  />
+</Context>
