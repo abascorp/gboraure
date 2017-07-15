@@ -23,4 +23,55 @@
 	height: 45px !important;
 	}
 	
+		/*
+   Tabla resultado
+	*/
+	   /***Sobrecarga el estilo de primefaces en el datatable************/
+	.ui-datatable tr.ui-datatable-odd:hover {
+	    background: #D7E6EA;
+	}
+	
+	.ui-datatable tr.ui-datatable-even:hover {
+	    background: #D7E6EA;
+	}
+	
+	/*
+   Controla una de las filas del tbresult
+	*/
+	.ui-datatable tr.ui-datatable-even {
+	   font-size: 9px;
+	   font-family: Verdana, Arial, Helvetica, sans-serif;
+	   height: 40px;
+	   border-color: rgba(111,111,111,0.2)  transparent;
+	   font-weight: lighter;
+	   background-color: #FAFAFA;
+	}
+
+	/*
+   Controla la otra de las filas del tbresult
+	*/
+	.ui-datatable tr.ui-datatable-odd {
+	   font-size: 9px;
+	   font-family: Verdana, Arial, Helvetica, sans-serif;  
+	   height: 40px;
+	   border-color: rgba(111,111,111,0.2)  transparent;
+	   font-weight: lighter;
+	   background-color: #e6f0ff;
+	}
+	
+	/***Sobrecarga el estilo de primefaces en el header y footer de un datatable************/
+	.ui-datatable .ui-datatable-header,
+	.ui-datatable .ui-datatable-footer {
+	    text-align:left;
+	}
+	
+	.ui-datatable tbody td.wrap {
+	    table-layout: fixed;
+	    white-space:normal !important;
+	    word-wrap: break-word;
+	}
+	.ui-paginator {
+	text-align: left ! important
+	}
+	
 	

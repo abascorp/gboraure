@@ -92,7 +92,7 @@ public class LoginBean
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("desuser", tabla[0][2]);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("session", this.sessionId);
                 //FacesContext.getCurrentInstance().getExternalContext().redirect("ct/index.xhtml");
-                FacesContext.getCurrentInstance().getExternalContext().redirect("ct/dashboard.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("ct/index.xhtml");
             }
         }
     }

@@ -1,0 +1,168 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+       
+    <ui:define name="title">Granjas</ui:define>
+    
+     <ui:define name="content">
+    
+	  <div class="container-fluid" id="containerF">
+		<h:form id="formgranjas">
+			<f:view>
+			
+   	            <!-- Mensaje -->
+	            <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+	            
+	            <!-- Modal -->
+						<div class="modal fade" id="myModalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						      <div class="modal-header bg-warning">
+						        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+						        <h4 class="modal-title" id="myModalLabel"><b>#{msg.html32}</b></h4>
+						      </div>
+						      <div class="modal-body">
+						       <center style="font-size: 14px">#{msg.html31}</center>
+						      </div>
+						      <div class="modal-footer">
+						        <p:commandLink action="#{gbora01.delete}" styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
+						        <p:spacer height="5"/>
+						        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
+						       </div>
+						    </div>
+						  </div>
+						</div>	 
+	            
+	            <!-- Botonera -->             
+	            <div style="margin-top:15px">  
+			     <div id="botones">   
+			       <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{gbora01.guardar}" 
+			        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
+			       <p:commandButton accesskey="r" id="btnEl" onclick="modalDelete();" 
+			        value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
+			       <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel, growl" process="@this"
+			        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l">  
+			       <p:resetInput target="panel" />
+			       </p:commandButton>                     
+			     </div>
+	            </div> 
+	              
+				<!-- Panel -->     
+			     <div class="panel panel-info" style="margin-top:15px">
+			     <div class="panel-body">			       
+			         <p:panel id="panel" header="#{msg.gbora01tit}" >	  	                  
+	                  <div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-4"> 
+						 <p:inputText id="codgra" styleClass="spacing" maxlength="4" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora01.codgra}"/>
+						 <p:watermark for="codgra" value="#{msg.gbora01codgra}" />
+						 <p:message for="codgra"/>	
+						 <p:inputText id="desgra" styleClass="spacing" maxlength="60" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora01.desgra}"/>
+						 <p:watermark for="desgra" value="#{msg.gbora01desgra}" />
+						 <p:message for="desgra"/>	
+						 <p:inputText id="numrif" styleClass="spacing" maxlength="12" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora01.numrif}"/>
+						 <p:watermark for="numrif" value="#{msg.gbora01numrif}" />
+						 <p:message for="numrif"/>	
+						 <p:inputText id="numtel" styleClass="spacing" maxlength="11" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora01.numtel}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum')}"/>
+						 <p:watermark for="numtel" value="#{msg.gbora01numtel}" />
+						 <p:message for="numtel"/>
+						 <p:inputTextarea id="direc1" style="margin-top:3px;" rows="3" cols="22" counter="displayd1" maxlength="60" counterTemplate="{0} caracteres restantes." autoResize="false" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora01.direc1}"/>
+						 <p:watermark for="direc1" value="#{msg.gbora01direc1}" />
+						 <br></br>
+						 <h:outputText id="displayd1" />
+						 <p:message for="direc1"/>
+						 </div>
+						 <div class="col-lg-4 col-md-4 col-sm-4">	
+						 <p:inputTextarea id="direc2" style="margin-top:3px;" rows="3" cols="22" counter="displayd2" maxlength="60" counterTemplate="{0} caracteres restantes." autoResize="false" required="false" value="#{gbora01.direc2}"/>
+						 <p:watermark for="direc2" value="#{msg.gbora01direc2}" />	
+						 <br></br>
+						 <h:outputText id="displayd2" />
+						 <p:message for="direc2"/>
+						 <h:selectOneMenu id="paigra" styleClass="spacing" value="#{gbora01.paigra}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
+						  <f:selectItem itemLabel="País: *" />
+						  <f:selectItem itemLabel="Venezuela" itemValue="Venezuela" />
+						 </h:selectOneMenu>	
+						 <p:message for="paigra"/>
+						 <h:selectOneMenu id="edogra" styleClass="spacing" value="#{gbora01.edogra}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
+						  <f:selectItem itemLabel="Estado: *" />
+						  <f:selectItem itemLabel="Amazonas" itemValue="Amazonas" />
+						  <f:selectItem itemLabel="Anzoategui" itemValue="Anzoategui" />
+						  <f:selectItem itemLabel="Apure" itemValue="Apure" />
+						  <f:selectItem itemLabel="Aragua" itemValue="Aragua" />
+						  <f:selectItem itemLabel="Barinas" itemValue="Barinas" />
+						  <f:selectItem itemLabel="Bolivar" itemValue="Bolivar" />
+						  <f:selectItem itemLabel="Carabobo" itemValue="Carabobo" />
+						  <f:selectItem itemLabel="Cojedes" itemValue="Cojedes" />
+						  <f:selectItem itemLabel="Delta Amacuro" itemValue="Delta Amacuro" />
+						  <f:selectItem itemLabel="Distrito Capital" itemValue="Distrito Capital" />
+						  <f:selectItem itemLabel="Falcón" itemValue="Falcón" />
+						  <f:selectItem itemLabel="Guárico" itemValue="Guárico" />
+						  <f:selectItem itemLabel="Lara" itemValue="Lara" />
+						  <f:selectItem itemLabel="Mérida" itemValue="Mérida" />
+						  <f:selectItem itemLabel="Miranda" itemValue="Miranda" />
+						  <f:selectItem itemLabel="Monagas" itemValue="Monagas" />
+						  <f:selectItem itemLabel="Nueva Esparta" itemValue="Nueva Esparta" />
+						  <f:selectItem itemLabel="Portuguesa" itemValue="Portuguesa" />
+						  <f:selectItem itemLabel="Sucre" itemValue="Sucre" />
+						  <f:selectItem itemLabel="Táchira" itemValue="Táchira" />
+						  <f:selectItem itemLabel="Trujillo" itemValue="Trujillo" />
+						  <f:selectItem itemLabel="Vargas" itemValue="Vargas" />
+						  <f:selectItem itemLabel="Yaracuy" itemValue="Yaracuy" />
+						  <f:selectItem itemLabel="Zulia" itemValue="Zulia" />
+						 </h:selectOneMenu>	
+						 <p:message for="edogra"/>
+		             	</div>
+		              </div>
+		              <h:inputHidden id="vop" value="#{gbora01.validarOperacion}"/>
+		             </p:panel>
+	             
+	              </div>
+	              </div>
+	              
+	        <!-- Data Table -->	              
+	        <p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb" value="#{gbora01.lazyModel}"  lazy="true"
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{gbora01.rows}"  
+			widgetVar="global" reflow="true">
+			
+			<f:facet name="header" > 			
+            <p:outputPanel style="text-align: left;">  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> 
+            </p:outputPanel>                     
+            </f:facet> 
+                      
+            <p:column width="40" >  
+            <f:facet  name="header">
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            </f:facet>            
+            <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
+            </p:column>  
+            		
+			<p:column styleClass="wrap" width="125">  
+            <f:facet name="header">#{msg.Gbora01tbcodgra}</f:facet>  
+            <h:outputLabel value="#{tb.zcodgra}" />
+            </p:column> 
+                     
+			<p:column styleClass="wrap">  
+            <f:facet name="header">#{msg.Gbora01tbdesgra}</f:facet>  
+            <h:outputLabel value="#{tb.zdesgra}" />
+            </p:column> 
+                       
+            <p:column width="60" >  
+            <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
+            <center><p:commandLink styleClass="edit" onclick="enviar('#{tb.zcodgra}','#{tb.zdesgra}','#{tb.znumrif}','#{tb.znumtel}','#{tb.zdirec1}','#{tb.zdirec2}','#{tb.zpaigra}','#{tb.zedogra}','1')" 
+            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink></center>
+            </p:column> 
+
+            </p:dataTable>   		
+			</f:view>	
+		</h:form>  
+	   </div> 
+   	 </ui:define>
+</ui:composition>
