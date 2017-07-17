@@ -24,15 +24,24 @@
 	}
 
 	function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6,vT7,vT8){
-		  document.getElementById("formempaques:codgra").value= rTrim(vT0);
-		  document.getElementById("formempaques:desgra").value= rTrim(vT1);
-		  document.getElementById("formempaques:numrif").value= rTrim(vT2);
-		  document.getElementById("formempaques:numtel").value= rTrim(vT3);
-		  document.getElementById("formempaques:direc1").value= rTrim(vT4);
-		  document.getElementById("formempaques:direc2").value= rTrim(vT5);
-		  document.getElementById("formempaques:paigra_input").value= rTrim(vT6);
-		  document.getElementById("formempaques:edogra_input").value= rTrim(vT7);
-		  document.getElementById("formempaques:vop").value= rTrim(vT8);
-		  updateInput('formempaques:codgra', '#F2F2F2');
+		  document.getElementById("formgbora01:codgra").value= rTrim(vT0);
+		  document.getElementById("formgbora01:desgra").value= rTrim(vT1);
+		  document.getElementById("formgbora01:numrif").value= rTrim(vT2);
+		  document.getElementById("formgbora01:numtel").value= rTrim(vT3);
+		  document.getElementById("formgbora01:direc1").value= rTrim(vT4);
+		  document.getElementById("formgbora01:direc2").value= rTrim(vT5);
+		  document.getElementById("formgbora01:paigra").value= rTrim(vT6);
+		  document.getElementById("formgbora01:edogra").value= rTrim(vT7);
+		  document.getElementById("formgbora01:vop").value= rTrim(vT8);
+		  updateInput('formgbora01:codgra', '#F2F2F2');
 		}
+	
+	function detalle(vT0,vT1,vT2,vT3,vT4,vT5){
+		$("#txt_det_1").text(vT0);
+		$("#txt_det_2").text(vT1);
+		$("#txt_det_3").text(vT2);
+		$("#txt_det_4").text(vT3);
+		$("#txt_det_5").text(vT4);
+		$("#txt_det_6").text(vT5);
+	}
 

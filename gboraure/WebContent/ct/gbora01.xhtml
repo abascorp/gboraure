@@ -10,7 +10,7 @@
      <ui:define name="content">
     
 	  <div class="container-fluid" id="containerF">
-		<h:form id="formgranjas">
+		<h:form id="formgbora01">
 			<f:view>
 			
    	            <!-- Mensaje -->
@@ -35,6 +35,44 @@
 						    </div>
 						  </div>
 						</div>	 
+						
+					<!-- Modal detalle de datos de la granja -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+					        <h4 class="modal-title" id="myModalLabel">Datos de la Granja</h4>
+					      </div>
+					      <div class="modal-body">
+					  <div class="list-group">
+					  <div class="panel panel-warning modalInfo" >
+					        <div class="panel-body" style="background-color:#0084b4;">    
+					        <p:panel id="panelDetalle" >
+					        <h:panelGrid columns="2" >
+					        <h:outputText value="Rif:"/>
+					        <span id="txt_det_1" class="detalleTarea"></span>
+					        <h:outputText value="Telefono:"/>
+					        <span id="txt_det_2" class="detalleTarea"></span>
+					        <h:outputText value="Dirección 1:"/>
+					        <span id="txt_det_3" class="detalleTarea"></span>
+					        <h:outputText value="Dirección 2:"/>
+					        <span id="txt_det_4" class="detalleTarea"></span>
+					        <h:outputText value="Pais: "/>
+					        <span id="txt_det_5" class="detalleTarea"></span>
+					        <h:outputText value="Estado: "/>
+							</h:panelGrid>
+					        </p:panel>
+					        </div>
+					        </div>    	   
+					  </div>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-danger" data-dismiss="modal" >#{msg.html48}</button>
+					       </div>
+					    </div>
+					  </div>
+					</div>		
 	            
 	            <!-- Botonera -->             
 	            <div style="margin-top:15px">  
@@ -153,6 +191,16 @@
             <f:facet name="header">#{msg.Gbora01tbdesgra}</f:facet>  
             <h:outputLabel value="#{tb.zdesgra}" />
             </p:column> 
+            
+            <p:column width="100" styleClass="wrap">  
+            <f:facet name="header">#{msg.dashVerDetalle}</f:facet>  
+            <center>
+            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal"
+            onclick="detalle('#{tb.znumrif}','#{tb.znumtel}','#{tb.zdirec1}','#{tb.zdirec2}','#{tb.zpaigra}','#{tb.zedogra}');">
+            <i class="fa fa-search fa-2x"></i>
+            </button>
+            </center>
+            </p:column>
                        
             <p:column width="60" >  
             <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
@@ -164,5 +212,9 @@
 			</f:view>	
 		</h:form>  
 	   </div> 
+	   
+	    <!-- REQUIRED JS FOR THIS XHTML ONLY -->
+        <script src="../resources/omega-layout/js/gbora01.js" type="text/javascript"></script>
+	   
    	 </ui:define>
 </ui:composition>

@@ -363,8 +363,8 @@ public void insert() throws  NamingException {
         pstmt.setString(4,numtel.toUpperCase());
         pstmt.setString(5,direc1.toUpperCase());
         pstmt.setString(6,direc2.toUpperCase());
-        pstmt.setString(7,paigra.toUpperCase());
-        pstmt.setString(8,edogra.toUpperCase());
+        pstmt.setString(7,paigra);
+        pstmt.setString(8,edogra);
         pstmt.setString(9, login);
         pstmt.setString(10, login);            
         
@@ -469,8 +469,8 @@ public void update() throws  NamingException {
         pstmt.setString(3,numtel.toUpperCase());
         pstmt.setString(4,direc1.toUpperCase());
         pstmt.setString(5,direc2.toUpperCase());
-        pstmt.setString(6,paigra.toUpperCase());
-        pstmt.setString(7,edogra.toUpperCase());
+        pstmt.setString(6,paigra);
+        pstmt.setString(7,edogra);
         pstmt.setString(8, login);
         pstmt.setString(9,codgra.toUpperCase());
         
@@ -529,7 +529,7 @@ public void update() throws  NamingException {
 	    query += "(select query.*, rownum as rn from";
 		query += "(SELECT A.CODGRA, A.DESGRA, A.NUMRIF, A.NUMTEL, A.DIREC1, A.DIREC2, A.PAIGRA, A.EDOGRA ";
 	    query += " FROM GBORA01 A";
-	    query += " WHERE  A.CODGRA||A.DESGRA||A.NUMRIF||A.PAIGRA||A.EDOGRA LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+	    query += " WHERE  A.CODGRA||A.DESGRA||A.NUMRIF||A.PAIGRA||translate(A.EDOGRA, '·ÈÌÛ˙¡…Õ”⁄', 'aeiouAEIOU') LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
 	    query += " AND A.CODGRA  like '" + codgra.toUpperCase() + "%'";
 	    query += ")query )" ;
 	    query += " WHERE rownum <=?";
@@ -583,7 +583,7 @@ public void update() throws  NamingException {
 			//Consulta no paginada
 		     String query = "SELECT A.CODGRA, A.DESGRA, A.NUMRIF, A.NUMTEL, A.DIREC1, A.DIREC2, A.PAIGRA, A.EDOGRA ";
 			    query += " FROM GBORA01 A";
-			    query += " WHERE  A.CODGRA||A.DESGRA||A.NUMRIF||A.PAIGRA||A.EDOGRA LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+			    query += " WHERE  A.CODGRA||A.DESGRA||A.NUMRIF||A.PAIGRA||translate(A.EDOGRA, '·ÈÌÛ˙¡…Õ”⁄', 'aeiouAEIOU') LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
 			    query += " AND A.CODGRA  like '" + codgra.toUpperCase() + "%'";
 			    query += " ORDER BY CODGRA";
 

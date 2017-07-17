@@ -74,4 +74,8 @@
 	text-align: left ! important
 	}
 	
-	
+	   /**Se usa mostrar detalle de tbReults con muchos campos*/
+	.detalleTarea{
+	font-weight: bold;
+	font-style: italic;
+   }
