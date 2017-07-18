@@ -38,8 +38,8 @@
 
                 <div class="menu">
                     <po:menu>
-                        <p:submenu id="maestros" label="Maestros" icon="fa fa-database">
-                            <p:menuitem id="granjas" value="Granjas" icon="fa fa-truck" outcome="/ct/gbora01" />
+                        <p:submenu id="maestros" label="Maestros" icon="fa fa-database" rendered="#{smnubean.opcmnu('GBORAM00')}">
+                            <p:menuitem id="granjas" value="Granjas" icon="fa fa-truck" rendered="#{smnubean.opcmnu('GBORAM01')}" outcome="/ct/gbora01" />
                         </p:submenu>
                     </po:menu>
                 </div>
