@@ -79,3 +79,16 @@
 	font-weight: bold;
 	font-style: italic;
    }
+   
+    /***Sobrecarga el estilo de primefaces autocomplete************/
+	.ui-autocomplete-input{height:45px;margin-bottom: 3px; width: 200px;}
+
+	.ui-autocomplete-panel .ui-autocomplete-list-item {
+	  white-space: nowrap;
+	  font-size: 7.8pt;	  
+	}
+	
+	.ui-autocomplete .ui-autocomplete-dropdown {  
+	  width: 25px; 
+	  height: 95%; 
+      } 
