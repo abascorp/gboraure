@@ -38,11 +38,16 @@
 
                 <div class="menu">
                     <po:menu>
+                    
                         <p:submenu id="maestros" label="Maestros" icon="fa fa-database" rendered="#{smnubean.opcmnu('GBORAM00')}">
                             <p:menuitem id="granjas" value="Granjas" icon="fa fa-truck" rendered="#{smnubean.opcmnu('GBORAM01')}" outcome="/ct/gbora01" />
                             <p:menuitem id="sector" value="Sectores" icon="fa fa-map-o" rendered="#{smnubean.opcmnu('GBORAM02')}" outcome="/ct/gbora02" />
                             <p:menuitem id="lote" value="Lotes" icon="fa fa-map-marker" rendered="#{smnubean.opcmnu('GBORAM03')}" outcome="/ct/gbora03" />
+                            <p:menuitem id="tablones" value="Tablones" icon="fa fa-map-pin" rendered="#{smnubean.opcmnu('GBORAM04')}" outcome="/ct/gbora04" />
                         </p:submenu>
+
+                        <p:menuitem id="regllu" value="Registro de lluvia" icon="fa fa-tint" rendered="#{smnubean.opcmnu('GBORAR01')}" outcome="/ct/gbora05" />
+                        
                     </po:menu>
                 </div>
             </div>
