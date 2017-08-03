@@ -640,7 +640,7 @@ public void update() throws  NamingException {
   	private void limpiarValores() {
 		// TODO Auto-generated method stub
   		canmil = "";
-  		fecreg = new Date();
+  		//fecreg = new Date();
   		validarOperacion = 0;
 	}
   	
