@@ -321,12 +321,12 @@ public void insert() throws  NamingException {
  		DataSource ds = (DataSource) initContext.lookup(JNDI);
         con = ds.getConnection();
         
-        if (codgra == null) {
-			codgra = "";
-		}
-		if (codgra == "") {
-			codgra= "";
-		}
+        //if (codgra == null) {
+			//codgra = "";
+		//}
+		//if (codgra == "") {
+			//codgra= "";
+		//}
         if (codsec == null) {
 			codsec = "";
 		}
@@ -334,17 +334,17 @@ public void insert() throws  NamingException {
 			codsec = "";
 		}
 
-		String[] vecgra = codgra.split("\\ - ", -1);
+		//String[] vecgra = codgra.split("\\ - ", -1);
 		String[] vecsec = codsec.split("\\ - ", -1);
                                     
-        String query = "INSERT INTO GBORA03 VALUES (?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+        String query = "INSERT INTO GBORA03 VALUES (1,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
         pstmt = con.prepareStatement(query);
-        pstmt.setString(1,vecgra[0].toUpperCase());
-        pstmt.setString(2,vecsec[0].toUpperCase());
-        pstmt.setString(3,codlot.toUpperCase());
-        pstmt.setString(4,deslot.toUpperCase());
-        pstmt.setString(5, login);
-        pstmt.setString(6, login);            
+        //pstmt.setString(1,vecgra[0].toUpperCase());
+        pstmt.setString(1,vecsec[0].toUpperCase());
+        pstmt.setString(2,codlot.toUpperCase());
+        pstmt.setString(3,deslot.toUpperCase());
+        pstmt.setString(4, login);
+        pstmt.setString(5, login);            
         
         //System.out.println(query);
 
@@ -426,12 +426,12 @@ public void update() throws  NamingException {
   		DataSource ds = (DataSource) initContext.lookup(JNDI);	
   		con = ds.getConnection();
   		
-        if (codgra == null) {
-			codgra = "";
-		}
-		if (codgra == "") {
-			codgra= "";
-		}
+        //if (codgra == null) {
+			//codgra = "";
+		//}
+		//if (codgra == "") {
+			//codgra= "";
+		//}
         if (codsec == null) {
 			codsec = "";
 		}
@@ -439,14 +439,14 @@ public void update() throws  NamingException {
 			codsec = "";
 		}
 
-		String[] vecgra = codgra.split("\\ - ", -1);
+		//String[] vecgra = codgra.split("\\ - ", -1);
 		String[] vecsec = codsec.split("\\ - ", -1);
   		 		
         String query = "UPDATE GBORA03";
          query += " SET DESLOT = ?, ";
          query += " USRACT = ?,";
          query += " FECACT = '" + getFecha() + "'";
-         query += " WHERE CODGRA = ? ";
+         query += " WHERE CODGRA = 1 ";
          query += " AND CODSEC = ? ";
          query += " AND CODLOT = ? ";
          
@@ -456,9 +456,9 @@ public void update() throws  NamingException {
 
         pstmt.setString(1,deslot.toUpperCase());
         pstmt.setString(2, login);
-        pstmt.setString(3,vecgra[0].toUpperCase());
-        pstmt.setString(4,vecsec[0].toUpperCase());
-        pstmt.setString(5,codlot.toUpperCase());
+        //pstmt.setString(3,vecgra[0].toUpperCase());
+        pstmt.setString(3,vecsec[0].toUpperCase());
+        pstmt.setString(4,codlot.toUpperCase());
         
         // Antes de ejecutar valida si existe el registro en la base de Datos.
         try {
@@ -504,12 +504,12 @@ public void update() throws  NamingException {
 		DataSource ds = (DataSource) initContext.lookup(JNDI);
 		con = ds.getConnection();		
 		
-        if (codgra == null) {
-			codgra = "";
-		}
-		if (codgra == "") {
-			codgra= "";
-		}
+        //if (codgra == null) {
+			//codgra = "";
+		//}
+		//if (codgra == "") {
+			//codgra= "";
+		//}
         if (codsec == null) {
 			codsec = "";
 		}
@@ -517,7 +517,7 @@ public void update() throws  NamingException {
 			codsec = "";
 		}
 
-		String[] vecgra = codgra.split("\\ - ", -1);
+		//String[] vecgra = codgra.split("\\ - ", -1);
 		String[] vecsec = codsec.split("\\ - ", -1);
 		
 		//Consulta paginada
@@ -528,7 +528,7 @@ public void update() throws  NamingException {
 	    query += " WHERE A.CODSEC = B.CODSEC";
 	    query += " AND A.CODGRA = C.CODGRA";
 	    query += " AND A.CODLOT||B.DESSEC||C.DESGRA||A.DESLOT LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-	    query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
+	    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
 	    query += " AND A.CODSEC  like '" + vecsec[0].toUpperCase() + "%'";
 	    query += ")query )" ;
 	    query += " WHERE rownum <=?";
@@ -578,12 +578,12 @@ public void update() throws  NamingException {
 			DataSource ds = (DataSource) initContext.lookup(JNDI);
 			con = ds.getConnection();	
 			
-	        if (codgra == null) {
-				codgra = "";
-			}
-			if (codgra == "") {
-				codgra= "";
-			}
+	        //if (codgra == null) {
+				//codgra = "";
+			//}
+			//if (codgra == "") {
+				//codgra= "";
+			//}
 	        if (codsec == null) {
 				codsec = "";
 			}
@@ -591,7 +591,7 @@ public void update() throws  NamingException {
 				codsec = "";
 			}
 
-			String[] vecgra = codgra.split("\\ - ", -1);
+			//String[] vecgra = codgra.split("\\ - ", -1);
 			String[] vecsec = codsec.split("\\ - ", -1);	
 
 			//Consulta no paginada
@@ -600,7 +600,7 @@ public void update() throws  NamingException {
 				    query += " WHERE A.CODSEC = B.CODSEC";
 				    query += " AND A.CODGRA = C.CODGRA";
 				    query += " AND A.CODLOT||B.DESSEC||C.DESGRA||A.DESLOT LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-				    query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
+				    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
 				    query += " AND A.CODSEC  like '" + vecsec[0].toUpperCase() + "%'";
 		     	    query += " ORDER BY CODGRA, CODSEC, CODLOT";
 
@@ -660,18 +660,18 @@ public void update() throws  NamingException {
 		
 		 public List<String> completeSector(String query) throws NamingException,IOException { 
   	
-		 if (codgra == null) {
-			 codgra = "";
-		 }	
+		 //if (codgra == null) {
+			// codgra = "";
+		 //}	
 		 
-		 String[] vecgra = codgra.split("\\ - ", -1);
+		 //String[] vecgra = codgra.split("\\ - ", -1);
 		 //System.out.println("codgra: " + vecgra[0]);	 
 				 		 
 		 List<String> results = new ArrayList<String>();
 		 
 		 String vquery = "SELECT A.CODSEC|| ' - ' ||A.DESSEC AS SECTOR";
 		        vquery += " FROM GBORA02 A";  
-		        vquery += " WHERE A.CODGRA = '" + vecgra[0].toUpperCase() + "'";
+		        //vquery += " WHERE A.CODGRA = '" + vecgra[0].toUpperCase() + "'";
 		        vquery += " GROUP BY A.CODSEC, A.DESSEC";
 		        vquery += " ORDER BY 1";
 				 

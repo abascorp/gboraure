@@ -34,10 +34,8 @@ import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import gboraure.LoginBean;
 
 import gboraure.PntGenerica;
@@ -53,26 +51,31 @@ import java.util.Map;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
 /**
  *
  * @author Mauricio
  */
 @ManagedBean
 @ViewScoped
-public class Gbora02 extends Bd implements Serializable {
+public class Index extends Bd implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private LazyDataModel<Gbora02> lazyModel;  
+	private LazyDataModel<Index> lazyModel;  
 	
 	
 	/**
 	 * @return the lazyModel
 	 */
-	public LazyDataModel<Gbora02> getLazyModel() {
+	public LazyDataModel<Index> getLazyModel() {
 		return lazyModel;
 	}	
 
@@ -90,14 +93,14 @@ public void init() {
 	} 
 	
 	//System.out.println("entre al metodo INIT");
-	lazyModel  = new LazyDataModel<Gbora02>(){
+	lazyModel  = new LazyDataModel<Index>(){
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 7217573531435419432L;
 		
         @Override
-		public List<Gbora02> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
+		public List<Index> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
         	//Filtro
         	if (filters != null) {
            	 for(Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
@@ -139,6 +142,12 @@ public void init() {
                 super.setRowIndex(rowIndex % getPageSize());
         }
 	};
+	try {
+		createBarModels();
+	} catch (ClassNotFoundException | SQLException | NamingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 
 	/**
@@ -148,8 +157,8 @@ public void init() {
 	private String codsec = "";
 	private String dessec = "";
 	private Object filterValue = "";
-	private List<Gbora02> list = new ArrayList<Gbora02>();
-	private List<Gbora02> list1 = new ArrayList<Gbora02>();
+	private List<Index> list = new ArrayList<Index>();
+	private List<Index> list1 = new ArrayList<Index>();
 	private int validarOperacion = 0;
 	private String zcodgra = "";
 	private String zcodsec = "";
@@ -160,9 +169,28 @@ public void init() {
 	//AUTOCOMPLETES//
 	PntGenericaAuto consulta = new PntGenericaAuto();
 	String[][] tabla;
+	//GRAFICOS//
+    private BarChartModel barModel;
+    private HorizontalBarChartModel horizontalBarModel;
 
 	public String getCodgra() {
 		return codgra;
+	}
+
+	public BarChartModel getBarModel() {
+		return barModel;
+	}
+
+	public void setBarModel(BarChartModel barModel) {
+		this.barModel = barModel;
+	}
+
+	public HorizontalBarChartModel getHorizontalBarModel() {
+		return horizontalBarModel;
+	}
+
+	public void setHorizontalBarModel(HorizontalBarChartModel horizontalBarModel) {
+		this.horizontalBarModel = horizontalBarModel;
 	}
 
 	public void setCodgra(String codgra) {
@@ -270,178 +298,6 @@ public void init() {
 		PreparedStatement pstmt = null;
 		ResultSet r;
 
-
-/**
- * Inserta GBORA02.
- * <p>
- * <b>Parametros del Metodo:<b> String codcat1, String descat1 unidos como un solo string.<br>
- * String pool, String login.<br><br>
- **/
-public void insert() throws  NamingException {   	
-	//System.out.println("entre al metodo INSERT");	
-    try {
-    	Context initContext = new InitialContext();     
- 		DataSource ds = (DataSource) initContext.lookup(JNDI);
-        con = ds.getConnection();
-        
-        //if (codgra == null) {
-			//codgra = "";
-		//}
-		//if (codgra == "") {
-			//codgra= "";
-		//}
-
-		//String[] vecgra = codgra.split("\\ - ", -1);
-                                    
-        String query = "INSERT INTO GBORA02 VALUES (1,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
-        pstmt = con.prepareStatement(query);
-        //pstmt.setString(1,vecgra[0].toUpperCase());
-        pstmt.setString(1,codsec.toUpperCase());
-        pstmt.setString(2,dessec.toUpperCase());
-        pstmt.setString(3, login);
-        pstmt.setString(4, login);            
-        
-        //System.out.println(query);
-        //System.out.println("granja: " + vecgra[0]);
-        //System.out.println("sector: " + codsec);
-        //System.out.println("dessec: " + dessec);
-
-        try {
-        	//System.out.println("entre al try");	
-            //Avisando
-        	pstmt.executeUpdate();
-        	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");
-            limpiarValores();                
-         } catch (SQLException e)  {
-        	 //System.out.println("entre al catch");	
-        	 msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
-        }
-        
-        pstmt.close();
-        con.close();
-    } catch (Exception e) {
-    	e.printStackTrace();
-    }	
-    FacesContext.getCurrentInstance().addMessage(null, msj);
-}
-
-/**
- * Elimina GBORA02
- * <b>Parametros del Metodo:<b> String codcat1, String descat1 unidos como un solo string.<br>
- * String pool, String login.<br><br>
- **/
-public void delete() throws NamingException  {  
-	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-	String[] chkbox = request.getParameterValues("toDelete");
-	
-	if (chkbox==null){
-		msj = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("del"), "");
-	} else {
-        try {
-       	
-        	Context initContext = new InitialContext();     
-     		DataSource ds = (DataSource) initContext.lookup(JNDI);
-
-     		con = ds.getConnection();		
-        	
-        	String param = "'" + StringUtils.join(chkbox, "','") + "'";
-
-        	String query = "DELETE FROM GBORA02 WHERE CODGRA||CODSEC IN (" + param + ")";
-        		        	
-            pstmt = con.prepareStatement(query);
-            //System.out.println(query);
-
-            try {
-                //Avisando
-                pstmt.executeUpdate();
-                msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnDelete"), "");
-                limpiarValores();	
-            } catch (SQLException e) {
-                e.printStackTrace();
-                msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
-            }
-
-            pstmt.close();
-            con.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-	}
-	FacesContext.getCurrentInstance().addMessage(null, msj); 
-}
-
-/**
- * Actualiza GBORA02
- * <b>Parametros del Metodo:<b> String codcat1, String descat1 unidos como un solo string.<br>
- * String pool, String login.<br><br>
- **/
-public void update() throws  NamingException {
-	//System.out.println("entre al metodo UPDATE");
-
-     try { 	 
-    	Context initContext = new InitialContext();     
-  		DataSource ds = (DataSource) initContext.lookup(JNDI);	
-  		con = ds.getConnection();
-  		
-        //if (codgra == null) {
-			//codgra = "";
-		//}
-		//if (codgra == "") {
-			//codgra= "";
-		//}
-
-		//String[] vecgra = codgra.split("\\ - ", -1);
-  		 		
-        String query = "UPDATE GBORA02";
-         query += " SET DESSEC = ?, ";
-         query += " USRACT = ?,";
-         query += " FECACT = '" + getFecha() + "'";
-         query += " WHERE CODGRA = 1 ";
-         query += " AND CODSEC = ? ";
-         
-         //System.out.println(query);
-         
-        pstmt = con.prepareStatement(query);
-
-        pstmt.setString(1,dessec.toUpperCase());
-        pstmt.setString(2, login);
-        //pstmt.setString(3,vecgra[0].toUpperCase());
-        pstmt.setString(3,codsec.toUpperCase());
-        
-        // Antes de ejecutar valida si existe el registro en la base de Datos.
-        try {
-            //Avisando
-            pstmt.executeUpdate();
-            if(pstmt.getUpdateCount()==0){
-            	msj = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("msnNoUpdate"), "");
-            } else {
-            	msj = new FacesMessage(FacesMessage.SEVERITY_INFO,  getMessage("msnUpdate"), "");
-            }
-            dessec = "";
-            validarOperacion = 0;
-        } catch (SQLException e) {
-        	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, e.getMessage(), "");
-        }
-        pstmt.close();
-        con.close();
-    } catch (Exception e) {
-    }
-    FacesContext.getCurrentInstance().addMessage(null, msj);
-}
-	
-	public void guardar() throws NamingException, SQLException{ 
-		//System.out.println("entre al metodo GUARDAR"); 	
-		if(validarOperacion==0){
-			//System.out.println("me fui al insert");
-			insert();
-		} else {
-			//System.out.println("me fui al update");
-			update();
-		}
-	}
-
-
 /**
  * Leer Datos de GBORA02
  * @throws NamingException 
@@ -454,14 +310,14 @@ public void update() throws  NamingException {
 		DataSource ds = (DataSource) initContext.lookup(JNDI);
 		con = ds.getConnection();		
 		
-        //if (codgra == null) {
-			//codgra = "";
-		//}
-		//if (codgra == "") {
-			//codgra= "";
-		//}
+        if (codgra == null) {
+			codgra = "";
+		}
+		if (codgra == "") {
+			codgra= "";
+		}
 
-		//String[] vecgra = codgra.split("\\ - ", -1);
+		String[] vecgra = codgra.split("\\ - ", -1);
 		
 		//Consulta paginada
      String query = "SELECT * FROM"; 
@@ -470,7 +326,7 @@ public void update() throws  NamingException {
 	    query += " FROM GBORA02 A, GBORA01 B";
 	    query += " WHERE A.CODGRA = B.CODGRA";
 	    query += " AND  A.CODSEC||B.DESGRA||A.DESSEC LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-	    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
+	    query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
 	    query += " AND A.CODSEC  like '" + codsec.toUpperCase() + "%'";
 	    query += ")query )" ;
 	    query += " WHERE rownum <=?";
@@ -487,7 +343,7 @@ public void update() throws  NamingException {
     r =  pstmt.executeQuery();
     
     while (r.next()){
- 	Gbora02 select = new Gbora02();
+ 	Index select = new Index();
  	select.setZcodgra(r.getString(1));
  	select.setZcodsec(r.getString(2));
  	select.setZdessec(r.getString(3));
@@ -517,21 +373,21 @@ public void update() throws  NamingException {
 			DataSource ds = (DataSource) initContext.lookup(JNDI);
 			con = ds.getConnection();	
 			
-	        //if (codgra == null) {
-				//codgra = "";
-			//}
-			//if (codgra == "") {
-				//codgra= "";
-			//}
+	        if (codgra == null) {
+				codgra = "";
+			}
+			if (codgra == "") {
+				codgra= "";
+			}
 
-			//String[] vecgra = codgra.split("\\ - ", -1);			
+			String[] vecgra = codgra.split("\\ - ", -1);			
 
 			//Consulta no paginada
 		     String query = "SELECT A.CODGRA, A.CODSEC, A.DESSEC, B.DESGRA ";
 		     	    query += " FROM GBORA02 A, GBORA01 B";
 		     	    query += " WHERE A.CODGRA = B.CODGRA";
 		     	    query += " AND  A.CODSEC||B.DESGRA||A.DESSEC LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-		     	    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
+		     	    query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
 		     	    query += " AND A.CODSEC  like '" + codsec.toUpperCase() + "%'";
 		     	    query += " ORDER BY CODGRA, CODSEC";
 
@@ -541,7 +397,7 @@ public void update() throws  NamingException {
 	    r =  pstmt.executeQuery();
 	    
 	    while (r.next()){
-	 	Gbora02 select = new Gbora02();
+	 	Index select = new Index();
 	 	select.setZcodgra(r.getString(1));
 	 	select.setZcodsec(r.getString(2));
 	 	select.setZdessec(r.getString(3));
@@ -564,47 +420,115 @@ public void update() throws  NamingException {
   	public int getRows() {
   		return rows;
   	}
+  	
+    private BarChartModel initBarModel() throws SQLException, ClassNotFoundException, NamingException{
+    	
+		//System.out.println("entre al metodo SELECT");	
+		Context initContext = new InitialContext();     
+		DataSource ds = (DataSource) initContext.lookup(JNDI);
+		con = ds.getConnection();	
+		
+		 String query = "SELECT  DESGRA,"; 
+		 query += " CODSEC,"; 
+		 query += " MES,"; 
+		 query += " DECODE(PIEDRAS_NEGRAS,NULL,0,PIEDRAS_NEGRAS) AS PIEDRAS_NEGRAS,"; 
+		 query += " DECODE(CHARCO,NULL,0,CHARCO) AS CHARCO,"; 
+		 query += " DECODE(TAMARINDO,NULL,0,TAMARINDO) AS TAMARINDO,"; 
+		 query += " DECODE(CAIMANA_G,NULL,0,CAIMANA_G) AS CAIMANA_G,"; 
+		 query += " DECODE(CAIMANA_C,NULL,0,CAIMANA_C) AS CAIMANA_C,"; 
+		 query += " DECODE(BECERRA,NULL,0,BECERRA) AS BECERRA,"; 
+		 query += " DECODE(PALO_A_PIQUE,NULL,0,PALO_A_PIQUE) AS PALO_A_PIQUE,"; 
+		 query += " DECODE(LA_BANDERA,NULL,0,LA_BANDERA) AS LA_BANDERA,"; 
+		 query += " DECODE(PARAISO,NULL,0,PARAISO) AS PARAISO,"; 
+		 query += " DECODE(LA_UVA,NULL,0,LA_UVA) AS LA_UVA,"; 
+		 query += " DECODE(VIGILANCIA,NULL,0,VIGILANCIA) AS VIGILANCIA"; 
+		 query += " FROM (SELECT B.DESGRA, "; 
+		 query += " A.CODSEC,"; 
+		 query += " C.DESSEC, "; 
+		 query += " SUM(A.CANMIL) AS CANMIL, "; 
+		 query += " CASE "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '01%' THEN 'ENE' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '02%' THEN 'FEB' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '03%' THEN 'MAR' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '04%' THEN 'ABR' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '05%' THEN 'MAY' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '06%' THEN 'JUN' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '07%' THEN 'JUL' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '08%' THEN 'AGO' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '09%' THEN 'SEP' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '10%' THEN 'OCT' ";  
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '11%' THEN 'NOV' "; 
+		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '12%' THEN 'DIC' "; 
+		 query += " END AS MES "; 
+		 query += " FROM GBORA05 A LEFT OUTER JOIN GBORA01 B ON A.CODGRA = B.CODGRA "; 
+		 query += "                LEFT OUTER JOIN GBORA02 C ON A.CODSEC = C.CODSEC "; 
+		 query += " WHERE A.CODGRA LIKE '%' "; 
+		 query += " AND A.CODSEC LIKE '%' "; 
+		 query += " AND SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),7,4) LIKE TO_CHAR(SYSDATE, 'YYYY') "; 
+		 query += " GROUP BY B.DESGRA, A.CODSEC, C.DESSEC, SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) "; 
+		 query += " ORDER BY A.CODSEC, C.DESSEC, SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2)) PIVOT (SUM(CANMIL) FOR DESSEC IN ('PIEDRAS NEGRAS' PIEDRAS_NEGRAS, 'CHARCO' CHARCO, 'TAMARINDO' TAMARINDO, 'CAIMANA G' CAIMANA_G, 'CAIMANA C' CAIMANA_C, 'BECERRA' BECERRA, 'PALO A PIQUE' PALO_A_PIQUE, 'LA BANDERA' LA_BANDERA, 'PARAISO' PARAISO, 'LA UVA' LA_UVA, 'VIGILANCIA' VIGILANCIA)) "; 
+		 query += " ORDER BY MES, CODSEC "; 
 
-  	private void limpiarValores() {
-		// TODO Auto-generated method stub
-  		codsec = "";
-  		dessec = "";
-  		validarOperacion = 0;
-	}
-  	
-    public void reset() {
-    	// TODO Auto-generated method stub
-    	codgra = null;   
-    }   
+    pstmt = con.prepareStatement(query);
+    //System.out.println(query);
+		
+    r =  pstmt.executeQuery();
     
-	/**
-	 * Lista de Granjas.
-	 * 
-	 * @throws NamingException
-	 * @return List String
-	 * @throws IOException
-	 **/
-		
-		 public List<String> completeGranjas(String query) throws NamingException,IOException { 
-  	
-		 List<String> results = new ArrayList<String>();
-		 
-		 String vquery = "SELECT A.CODGRA|| ' - ' ||A.DESGRA AS GRANJA";
-		        vquery += " FROM GBORA01 A";  
-		        vquery += " GROUP BY A.CODGRA, A.DESGRA";
-		        vquery += " ORDER BY 1";
-				 
-				//System.out.println(vquery);
-		
-				consulta.selectPntGenericaAuto(vquery,JNDI);
-		
-				rows = consulta.getRows();
-		
-				tabla = consulta.getArray();
-		
-				for (int i = 0; i < rows; i++) {
-					results.add(tabla[i][0]);
-				}
-				return results;
-			}	
+    while (r.next()){
+ 	Index select = new Index();
+ 	select.setZcodgra(r.getString(1));
+ 	select.setZcodsec(r.getString(2));
+ 	select.setZdessec(r.getString(3));
+ 	select.setZdesgra(r.getString(4));
+   	
+    	//Agrega la lista
+    	list1.add(select);
+
+    }
+    //Cierra las conecciones
+    pstmt.close();
+    con.close();
+    	
+        BarChartModel model = new BarChartModel();
+ 
+        ChartSeries boys = new ChartSeries();
+        boys.setLabel("Boys");
+        boys.set("2004", 120);
+        boys.set("2005", 100);
+        boys.set("2006", 44);
+        boys.set("2007", 150);
+        boys.set("2008", 25);
+ 
+        ChartSeries girls = new ChartSeries();
+        girls.setLabel("Girls");
+        girls.set("2004", 52);
+        girls.set("2005", 60);
+        girls.set("2006", 110);
+        girls.set("2007", 135);
+        girls.set("2008", 120);
+ 
+        model.addSeries(boys);
+        model.addSeries(girls);
+         
+        return model;
+    }
+     
+    private void createBarModels() throws ClassNotFoundException, SQLException, NamingException {
+        createBarModel();
+    }
+     
+    private void createBarModel() throws ClassNotFoundException, SQLException, NamingException {
+        barModel = initBarModel();
+         
+        barModel.setTitle("Bar Chart");
+        barModel.setLegendPosition("ne");
+         
+        Axis xAxis = barModel.getAxis(AxisType.X);
+        xAxis.setLabel("Gender");
+         
+        Axis yAxis = barModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Births");
+        yAxis.setMin(0);
+        yAxis.setMax(200);
+    }    
 }

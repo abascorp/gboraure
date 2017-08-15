@@ -1,0 +1,182 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+       
+    <ui:define name="title">Captura Semanal</ui:define>
+    
+     <ui:define name="content">
+    
+	  <div class="container-fluid" id="containerF">
+		<h:form id="formgbora07">
+			<f:view>
+			
+   	            <!-- Mensaje -->
+	            <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+	            
+	            <!-- Modal -->
+						<div class="modal fade" id="myModalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						      <div class="modal-header bg-warning">
+						        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+						        <h4 class="modal-title" id="myModalLabel"><b>#{msg.html32}</b></h4>
+						      </div>
+						      <div class="modal-body">
+						       <center style="font-size: 14px">#{msg.html31}</center>
+						      </div>
+						      <div class="modal-footer">
+						        <p:commandLink action="#{gbora07.delete}" styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
+						        <p:spacer height="5"/>
+						        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
+						       </div>
+						    </div>
+						  </div>
+						</div>	 
+							            
+	            <!-- Botonera -->             
+	            <div style="margin-top:15px">  
+			     <div id="botones">   
+			       <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{gbora07.guardar}" 
+			        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
+			       <p:commandButton accesskey="r" id="btnEl" onclick="modalDelete();" 
+			        value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
+			       <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel, growl" process="@this"
+			        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" actionListener="#{gbora07.reset()}">  
+			       <p:resetInput target="panel" />
+			       	<f:actionListener binding="#{gbora07.setCodsec('')}"/> 
+			       </p:commandButton>                
+			     </div>
+	            </div> 
+	              
+				<!-- Panel -->     
+			     <div class="panel panel-info" style="margin-top:15px">
+			     <div class="panel-body">			       
+			         <p:panel id="panel" header="#{msg.gbora07tit}" >	  	                  
+	                  <div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-4"> 
+						 <p:calendar pattern="dd/MM/yyyy" id="fecnot" locale="es" navigator="true" maxlength="10" value="#{gbora07.fecnot}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+				         <p:tooltip for="fecnot" value="#{msg.gbora07fecha}" />
+				         <p:message for="fecnot"/>
+				         <p:autoComplete id="codsec" value="#{gbora07.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
+						 <p:ajax event="itemSelect" update=":formgbora07:tbResult" />	     
+						 </p:autoComplete> 
+						 <p:watermark for="codsec" value="#{msg.gbora03codsec}"  />
+						 <p:message for="codsec"/> 
+						 <p:autoComplete id="codtab" value="#{gbora07.codtab}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora07.completeTablon}" dropdown="true" scrollHeight="250">
+						 <p:ajax event="itemSelect" update=":formgbora07:tbResult" />	     
+						 </p:autoComplete> 
+						 <p:watermark for="codtab" value="#{msg.gbora07tab}"  />
+						 <p:message for="codtab"/> 
+				         <p:inputText id="boleto" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.boleto}"/>
+						 <p:watermark for="boleto" value="#{msg.gbora07bol}" />
+						 <p:message for="boleto"/>
+						 <p:inputText id="remesa" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.remesa}"/>
+						 <p:watermark for="remesa" value="#{msg.gbora07rem}" />
+						 <p:message for="remesa"/>
+						 </div>
+						 <div class="col-lg-4 col-md-4 col-sm-4"> 
+						 <p:inputText id="cosechadora" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.cosechadora}"/>
+						 <p:watermark for="cosechadora" value="#{msg.gbora07cos}" />
+						 <p:message for="cosechadora"/>
+						 <p:inputText id="acarreo" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.acarreo}"/>
+						 <p:watermark for="acarreo" value="#{msg.gbora07aca}" />
+						 <p:message for="acarreo"/>
+				         <p:inputText id="cana" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.cana}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+						 <p:watermark for="cana" value="#{msg.gbora07can}" />
+						 <p:message for="cana"/>
+						 <p:inputText id="rendimiento" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.rendimiento}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+						 <p:watermark for="rendimiento" value="#{msg.gbora07ren}" />
+						 <p:message for="rendimiento"/>
+						 </div>
+						 <div class="col-lg-4 col-md-4 col-sm-4"> 
+						 <p:inputText id="ttp" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.ttp}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+						 <p:watermark for="ttp" value="#{msg.gbora07ttp}" />
+						 <p:message for="ttp"/>
+						 <p:calendar pattern="dd/MM/yyyy" id="fecrea" locale="es" navigator="true" maxlength="10" value="#{gbora07.fecrea}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+				         <p:tooltip for="fecrea" value="#{msg.gbora07fecre}" />
+				         <p:message for="fecrea"/>
+				         <p:inputText id="placa" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.placa}"/>
+						 <p:watermark for="placa" value="#{msg.gbora07pla}" />
+						 <p:message for="placa"/>
+						 <p:inputText id="chofer" styleClass="spacing" maxlength="30" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.chofer}"/>
+						 <p:watermark for="chofer" value="#{msg.gbora07cho}" />
+						 <p:message for="chofer"/>
+		             	</div>
+		              </div>
+		              <h:inputHidden id="vop" value="#{gbora07.validarOperacion}"/>
+		             </p:panel>            
+	              </div>
+	              </div>
+	              
+	        <!-- Data Table -->	              
+	        <p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb" value="#{gbora07.lazyModel}"  lazy="true"
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{gbora07.rows}"  
+			widgetVar="global" reflow="true">
+			
+			<f:facet name="header" > 			
+            <p:outputPanel style="text-align: left;">  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> 
+            </p:outputPanel>                     
+            </f:facet> 
+                      
+            <p:column width="40" >  
+            <f:facet  name="header">
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            </f:facet>            
+            <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
+            </p:column>  
+            
+			<p:column styleClass="wrap" width="125">  
+            <f:facet name="header">#{msg.Gbora05tbfecha}</f:facet>  
+            <h:outputLabel value="#{tb.zfecrea}" />
+            </p:column> 
+            
+            <p:column styleClass="wrap" width="175">  
+            <f:facet name="header">#{msg.Gbora03tbcodsec}</f:facet>  
+            <h:outputLabel value="#{tb.zdessec}" />
+            </p:column> 
+            
+            <p:column styleClass="wrap">  
+            <f:facet name="header">#{msg.Gbora07tbtab}</f:facet>  
+            <h:outputLabel value="#{tb.zdestab}" />
+            </p:column> 
+            		       
+			<p:column styleClass="wrap">  
+            <f:facet name="header">#{msg.Gbora07tbbol}</f:facet>  
+            <h:outputLabel value="#{tb.zboleto}" />
+            </p:column> 
+            
+            <p:column styleClass="wrap">  
+            <f:facet name="header">#{msg.Gbora07tbrem}</f:facet>  
+            <h:outputLabel value="#{tb.zremesa}" />
+            </p:column> 
+            
+            <p:column styleClass="wrap">  
+            <f:facet name="header">#{msg.Gbora07tbcan}</f:facet>  
+            <h:outputLabel value="#{tb.zcana}" />
+            </p:column> 
+                       
+            <p:column width="60" >  
+            <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
+            <center><p:commandLink styleClass="edit" onclick="enviar('#{tb.zfecnot}','#{tb.zsector}','#{tb.ztablon}','#{tb.zboleto}','#{tb.zremesa}','#{tb.zcosechadora}','#{tb.zacarreo}','#{tb.zcana}','#{tb.zrendimiento}','#{tb.zttp}','#{tb.zfecrea}','#{tb.zplaca}','#{tb.zchofer}','1')" 
+            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink></center>
+            </p:column> 
+
+            </p:dataTable>   		
+			</f:view>	
+		</h:form>  
+	   </div> 
+	   
+	    <!-- REQUIRED JS FOR THIS XHTML ONLY -->
+        <script src="../resources/omega-layout/js/gbora07.js" type="text/javascript"></script>
+	   
+   	 </ui:define>
+</ui:composition>

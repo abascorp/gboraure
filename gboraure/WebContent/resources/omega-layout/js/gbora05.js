@@ -20,17 +20,17 @@
 	function limpiar()
 	{  //Llamado por el boton limpiar
 	    document.getElementById("formgbora05:vop").value="0";
-	    clearUpdateInput('formgbora05:codgra_input', 'white');
+	    //clearUpdateInput('formgbora05:codgra_input', 'white');
 	    clearUpdateInput('formgbora05:codsec_input', 'white');
 	}
 
-	function enviar(vT0,vT1,vT2,vT3,vT4){
-		  document.getElementById("formgbora05:codgra_input").value= rTrim(vT0);
-		  document.getElementById("formgbora05:codsec_input").value= rTrim(vT1);
-		  document.getElementById("formgbora05:fecreg_input").value= rTrim(vT2);
-		  document.getElementById("formgbora05:canmil").value= rTrim(vT3);
-		  document.getElementById("formgbora05:vop").value= rTrim(vT4);
-		  updateInput('formgbora05:codgra_input', '#F2F2F2');
+	function enviar(vT0,vT1,vT2,vT3){
+		  //document.getElementById("formgbora05:codgra_input").value= rTrim(vT0);
+		  document.getElementById("formgbora05:codsec_input").value= rTrim(vT0);
+		  document.getElementById("formgbora05:fecreg_input").value= rTrim(vT1);
+		  document.getElementById("formgbora05:canmil").value= rTrim(vT2);
+		  document.getElementById("formgbora05:vop").value= rTrim(vT3);
+		  //updateInput('formgbora05:codgra_input', '#F2F2F2');
 		  updateInput('formgbora05:codsec_input', '#F2F2F2');
 		  updateInput('formgbora05:fecreg_input', '#F2F2F2');
 		}

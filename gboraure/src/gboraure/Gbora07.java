@@ -24,6 +24,7 @@ package gboraure;
  * and open the template in the editor.
  */
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -59,20 +60,20 @@ import org.primefaces.model.SortOrder;
  */
 @ManagedBean
 @ViewScoped
-public class Gbora04 extends Bd implements Serializable {
+public class Gbora07 extends Bd implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private LazyDataModel<Gbora04> lazyModel;  
+	private LazyDataModel<Gbora07> lazyModel;  
 	
 	
 	/**
 	 * @return the lazyModel
 	 */
-	public LazyDataModel<Gbora04> getLazyModel() {
+	public LazyDataModel<Gbora07> getLazyModel() {
 		return lazyModel;
 	}	
 
@@ -90,14 +91,14 @@ public void init() {
 	} 
 	
 	//System.out.println("entre al metodo INIT");
-	lazyModel  = new LazyDataModel<Gbora04>(){
+	lazyModel  = new LazyDataModel<Gbora07>(){
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 7217573531435419432L;
 		
         @Override
-		public List<Gbora04> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
+		public List<Gbora07> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) { 
         	//Filtro
         	if (filters != null) {
            	 for(Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
@@ -147,37 +148,46 @@ public void init() {
 	 */	
 	private String codgra = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("codgra"); //Usuario logeado
 	private String codsec = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("codsec"); //Usuario logeado
-	private String codlot = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("codlot"); //Usuario logeado
-	private String codtab = "";
-	private String destab = "";
+	private String codtab = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("codtab"); //Usuario logeado
+	private Date fecnot = new Date();
+	private String boleto = "";
+	private String remesa = "";
+	private String cosechadora = "";
+	private String acarreo = "";
+	private String cana = "";
+	private String rendimiento = "";
+	private String ttp = "";
+	private Date fecrea = new Date();
+	private String placa = "";
+	private String chofer = "";
 	private Object filterValue = "";
-	private List<Gbora04> list = new ArrayList<Gbora04>();
-	private List<Gbora04> list1 = new ArrayList<Gbora04>();
+	private List<Gbora07> list = new ArrayList<Gbora07>();
+	private List<Gbora07> list1 = new ArrayList<Gbora07>();
 	private int validarOperacion = 0;
 	private String zcodgra = "";
 	private String zcodsec = "";
-	private String zcodlot = "";
 	private String zcodtab = "";
-	private String zdestab = "";
-	private String zdesgra = "";
-	private String zgranja = "";
+	private String zfecnot = "";
+	private String zboleto = "";
+	private String zremesa = "";
+	private String zcosechadora = "";
+	private String zacarreo = "";
+	private String zcana = "";
+	private String zrendimiento = "";
+	private String zttp = "";
+	private String zfecrea = "";
+	private String zplaca = "";
+	private String zchofer = "";
 	private String zdessec = "";
 	private String zsector = "";
-	private String zdeslot = "";
-	private String zlote = "";
+	private String zdestab = "";
+	private String ztablon = "";
+	private String zdesgra = "";
+	private String zgranja = "";
 	private String zdelete = "";
 	//AUTOCOMPLETES//
 	PntGenericaAuto consulta = new PntGenericaAuto();
 	String[][] tabla;
-		
-	public String getCodlot() {
-		return codlot;
-	}
-
-	public void setCodlot(String codlot) {
-		this.codlot = codlot;
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("codlot", codlot);
-	}
 
 	public String getCodtab() {
 		return codtab;
@@ -185,14 +195,95 @@ public void init() {
 
 	public void setCodtab(String codtab) {
 		this.codtab = codtab;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("codtab", codtab);
 	}
 
-	public String getDestab() {
-		return destab;
+	public Date getFecnot() {
+		return fecnot;
 	}
 
-	public void setDestab(String destab) {
-		this.destab = destab;
+	public void setFecnot(Date fecnot) {
+		this.fecnot = fecnot;
+	}
+
+	public String getBoleto() {
+		return boleto;
+	}
+
+	public void setBoleto(String boleto) {
+		this.boleto = boleto;
+	}
+
+	public String getRemesa() {
+		return remesa;
+	}
+
+	public void setRemesa(String remesa) {
+		this.remesa = remesa;
+	}
+
+	public String getCosechadora() {
+		return cosechadora;
+	}
+
+	public void setCosechadora(String cosechadora) {
+		this.cosechadora = cosechadora;
+	}
+
+	public String getAcarreo() {
+		return acarreo;
+	}
+
+	public void setAcarreo(String acarreo) {
+		this.acarreo = acarreo;
+	}
+
+	public String getCana() {
+		return cana;
+	}
+
+	public void setCana(String cana) {
+		this.cana = cana;
+	}
+
+	public String getRendimiento() {
+		return rendimiento;
+	}
+
+	public void setRendimiento(String rendimiento) {
+		this.rendimiento = rendimiento;
+	}
+
+	public String getTtp() {
+		return ttp;
+	}
+
+	public void setTtp(String ttp) {
+		this.ttp = ttp;
+	}
+
+	public Date getFecrea() {
+		return fecrea;
+	}
+
+	public void setFecrea(Date fecrea) {
+		this.fecrea = fecrea;
+	}
+
+	public String getPlaca() {
+		return placa;
+	}
+
+	public void setPlaca(String placa) {
+		this.placa = placa;
+	}
+
+	public String getChofer() {
+		return chofer;
+	}
+
+	public void setChofer(String chofer) {
+		this.chofer = chofer;
 	}
 
 	public String getZcodtab() {
@@ -203,6 +294,94 @@ public void init() {
 		this.zcodtab = zcodtab;
 	}
 
+	public String getZfecnot() {
+		return zfecnot;
+	}
+
+	public void setZfecnot(String zfecnot) {
+		this.zfecnot = zfecnot;
+	}
+
+	public String getZboleto() {
+		return zboleto;
+	}
+
+	public void setZboleto(String zboleto) {
+		this.zboleto = zboleto;
+	}
+
+	public String getZremesa() {
+		return zremesa;
+	}
+
+	public void setZremesa(String zremesa) {
+		this.zremesa = zremesa;
+	}
+
+	public String getZcosechadora() {
+		return zcosechadora;
+	}
+
+	public void setZcosechadora(String zcosechadora) {
+		this.zcosechadora = zcosechadora;
+	}
+
+	public String getZacarreo() {
+		return zacarreo;
+	}
+
+	public void setZacarreo(String zacarreo) {
+		this.zacarreo = zacarreo;
+	}
+
+	public String getZcana() {
+		return zcana;
+	}
+
+	public void setZcana(String zcana) {
+		this.zcana = zcana;
+	}
+
+	public String getZrendimiento() {
+		return zrendimiento;
+	}
+
+	public void setZrendimiento(String zrendimiento) {
+		this.zrendimiento = zrendimiento;
+	}
+
+	public String getZttp() {
+		return zttp;
+	}
+
+	public void setZttp(String zttp) {
+		this.zttp = zttp;
+	}
+
+	public String getZfecrea() {
+		return zfecrea;
+	}
+
+	public void setZfecrea(String zfecrea) {
+		this.zfecrea = zfecrea;
+	}
+
+	public String getZplaca() {
+		return zplaca;
+	}
+
+	public void setZplaca(String zplaca) {
+		this.zplaca = zplaca;
+	}
+
+	public String getZchofer() {
+		return zchofer;
+	}
+
+	public void setZchofer(String zchofer) {
+		this.zchofer = zchofer;
+	}
+
 	public String getZdestab() {
 		return zdestab;
 	}
@@ -211,28 +390,28 @@ public void init() {
 		this.zdestab = zdestab;
 	}
 
-	public String getZlote() {
-		return zlote;
+	public String getZtablon() {
+		return ztablon;
 	}
 
-	public void setZlote(String zlote) {
-		this.zlote = zlote;
+	public void setZtablon(String ztablon) {
+		this.ztablon = ztablon;
 	}
 
-	public String getZcodlot() {
-		return zcodlot;
+	public String getZdesgra() {
+		return zdesgra;
 	}
 
-	public void setZcodlot(String zcodlot) {
-		this.zcodlot = zcodlot;
+	public void setZdesgra(String zdesgra) {
+		this.zdesgra = zdesgra;
 	}
 
-	public String getZdeslot() {
-		return zdeslot;
+	public String getZgranja() {
+		return zgranja;
 	}
 
-	public void setZdeslot(String zdeslot) {
-		this.zdeslot = zdeslot;
+	public void setZgranja(String zgranja) {
+		this.zgranja = zgranja;
 	}
 
 	public String getZsector() {
@@ -285,22 +464,6 @@ public void init() {
 		this.zdessec = zdessec;
 	}
 
-	public String getZdesgra() {
-		return zdesgra;
-	}
-
-	public void setZdesgra(String zdesgra) {
-		this.zdesgra = zdesgra;
-	}
-
-	public String getZgranja() {
-		return zgranja;
-	}
-
-	public void setZgranja(String zgranja) {
-		this.zgranja = zgranja;
-	}
-
 	public String getZdelete() {
 		return zdelete;
 	}
@@ -346,7 +509,7 @@ public void init() {
 
 
 /**
- * Inserta GBORA04.
+ * Inserta GBORA07.
  * <p>
  * <b>Parametros del Metodo:<b> String codcat1, String descat1 unidos como un solo string.<br>
  * String pool, String login.<br><br>
@@ -370,26 +533,33 @@ public void insert() throws  NamingException {
 		if (codsec == "") {
 			codsec = "";
 		}
-        if (codlot == null) {
-			codlot = "";
+        if (codtab == null) {
+			codtab = "";
 		}
-		if (codlot == "") {
-			codlot = "";
+		if (codtab == "") {
+			codtab = "";
 		}
 
 		//String[] vecgra = codgra.split("\\ - ", -1);
 		String[] vecsec = codsec.split("\\ - ", -1);
-		String[] veclot = codlot.split("\\ - ", -1);
+		String[] vectab = codtab.split("\\ - ", -1);
                                     
-        String query = "INSERT INTO GBORA04 VALUES (1,?,?,?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
+        String query = "INSERT INTO GBORA07 VALUES (1,'" + sdfecha2.format(fecnot) + "',?,?,?,?,?,?,?,?,?,'" + sdfecha2.format(fecrea) + "',?,?,?,'" + getFecha() + "',?,'" + getFecha() + "')";
         pstmt = con.prepareStatement(query);
         //pstmt.setString(1,vecgra[0].toUpperCase());
         pstmt.setString(1,vecsec[0].toUpperCase());
-        pstmt.setString(2,veclot[0].toUpperCase());
-        pstmt.setString(3,codtab.toUpperCase());
-        pstmt.setString(4,destab.toUpperCase());
-        pstmt.setString(5, login);
-        pstmt.setString(6, login);            
+        pstmt.setString(2,vectab[0].toUpperCase());
+        pstmt.setString(3,boleto.toUpperCase());
+        pstmt.setString(4,remesa.toUpperCase());
+        pstmt.setString(5,cosechadora.toUpperCase());
+        pstmt.setString(6,acarreo.toUpperCase());
+        pstmt.setFloat(7, Float.parseFloat(cana));
+        pstmt.setFloat(8, Float.parseFloat(rendimiento));
+        pstmt.setFloat(9, Float.parseFloat(ttp));
+        pstmt.setString(10,placa.toUpperCase());
+        pstmt.setString(11,chofer.toUpperCase());
+        pstmt.setString(12, login);
+        pstmt.setString(13, login);            
         
         //System.out.println(query);
 
@@ -413,7 +583,7 @@ public void insert() throws  NamingException {
 }
 
 /**
- * Elimina GBORA04
+ * Elimina GBORA07
  * <b>Parametros del Metodo:<b> String codcat1, String descat1 unidos como un solo string.<br>
  * String pool, String login.<br><br>
  **/
@@ -433,7 +603,7 @@ public void delete() throws NamingException  {
         	
         	String param = "'" + StringUtils.join(chkbox, "','") + "'";
 
-        	String query = "DELETE FROM GBORA04 WHERE CODGRA||CODSEC||CODLOT||CODTAB IN (" + param + ")";
+        	String query = "DELETE FROM GBORA07 WHERE CODGRA||CODSEC||CODTAB||TO_CHAR(FECNOT, 'DD/MM/YYYY') IN (" + param + ")";
         		        	
             pstmt = con.prepareStatement(query);
             //System.out.println(query);
@@ -459,7 +629,7 @@ public void delete() throws NamingException  {
 }
 
 /**
- * Actualiza GBORA04
+ * Actualiza GBORA07
  * <b>Parametros del Metodo:<b> String codcat1, String descat1 unidos como un solo string.<br>
  * String pool, String login.<br><br>
  **/
@@ -483,36 +653,51 @@ public void update() throws  NamingException {
 		if (codsec == "") {
 			codsec = "";
 		}
-        if (codlot == null) {
-			codlot = "";
+		if (codtab == null) {
+			codtab = "";
 		}
-		if (codlot == "") {
-			codlot = "";
+		if (codtab == "") {
+			codtab = "";
 		}
 
 		//String[] vecgra = codgra.split("\\ - ", -1);
 		String[] vecsec = codsec.split("\\ - ", -1);
-		String[] veclot = codlot.split("\\ - ", -1);
+		String[] vectab = codtab.split("\\ - ", -1);
   		 		
-        String query = "UPDATE GBORA04";
-         query += " SET DESTAB = ?, ";
+        String query = "UPDATE GBORA07";
+         query += " SET BOLETO = ?, ";
+         query += " REMESA = ?, ";
+         query += " COSECHADORA = ?, ";
+         query += " ACARREO = ?, ";
+         query += " CANA = ?, ";
+         query += " RENDIMIENTO = ?, ";
+         query += " TTP = ?, ";
+         query += " FECREA = '" + sdfecha2.format(fecrea) + "',";
+         query += " PLACA = ?, ";
+         query += " CHOFER = ?, ";
          query += " USRACT = ?,";
          query += " FECACT = '" + getFecha() + "'";
          query += " WHERE CODGRA = 1 ";
          query += " AND CODSEC = ? ";
-         query += " AND CODLOT = ? ";
          query += " AND CODTAB = ? ";
+         query += " AND TO_CHAR(FECNOT, 'DD/MM/YYYY') = '" + sdfecha2.format(fecnot) + "'";
          
          //System.out.println(query);
          
         pstmt = con.prepareStatement(query);
 
-        pstmt.setString(1,destab.toUpperCase());
-        pstmt.setString(2, login);
-        //pstmt.setString(3,vecgra[0].toUpperCase());
-        pstmt.setString(3,vecsec[0].toUpperCase());
-        pstmt.setString(4,veclot[0].toUpperCase());
-        pstmt.setString(5,codtab.toUpperCase());
+        pstmt.setString(1,boleto.toUpperCase());
+        pstmt.setString(2,remesa.toUpperCase());
+        pstmt.setString(3,cosechadora.toUpperCase());
+        pstmt.setString(4,acarreo.toUpperCase());
+        pstmt.setFloat(5, Float.parseFloat(cana));
+        pstmt.setFloat(6, Float.parseFloat(rendimiento));
+        pstmt.setFloat(7, Float.parseFloat(ttp));
+        pstmt.setString(8,placa.toUpperCase());
+        pstmt.setString(9,chofer.toUpperCase());
+        pstmt.setString(10, login);
+        pstmt.setString(11,vecsec[0].toUpperCase());
+        pstmt.setString(12,vectab[0].toUpperCase());
         
         // Antes de ejecutar valida si existe el registro en la base de Datos.
         try {
@@ -523,7 +708,16 @@ public void update() throws  NamingException {
             } else {
             	msj = new FacesMessage(FacesMessage.SEVERITY_INFO,  getMessage("msnUpdate"), "");
             }
-            destab = "";
+            boleto = "";
+            remesa = "";
+            cosechadora = "";
+            acarreo = "";
+            cana = "";
+            rendimiento = "";
+            ttp = "";
+            fecrea = new Date();
+            placa = "";
+            chofer = "";
             validarOperacion = 0;
         } catch (SQLException e) {
         	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, e.getMessage(), "");
@@ -547,7 +741,7 @@ public void update() throws  NamingException {
 
 
 /**
- * Leer Datos de GBORA04
+ * Leer Datos de GBORA07
  * @throws NamingException 
 * @throws IOException 
  **/ 	
@@ -570,33 +764,32 @@ public void update() throws  NamingException {
 		if (codsec == "") {
 			codsec = "";
 		}
-        if (codlot == null) {
-			codlot = "";
+        if (codtab == null) {
+			codtab = "";
 		}
-		if (codlot == "") {
-			codlot = "";
+		if (codtab == "") {
+			codtab = "";
 		}
-
 		//String[] vecgra = codgra.split("\\ - ", -1);
 		String[] vecsec = codsec.split("\\ - ", -1);
-		String[] veclot = codlot.split("\\ - ", -1);
+		String[] vectab = codtab.split("\\ - ", -1);
 		
 		//Consulta paginada
      String query = "SELECT * FROM"; 
 	    query += "(select query.*, rownum as rn from";
-		query += "(SELECT A.CODGRA, A.CODSEC, A.CODLOT, A.CODTAB, A.DESTAB, B.DESLOT, C.DESSEC, D.DESGRA ";
-	    query += " FROM GBORA04 A, GBORA03 B, GBORA02 C, GBORA01 D";
-	    query += " WHERE A.CODLOT = B.CODLOT";
-	    query += " AND A.CODSEC = C.CODSEC";
-	    query += " AND A.CODGRA = D.CODGRA";
-	    query += " AND A.CODTAB||C.DESSEC||D.DESGRA||B.DESLOT||A.DESTAB LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+		query += "(SELECT A.CODGRA, TO_CHAR(A.FECNOT, 'DD/MM/YYYY') AS FECNOT, A.CODSEC, A.CODTAB, A.BOLETO, A.REMESA, A.COSECHADORA, A.ACARREO, A.CANA, A.RENDIMIENTO, A.TTP, TO_CHAR(A.FECREA, 'DD/MM/YYYY') AS FECREA, A.PLACA, A.CHOFER, C.DESGRA, B.DESSEC, D.DESTAB ";
+	    query += " FROM GBORA07 A, GBORA02 B, GBORA01 C, GBORA04 D";
+	    query += " WHERE A.CODSEC = B.CODSEC";
+	    query += " AND A.CODGRA = C.CODGRA";
+	    query += " AND A.CODTAB = D.CODTAB";
+	    query += " AND A.BOLETO||A.REMESA||A.CANA||B.DESSEC||D.DESTAB||TO_CHAR(A.FECREA, 'DD/MM/YYYY') LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
 	    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
 	    query += " AND A.CODSEC  like '" + vecsec[0].toUpperCase() + "%'";
-	    query += " AND A.CODLOT  like '" + veclot[0].toUpperCase() + "%'";
+	    query += " AND A.CODTAB  like '" + vectab[0].toUpperCase() + "%'";
 	    query += ")query )" ;
 	    query += " WHERE rownum <=?";
 	    query += " AND rn > (?)";
-	    query += " ORDER BY CODGRA, CODSEC, CODLOT, CODTAB";
+	    query += " ORDER BY CODGRA, CODSEC, CODTAB";
 
     pstmt = con.prepareStatement(query);
     pstmt.setInt(1,pageSize);
@@ -608,19 +801,28 @@ public void update() throws  NamingException {
     r =  pstmt.executeQuery();
     
     while (r.next()){
- 	Gbora04 select = new Gbora04();
+ 	Gbora07 select = new Gbora07();
  	select.setZcodgra(r.getString(1));
- 	select.setZcodsec(r.getString(2));
- 	select.setZcodlot(r.getString(3));
+ 	select.setZfecnot(r.getString(2));
+ 	select.setZcodsec(r.getString(3));
  	select.setZcodtab(r.getString(4));
- 	select.setZdestab(r.getString(5));
- 	select.setZdeslot(r.getString(6));
- 	select.setZlote(r.getString(3) + " - " + r.getString(6));
- 	select.setZdessec(r.getString(7));
- 	select.setZsector(r.getString(2) + " - " + r.getString(7));
- 	select.setZdesgra(r.getString(8));
- 	select.setZgranja(r.getString(1) + " - " + r.getString(8));
-	select.setZdelete(r.getString(1) + "" + r.getString(2) + "" + r.getString(3) + "" + r.getString(4));
+ 	select.setZboleto(r.getString(5));
+ 	select.setZremesa(r.getString(6));
+ 	select.setZcosechadora(r.getString(7));
+ 	select.setZacarreo(r.getString(8));
+ 	select.setZcana(r.getString(9));
+ 	select.setZrendimiento(r.getString(10));
+ 	select.setZttp(r.getString(11));
+ 	select.setZfecrea(r.getString(12));
+ 	select.setZplaca(r.getString(13));
+ 	select.setZchofer(r.getString(14));
+ 	select.setZdesgra(r.getString(15));
+ 	select.setZdessec(r.getString(16));
+ 	select.setZdestab(r.getString(17));
+ 	select.setZgranja(r.getString(1) + " - " + r.getString(15));
+ 	select.setZsector(r.getString(3) + " - " + r.getString(16));
+ 	select.setZtablon(r.getString(4) + " - " + r.getString(17));
+	select.setZdelete(r.getString(1) + "" + r.getString(3) + "" + r.getString(4) + "" + r.getString(2));
    	
     	//Agrega la lista
     	list.add(select);
@@ -656,28 +858,27 @@ public void update() throws  NamingException {
 			if (codsec == "") {
 				codsec = "";
 			}
-	        if (codlot == null) {
-				codlot = "";
+	        if (codtab == null) {
+				codtab = "";
 			}
-			if (codlot == "") {
-				codlot = "";
+			if (codtab == "") {
+				codtab = "";
 			}
-
 			//String[] vecgra = codgra.split("\\ - ", -1);
 			String[] vecsec = codsec.split("\\ - ", -1);
-			String[] veclot = codlot.split("\\ - ", -1);
+			String[] vectab = codtab.split("\\ - ", -1);
 
 			//Consulta no paginada
-		     String query = "SELECT A.CODGRA, A.CODSEC, A.CODLOT, A.CODTAB, A.DESTAB, B.DESLOT, C.DESSEC, D.DESGRA ";
-				    query += " FROM GBORA04 A, GBORA03 B, GBORA02 C, GBORA01 D";
-				    query += " WHERE A.CODLOT = B.CODLOT";
-				    query += " AND A.CODSEC = C.CODSEC";
-				    query += " AND A.CODGRA = D.CODGRA";
-				    query += " AND A.CODTAB||C.DESSEC||D.DESGRA||B.DESLOT||A.DESTAB LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
-				    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
-				    query += " AND A.CODSEC  like '" + vecsec[0].toUpperCase() + "%'";
-				    query += " AND A.CODLOT  like '" + veclot[0].toUpperCase() + "%'";
-		     	    query += " ORDER BY CODGRA, CODSEC, CODLOT, CODTAB";
+		     String query = "SELECT A.CODGRA, TO_CHAR(A.FECNOT, 'DD/MM/YYYY') AS FECNOT, A.CODSEC, A.CODTAB, A.BOLETO, A.REMESA, A.COSECHADORA, A.ACARREO, A.CANA, A.RENDIMIENTO, A.TTP, TO_CHAR(A.FECREA, 'DD/MM/YYYY') AS FECREA, A.PLACA, A.CHOFER, C.DESGRA, B.DESSEC, D.DESTAB ";
+			    query += " FROM GBORA07 A, GBORA02 B, GBORA01 C, GBORA04 D";
+			    query += " WHERE A.CODSEC = B.CODSEC";
+			    query += " AND A.CODGRA = C.CODGRA";
+			    query += " AND A.CODTAB = D.CODTAB";
+			    query += " AND A.BOLETO||A.REMESA||A.CANA||B.DESSEC||D.DESTAB||TO_CHAR(A.FECREA, 'DD/MM/YYYY') LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
+			    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
+			    query += " AND A.CODSEC  like '" + vecsec[0].toUpperCase() + "%'";
+			    query += " AND A.CODTAB  like '" + vectab[0].toUpperCase() + "%'";
+		     	query += " ORDER BY CODGRA, CODSEC, CODTAB";
 
 	    pstmt = con.prepareStatement(query);
 	    //System.out.println(query);
@@ -685,19 +886,29 @@ public void update() throws  NamingException {
 	    r =  pstmt.executeQuery();
 	    
 	    while (r.next()){
-	 	Gbora04 select = new Gbora04();
+	 	Gbora07 select = new Gbora07();
 	 	select.setZcodgra(r.getString(1));
-	 	select.setZcodsec(r.getString(2));
-	 	select.setZcodlot(r.getString(3));
+	 	select.setZfecnot(r.getString(2));
+	 	select.setZcodsec(r.getString(3));
 	 	select.setZcodtab(r.getString(4));
-	 	select.setZdestab(r.getString(5));
-	 	select.setZdeslot(r.getString(6));
-	 	select.setZlote(r.getString(3) + " - " + r.getString(6));
-	 	select.setZdessec(r.getString(7));
-	 	select.setZsector(r.getString(2) + " - " + r.getString(7));
-	 	select.setZdesgra(r.getString(8));
-	 	select.setZgranja(r.getString(1) + " - " + r.getString(8));
-	   	
+	 	select.setZboleto(r.getString(5));
+	 	select.setZremesa(r.getString(6));
+	 	select.setZcosechadora(r.getString(7));
+	 	select.setZacarreo(r.getString(8));
+	 	select.setZcana(r.getString(9));
+	 	select.setZrendimiento(r.getString(10));
+	 	select.setZttp(r.getString(11));
+	 	select.setZfecrea(r.getString(12));
+	 	select.setZplaca(r.getString(13));
+	 	select.setZchofer(r.getString(14));
+	 	select.setZdesgra(r.getString(15));
+	 	select.setZdessec(r.getString(16));
+	 	select.setZdestab(r.getString(17));
+	 	select.setZgranja(r.getString(1) + " - " + r.getString(15));
+	 	select.setZsector(r.getString(3) + " - " + r.getString(16));
+	 	select.setZtablon(r.getString(4) + " - " + r.getString(17));
+		select.setZdelete(r.getString(1) + "" + r.getString(3) + "" + r.getString(4) + "" + r.getString(2));
+	   		   	
 	    	//Agrega la lista
 	    	list1.add(select);
 
@@ -717,16 +928,24 @@ public void update() throws  NamingException {
 
   	private void limpiarValores() {
 		// TODO Auto-generated method stub
-  		codtab = "";
-  		destab = "";
-  		validarOperacion = 0;
+        boleto = "";
+        remesa = "";
+        cosechadora = "";
+        acarreo = "";
+        cana = "";
+        rendimiento = "";
+        ttp = "";
+        fecrea = new Date();
+        placa = "";
+        chofer = "";
+        validarOperacion = 0;
 	}
   	
     public void reset() {
     	// TODO Auto-generated method stub
-    	codgra = null;   
+    	//codgra = null;   
     	codsec = null;
-    	codlot = null;
+    	codtab = null;
     }   
     
 	/**
@@ -737,7 +956,7 @@ public void update() throws  NamingException {
 	 * @throws IOException
 	 **/
 		
-		 public List<String> completeLote(String query) throws NamingException,IOException { 
+		 public List<String> completeTablon(String query) throws NamingException,IOException { 
   	
 		 //if (codgra == null) {
 			// codgra = "";
@@ -752,11 +971,11 @@ public void update() throws  NamingException {
 				 		 
 		 List<String> results = new ArrayList<String>();
 		 
-		 String vquery = "SELECT A.CODLOT|| ' - ' ||A.DESLOT AS LOTE";
-		        vquery += " FROM GBORA03 A";  
+		 String vquery = "SELECT A.CODTAB|| ' - ' ||A.DESTAB AS TABLON";
+		        vquery += " FROM GBORA04 A";  
 		        //vquery += " WHERE A.CODGRA = '" + vecgra[0].toUpperCase() + "'";
 		        vquery += " WHERE A.CODSEC = '" + vecsec[0].toUpperCase() + "'";
-		        vquery += " GROUP BY A.CODLOT, A.DESLOT";
+		        vquery += " GROUP BY A.CODTAB, A.DESTAB";
 		        vquery += " ORDER BY 1";
 				 
 				//System.out.println(vquery);

@@ -20,15 +20,28 @@
 	function limpiar()
 	{  //Llamado por el boton limpiar
 	    document.getElementById("formgbora02:vop").value="0";
-	    clearUpdateInput('formgbora02:codgra_input', 'white');
+	    //clearUpdateInput('formgbora02:codgra_input', 'white');
 	    clearUpdateInput('formgbora02:codsec', 'white');
 	}
 
-	function enviar(vT0,vT1,vT2,vT3){
-		  document.getElementById("formgbora02:codgra_input").value= rTrim(vT0);
-		  document.getElementById("formgbora02:codsec").value= rTrim(vT1);
-		  document.getElementById("formgbora02:dessec").value= rTrim(vT2);
-		  document.getElementById("formgbora02:vop").value= rTrim(vT3);
-		  updateInput('formgbora02:codgra_input', '#F2F2F2');
+	function enviar(vT0,vT1,vT2){
+		//alert("Valor: " + vT0);
+		  //document.getElementById("formgbora02:codgra_input").value= rTrim(vT0);
+		  document.getElementById("formgbora02:codsec").value= rTrim(vT0);
+		  document.getElementById("formgbora02:dessec").value= rTrim(vT1);
+		  document.getElementById("formgbora02:vop").value= rTrim(vT2);
+		  //updateInput('formgbora02:codgra_input', '#F2F2F2');
 		  updateInput('formgbora02:codsec', '#F2F2F2');
 		}
+	
+	//SE USAN PARA PODER AGREGAR EL VALOR POR DEFECTO A LOS AUTOCOMPLETES DE LAS GRANJAS
+	//Y SU EJECUCION AUTOMATICA AL INICIAR CADA CLASE QUE REQUIERA
+/*	
+	function autogranja(){
+		valor = document.getElementById("formgbora02:test").value
+		//alert("Valor: " + valor.substring(1, 23));
+		  document.getElementById("formgbora02:codgra_input").value = valor.substring(1, 50);
+		}
+	
+	$(window).on("load", autogranja);
+	*/

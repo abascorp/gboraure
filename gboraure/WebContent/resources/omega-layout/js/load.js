@@ -337,3 +337,32 @@ function mnuInd(){
 			PF('idleDialog').show();
 		}
 	}
+	
+	$(window).on("load", chartrender);
+	
+	function chartrender() {
+		//alert("funciono");
+	    var chart = new CanvasJS.Chart("chartContainer",
+	    {
+	      title:{
+	        text: "Top Oil Reserves"
+	      },
+	      data: [
+
+	      {
+	        dataPoints: [
+	        { x: 1, y: 297571, label: "Venezuela"},
+	        { x: 2, y: 267017,  label: "Saudi" },
+	        { x: 3, y: 175200,  label: "Canada"},
+	        { x: 4, y: 154580,  label: "Iran"},
+	        { x: 5, y: 116000,  label: "Russia"},
+	        { x: 6, y: 97800, label: "UAE"},
+	        { x: 7, y: 20682,  label: "US"},
+	        { x: 8, y: 20350,  label: "China"}
+	        ]
+	      }
+	      ]
+	    });
+
+	    chart.render();
+	  }

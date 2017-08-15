@@ -20,20 +20,20 @@
 	function limpiar()
 	{  //Llamado por el boton limpiar
 	    document.getElementById("formgbora04:vop").value="0";
-	    clearUpdateInput('formgbora04:codgra_input', 'white');
+	    //clearUpdateInput('formgbora04:codgra_input', 'white');
 	    clearUpdateInput('formgbora04:codsec_input', 'white');
 	    clearUpdateInput('formgbora04:codlot_input', 'white');
 	    clearUpdateInput('formgbora04:codtab', 'white');
 	}
 
-	function enviar(vT0,vT1,vT2,vT3,vT4,vT5){
-		  document.getElementById("formgbora04:codgra_input").value= rTrim(vT0);
-		  document.getElementById("formgbora04:codsec_input").value= rTrim(vT1);
-		  document.getElementById("formgbora04:codlot_input").value= rTrim(vT2);
-		  document.getElementById("formgbora04:codtab").value= rTrim(vT3);
-		  document.getElementById("formgbora04:destab").value= rTrim(vT4);
-		  document.getElementById("formgbora04:vop").value= rTrim(vT5);
-		  updateInput('formgbora04:codgra_input', '#F2F2F2');
+	function enviar(vT0,vT1,vT2,vT3,vT4){
+		  //document.getElementById("formgbora04:codgra_input").value= rTrim(vT0);
+		  document.getElementById("formgbora04:codsec_input").value= rTrim(vT0);
+		  document.getElementById("formgbora04:codlot_input").value= rTrim(vT1);
+		  document.getElementById("formgbora04:codtab").value= rTrim(vT2);
+		  document.getElementById("formgbora04:destab").value= rTrim(vT3);
+		  document.getElementById("formgbora04:vop").value= rTrim(vT4);
+		  //updateInput('formgbora04:codgra_input', '#F2F2F2');
 		  updateInput('formgbora04:codsec_input', '#F2F2F2');
 		  updateInput('formgbora04:codlot_input', '#F2F2F2');
 		  updateInput('formgbora04:codtab', '#F2F2F2');

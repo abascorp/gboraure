@@ -46,7 +46,6 @@
 			       <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel, growl" process="@this"
 			        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" actionListener="#{gbora05.reset()}">  
 			       <p:resetInput target="panel" />
-			       	<f:actionListener binding="#{gbora05.setCodgra('')}"/> 
 			       	<f:actionListener binding="#{gbora05.setCodsec('')}"/> 
 			       </p:commandButton>     
 			       <p:commandButton id="btnrpt" title="Imprimir Reporte" icon="fa fa-print text-info" styleClass="botonera" 
@@ -60,11 +59,6 @@
 			         <p:panel id="panel" header="#{msg.gbora05tit}" >	  	                  
 	                  <div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-4"> 
-						 <p:autoComplete id="codgra" value="#{gbora05.codgra}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora02.completeGranjas}" dropdown="true" scrollHeight="250">
-						 <p:ajax event="itemSelect" update=":formgbora05:tbResult" />	     
-						 </p:autoComplete> 
-						 <p:watermark for="codgra" value="#{msg.gbora02codgra}"  />
-						 <p:message for="codgra"/> 
 						 <p:autoComplete id="codsec" value="#{gbora05.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
 						 <p:ajax event="itemSelect" update=":formgbora05:tbResult" />	     
 						 </p:autoComplete> 
@@ -105,12 +99,7 @@
             </f:facet>            
             <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
             </p:column>  
-            
-            <p:column styleClass="wrap" width="125">  
-            <f:facet name="header">#{msg.Gbora02tbcodgra}</f:facet>  
-            <h:outputLabel value="#{tb.zdesgra}" />
-            </p:column> 
-            
+                       
             <p:column styleClass="wrap" width="175">  
             <f:facet name="header">#{msg.Gbora03tbcodsec}</f:facet>  
             <h:outputLabel value="#{tb.zdessec}" />
@@ -128,7 +117,7 @@
                        
             <p:column width="60" >  
             <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
-            <center><p:commandLink styleClass="edit" onclick="enviar('#{tb.zgranja}','#{tb.zsector}','#{tb.zfecreg}','#{tb.zcanmil}','1')" 
+            <center><p:commandLink styleClass="edit" onclick="enviar('#{tb.zsector}','#{tb.zfecreg}','#{tb.zcanmil}','1')" 
             title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink></center>
             </p:column> 
 

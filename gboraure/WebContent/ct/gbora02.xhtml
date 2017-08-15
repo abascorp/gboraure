@@ -39,14 +39,14 @@
 	            <!-- Botonera -->             
 	            <div style="margin-top:15px">  
 			     <div id="botones">   
-			       <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{gbora02.guardar}" 
+			       <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{gbora02.guardar}"
 			        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
 			       <p:commandButton accesskey="r" id="btnEl" onclick="modalDelete();" 
 			        value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
 			       <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel, growl" process="@this"
 			        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" actionListener="#{gbora02.reset()}">  
 			       <p:resetInput target="panel" />
-			       	<f:actionListener binding="#{gbora02.setCodgra('')}"/> 
+			       	<!-- <f:actionListener binding="#{gbora02.setCodgra('')}"/>  -->
 			       </p:commandButton>                     
 			     </div>
 	            </div> 
@@ -57,12 +57,8 @@
 			         <p:panel id="panel" header="#{msg.gbora02tit}" >	  	                  
 	                  <div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-4"> 
-						 <p:autoComplete id="codgra" value="#{gbora02.codgra}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora02.completeGranjas}" dropdown="true" scrollHeight="250">
-						 <p:ajax event="itemSelect" update=":formgbora02:tbResult" />	     
-						 </p:autoComplete> 
-						 <p:watermark for="codgra" value="#{msg.gbora02codgra}"  />
-						 <p:message for="codgra"/> 
-						 <p:inputText id="codsec" styleClass="spacing" maxlength="4" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora02.codsec}"/>
+						 <p:inputText id="codsec" styleClass="spacing" maxlength="4" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora02.codsec}">						 
+						 </p:inputText>
 						 <p:watermark for="codsec" value="#{msg.gbora01codgra}" />
 						 <p:message for="codsec"/>	
 						 <p:inputText id="dessec" styleClass="spacing" maxlength="60" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora02.dessec}"/>
@@ -97,12 +93,7 @@
             </f:facet>            
             <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
             </p:column>  
-            
-            <p:column styleClass="wrap" width="125">  
-            <f:facet name="header">#{msg.Gbora02tbcodgra}</f:facet>  
-            <h:outputLabel value="#{tb.zdesgra}" />
-            </p:column> 
-            		
+                      		
 			<p:column styleClass="wrap" width="125">  
             <f:facet name="header">#{msg.Gbora01tbcodgra}</f:facet>  
             <h:outputLabel value="#{tb.zcodsec}" />
@@ -115,7 +106,7 @@
                        
             <p:column width="60" >  
             <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
-            <center><p:commandLink styleClass="edit" onclick="enviar('#{tb.zgranja}','#{tb.zcodsec}','#{tb.zdessec}','1')" 
+            <center><p:commandLink styleClass="edit" onclick="enviar('#{tb.zcodsec}','#{tb.zdessec}','1')" 
             title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink></center>
             </p:column> 
 

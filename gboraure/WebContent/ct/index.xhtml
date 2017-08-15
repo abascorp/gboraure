@@ -37,6 +37,10 @@
             }
             //]]>  
         </script>
+  
+  <script src="../resources/omega-layout/js/load.js" type="text/javascript"></script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        
         <style type="text/css">
             .main-content {
                 padding: 0;
@@ -47,6 +51,10 @@
     <ui:define name="content">
 
 		<p:graphicImage name="images/granjastransparent.png" library="omega-layout" />
+		
+		<p:chart type="bar" model="#{index.barModel}" style="height:300px"/>
+		
+		<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
     </ui:define>
     
