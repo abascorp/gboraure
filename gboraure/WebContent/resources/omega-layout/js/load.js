@@ -325,10 +325,30 @@ function mnuInd(){
 		$("#myModalDelete").modal();
 	}
 	
+	//Modal delete left
+	function modalDeletel(){
+		$("#myModalDeletel").modal();
+	}
+	
+	//Modal delete rigth
+	function modalDeleter(){
+		$("#myModalDeleter").modal();
+	}
+	
 
 	//Modal delete
 	function modalHide(){
 		$("#myModalDelete").modal('hide');
+	}
+	
+	//Modal delete left
+	function modalHidel(){
+		$("#myModalDeletel").modal('hide');
+	}
+	
+	//Modal delete rigth
+	function modalHider(){
+		$("#myModalDeleter").modal('hide');
 	}
 	
 	function chpassSuccess(vT0){
