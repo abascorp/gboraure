@@ -1,0 +1,144 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+       
+    <ui:define name="title">Pozos</ui:define>
+    
+     <ui:define name="content">
+    
+	  <div class="container-fluid" id="containerF">
+		<h:form id="formgbora08">
+			<f:view>
+			
+   	            <!-- Mensaje -->
+	            <p:messages globalOnly="true" id="growl" closable="true" showIcon="true"/>
+	            
+	            <!-- Modal -->
+						<div class="modal fade" id="myModalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						      <div class="modal-header bg-warning">
+						        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+						        <h4 class="modal-title" id="myModalLabel"><b>#{msg.html32}</b></h4>
+						      </div>
+						      <div class="modal-body">
+						       <center style="font-size: 14px">#{msg.html31}</center>
+						      </div>
+						      <div class="modal-footer">
+						        <p:commandLink action="#{gbora08.delete}" styleClass="btn btn-md btn-info" value="#{msg.htmlborrar}" immediate="true" update="tbResult, growl" accesskey="r" onclick="modalHide()"/>
+						        <p:spacer height="5"/>
+						        <p:commandLink  styleClass="btn btn-md btn-info" value="#{msg.html48}" immediate="true" update="tbResult, growl" onclick="modalHide()"/>
+						       </div>
+						    </div>
+						  </div>
+						</div>	 
+						           
+	            <!-- Botonera -->             
+	            <div style="margin-top:15px">  
+			     <div id="botones">   
+			       <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{gbora08.guardar}" 
+			        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
+			       <p:commandButton accesskey="r" id="btnEl" onclick="modalDelete();" 
+			        value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
+			       <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel, growl" process="@this"
+			        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" actionListener="#{gbora08.reset()}">  
+			       <p:resetInput target="panel" />
+			       	<f:actionListener binding="#{gbora08.setCodsec('')}"/> 
+			       	<f:actionListener binding="#{gbora08.setCodtip('')}"/> 
+			       </p:commandButton>   
+			       <p:commandButton update="tbResult, panel, growl" id="btnCr" action="gbora09?faces-redirect=true" process="@this"
+			        value="#{msg.htmlpozo}" title="#{msg.htmlpozo}" icon="fa fa-plus-circle text-info" styleClass="botonera"/>                  
+			     </div>
+	            </div> 
+	              
+				<!-- Panel -->     
+			     <div class="panel panel-info" style="margin-top:15px">
+			     <div class="panel-body">			       
+			         <p:panel id="panel" header="#{msg.gbora08tit}" >	  	                  
+	                  <div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-4"> 
+						 <p:autoComplete id="codsec" value="#{gbora08.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
+						 <p:ajax event="itemSelect" update=":formgbora08:tbResult" />	     
+						 </p:autoComplete> 
+						 <p:watermark for="codsec" value="#{msg.gbora03codsec}"  />
+						 <p:message for="codsec"/> 
+						 <p:inputText id="codpoz" styleClass="spacing" maxlength="4" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora08.codpoz}"/>
+						 <p:watermark for="codpoz" value="#{msg.gbora01codgra}" />
+						 <p:message for="codpoz"/>	
+						 <p:inputText id="despoz" styleClass="spacing" maxlength="20" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora08.despoz}"/>
+						 <p:watermark for="despoz" value="#{msg.gbora01desgra}" />
+						 <p:message for="despoz"/>
+						 <p:autoComplete id="codtip" value="#{gbora08.codtip}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora08.completeTipo}" dropdown="true" scrollHeight="250">
+						 <p:ajax event="itemSelect" update=":formgbora08:tbResult" />	     
+						 </p:autoComplete> 
+						 <p:watermark for="codtip" value="#{msg.gbora08pozo}"  />
+						 <p:message for="codtip"/> 
+		             	</div>
+		              </div>
+		              <h:inputHidden id="vop" value="#{gbora08.validarOperacion}"/>
+		             </p:panel>            
+	              </div>
+	              </div>
+	              
+	        <!-- Data Table -->	              
+	        <p:dataTable id="tbResult" styleClass="table table-striped" emptyMessage="#{msg.result}" var="tb" value="#{gbora08.lazyModel}"  lazy="true"
+			paginator="true" paginatorAlwaysVisible="false" rows="15" rowsPerPageTemplate="5,10,15,20,50,100,500" paginatorPosition="top"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} &#160;&#160; {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			currentPageReportTemplate=" {currentPage} - {totalPages} #{msg.html28} #{gbora08.rows}"  
+			widgetVar="global" reflow="true">
+			
+			<f:facet name="header" > 			
+            <p:outputPanel style="text-align: left;">  
+                <h:outputText value="#{msg.htmlb}" />&#160;&#160;  
+                <p:inputText id="globalFilter" onkeyup="PF('global').filter()" style="width:150px;height:35px;" /> 
+                <p:tooltip for="globalFilter" value="#{msg.html36}" showEffect="fade" hideEffect="fade" />  
+                <p:watermark for="globalFilter" value="#{msg.html29}" /> 
+            </p:outputPanel>                     
+            </f:facet> 
+                      
+            <p:column width="40" >  
+            <f:facet  name="header">
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            </f:facet>            
+            <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
+            </p:column>  
+            
+            <p:column styleClass="wrap" width="175">  
+            <f:facet name="header">#{msg.Gbora03tbcodsec}</f:facet>  
+            <h:outputLabel value="#{tb.zdessec}" />
+            </p:column> 
+            		
+			<p:column styleClass="wrap" width="125">  
+            <f:facet name="header">#{msg.Gbora01tbcodgra}</f:facet>  
+            <h:outputLabel value="#{tb.zcodpoz}" />
+            </p:column> 
+                     
+			<p:column styleClass="wrap">  
+            <f:facet name="header">#{msg.Gbora01tbdesgra}</f:facet>  
+            <h:outputLabel value="#{tb.zdespoz}" />
+            </p:column> 
+            
+            <p:column styleClass="wrap">  
+            <f:facet name="header">#{msg.Gbora08tbtipo}</f:facet>  
+            <h:outputLabel value="#{tb.ztipo}" />
+            </p:column> 
+                       
+            <p:column width="60" >  
+            <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
+            <center><p:commandLink styleClass="edit" onclick="enviar('#{tb.zsector}','#{tb.zcodpoz}','#{tb.zdespoz}','#{tb.ztipo}','1')" 
+            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink></center>
+            </p:column> 
+
+            </p:dataTable>   		
+			</f:view>	
+		</h:form>  
+	   </div> 
+	   
+	    <!-- REQUIRED JS FOR THIS XHTML ONLY -->
+        <script src="../resources/omega-layout/js/gbora08.js" type="text/javascript"></script>
+	   
+   	 </ui:define>
+</ui:composition>
