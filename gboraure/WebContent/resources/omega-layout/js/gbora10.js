@@ -40,3 +40,9 @@
 		  updateInput('formgbora10:codpoz_input', '#F2F2F2');
 		  updateInput('formgbora10:fecafo_input', '#F2F2F2');
 		}
+	
+	function imprimir(){
+		  // Si el mensaje que retorna es acceso
+		//alert("llame al metodo");
+		    window.open('../ct/reportes.jsp?reporte=GBORA10.rptdesign');
+		}

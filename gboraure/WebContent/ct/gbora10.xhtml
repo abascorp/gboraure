@@ -48,7 +48,9 @@
 			       <p:resetInput target="panel" />
 			       	<f:actionListener binding="#{gbora10.setCodsec('')}"/> 
 			       	<f:actionListener binding="#{gbora10.setCodpoz('')}"/> 
-			       </p:commandButton>             
+			       </p:commandButton>      
+			       <p:commandButton id="btnrpt" title="Imprimir Reporte" icon="fa fa-print text-info" styleClass="botonera" 
+			        onclick="imprimir();" process="@this"/>         
 			     </div>
 	            </div> 
 	              
