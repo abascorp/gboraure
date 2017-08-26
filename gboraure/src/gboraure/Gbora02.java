@@ -312,9 +312,18 @@ public void insert() throws  NamingException {
         	pstmt.executeUpdate();
         	msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnInsert"), "");
             limpiarValores();                
-         } catch (SQLException e)  {
-        	 //System.out.println("entre al catch");	
-        	 msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+        } catch (SQLException e)  {
+            
+            if (e.getMessage().trim().equals("ORA-00001: unique constraint (OPENBIZVIEW.GBORA02_PK) violated")){
+            	
+            	//System.out.println("se cumple la condicion y muestro el msg");
+            	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora02pkv"), "");
+            }
+                    
+            else {            	
+            	//System.out.println("no se cumple la condicion y muestro otro msg");
+            	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+            }
         }
         
         pstmt.close();

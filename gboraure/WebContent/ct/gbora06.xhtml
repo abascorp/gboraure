@@ -61,7 +61,7 @@
 						         <p:panel id="panel" header="#{msg.gbora06ltit}" >	  	                  
 				                  <div class="row">
 									<div class="col-lg-8 col-md-8 col-sm-8"> 
-									 <p:calendar pattern="dd/MM/yyyy" id="fecarr" locale="es" navigator="true" maxlength="10" value="#{gbora06l.fecarr}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+									 <p:calendar pattern="dd/MM/yyyy" id="fecarr" locale="es" navigator="true" maxlength="10" value="#{gbora06l.fecarr}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" maxdate="#{gbora06l.fecarr}"/>
 							         <p:tooltip for="fecarr" value="#{msg.gbora06lfecha}" />
 							         <p:message for="fecarr"/>
 							         <p:autoComplete id="codsecl" value="#{gbora06l.codsecl}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
@@ -177,7 +177,7 @@
 			         <p:panel id="panelr" header="#{msg.gbora06rtit}" >	  	                  
 	                  <div class="row">
 						<div class="col-lg-8 col-md-8 col-sm-8"> 
-						 <p:calendar pattern="dd/MM/yyyy" id="fecmue" locale="es" navigator="true" maxlength="10" value="#{gbora06r.fecmue}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+						 <p:calendar pattern="dd/MM/yyyy" id="fecmue" locale="es" navigator="true" maxlength="10" value="#{gbora06r.fecmue}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" maxdate="#{gbora06r.fecmue}"/>
 						 <p:tooltip for="fecmue" value="#{msg.gbora06rfecha}" />
 						 <p:message for="fecmue"/>
 						 <p:autoComplete id="codsecr" value="#{gbora06r.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">

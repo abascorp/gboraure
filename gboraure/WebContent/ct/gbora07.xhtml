@@ -57,7 +57,7 @@
 			         <p:panel id="panel" header="#{msg.gbora07tit}" >	  	                  
 	                  <div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-4"> 
-						 <p:calendar pattern="dd/MM/yyyy" id="fecnot" locale="es" navigator="true" maxlength="10" value="#{gbora07.fecnot}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+						 <p:calendar pattern="dd/MM/yyyy" id="fecnot" locale="es" navigator="true" maxlength="10" value="#{gbora07.fecnot}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" maxdate="#{gbora07.fecnot}"/>
 				         <p:tooltip for="fecnot" value="#{msg.gbora07fecha}" />
 				         <p:message for="fecnot"/>
 				         <p:autoComplete id="codsec" value="#{gbora07.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
@@ -95,13 +95,15 @@
 						 <p:inputText id="ttp" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.ttp}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
 						 <p:watermark for="ttp" value="#{msg.gbora07ttp}" />
 						 <p:message for="ttp"/>
-						 <p:calendar pattern="dd/MM/yyyy" id="fecrea" locale="es" navigator="true" maxlength="10" value="#{gbora07.fecrea}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+						 <p:calendar pattern="dd/MM/yyyy" id="fecrea" locale="es" navigator="true" maxlength="10" value="#{gbora07.fecrea}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" maxdate="#{gbora07.fecrea}"/>
 				         <p:tooltip for="fecrea" value="#{msg.gbora07fecre}" />
 				         <p:message for="fecrea"/>
 				         <p:inputText id="placa" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.placa}"/>
 						 <p:watermark for="placa" value="#{msg.gbora07pla}" />
 						 <p:message for="placa"/>
-						 <p:inputText id="chofer" styleClass="spacing" maxlength="30" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.chofer}"/>
+						 <p:inputText id="chofer" styleClass="spacing" maxlength="30" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.chofer}" validatorMessage="#{bd.getMessage('htmlvalidatealpha')}">
+						  <f:validateRegex pattern="[a-zA-Z]+"/>
+						 </p:inputText>
 						 <p:watermark for="chofer" value="#{msg.gbora07cho}" />
 						 <p:message for="chofer"/>
 		             	</div>

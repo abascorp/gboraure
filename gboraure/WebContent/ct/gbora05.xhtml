@@ -64,7 +64,7 @@
 						 </p:autoComplete> 
 						 <p:watermark for="codsec" value="#{msg.gbora03codsec}"  />
 						 <p:message for="codsec"/> 
-						 <p:calendar pattern="dd/MM/yyyy" id="fecreg" locale="es" navigator="true" maxlength="10" value="#{gbora05.fecreg}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"/>
+						 <p:calendar pattern="dd/MM/yyyy" id="fecreg" locale="es" navigator="true" maxlength="10" value="#{gbora05.fecreg}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" maxdate="#{gbora05.fecreg}"/>
 				         <p:tooltip for="fecreg" value="#{msg.gbora05fecha}" />
 				         <p:message for="fecreg"/>
 				         <p:inputText id="canmil" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora05.canmil}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
