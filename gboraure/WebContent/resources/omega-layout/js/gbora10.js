@@ -27,6 +27,23 @@
 	}
 
 	function enviar(vT0,vT1,vT2,vT3,vT4,vT5,vT6){
+		if(vT2=='PARADO'){
+			//alert("prueba");
+			//document.getElementById("formgbora10:codgra_input").value= rTrim(vT0);
+			document.getElementById("formgbora10:codsec_input").value= rTrim(vT0);
+			document.getElementById("formgbora10:codpoz_input").value= rTrim(vT1);
+			document.getElementById("formgbora10:estatus").value= rTrim(vT2);
+			document.getElementById("formgbora10:qls").value= rTrim(vT3);
+			document.getElementById("formgbora10:fecafo_input").value= rTrim(vT4);
+			document.getElementById("formgbora10:observ").value= rTrim(vT5);
+			document.getElementById("formgbora10:vop").value= rTrim(vT6);
+			//updateInput('formgbora10:codgra_input', '#F2F2F2');
+			updateInput('formgbora10:codsec_input', '#F2F2F2');
+			updateInput('formgbora10:codpoz_input', '#F2F2F2');
+			updateInput('formgbora10:fecafo_input', '#F2F2F2');
+			updateInput('formgbora10:qls', '#F2F2F2');
+		}
+		else {
 		  //document.getElementById("formgbora10:codgra_input").value= rTrim(vT0);
 		  document.getElementById("formgbora10:codsec_input").value= rTrim(vT0);
 		  document.getElementById("formgbora10:codpoz_input").value= rTrim(vT1);
@@ -40,9 +57,25 @@
 		  updateInput('formgbora10:codpoz_input', '#F2F2F2');
 		  updateInput('formgbora10:fecafo_input', '#F2F2F2');
 		}
+	}
 	
 	function imprimir(){
 		  // Si el mensaje que retorna es acceso
 		//alert("llame al metodo");
 		    window.open('../ct/reportes.jsp?reporte=GBORA10.rptdesign');
 		}
+	
+	function checkqls () {
+		//alert("entre a la funcion");
+		//alert(document.getElementById("formgbora10:estatus").value);
+		if(document.getElementById("formgbora10:estatus").value=='PARADO'){
+			//alert("parado);
+			document.getElementById("formgbora10:qls").value = '';
+			updateInput('formgbora10:qls', '#F2F2F2');
+			$("qls").prop('required',false);
+		}
+		else {
+			//alert("operativo");
+			clearUpdateInput('formgbora10:qls', 'white');
+		}
+	}

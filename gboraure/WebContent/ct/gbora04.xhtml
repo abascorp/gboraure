@@ -59,14 +59,14 @@
 	                  <div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-4"> 
 						 <p:autoComplete id="codsec" value="#{gbora04.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
-						 <p:ajax event="itemSelect" update=":formgbora04:tbResult" />	     
+						 <p:ajax event="itemSelect" update=":formgbora04:tbResult" />	
+						 <p:ajax event="itemSelect" listener="#{gbora04.setCodlot('')}" update="codlot" />  	 	     	 	     
 						 </p:autoComplete> 
 						 <p:watermark for="codsec" value="#{msg.gbora03codsec}"  />
 						 <p:message for="codsec"/> 
-						 <p:autoComplete id="codlot" value="#{gbora04.codlot}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora04.completeLote}" dropdown="true" scrollHeight="250">
+						 <p:autoComplete placeholder="#{msg.gbora04codlot}" id="codlot" value="#{gbora04.codlot}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora04.completeLote}" dropdown="true" scrollHeight="250">
 						 <p:ajax event="itemSelect" update=":formgbora04:tbResult" />	     
 						 </p:autoComplete> 
-						 <p:watermark for="codlot" value="#{msg.gbora04codlot}"  />
 						 <p:message for="codlot"/> 
 						 <p:inputText id="codtab" styleClass="spacing" maxlength="4" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora04.codtab}"/>
 						 <p:watermark for="codtab" value="#{msg.gbora01codgra}" />
@@ -99,7 +99,7 @@
                       
             <p:column width="40" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-check-square-o fa-2x" title="#{msg.seleccion}"></i></p:commandLink>
             </f:facet>            
             <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
             </p:column>  

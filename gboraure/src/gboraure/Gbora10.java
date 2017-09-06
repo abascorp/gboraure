@@ -425,6 +425,13 @@ public void insert() throws  NamingException {
 			codpoz = "";
 		}
 		
+		if (qls == null) {
+			qls = "0";
+		}
+		if (qls == "") {
+			qls = "0";
+		}
+		
 		String[] vecsec = codsec.split("\\ - ", -1);
 		String[] vecpoz = codpoz.split("\\ - ", -1);
                                     
@@ -545,6 +552,12 @@ public void update() throws  NamingException {
 		if (codpoz == "") {
 			codpoz = "";
 		}
+		if (qls == null) {
+			qls = "0";
+		}
+		if (qls == "") {
+			qls = "0";
+		}
 		
 		String[] vecsec = codsec.split("\\ - ", -1);
 		String[] vecpoz = codpoz.split("\\ - ", -1);
@@ -652,6 +665,7 @@ public void update() throws  NamingException {
 	    query += " WHERE A.CODSEC = B.CODSEC";
 	    query += " AND A.CODGRA = C.CODGRA";
 	    query += " AND A.CODPOZ = D.CODPOZ";
+	    query += " AND A.CODSEC = D.CODSEC";
 	    query += " AND D.DESPOZ||B.DESSEC||C.DESGRA||A.ESTATUS||TO_CHAR(A.FECAFO, 'DD/MM/YYYY') LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
 	    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
 	    query += " AND A.CODSEC  like '" + vecsec[0].toUpperCase() + "%'";
@@ -737,6 +751,7 @@ public void update() throws  NamingException {
 				    query += " WHERE A.CODSEC = B.CODSEC";
 				    query += " AND A.CODGRA = C.CODGRA";
 				    query += " AND A.CODPOZ = D.CODPOZ";
+				    query += " AND A.CODSEC = D.CODSEC";
 				    query += " AND D.DESPOZ||B.DESSEC||C.DESGRA||A.ESTATUS||TO_CHAR(A.FECAFO, 'DD/MM/YYYY') LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
 				    //query += " AND A.CODGRA  like '" + vecgra[0].toUpperCase() + "%'";
 				    query += " AND A.CODSEC  like '" + vecsec[0].toUpperCase() + "%'";

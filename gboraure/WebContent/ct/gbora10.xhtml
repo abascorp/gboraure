@@ -61,22 +61,22 @@
 	                  <div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-4"> 
 						 <p:autoComplete id="codsec" value="#{gbora10.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora10.completeSectorpozos}" dropdown="true" scrollHeight="250">
-						 <p:ajax event="itemSelect" update=":formgbora10:tbResult" />	     
+						 <p:ajax event="itemSelect" update=":formgbora10:tbResult" />	 
+						 <p:ajax event="itemSelect" listener="#{gbora10.setCodpoz('')}" update="codpoz" />     
 						 </p:autoComplete> 
 						 <p:watermark for="codsec" value="#{msg.gbora03codsec}"  />
 						 <p:message for="codsec"/> 
-						 <p:autoComplete id="codpoz" value="#{gbora10.codpoz}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora10.completePozo}" dropdown="true" scrollHeight="250">
+						 <p:autoComplete placeholder="#{msg.gbora10pozo}" id="codpoz" value="#{gbora10.codpoz}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora10.completePozo}" dropdown="true" scrollHeight="250">
 						 <p:ajax event="itemSelect" update=":formgbora10:tbResult" />	     
 						 </p:autoComplete> 
-						 <p:watermark for="codpoz" value="#{msg.gbora10pozo}"  />
 						 <p:message for="codpoz"/> 
-						 <h:selectOneMenu id="estatus" styleClass="spacing" value="#{gbora10.estatus}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}">
-						  <f:selectItem itemLabel="Estatus: *" />
+						 <h:selectOneMenu id="estatus" styleClass="spacing" value="#{gbora10.estatus}" requiredMessage="#{bd.getMessage('htmlvalidate')}" onchange="checkqls()">
+						  <f:selectItem itemLabel="Estatus: *"/>
 						  <f:selectItem itemLabel="OPERATIVO" itemValue="OPERATIVO" />
 						  <f:selectItem itemLabel="PARADO" itemValue="PARADO" />
 						 </h:selectOneMenu>	
 						 <p:message for="estatus"/>
-					     <p:inputText id="qls" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora10.qls}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+					     <p:inputText id="qls" styleClass="spacing" maxlength="7" required="#{gbora10.estatus eq 'OPERATIVO'}" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora10.qls}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum4')}"/>
 						 <p:watermark for="qls" value="#{msg.gbora10qls}" />
 						 <p:message for="qls"/>
 						 <p:calendar pattern="dd/MM/yyyy" id="fecafo" locale="es" navigator="true" maxlength="10" value="#{gbora10.fecafo}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" maxdate="#{gbora10.fecafo}"/>
@@ -112,7 +112,7 @@
                       
             <p:column width="40" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-check-square-o fa-2x" title="#{msg.seleccion}"></i></p:commandLink>
             </f:facet>            
             <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
             </p:column>  

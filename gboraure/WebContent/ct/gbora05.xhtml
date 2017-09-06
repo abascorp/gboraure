@@ -67,7 +67,7 @@
 						 <p:calendar pattern="dd/MM/yyyy" id="fecreg" locale="es" navigator="true" maxlength="10" value="#{gbora05.fecreg}" showOn="button" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" maxdate="#{gbora05.fecreg}"/>
 				         <p:tooltip for="fecreg" value="#{msg.gbora05fecha}" />
 				         <p:message for="fecreg"/>
-				         <p:inputText id="canmil" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora05.canmil}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+				         <p:inputText id="canmil" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora05.canmil}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum4')}"/>
 						 <p:watermark for="canmil" value="#{msg.gbora05mili}" />
 						 <p:message for="canmil"/>
 		             	</div>
@@ -95,7 +95,7 @@
                       
             <p:column width="40" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-check-square-o fa-2x" title="#{msg.seleccion}"></i></p:commandLink>
             </f:facet>            
             <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
             </p:column>  

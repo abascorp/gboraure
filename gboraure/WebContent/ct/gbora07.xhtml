@@ -47,6 +47,7 @@
 			        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" actionListener="#{gbora07.reset()}">  
 			       <p:resetInput target="panel" />
 			       	<f:actionListener binding="#{gbora07.setCodsec('')}"/> 
+			       	<f:actionListener binding="#{gbora07.setCodtab('')}"/> 
 			       </p:commandButton>                
 			     </div>
 	            </div> 
@@ -61,14 +62,14 @@
 				         <p:tooltip for="fecnot" value="#{msg.gbora07fecha}" />
 				         <p:message for="fecnot"/>
 				         <p:autoComplete id="codsec" value="#{gbora07.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
-						 <p:ajax event="itemSelect" update=":formgbora07:tbResult" />	     
+						 <p:ajax event="itemSelect" update=":formgbora07:tbResult" />	
+						 <p:ajax event="itemSelect" listener="#{gbora07.setCodtab('')}" update="codtab" />      
 						 </p:autoComplete> 
 						 <p:watermark for="codsec" value="#{msg.gbora03codsec}"  />
 						 <p:message for="codsec"/> 
-						 <p:autoComplete id="codtab" value="#{gbora07.codtab}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora07.completeTablon}" dropdown="true" scrollHeight="250">
+						 <p:autoComplete placeholder="#{msg.gbora07tab}" id="codtab" value="#{gbora07.codtab}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora07.completeTablon}" dropdown="true" scrollHeight="250">
 						 <p:ajax event="itemSelect" update=":formgbora07:tbResult" />	     
 						 </p:autoComplete> 
-						 <p:watermark for="codtab" value="#{msg.gbora07tab}"  />
 						 <p:message for="codtab"/> 
 				         <p:inputText id="boleto" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.boleto}"/>
 						 <p:watermark for="boleto" value="#{msg.gbora07bol}" />
@@ -84,10 +85,10 @@
 						 <p:inputText id="acarreo" styleClass="spacing" maxlength="10" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.acarreo}"/>
 						 <p:watermark for="acarreo" value="#{msg.gbora07aca}" />
 						 <p:message for="acarreo"/>
-				         <p:inputText id="cana" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.cana}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+				         <p:inputText id="cana" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.cana}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum4')}"/>
 						 <p:watermark for="cana" value="#{msg.gbora07can}" />
 						 <p:message for="cana"/>
-						 <p:inputText id="rendimiento" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.rendimiento}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+						 <p:inputText id="rendimiento" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.rendimiento}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum5')}"/>
 						 <p:watermark for="rendimiento" value="#{msg.gbora07ren}" />
 						 <p:message for="rendimiento"/>
 						 </div>
@@ -102,7 +103,7 @@
 						 <p:watermark for="placa" value="#{msg.gbora07pla}" />
 						 <p:message for="placa"/>
 						 <p:inputText id="chofer" styleClass="spacing" maxlength="30" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora07.chofer}" validatorMessage="#{bd.getMessage('htmlvalidatealpha')}">
-						  <f:validateRegex pattern="[a-zA-Z]+"/>
+						  <f:validateRegex pattern="[a-zA-Z ]*"/>
 						 </p:inputText>
 						 <p:watermark for="chofer" value="#{msg.gbora07cho}" />
 						 <p:message for="chofer"/>
@@ -131,7 +132,7 @@
                       
             <p:column width="40" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-check-square-o fa-2x" title="#{msg.seleccion}"></i></p:commandLink>
             </f:facet>            
             <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
             </p:column>  

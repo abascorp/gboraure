@@ -60,7 +60,7 @@
                     <property name="sortDirection">asc</property>
                     <property name="dataType">string</property>
                     <simple-property-list name="defaultValue">
-                        <value type="constant">%</value>
+                        <value type="constant">1</value>
                     </simple-property-list>
                     <property name="paramType">simple</property>
                     <property name="controlType">list-box</property>

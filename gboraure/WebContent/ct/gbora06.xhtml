@@ -97,7 +97,7 @@
 			                      
 			            <p:column width="40" >  
 			            <f:facet  name="header">
-			            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+			            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-check-square-o fa-2x" title="#{msg.seleccion}"></i></p:commandLink>
 			            </f:facet>            
 			            <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
 			            </p:column>  
@@ -181,16 +181,16 @@
 						 <p:tooltip for="fecmue" value="#{msg.gbora06rfecha}" />
 						 <p:message for="fecmue"/>
 						 <p:autoComplete id="codsecr" value="#{gbora06r.codsec}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora03.completeSector}" dropdown="true" scrollHeight="250">
-						 <p:ajax event="itemSelect" update=":formgbora06r:tbResultr" />	     
+						 <p:ajax event="itemSelect" update=":formgbora06r:tbResultr" />	
+						 <p:ajax event="itemSelect" listener="#{gbora06r.setCodtab('')}" update="codtab" />       
 						 </p:autoComplete> 
 						 <p:watermark for="codsecr" value="#{msg.gbora03codsec}"  />
 						 <p:message for="codsecr"/> 
-						 <p:autoComplete id="codtab" value="#{gbora06r.codtab}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora07.completeTablon}" dropdown="true" scrollHeight="250">
+						 <p:autoComplete placeholder="#{msg.gbora07tab}" id="codtab" value="#{gbora06r.codtab}" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}"  emptyMessage="#{msg.html138}"  completeMethod="#{gbora07.completeTablon}" dropdown="true" scrollHeight="250">
 						 <p:ajax event="itemSelect" update=":formgbora06r:tbResultr" />	     
 						 </p:autoComplete> 
-						 <p:watermark for="codtab" value="#{msg.gbora07tab}"  />
 						 <p:message for="codtab"/> 
-						 <p:inputText id="rendimiento" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora06r.rendimiento}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum3')}"/>
+						 <p:inputText id="rendimiento" styleClass="spacing" maxlength="7" required="true" requiredMessage="#{bd.getMessage('htmlvalidate')}" value="#{gbora06r.rendimiento}" converter="javax.faces.BigDecimal" converterMessage="#{bd.getMessage('htmlvalidatenum5')}"/>
 						 <p:watermark for="rendimiento" value="#{msg.gbora07ren}" />
 						 <p:message for="rendimiento"/>
 		             	</div>
@@ -218,7 +218,7 @@
                       
             <p:column width="40" >  
             <f:facet  name="header">
-            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-trash fa-2x" title="#{msg.borrar}"></i></p:commandLink>
+            <p:commandLink onclick="fm_check('toDelete',true)"><i class="fa fa-check-square-o fa-2x" title="#{msg.seleccion}"></i></p:commandLink>
             </f:facet>            
             <center><input type="checkbox" name="toDelete" class="chk" value="#{tb.zdelete}"/></center>
             </p:column>  

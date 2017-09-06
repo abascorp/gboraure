@@ -51,6 +51,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 /**
@@ -596,6 +597,7 @@ public void update() throws  NamingException {
 		query += "(SELECT A.CODGRA, A.CODSEC, A.CODLOT, A.CODTAB, A.DESTAB, B.DESLOT, C.DESSEC, D.DESGRA ";
 	    query += " FROM GBORA04 A, GBORA03 B, GBORA02 C, GBORA01 D";
 	    query += " WHERE A.CODLOT = B.CODLOT";
+	    query += " AND A.CODSEC = B.CODSEC";
 	    query += " AND A.CODSEC = C.CODSEC";
 	    query += " AND A.CODGRA = D.CODGRA";
 	    query += " AND A.CODTAB||C.DESSEC||D.DESGRA||B.DESLOT||A.DESTAB LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
@@ -680,6 +682,7 @@ public void update() throws  NamingException {
 		     String query = "SELECT A.CODGRA, A.CODSEC, A.CODLOT, A.CODTAB, A.DESTAB, B.DESLOT, C.DESSEC, D.DESGRA ";
 				    query += " FROM GBORA04 A, GBORA03 B, GBORA02 C, GBORA01 D";
 				    query += " WHERE A.CODLOT = B.CODLOT";
+				    query += " AND A.CODSEC = B.CODSEC";
 				    query += " AND A.CODSEC = C.CODSEC";
 				    query += " AND A.CODGRA = D.CODGRA";
 				    query += " AND A.CODTAB||C.DESSEC||D.DESGRA||B.DESLOT||A.DESTAB LIKE '%" + ((String) filterValue).toUpperCase() + "%'";
@@ -732,12 +735,12 @@ public void update() throws  NamingException {
 	}
   	
     public void reset() {
-    	// TODO Auto-generated method stub
+    	// TODO Auto-generated method stub  	
     	codgra = null;   
     	codsec = null;
     	codlot = null;
     }   
-    
+       
 	/**
 	 * Lista de Sectores.
 	 * 
