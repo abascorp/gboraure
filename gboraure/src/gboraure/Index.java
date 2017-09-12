@@ -53,7 +53,6 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 /**
@@ -143,7 +142,7 @@ public void init() {
         }
 	};
 	try {
-		createBarModels();
+		createBarModel();
 	} catch (ClassNotFoundException | SQLException | NamingException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -159,6 +158,7 @@ public void init() {
 	private Object filterValue = "";
 	private List<Index> list = new ArrayList<Index>();
 	private List<Index> list1 = new ArrayList<Index>();
+	private List<ChartSeries> listchart = new ArrayList<ChartSeries>();
 	private int validarOperacion = 0;
 	private String zcodgra = "";
 	private String zcodsec = "";
@@ -171,7 +171,6 @@ public void init() {
 	String[][] tabla;
 	//GRAFICOS//
     private BarChartModel barModel;
-    private HorizontalBarChartModel horizontalBarModel;
 
 	public String getCodgra() {
 		return codgra;
@@ -183,14 +182,6 @@ public void init() {
 
 	public void setBarModel(BarChartModel barModel) {
 		this.barModel = barModel;
-	}
-
-	public HorizontalBarChartModel getHorizontalBarModel() {
-		return horizontalBarModel;
-	}
-
-	public void setHorizontalBarModel(HorizontalBarChartModel horizontalBarModel) {
-		this.horizontalBarModel = horizontalBarModel;
 	}
 
 	public void setCodgra(String codgra) {
@@ -353,6 +344,7 @@ public void init() {
    	
     	//Agrega la lista
     	list.add(select);
+    	//System.out.println("list: " + list.size());
     }
     //Cierra las conecciones
     pstmt.close();
@@ -406,7 +398,7 @@ public void init() {
 	   	
 	    	//Agrega la lista
 	    	list1.add(select);
-
+	    	
 	    }
 	    //Cierra las conecciones
 	    pstmt.close();
@@ -421,114 +413,60 @@ public void init() {
   		return rows;
   	}
   	
-    private BarChartModel initBarModel() throws SQLException, ClassNotFoundException, NamingException{
+    private BarChartModel initBarModel() throws SQLException, ClassNotFoundException, NamingException {
     	
 		//System.out.println("entre al metodo SELECT");	
 		Context initContext = new InitialContext();     
 		DataSource ds = (DataSource) initContext.lookup(JNDI);
 		con = ds.getConnection();	
 		
-		 String query = "SELECT  DESGRA,"; 
-		 query += " CODSEC,"; 
-		 query += " MES,"; 
-		 query += " DECODE(PIEDRAS_NEGRAS,NULL,0,PIEDRAS_NEGRAS) AS PIEDRAS_NEGRAS,"; 
-		 query += " DECODE(CHARCO,NULL,0,CHARCO) AS CHARCO,"; 
-		 query += " DECODE(TAMARINDO,NULL,0,TAMARINDO) AS TAMARINDO,"; 
-		 query += " DECODE(CAIMANA_G,NULL,0,CAIMANA_G) AS CAIMANA_G,"; 
-		 query += " DECODE(CAIMANA_C,NULL,0,CAIMANA_C) AS CAIMANA_C,"; 
-		 query += " DECODE(BECERRA,NULL,0,BECERRA) AS BECERRA,"; 
-		 query += " DECODE(PALO_A_PIQUE,NULL,0,PALO_A_PIQUE) AS PALO_A_PIQUE,"; 
-		 query += " DECODE(LA_BANDERA,NULL,0,LA_BANDERA) AS LA_BANDERA,"; 
-		 query += " DECODE(PARAISO,NULL,0,PARAISO) AS PARAISO,"; 
-		 query += " DECODE(LA_UVA,NULL,0,LA_UVA) AS LA_UVA,"; 
-		 query += " DECODE(VIGILANCIA,NULL,0,VIGILANCIA) AS VIGILANCIA"; 
-		 query += " FROM (SELECT B.DESGRA, "; 
-		 query += " A.CODSEC,"; 
-		 query += " C.DESSEC, "; 
-		 query += " SUM(A.CANMIL) AS CANMIL, "; 
-		 query += " CASE "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '01%' THEN 'ENE' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '02%' THEN 'FEB' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '03%' THEN 'MAR' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '04%' THEN 'ABR' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '05%' THEN 'MAY' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '06%' THEN 'JUN' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '07%' THEN 'JUL' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '08%' THEN 'AGO' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '09%' THEN 'SEP' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '10%' THEN 'OCT' ";  
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '11%' THEN 'NOV' "; 
-		 query += "  WHEN SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) LIKE '12%' THEN 'DIC' "; 
-		 query += " END AS MES "; 
-		 query += " FROM GBORA05 A LEFT OUTER JOIN GBORA01 B ON A.CODGRA = B.CODGRA "; 
-		 query += "                LEFT OUTER JOIN GBORA02 C ON A.CODSEC = C.CODSEC "; 
-		 query += " WHERE A.CODGRA LIKE '%' "; 
-		 query += " AND A.CODSEC LIKE '%' "; 
-		 query += " AND SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),7,4) LIKE TO_CHAR(SYSDATE, 'YYYY') "; 
-		 query += " GROUP BY B.DESGRA, A.CODSEC, C.DESSEC, SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2) "; 
-		 query += " ORDER BY A.CODSEC, C.DESSEC, SUBSTR(TO_CHAR(A.FECREG, 'DD/MM/YYYY'),4,2)) PIVOT (SUM(CANMIL) FOR DESSEC IN ('PIEDRAS NEGRAS' PIEDRAS_NEGRAS, 'CHARCO' CHARCO, 'TAMARINDO' TAMARINDO, 'CAIMANA G' CAIMANA_G, 'CAIMANA C' CAIMANA_C, 'BECERRA' BECERRA, 'PALO A PIQUE' PALO_A_PIQUE, 'LA BANDERA' LA_BANDERA, 'PARAISO' PARAISO, 'LA UVA' LA_UVA, 'VIGILANCIA' VIGILANCIA)) "; 
-		 query += " ORDER BY MES, CODSEC "; 
+		//Consulta no paginada
+	     String query = "SELECT A.CODSEC, A.CANMIL, TO_CHAR(A.FECREG, 'DD/MM/YYYY') AS FECREG, B.DESSEC ";
+	     	    query += " FROM GBORA05 A, GBORA02 B";
+	     	    query += " WHERE A.CODSEC = B.CODSEC";
+	     	    query += " AND TO_CHAR(A.FECREG, 'DD/MM/YYYY') BETWEEN '23/01/2017' AND '29/01/2017'";
+	     	    query += " ORDER BY A.CODSEC, A.FECREG";
 
     pstmt = con.prepareStatement(query);
     //System.out.println(query);
 		
     r =  pstmt.executeQuery();
-    
+ 
     while (r.next()){
- 	Index select = new Index();
- 	select.setZcodgra(r.getString(1));
- 	select.setZcodsec(r.getString(2));
- 	select.setZdessec(r.getString(3));
- 	select.setZdesgra(r.getString(4));
-   	
-    	//Agrega la lista
-    	list1.add(select);
+    ChartSeries boys = new ChartSeries();
+    boys.setLabel("Cantidad de Mililitros");
+ 	boys.set(r.getString(4),r.getFloat(2));
+ 	
+	//Agrega la lista
+	listchart.add(boys);
+	//System.out.println("listchart: " + listchart.size());
 
-    }
-    //Cierra las conecciones
-    pstmt.close();
-    con.close();
-    	
-        BarChartModel model = new BarChartModel();
- 
-        ChartSeries boys = new ChartSeries();
-        boys.setLabel("Boys");
-        boys.set("2004", 120);
-        boys.set("2005", 100);
-        boys.set("2006", 44);
-        boys.set("2007", 150);
-        boys.set("2008", 25);
- 
-        ChartSeries girls = new ChartSeries();
-        girls.setLabel("Girls");
-        girls.set("2004", 52);
-        girls.set("2005", 60);
-        girls.set("2006", 110);
-        girls.set("2007", 135);
-        girls.set("2008", 120);
- 
-        model.addSeries(boys);
-        model.addSeries(girls);
+    BarChartModel model = new BarChartModel();
+   
+    model.addSeries(boys);
          
-        return model;
+    return model;
+        
     }
-     
-    private void createBarModels() throws ClassNotFoundException, SQLException, NamingException {
-        createBarModel();
+	    //Cierra las conecciones
+	    pstmt.close();
+	    con.close();
+	    
+		return barModel;		
     }
-     
+          
     private void createBarModel() throws ClassNotFoundException, SQLException, NamingException {
         barModel = initBarModel();
          
-        barModel.setTitle("Bar Chart");
+        barModel.setTitle("Grafica de lluvia de la semana");
         barModel.setLegendPosition("ne");
          
         Axis xAxis = barModel.getAxis(AxisType.X);
-        xAxis.setLabel("Gender");
+        xAxis.setLabel("Sector");
          
         Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Births");
+        yAxis.setLabel("Mililitros");
         yAxis.setMin(0);
-        yAxis.setMax(200);
+        yAxis.setMax(25);
     }    
 }

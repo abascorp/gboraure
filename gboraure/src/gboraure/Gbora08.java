@@ -452,8 +452,55 @@ public void delete() throws NamingException  {
                 msj = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("msnDelete"), "");
                 limpiarValores();	
             } catch (SQLException e) {
-                e.printStackTrace();
-                msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+                if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA05_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                
+                else if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA04_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                
+                else if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA03_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                
+                else if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA06L_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                
+                else if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA06R_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                else if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA07_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                else if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA08_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                else if (e.getMessage().trim().equals("ORA-02292: integrity constraint (OPENBIZVIEW.GBORA010_FK1) violated - child record found")){
+                	
+                	//System.out.println("se cumple la condicion y muestro el msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, getMessage("gbora08fkv"), "");
+                }
+                        
+                else {            	
+                	//System.out.println("no se cumple la condicion y muestro otro msg");
+                	msj = new FacesMessage(FacesMessage.SEVERITY_FATAL, e.getMessage(), "");
+                }
             }
 
             pstmt.close();
