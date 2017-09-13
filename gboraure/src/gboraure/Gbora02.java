@@ -554,7 +554,7 @@ public void update() throws  NamingException {
    	
     	//Agrega la lista
     	list.add(select);
-    	System.out.println("list: " + list.size());
+    	//System.out.println("list: " + list.size());
     }
     //Cierra las conecciones
     pstmt.close();
@@ -608,6 +608,7 @@ public void update() throws  NamingException {
 	   	
 	    	//Agrega la lista
 	    	list1.add(select);
+	    	//System.out.println("list1: " + list1.size());
 
 	    }
 	    //Cierra las conecciones

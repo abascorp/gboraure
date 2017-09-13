@@ -1640,7 +1640,7 @@ html {
         -webkit-transition: color 0.3s;
         transition: color 0.3s; }
         .wrapper .topbar #topbar-icons a:hover {
-          color: #77c7ff; }
+          color: #2eb971; }
         .wrapper .topbar #topbar-icons a span.topbar-icon {
           font-size: 28px; }
         .wrapper .topbar #topbar-icons a span.topbar-item-text {
@@ -1710,7 +1710,7 @@ html {
           top: -1px;
           right: 0px; }
         .wrapper .topbar #topbar-icons .topbar-search:hover input {
-          border-bottom-color: #77c7ff; }
+          border-bottom-color: #2eb971; }
           .wrapper .topbar #topbar-icons .topbar-search:hover input::-webkit-input-placeholder {
             opacity: 1; }
           .wrapper .topbar #topbar-icons .topbar-search:hover input:-moz-placeholder {
@@ -1720,7 +1720,7 @@ html {
           .wrapper .topbar #topbar-icons .topbar-search:hover input:-ms-input-placeholder {
             opacity: 1; }
         .wrapper .topbar #topbar-icons .topbar-search:hover .topbar-search-icon {
-          color: #77c7ff; }
+          color: #2eb971; }
     .wrapper .topbar #omega-menu-button {
       display: inline-block;
       font-size: 28px;
@@ -1732,7 +1732,7 @@ html {
       -webkit-transition: color 0.3s;
       transition: color 0.3s; }
       .wrapper .topbar #omega-menu-button:hover {
-        color: #77c7ff; }
+        color: #2eb971; }
     .wrapper .topbar #options-menu-button {
       display: none;
       font-size: 28px;
@@ -1795,7 +1795,7 @@ html {
           display: inline-block;
           font-size: 16px; }
         .wrapper .sidebar .profile > a:hover {
-          color: #2399e5; }
+          color: #2eb971; }
       .wrapper .sidebar .profile > ul {
         margin-bottom: -20px;
         display: none;
@@ -1846,13 +1846,13 @@ html {
           font-size: 16px; }
         .wrapper .sidebar ul li > a:hover {
           padding-left: 20px;
-          color: #2399e5; }
+          color: #2eb971; }
           .wrapper .sidebar ul li > a:hover .menu-badge {
             color:   #ffffff; }
       .wrapper .sidebar ul li.active-menuitem > a {
         border-bottom: 0 none;
         background-color: #2e3035;
-        color: #2399e5; }
+        color: #2eb971; }
         .wrapper .sidebar ul li.active-menuitem > a .fa:last-child {
           background: none !important;
           display: inline-block;

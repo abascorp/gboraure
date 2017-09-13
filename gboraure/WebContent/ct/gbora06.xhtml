@@ -44,10 +44,10 @@
 				            <div style="margin-top:15px">  
 						     <div id="botones">   
 						       <p:commandButton update="tbResult, panel, growl" accesskey="i" id="btnIn" action="#{gbora06l.guardar}" 
-						        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
+						        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-success" styleClass="botonera"/>
 						       <p:commandButton accesskey="r" id="btnEl" onclick="modalDeletel();" 
-						        value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
-						       <p:commandButton icon="fa fa-refresh text-info" update="tbResult, panel, growl" process="@this"
+						        value="#{msg.htmlborrar}" icon="fa fa-trash text-success" title="#{msg.htmle}" styleClass="botonera" />
+						       <p:commandButton icon="fa fa-refresh text-success" update="tbResult, panel, growl" process="@this"
 						        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" actionListener="#{gbora06l.reset()}">  
 						       <p:resetInput target="panel" />
 						       	<f:actionListener binding="#{gbora06l.setCodsecl('')}"/> 
@@ -120,7 +120,7 @@
 			            <p:column width="60" >  
 			            <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
 			            <center><p:commandLink styleClass="edit" onclick="enviarl('#{tb.zfecarr}','#{tb.zsectorl}','#{tb.zkilos}','1')" 
-			            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink></center>
+			            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-success"></i></p:commandLink></center>
 			            </p:column> 
 			
 			            </p:dataTable>   		
@@ -159,10 +159,10 @@
 	            <div style="margin-top:15px">  
 			     <div id="botonesr">   
 			       <p:commandButton update="tbResultr, panelr, growl" accesskey="i" id="btnInr" action="#{gbora06r.guardar}"
-			        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-info" styleClass="botonera"/>
+			        value="#{msg.htmlguardar}" title="#{msg.htmlg}" icon="fa fa-floppy-o text-success" styleClass="botonera"/>
 			       <p:commandButton accesskey="r" id="btnEl1" onclick="modalDeleter();" 
-			        value="#{msg.htmlborrar}" icon="fa fa-trash text-info" title="#{msg.htmle}" styleClass="botonera" />
-			       <p:commandButton icon="fa fa-refresh text-info" update="tbResultr, panelr, growl" process="@this"
+			        value="#{msg.htmlborrar}" icon="fa fa-trash text-success" title="#{msg.htmle}" styleClass="botonera" />
+			       <p:commandButton icon="fa fa-refresh text-success" update="tbResultr, panelr, growl" process="@this"
 			        title="#{msg.htmlr}"  styleClass="botonera" accesskey="l" actionListener="#{gbora06r.reset()}">  
 			       <p:resetInput target="panelr" />
 			       	<f:actionListener binding="#{gbora06r.setCodsec('')}"/>
@@ -246,7 +246,7 @@
             <p:column width="60" >  
             <f:facet name="header">#{msg.bvt001TbEnviar}</f:facet>   
             <center><p:commandLink styleClass="edit" onclick="enviarr('#{tb.zfecmue}','#{tb.zsector}','#{tb.ztablon}','#{tb.zrendimiento}','1')" 
-            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-info"></i></p:commandLink></center>
+            title="Enviar"><i class="fa fa-pencil-square-o fa-2x text-success"></i></p:commandLink></center>
             </p:column> 
 
             </p:dataTable>   		

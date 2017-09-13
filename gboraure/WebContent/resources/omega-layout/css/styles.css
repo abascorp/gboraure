@@ -13,9 +13,16 @@
 
     /*Estilos propios*/
     .botonera{
-		height: 38px;	
+		height: 38px !important; 	
+		background-color: #1f9e53 !important;
+        border-color: #107533 !important;
 	}
-
+	
+	.loginButton {
+		background-color: #1f9e53 !important;
+        border-color: #107533 !important;
+	}
+	
  	.spacing {
     margin-bottom:3px !important;
     margin-top:3px !important;
@@ -28,11 +35,11 @@
 	*/
 	   /***Sobrecarga el estilo de primefaces en el datatable************/
 	.ui-datatable tr.ui-datatable-odd:hover {
-	    background: #D7E6EA;
+	    background: #66ff66;
 	}
 	
 	.ui-datatable tr.ui-datatable-even:hover {
-	    background: #D7E6EA;
+	    background: #66ff66;
 	}
 	
 	/*
@@ -56,7 +63,7 @@
 	   height: 40px;
 	   border-color: rgba(111,111,111,0.2)  transparent;
 	   font-weight: lighter;
-	   background-color: #e6f0ff;
+	   background-color: #b3ffb3;
 	}
 	
 	/***Sobrecarga el estilo de primefaces en el header y footer de un datatable************/
@@ -87,8 +94,21 @@
 	  white-space: nowrap;
 	  font-size: 7.8pt;	  
 	}
-	
+	 
 	.ui-autocomplete .ui-autocomplete-dropdown {  
-	  width: 25px; 
-	  height: 95%; 
+	  width: 30px; 
+	  height: 93%; 
+  	  background-color: #1f9e53 !important;
+      border-color: #107533 !important;
       } 
+      
+      /*Overwrites primefaces calendar styles*/
+      
+		.ui-calendar button{ 
+		     background-color: #1f9e53 !important;
+     		 border-color: #107533 !important;
+     		 width: 2.0em !important; 
+	         height: 3.1em !important; 
+		   }
+		   
+		 .ui-calendar input{height:45px;margin-bottom: 3px; width: 172px;}

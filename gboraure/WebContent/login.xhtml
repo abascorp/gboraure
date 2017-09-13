@@ -49,7 +49,7 @@
                     <div class="ui-g-12" >
                         <p:ajaxStatus id="ajaxStatusPanel">
                             <f:facet name="default">
-                                <p:commandButton value="#{msg.entrar1}" update="grid, growl" id="btnLogin" action="#{loginBean.login}"/>
+                                <p:commandButton value="#{msg.entrar1}" update="grid, growl" id="btnLogin" action="#{loginBean.login}" styleClass="loginButton"/>
                             </f:facet>
                             <f:facet name="start">
                                 <center>
@@ -57,7 +57,7 @@
                                 </center>
                             </f:facet>
                             <f:facet name="complete">
-                                <p:commandButton value="#{msg.entrar1}" action="#{loginBean.login}"/>
+                                <p:commandButton value="#{msg.entrar1}" action="#{loginBean.login}" styleClass="loginButton"/>
                             </f:facet>
                         </p:ajaxStatus>
                     </div>
@@ -69,6 +69,7 @@
         </div>
         
         <h:outputStylesheet name="css/layout.css" library="omega-layout" />
+        <h:outputStylesheet name="css/styles.css" library="omega-layout" />
     </h:body>
 
 </html>
